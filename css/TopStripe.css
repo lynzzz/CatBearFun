@@ -1,4 +1,8 @@
 #colorstrip{
-    height : 20px ;
-    border-bottom:sollid 2px red;
+    height: 0px;
+    border-bottom:solid 100px #a9e0ea;
+}
+p{
+color : #FFFFF ;
+align : center;
 }
