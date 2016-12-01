@@ -11,6 +11,13 @@
 	background-color : #a9e0ea;
 }
 
-a{
-  font-size : 100px
+
+.codingSectionName{
+    font-size : 50px
+
+}
+
+
+li{
+  font-size : 30px
 }

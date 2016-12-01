@@ -2,30 +2,30 @@
 
 
 <body>
-<code>
+<pre><code class="">
 class Solution {
      * @param nums: A list of integers.
      * @return: A list of permutations.
 
-    public List<List<Integer>> permute(int[] nums) {
+    public List&lt;List&lt;Integer&gt;&gt; permute(int[] nums) {
         // write your code here
         
-        ArrayList<Integer> result = new ArrayList<>();
-        ArrayList<List<Integer>> results = new ArrayList<>();
+        ArrayList&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+        ArrayList&lt;List&lt;Integer&gt;&gt; results = new ArrayList&lt;&gt;();
         boolean[] visited = new boolean[nums.length];
         dfs(nums, result, results, visited);
         return results;
     }
     
     
-    private void dfs(int[] nums, ArrayList<Integer> result, ArrayList<List<Integer>> results, boolean[] visited){
+    private void dfs(int[] nums, ArrayList&lt;Integer&gt; result, ArrayList&lt;List&lt;Integer&gt;&gt; results, boolean[] visited){
         
         if ( result.size() == nums.length ){
-            results.add(new ArrayList<Integer>(result));
+            results.add(new ArrayList&lt;Integer&gt;(result));
             return;
         }
         
-        for( int i=0; i<nums.length; i++){
+        for( int i=0; i&lt;nums.length; i++){
             if ( !visited[i] ){
                 
                 visited[i] = true;
@@ -39,9 +39,8 @@ class Solution {
 }
 
 last modified 12/01/2017
-
-DFS + boolean array??
-</code>
+DFS + 用boolean[] 去重， 里面存位置，而不是实际的值
+</code></pre>
 </body>
 
 
