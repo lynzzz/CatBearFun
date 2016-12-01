@@ -1,0 +1,48 @@
+<html>
+
+
+<body>
+<code>
+class Solution {
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
+
+    public List<List<Integer>> permute(int[] nums) {
+        // write your code here
+        
+        ArrayList<Integer> result = new ArrayList<>();
+        ArrayList<List<Integer>> results = new ArrayList<>();
+        boolean[] visited = new boolean[nums.length];
+        dfs(nums, result, results, visited);
+        return results;
+    }
+    
+    
+    private void dfs(int[] nums, ArrayList<Integer> result, ArrayList<List<Integer>> results, boolean[] visited){
+        
+        if ( result.size() == nums.length ){
+            results.add(new ArrayList<Integer>(result));
+            return;
+        }
+        
+        for( int i=0; i<nums.length; i++){
+            if ( !visited[i] ){
+                
+                visited[i] = true;
+                result.add(nums[i]);
+                dfs(nums, result, results, visited);
+                visited[i] = false;
+                result.remove(result.get(result.size()-1));
+            }
+        }
+    }
+}
+
+last modified 12/01/2017
+
+DFS + boolean array??
+</code>
+</body>
+
+
+</html>

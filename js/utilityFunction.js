@@ -1,3 +1,3 @@
 function goToCodingLayout(){
-    window.location = 'code/codingProblemsLayout.html';
+    window.location = 'html/codingProblemsLayout.html';
 }

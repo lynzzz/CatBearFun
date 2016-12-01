@@ -1,0 +1,16 @@
+#colorstrip{
+    height: 0px;
+    border-bottom:solid 125px #a9e0ea;
+}
+
+#codeButton{
+    position:absolute;
+    transition: .5s ease;
+    top: 1%;
+    left: 96%;
+	background-color : #a9e0ea;
+}
+
+a{
+  font-size : 100px
+}
