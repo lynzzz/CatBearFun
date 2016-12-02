@@ -43,7 +43,17 @@ class Solution {
     }
 }
 
+Last modified  11/28 by Lyn Zeng
 
+1. 用一个boolean array 来根据index位置去重。
+
+这里有个技巧，初始化的时候用简单类型，每个元素自动初始化为false
+boolean[] index = new boolean[size];
+
+如果用复杂类型
+Boolean[] index = new Boolean[size];
+则还需要赋值
+Arrays.fill(index, Boolean.FALSE);  因为Boolean的模型是指针类型。 
 
 </code></pre>
 </body>
