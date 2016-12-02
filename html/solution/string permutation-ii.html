@@ -1,0 +1,49 @@
+<html>
+
+<body>
+<pre><code>
+public class Solution {
+    /**
+     * @param str a string
+     * @return all permutations
+     */
+    public List<String> stringPermutation2(String str) {
+        // Write your code here
+        char[] strArr = str.toCharArray();
+        Arrays.sort(strArr);
+        String str1 = new String(strArr);
+        
+        List<String> results = new ArrayList<>();
+        StringBuilder result = new StringBuilder();
+        boolean[] visited = new boolean[str1.length()];
+        
+        dfs( str1, result, results, visited);
+        return results;
+    }
+    
+    
+    private void dfs( String str, StringBuilder result, List<String> results, boolean[] visited){
+        
+        if ( result.length() == str.length() ){
+            results.add(result.toString());
+            return;
+        }
+        
+        for( int i=0; i<str.length(); i++ ) {
+            
+            if ( visited[i] || ( i>=1 && str.charAt(i) == str.charAt(i-1) && !visited[i-1] ) ){
+                continue;
+            }
+            
+            result.append(str.charAt(i));
+            visited[i] = true;
+            dfs( str, result, results, visited);
+            visited[i] = false;
+            result.deleteCharAt(result.length()-1);
+        }
+    }
+}
+
+</code></pre>
+</body>
+</html>

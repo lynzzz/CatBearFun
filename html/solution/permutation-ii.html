@@ -1,0 +1,52 @@
+<html>
+<body>
+<pre><code class="">
+
+
+class Solution {
+    /**
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
+     */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        // write your code here
+        Arrays.sort(nums);
+        
+        ArrayList<Integer> result = new ArrayList<>();
+        ArrayList<List<Integer>> results = new ArrayList<>();
+        boolean[] index = new boolean[nums.length];
+        dfs(nums, result, results, index);
+        return results;
+    }
+    
+    
+    private void dfs(int[] nums, ArrayList<Integer> result, ArrayList<List<Integer>> results, boolean[] index){
+        
+        if ( result.size() == nums.length ){
+            results.add(new ArrayList<Integer>(result));
+            return;
+        }
+        
+        for( int i=0; i<nums.length; i++){
+            
+            if ( index[i] || (  i>=1 && nums[i] == nums[i-1] && !index[i-1] ) ){
+                continue;
+            }
+                
+                
+                result.add(nums[i]);
+                index[i] = true;
+                dfs(nums, result, results, index);
+                index[i] = false;
+                result.remove(result.size()-1);
+        }
+    }
+}
+
+
+
+</code></pre>
+</body>
+
+
+</html>
