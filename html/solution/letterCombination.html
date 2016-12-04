@@ -1,0 +1,81 @@
+<html>
+
+<pre><code>
+
+
+<body>
+
+public class Solution {
+ /**
+ * @param digits A digital string
+ * @return all posible letter combinations
+ */
+ public ArrayList<String> letterCombinations(String digits) {
+ // Write your code here
+    ArrayList<String> results = new ArrayList<String>();
+    if ( digits == null || digits.length() == 0)
+    return results;
+ 
+    HashMap<Character, char[]> m = new HashMap<>();
+        m.put('2', new char[] {'a', 'b', 'c'});
+        m.put('3', new char[] {'d', 'e', 'f'});
+        m.put('4', new char[] {'g', 'h', 'i'});
+        m.put('5', new char[] {'j', 'k', 'l'});
+        m.put('6', new char[] {'m', 'n', 'o'});
+        m.put('7', new char[] {'p','q', 'r', 's'});
+        m.put('8', new char[] {'t', 'u', 'v'});
+        m.put('9', new char[]{'w', 'x', 'y', 'z'});
+        
+        dfs(results, new StringBuilder(), digits, m, 0);
+        return results;
+        
+    }
+    
+    // Def： 把digits所有组合放入results 
+    private void dfs( ArrayList<String> results, StringBuilder result, String digits, HashMap<Character, char[]> m, int l){
+        
+        // return def:
+        if ( result.length() == digits.length() ){
+            results.add( result.toString() );
+            return;
+        }
+        
+        // break up
+            char[] level = m.get(digits.charAt(l));
+            
+            for( char c : level){
+                result.append(c);
+                dfs( results, result, digits, m, l+1);
+                result.deleteCharAt(result.length()-1);
+            }
+    }
+ }
+ 
+<div style="color:red; font-size:20px">    
+    time complexity O(n * n!)
+    space complexity O(n)
+</div>
+
+ <div style="color:green; font-size:20px">       
+    模型为每层元素不一样，所以需要一个控制层数参数和一个map，不需要去重参数，因为不会有重复的。    
+    abc
+    def 
+    ghi
+    
+	
+    此题目和string permutaion区别在于后者：
+    每层一样, 不需要控制层数参数， 但是需要一个boolean array去重
+</div>
+
+
+
+
+</body>
+
+
+
+
+
+</code></pre>
+
+</html>
