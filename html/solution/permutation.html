@@ -1,0 +1,55 @@
+<html>
+
+
+<body>
+<pre><code class="">
+class Solution {
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
+
+    public List&lt;List&lt;Integer&gt;&gt; permute(int[] nums) {
+        // write your code here
+        
+        ArrayList&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+        ArrayList&lt;List&lt;Integer&gt;&gt; results = new ArrayList&lt;&gt;();
+        boolean[] visited = new boolean[nums.length];
+        dfs(nums, result, results, visited);
+        return results;
+    }
+    
+    
+    private void dfs(int[] nums, ArrayList&lt;Integer&gt; result, ArrayList&lt;List&lt;Integer&gt;&gt; results, boolean[] visited){
+        
+        if ( result.size() == nums.length ){
+            results.add(new ArrayList&lt;Integer&gt;(result));
+            return;
+        }
+        
+        for( int i=0; i&lt;nums.length; i++){
+            if ( !visited[i] ){
+                
+                visited[i] = true;
+                result.add(nums[i]);
+                dfs(nums, result, results, visited);
+                visited[i] = false;
+                result.remove(result.get(result.size()-1));
+            }
+        }
+    }
+}
+
+模型为以下， 每层都一样，所以需要visited[i]保征每个位置只能取一次 
+
+12345
+12345
+12345
+12345
+12345
+
+last modified 12/01/2017
+DFS + 用boolean[] 去重， 里面存位置，而不是实际的值
+</code></pre>
+</body>
+
+
+</html>

@@ -1,0 +1,38 @@
+#colorstrip{
+    height: 0px;
+    border-bottom:solid 125px #a9e0ea;
+}
+
+#codeButton{
+    position:absolute;
+    transition: .5s ease;
+    top: 1%;
+    left: 96%;
+	background-color : #a9e0ea;
+	border: none;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+#usefulLinkButton{
+    position:absolute;
+    transition: .5s ease;
+    top: 1%;
+    left: 92%;
+	background-color : #a9e0ea;
+	border: none;
+	font-weight: bold;
+    cursor: pointer;
+}
+
+.codingSectionName{
+    font-size : 50px;
+	color : blue;
+
+}
+
+
+
+li{
+  font-size : 30px
+}

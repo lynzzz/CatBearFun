@@ -1,0 +1,71 @@
+<html>
+<body>
+<pre><code class="">
+
+
+class Solution {
+    /**
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
+     */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        // write your code here
+        Arrays.sort(nums);
+        
+        ArrayList<Integer> result = new ArrayList<>();
+        ArrayList<List<Integer>> results = new ArrayList<>();
+        boolean[] index = new boolean[nums.length];
+        dfs(nums, result, results, index);
+        return results;
+    }
+    
+    
+    private void dfs(int[] nums, ArrayList<Integer> result, ArrayList<List<Integer>> results, boolean[] index){
+        
+        if ( result.size() == nums.length ){
+            results.add(new ArrayList<Integer>(result));
+            return;
+        }
+        
+        for( int i=0; i<nums.length; i++){
+            
+            if ( index[i] || (  i>=1 && nums[i] == nums[i-1] && !index[i-1] ) ){
+                continue;
+            }
+                
+                
+                result.add(nums[i]);
+                index[i] = true;
+                dfs(nums, result, results, index);
+                index[i] = false;
+                result.remove(result.size()-1);
+        }
+    }
+}
+
+模型为以下， 每层都一样，所以需要visited[i]保征每个位置只能取一次，和重复的处理方法
+
+12245
+12245
+12245
+12245
+12245
+
+
+Last modified  11/28 by Lyn Zeng
+
+1. 用一个boolean array 来根据index位置去重。
+
+这里有个技巧，初始化的时候用简单类型，每个元素自动初始化为false
+boolean[] index = new boolean[size];
+
+如果用复杂类型
+Boolean[] index = new Boolean[size];
+则还需要赋值
+Arrays.fill(index, Boolean.FALSE);  因为Boolean的模型是指针类型。 
+
+</code></pre>
+</body>
+
+
+</html>
