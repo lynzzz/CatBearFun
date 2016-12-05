@@ -1,0 +1,49 @@
+<html>
+
+<body>
+<pre><code>
+
+class Solution {
+    /**
+     * @param S: A set of numbers.
+     * @return: A list of lists. All valid subsets.
+     */
+    public ArrayList<ArrayList<Integer>> subsetsWithDup(int[] nums) {
+        // write your code here
+        Arrays.sort(nums);
+        
+        ArrayList<ArrayList<Integer>> results = new ArrayList<>();
+        ArrayList<Integer> result = new ArrayList<>();
+        boolean[] visited = new boolean[nums.length];
+        dfs(results, result, nums, 0, visited);
+        return results;
+    }
+    
+    
+    private void dfs(ArrayList<ArrayList<Integer>> results, ArrayList<Integer> result, int[] nums, int level, boolean[] visited){
+        results.add(new ArrayList<Integer>(result));
+        
+        for( int i= level; i<nums.length; i++){
+            
+            if ( i>=1 && nums[i] == nums[i-1] && !visited[i-1]){
+                continue;
+            }
+            
+            result.add(nums[i]);
+            visited[i] = true;
+            dfs( results, result, nums, i+1, visited);
+            visited[i] = false;
+            result.remove(result.size()-1);
+        }
+    }
+}
+</code></pre>
+</body>
+
+<div style="color : red; font-size:30px">
+Note:
+1 和subset 区别在于 输入为[1,2,2]可能会有重副的数字<br>
+2 解法为传一个boolean[]进去， 当前数后前面数一样的时候，必须前面访问了才行      if ( i>=1 && nums[i] == nums[i-1] && !visited[i-1]){
+
+
+</div>
