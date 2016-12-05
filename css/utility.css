@@ -35,6 +35,11 @@
     font-size : 40px;
 }
 
+.comment{
+    color : red; 
+    font-size:30px
+}
+
 
 li{
   font-size : 30px

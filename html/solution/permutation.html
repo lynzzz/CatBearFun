@@ -2,7 +2,7 @@
 
 
 <body>
-<pre><code class="">
+<pre><code>
 class Solution {
      * @param nums: A list of integers.
      * @return: A list of permutations.
@@ -37,18 +37,20 @@ class Solution {
         }
     }
 }
-
-模型为以下， 每层都一样，所以需要visited[i]保征每个位置只能取一次 
-
-12345
-12345
-12345
-12345
-12345
-
-last modified 12/01/2017
-DFS + 用boolean[] 去重， 里面存位置，而不是实际的值
 </code></pre>
+
+<div style="color:red; font-size:20px">    
+permutaion global search<br>
+!!!!!!!!!!!!!!   经典的排列模板 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！<br>
+输入为 ： 大容器，小容器， 访问控制的boolean array<br>
+例子 ：  [123] [132] [231][213]<br>
+
+Note:<br>
+1. 只有没有访问的位置才能访问，用visited[i]控制<br>
+2. 访问的flag, 和加入的值在递归返回时必须重制。<br>
+</div>
+
+
 </body>
 
 
