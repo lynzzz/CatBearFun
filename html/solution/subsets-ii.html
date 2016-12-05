@@ -44,6 +44,9 @@ class Solution {
 </body>
 
 <div class="comment">
+time O(n*2^(n)) <br>
+
+
 Note:
 1 和subset 区别在于 输入为[1,2,2]可能会有重副的数字<br>
 2 解法为传一个boolean[]进去， 当前数后前面数一样的时候，必须前面访问了才行      if ( i>=1 && nums[i] == nums[i-1] && !visited[i-1]){
