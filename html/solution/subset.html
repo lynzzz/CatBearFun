@@ -1,9 +1,17 @@
 <html>
 
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
 <body>
 <pre><code>
 
+
 class Solution {
+
     public ArrayList<ArrayList<Integer>> subsets(int[] nums) {
         // write your code here
         Arrays.sort(nums);
@@ -13,22 +21,22 @@ class Solution {
         dfs(results, result, nums, 0);
         return results;
     }
-    
-    
+	
     private void dfs(ArrayList<ArrayList<Integer>> results, ArrayList<Integer> result, int[] nums, int level){
         results.add(new ArrayList<Integer>(result));
         
-        for( int i=level; i<nums.length; i++){
+        for( int i=level; i &lt; nums.length; i++){
             result.add(nums[i]);
             dfs( results, result, nums,i+1 );
             result.remove(result.size()-1);
         }
     }
 }
-</code></pre>
-</body>
+</code>
+</pre>
 
-<div style="color : red; font-size:30px">
+
+<div class="comment">
 Subset（forward search）<br>
 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！组合模板鼻祖！！！！！！！！！！！！！！<br>
 <br>
@@ -39,3 +47,6 @@ Note:<br>
 1. for( int i= level ; ; )   <br>
 2. dfs(, , , i+1)            这里取i+1保证了下一层一直往前走，不会头。 注意不要写成了level+1, 这是不对的，因为level的值在for循环内是不会变的。<br>
 </div>
+
+</body>
+</html>
