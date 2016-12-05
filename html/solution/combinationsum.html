@@ -1,0 +1,74 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+<pre><code>
+
+
+public class Solution {
+    /**
+     * @param candidates: A list of integers
+     * @param target:An integer
+     * @return: A list of lists of integers
+     */
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        // write your code here
+        Arrays.sort(candidates);
+        
+        List<List<Integer>> results = new ArrayList<>();
+        List<Integer> result = new ArrayList<>();
+        dfs(results, result, candidates, target, 0);
+        
+        return results;
+    }
+    
+    
+    private void dfs( List<List<Integer>> results, List<Integer> result, int[] candidates, int target, int level){
+        
+        int sum = 0;
+        for( int n : result){
+            sum = sum + n;
+        }
+        
+        if ( sum == target){
+            results.add(new ArrayList<Integer>(result));
+            return;
+        }
+        else if ( sum > target){
+            return;   
+        }
+        
+        for( int i=level; i<candidates.length; i++){
+            
+            if ( i>=1 && candidates[i] == candidates[i-1] ){
+                continue;
+            }
+            
+            result.add(candidates[i]);
+            dfs(results, result, candidates, target, i);
+            result.remove(result.size()-1);
+        }
+    }
+}
+/*
+// time complexity O(n*2^(n))
+// space O(1)
+*/
+
+
+<div class="comment">
+Note:
+1. 从题目描述看出这题答案没有回溯，所以是向前搜索， subset模板
+2. 与模板不同之处在于
+   a. 此题目一个位置可以反复取值，所以这里的变化是 dfs( , , , i) 而不是 dfs(, , , i+1)因为在下一层相同位置还可以取
+   b. 既然一个值可以反复取，那么输入中相同的元素就可以去掉。
+</div>
+
+
+
+</code></pre>
+</body>

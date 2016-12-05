@@ -1,7 +1,18 @@
 <html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
 <body>
 <pre><code>
-// Solution one : permutation Ҫ������ifȥ�� 
+
+
+
+
+
+// Solution one : permutation, (time complexity not good)
 
 public class Solution {
     /**
@@ -62,7 +73,72 @@ public class Solution {
     }
 }
 
+// Solution 2 : Better soluton Subset template
+public class Solution {
+    /**
+     * @param candidates: A list of integers
+     * @param target:An integer
+     * @return: A list of lists of integers
+     */
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        // write your code here
+        Arrays.sort(candidates);
+        
+        List<List<Integer>> results = new ArrayList<>();
+        List<Integer> result = new ArrayList<>();
+        dfs(results, result, candidates, target, 0, new boolean[candidates.length]);
+        
+        return results;
+    }
+    
+    
+    private void dfs( List<List<Integer>> results, List<Integer> result, int[] candidates, int target, int level, boolean[] visited){
+        
+        int sum = 0;
+        for( int n : result){
+            sum = sum + n;
+        }
+        
+        if ( sum == target){
+            results.add(new ArrayList<Integer>(result));
+            return;
+        }
+        else if ( sum > target){
+            return;   
+        }
+        
+        for( int i=level; i<candidates.length; i++){
+            
+		   [1] </div>if ( i>=1 && candidates[i] == candidates[i-1] && !visited[i-1]){    
+		   
+                continue;
+            }
+            
+            result.add(candidates[i]);
+            visited[i] = true;
+            dfs(results, result, candidates, target, i+1, visited);
+            result.remove(result.size()-1);
+            visited[i] = false;
+        }
+    }
+}
+
+Time O(n* 2^(n))
 
 </code></pre>
+
+
+<div class="comment">
+Note: 答案不回溯，仍然是向前搜索，subset模扳。<br>
+
+1. 与subset模扳一致，每个位置只能取一次，所以是dfs(, , , i+1)   注意combination sum 可以一个位置多次取，所以是 dfs(, , , i);<br>
+2. 输入里的重复元素处理，用boolean array和， subset II处理方法完全一致。  见标注[1]<br>
+
+
+
+</div>
+
+
+
 </body>
 </html>

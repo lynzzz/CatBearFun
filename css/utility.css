@@ -40,6 +40,11 @@
     font-size:30px
 }
 
+.specialComment{
+    color : green;
+	font-size : 30px;
+}
+
 
 li{
   font-size : 30px

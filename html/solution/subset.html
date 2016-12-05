@@ -4,10 +4,6 @@
 <pre><code>
 
 class Solution {
-    /**
-     * @param S: A set of numbers.
-     * @return: A list of lists. All valid subsets.
-     */
     public ArrayList<ArrayList<Integer>> subsets(int[] nums) {
         // write your code here
         Arrays.sort(nums);
@@ -22,7 +18,7 @@ class Solution {
     private void dfs(ArrayList<ArrayList<Integer>> results, ArrayList<Integer> result, int[] nums, int level){
         results.add(new ArrayList<Integer>(result));
         
-        for( int i=level ; i<nums.length; i++){
+        for( int i=level; i<nums.length; i++){
             result.add(nums[i]);
             dfs( results, result, nums,i+1 );
             result.remove(result.size()-1);
