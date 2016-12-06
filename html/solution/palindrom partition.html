@@ -1,0 +1,86 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param s: A string
+     * @return: A list of lists of string
+     */
+    public List<List<String>> partition(String s) {
+        // write your code here
+        List<List<String>> results = new ArrayList<>();
+        dfs(results, new ArrayList<String>(), 0, s);
+        
+        return results;
+    }
+    
+    
+    
+    private void dfs(List<List<String>> results, List<String> result, int pos, String s){
+        
+        if ( pos == s.length() ){
+            results.add( new ArrayList<String>(result) );
+            return;
+        }
+        
+        
+        for( int i= pos; i&lt; s.length(); i++ ){
+            String str = s.substring(pos, i+1);
+            
+            if ( !isPalindrome(str) ){
+                continue;
+            }
+            
+            result.add(str);
+            dfs( results, result, i+1, s);
+            result.remove(result.size()-1);
+        }
+    }
+    
+    
+    private boolean isPalindrome( String s ){
+        int start = 0;
+        int end = s.length()-1;
+        
+        while( start < end){
+            if ( s.charAt(start) != s.charAt(end) ){
+                return false;
+            }
+            
+            start++;
+            end--;
+        }
+        
+        return true;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Note:<br>
+1. return all possible solutions ->  DFS -> 观察答案发现无回溯 [a a b] [aa b] ->必定是subset模板  <br>
+2. 领会此题目的精华， pos在每层位置是不变的，变的是i, 所以用pos做开头，i做结尾，可以在每层组成不同的substring   <br>
+</div>
+
+<img src="../../img/palindrome patition.JPG" alt="subset workflow" style="width:800;height:800;">
+
+
+
+</body>
