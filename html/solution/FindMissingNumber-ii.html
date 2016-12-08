@@ -1,0 +1,96 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param n an integer
+     * @param str a string with number from 1-n
+     *            in random order and miss one number
+     * @return an integer
+     * 
+     * 
+     */
+    public static int ans = 0; 
+     
+     
+    public int findMissing2(int n, String str) {
+        // Write your code here
+        HashSet<Integer> set = new HashSet<>();
+        dfs(0, n, str, set);
+        
+
+        return ans;
+    }
+    
+    
+    private void dfs( int pos, int n, String str, HashSet<Integer> set ){
+        
+        if (  pos >= str.length() ){
+            int sum = 0;
+
+            for(int i =1; i<=n; i++){
+                if ( !set.contains(i) ){
+
+                    ans = i;
+                }
+            } 
+            
+            return;
+        }
+        
+        int cur = str.charAt(pos) - '0';
+            
+        if ( cur == 0){
+            return;
+        }  
+        
+        int j = pos;
+        
+        while( cur <= n ){
+            
+            if ( !set.contains(cur) ){
+                set.add(cur);
+                dfs(  j+1, n, str, set);
+                set.remove(cur);
+            }
+            
+            j++;
+            
+            if ( j == str.length() ){
+                return;
+            }
+            
+            cur = cur *10 + str.charAt(j) - '0';
+        }
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+1. search没有回溯，所以说是subset模板（ 大容器，小容器，pos控制符）。 与模斑的区别是这里不需要返回所有解，所以这里不许要大容器和小容器。 <br>
+2. 因为一次可能走1步或者两步， 所以说最外面的循环的次数与字符串的size无关，所以说用while( cur < n)   <br>
+3. j为每一层的控制符，和模斑一样，所以要仔细理解里面j的变化方法    <br>
+
+</div>
+
+
+
+
+</body>

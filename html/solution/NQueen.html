@@ -1,0 +1,111 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    /**
+     * Get all distinct N-Queen solutions
+     * @param n: The number of queens
+     * @return: All distinct solutions
+     * For example, A string '...Q' shows a queen on forth position
+     */
+    ArrayList<ArrayList<String>> solveNQueens(int n) {
+        // write your code here
+        
+        ArrayList<ArrayList<String>> results = new ArrayList<>();
+        ArrayList<Integer> result = new ArrayList<>();
+        
+        dfs( results, result, n);
+        return results;
+        // result means column indices for each row
+        
+    }
+    
+    private void dfs( ArrayList<ArrayList<String>> results, ArrayList<Integer> result, int n){
+        
+        if ( result.size() == n){
+            results.add( drewBoards(result) );
+            return;
+        }
+        
+        for( int i=0; i&lt;n; i++ ){
+            
+            if ( !isValid(result, i) ){
+                continue;
+            }
+            
+            result.add(i);
+            dfs( results, result, n);            //放进result的必定是下一行，所以不需要check row
+            result.remove(result.size()-1);
+        }
+    }
+    
+    
+    private boolean isValid(ArrayList&lt;Integer> result, int curCol){
+        int curRow = result.size();
+        for( int row=0; row&lt;result.size(); row++ ){
+            
+            // check each column in the exsisting result
+            if ( result.get(row) == curCol ){
+                return false;
+            }
+            
+            // check 135 degrees diagnal;
+            if(  (row - result.get(row)) ==  curRow - curCol ){
+                return false;
+            }
+            
+            // check 45 degrees diagnal;
+            if ( ( row + result.get(row)  ) == curRow + curCol ){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    ArrayList<String> drewBoards(ArrayList<Integer> result){
+        ArrayList<String> ret = new ArrayList<>();
+        
+        for( int row = 0; row &lt;result.size(); row++ ){
+            StringBuilder sb = new StringBuilder();
+            for( int col = 0; col &lt;result.size(); col++ ){
+                sb.append( col == result.get(row) ? 'Q' : '.');
+            }
+            ret.add(sb.toString());
+        }
+        
+        return ret;
+    }
+};
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+1. 因为会回溯，所以必然是permutation模板（大容器，小容器，boolean array). 但是此题目的区别在于皇后可以同行，同列，对角线吃，所以光用boolean array不够， 此题目专门写了一个函数去重<br>
+2. 小技巧在于小容器ArrayList<Integer> result里的值表示columns in each row: 如 [021] 表示第1行的皇后在第1列， 第2行的皇后在第3列，第3行皇后在第2列。 这样的话<br>
+   下标就表示某皇后所在行数，值就表示列数, 一个ArrayList可以把已有的皇后位置表示清楚。 AraryList.size() 表示当前行数， something you get for free<br>
+3. 去重的时候就不用考虑row, 因为不可能重复，考虑column, diagnals.<br>
+</div>
+
+
+
+
+</body>
+
+
+Delete this automatically generated CCP, since it gives quite a few merge conflict. I will manually port this to NX11
