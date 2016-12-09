@@ -1,0 +1,122 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+      * @param start, a string
+      * @param end, a string
+      * @param dict, a set of string
+      * @return a list of lists of string
+      */
+    public List<List<String>> findLadders(String start, String end, Set<String> dict) {
+        // write your code here 
+        
+        dict.add(start);
+        dict.add(end);
+        
+        
+        List<List<String>> results = new ArrayList<>();
+        List<String> result = new ArrayList<>();
+
+        HashMap<String, Integer> mapWordToLevel = new HashMap<>(); 
+        
+
+        //　BFS
+        bfs(start, dict, mapWordToLevel);
+        
+        /// DFS
+        dfs(start, end, result, results, mapWordToLevel, dict);
+        
+        return results;
+        
+    }
+    
+     List<String> expand(String crt, Set<String> dict) {
+        List<String> expansion = new ArrayList<String>();
+
+       for( int i=0; i&lt;crt.length(); i++){
+           for( char c = 'a'; c<='z'; c++){
+               //[3]
+               String str = crt.substring(0, i) + c + crt.substring(i+1);
+               if ( dict.contains(str) ){
+                   expansion.add(str);
+               }
+           }
+       }
+        return expansion;
+    }
+    
+    private void bfs(String start, Set<String> dict, HashMap<String, Integer> mapWordToLevel)
+    {
+        Queue<String> q = new LinkedList<String>();
+        
+        // BFS模板， 熟记.
+        q.add(start);
+        mapWordToLevel.put(start, 0);
+        
+        while( !q.isEmpty() ){
+            String str = q.poll();
+            
+            for( String s : expand(str, dict)){
+                if ( !mapWordToLevel.containsKey(s) ){
+                    mapWordToLevel.put(s, mapWordToLevel.get(str)+1);
+                    q.add(s);
+                }
+            }
+        }
+    }
+
+    
+    
+    // [2]DFS模板变形, 用高度map去重
+    private void dfs( String start, String end, List<String> result, List<List<String>> results, HashMap<String, Integer> mapWordToLevel, Set<String> dict ){
+        
+        if ( start.equals(end) ){
+            result.add(start);
+            results.add(new ArrayList<String>(result));
+            return;
+        }
+        
+        
+        result.add(start);  //特俗
+        for( String s : expand(start, dict) ){
+            if ( mapWordToLevel.get(s) == ( mapWordToLevel.get(start) + 1 ) ){
+                    dfs(s, end, result, results, mapWordToLevel, dict );
+                    result.remove(result.size()-1);
+            }
+        }
+    }
+}
+
+
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+//　此题目的亮点在于先用BFS创建一个每个字符的绝对高度，再用DFS保证不走绕路。才可能最短 <br>
+//[1] BFS模板<br>
+//[2] DFS模板变形，a 在for 循环外面加东西, b用高度map去重 <br>
+//[3] java语言 String str = crt.substring(0, i) + c + substring(i+1); 学习这种新的构造String的方法<br>
+</div>
+
+
+
+
+</body>

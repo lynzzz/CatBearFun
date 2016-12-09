@@ -17,64 +17,55 @@ public class Solution {
      * @param str a string with number from 1-n
      *            in random order and miss one number
      * @return an integer
-     * 
-     * 
      */
-    public static int ans = 0; 
-     
-     
+    public static int ans = 0;
+
     public int findMissing2(int n, String str) {
         // Write your code here
-        HashSet<Integer> set = new HashSet<>();
-        dfs(0, n, str, set);
         
-
+        dfs(0, n, str, new HashSet<Integer>() );
         return ans;
     }
     
     
-    private void dfs( int pos, int n, String str, HashSet<Integer> set ){
+    
+    private void dfs( int pos, int n, String str, HashSet<Integer> visited){
         
-        if (  pos >= str.length() ){
-            int sum = 0;
-
-            for(int i =1; i<=n; i++){
-                if ( !set.contains(i) ){
-
+        if ( pos == str.length()  ){
+            
+            for( int i=1; i<=n; i++){
+                if ( !visited.contains(i) ){
                     ans = i;
                 }
-            } 
-            
+            }
             return;
         }
         
         int cur = str.charAt(pos) - '0';
-            
-        if ( cur == 0){
-            return;
-        }  
+        int i = pos;
         
-        int j = pos;
-        
-        while( cur <= n ){
+        while ( cur <= n ){
             
-            if ( !set.contains(cur) ){
-                set.add(cur);
-                dfs(  j+1, n, str, set);
-                set.remove(cur);
+            if ( !visited.contains(cur) ){
+                visited.add(cur);
+                dfs(i+1, n ,str, visited);
+                
+                // [1]当dfs第一次执行到这里，也就是第一次到最深层，并且满足结束条件返回时， 
+                //    i为输入的最后一个元素的系数。
+                visited.remove(cur);
             }
             
-            j++;
             
-            if ( j == str.length() ){
+            // [2] 如何跳层搜索， 模板
+            i++;
+            if ( i==str.length() ){
                 return;
             }
             
-            cur = cur *10 + str.charAt(j) - '0';
+            cur = cur * 10 + str.charAt(i) - '0';
         }
     }
 }
-
 
 </code></pre>
 
@@ -88,7 +79,7 @@ public class Solution {
 2. 因为一次可能走1步或者两步， 所以说最外面的循环的次数与字符串的size无关，所以说用while( cur < n)   <br>
 3. j为每一层的控制符，和模斑一样，所以要仔细理解里面j的变化方法    <br>
 4. 还需要学习subset搜索的特殊结束条件 pos == n
-
+5. 深刻理解[2], 跳层搜索模板
 </div>
 
 
