@@ -1,0 +1,70 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param A: an integer array.
+     * @param k: a positive integer (k <= length(A))
+     * @param target: a integer
+     * @return a list of lists of integer 
+     */ 
+    public ArrayList<ArrayList<Integer>> kSumII(int[] A, int k, int target) {
+        // write your code here
+        ArrayList<ArrayList<Integer>> results = new ArrayList<>();
+        dfs(results, new ArrayList<Integer>(), 0, A, k, target);
+        return results;
+    }
+    
+    private void dfs( ArrayList<ArrayList<Integer>> results, ArrayList<Integer> result, int pos,
+    int[] A, int k, int target){
+        
+        
+        int sum = 0;
+        for( int i : result){
+            sum = sum + i;
+        }
+        
+        if ( result.size() == k){
+
+
+            if ( sum == target){
+                results.add(new ArrayList<Integer>(result));
+            }
+            return;
+        }
+
+
+        for( int i=pos; i&lt;A.length; i++){
+            result.add(A[i]);
+            dfs( results, result, i+1, A, k, target);
+            result.remove(result.size()-1);
+        }
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+1. subset模板， 结束条件在变
+</div>
+
+
+
+
+</body>
