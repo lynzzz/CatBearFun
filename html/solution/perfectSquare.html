@@ -1,0 +1,69 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+// Solution 1. BFS 超时
+public class Solution {
+    /**
+     * @param n a positive integer
+     * @return an integer
+     */
+    public static int ans = Integer.MAX_VALUE;
+    public int numSquares(int n) {
+        // Write your code here
+        dfs(0, n);
+        return ans;
+    }
+    
+    
+    private void dfs( int pos, int n){
+        if ( n < 0 ){
+            return;
+        }
+        else if ( n == 0 ){
+            ans = pos < ans ? pos : ans;
+            return;
+        }
+        
+
+        for( int s : getAvailableSquareNumber(n)){
+            dfs( pos+1,  n-s );    
+        }
+    }
+    
+    private ArrayList<Integer> getAvailableSquareNumber(int n){
+        ArrayList<Integer> ret = new ArrayList<>();
+        
+        for( int i=n; i>=1; i--){
+            if ( (int)Math.sqrt(i) * (int)Math.sqrt(i) == i ){
+                ret.add(i);
+            }
+        }
+        return ret;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+
+</div>
+
+
+
+
+</body>
