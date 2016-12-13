@@ -1,0 +1,86 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param s the IP string
+     * @return All possible valid IP addresses
+     */
+    public ArrayList<String> restoreIpAddresses(String s) {
+        // Write your code here
+        
+        ArrayList<String> results = new ArrayList<>();
+        dfs(results, new ArrayList<String>(), 0 , s);
+        return results;
+        
+    }
+    
+    
+    private void dfs( ArrayList<String> results,  ArrayList<String> result, int pos, String s){
+
+        if ( pos == s.length() && result.size() == 4  ){
+            StringBuilder sb = new StringBuilder();
+            for(String str : result){
+                sb.append(str);
+                sb.append('.');
+            }
+            sb.deleteCharAt(sb.length()-1);
+            results.add(sb.toString());
+            return;
+        }
+        
+    
+        
+        
+        for( int i = pos ; i&lt; s.length() && i<=pos+2; i++ ){
+            String str = s.substring(pos, i+1);
+            
+            if ( !isValid(str) ){
+                continue;
+            }
+            
+            result.add(str);
+            dfs(results, result, i+1, s);
+            result.remove(result.size()-1);
+            
+            }
+    }
+    
+    
+    private boolean isValid(String s){
+        if ( s.charAt(0) == '0' ){
+            return s.equals("0");
+        }
+        
+        int n = Integer.valueOf(s);
+        return n >=0 && n<=255;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+1. string search 模板 String str = s.subString(pos, i+1); <br>
+2. 与模板的区别在于  for( int i = pos ; i&lt; s.length() && i<=pos+2; i++ ){  控制substing只能取三位 <br>
+</div>
+
+
+
+
+</body>
