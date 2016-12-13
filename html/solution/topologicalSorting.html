@@ -1,0 +1,83 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+/**
+ * Definition for Directed graph.
+ * class DirectedGraphNode {
+ *     int label;
+ *     ArrayList<DirectedGraphNode> neighbors;
+ *     DirectedGraphNode(int x) { label = x; neighbors = new ArrayList<DirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    /**
+     * @param graph: A list of Directed graph node
+     * @return: Any topological order for the given graph.
+     */    
+    public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) {
+        // write your code here
+        HashMap<Integer, Integer> m = new HashMap<>();       // label -> count
+        for( DirectedGraphNode node : graph){                  // loop through each node
+            for( DirectedGraphNode neighbor : node.neighbors){ // loop neighbor of each node
+                if ( !m.containsKey(neighbor.label) )
+                    m.put(neighbor.label, 1 );
+                else
+                    m.put(neighbor.label, m.get(neighbor.label)+1);
+            }
+        }
+        
+        ArrayList<DirectedGraphNode> ret = new ArrayList<>();  // find the 0 indegree node
+        for( DirectedGraphNode n : graph){
+            if ( !m.containsKey(n.label) ){
+                ret.add(n);
+            }
+        }
+        
+        Queue<DirectedGraphNode> q = new LinkedList<>();        // BFS 
+        ArrayList<DirectedGraphNode> answer = new ArrayList<>();
+
+        for( DirectedGraphNode n : ret){
+            q.add(n);
+        }
+        
+        while( !q.isEmpty() ){
+            DirectedGraphNode n = q.poll();
+            answer.add(n);
+            for( DirectedGraphNode neighbor : n.neighbors){
+                m.put(neighbor.label, m.get(neighbor.label)-1);
+                if ( m.get(neighbor.label) == 0 ){
+                    q.add(neighbor);
+                }
+            }
+        }
+        
+        return answer;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+1. 理解并背诵BFS在图上模板 Queue + hashSet
+</div>
+
+
+
+
+</body>

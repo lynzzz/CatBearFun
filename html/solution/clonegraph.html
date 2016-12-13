@@ -1,0 +1,77 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+/**
+ * Definition for undirected graph.
+ * class UndirectedGraphNode {
+ *     int label;
+ *     ArrayList<UndirectedGraphNode> neighbors;
+ *     UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    /**
+     * @param node: A undirected graph node
+     * @return: A undirected graph node
+     */
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        // write your code here
+        if ( node == null) return null;
+        
+        Queue<UndirectedGraphNode> q = new LinkedList<>();
+        HashSet<UndirectedGraphNode> set = new HashSet<UndirectedGraphNode>();
+        
+        HashMap<UndirectedGraphNode, UndirectedGraphNode> mapNodeOldToNewNode = new HashMap<>();
+        //BFS traversal
+        q.add(node);
+        set.add(node);
+        
+        while( !q.isEmpty() ){
+            UndirectedGraphNode cur = q.poll();
+            mapNodeOldToNewNode.put(cur, new UndirectedGraphNode(cur.label) );
+            for( UndirectedGraphNode neighbor : cur.neighbors){
+                if ( !set.contains(neighbor) ){
+                    q.add(neighbor);
+                    set.add(neighbor);
+                }
+            }
+        }
+        
+        
+        // connect edge
+        for( UndirectedGraphNode key : mapNodeOldToNewNode.keySet() ){
+            for( UndirectedGraphNode neighbor : key.neighbors){
+                mapNodeOldToNewNode.get(key).neighbors.add(mapNodeOldToNewNode.get(neighbor) );
+            }
+        }
+        
+        return mapNodeOldToNewNode.get(node);
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+1. BFS图上模板  先建顶点，在连边。
+</div>
+
+
+
+
+</body>

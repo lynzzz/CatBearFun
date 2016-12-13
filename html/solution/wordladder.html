@@ -11,7 +11,69 @@
 
 
 <pre><code>
+public class Solution {
+    /**
+      * @param start, a string
+      * @param end, a string
+      * @param dict, a set of string
+      * @return an integer
+      */
+    public int ladderLength(String start, String end, Set<String> dict) {
+        // write your code here
+        if ( start.equals(end) ){
+            return 1;
+        }
+        
+        Queue<String> q = new LinkedList<>();
+        HashSet<String> visited = new HashSet<>();
+        dict.add(start);
+        dict.add(end);
 
+        
+        
+        // BFS queue + hashSet
+        int ret = 1;
+        
+        q.add(start);
+        visited.add(start);
+        
+        while( !q.isEmpty() ) {
+            
+            ret++;
+            
+            int size = q.size();
+            for( int k=0 ; k&lt;size; k++) {
+                String cur = q.poll();
+            
+                for( int i =0; i&lt;cur.length(); i++){             // all letters
+                    StringBuilder sb = new StringBuilder(cur);   // reset the string after one letter change
+
+                    for( char c = 'a'; c &lt;='z'; c++ ){          // letter from 'a' to 'z'
+                        
+                        if ( c == cur.charAt(i) ){              // skip if it is the same letter
+                            continue;
+                        }
+                    
+                        sb.setCharAt(i, c);
+                        
+                        
+                        if ( sb.toString().equals(end) ){
+                            return ret;
+                        }
+                                
+                        if ( dict.contains(sb.toString()) && !visited.contains(sb.toString()) ){
+                            q.add(sb.toString());
+                            visited.add(sb.toString());
+                        }
+                    
+                    }
+                }
+            }
+        }
+        
+        return 0;
+    }
+}
 
 
 </code></pre>
@@ -22,6 +84,7 @@
 
 
 <div class="comment">
+1. BFS图上模板
 
 </div>
 
