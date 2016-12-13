@@ -76,8 +76,9 @@ public class Solution {
 
 
 <div class="comment">
-1. string search 模板 String str = s.subString(pos, i+1); <br>
-2. 与模板的区别在于  for( int i = pos ; i&lt; s.length() && i<=pos+2; i++ ){  控制substing只能取三位 <br>
+1. subset string search 模板 String str = s.subString(pos, i+1); <br>
+2. 与模板的区别在于  a. 结束条件为搜到最后一层， 且小容器只能有4个整数  <br>
+3. 对不合理数去掉，以及对0的处理。
 </div>
 
 

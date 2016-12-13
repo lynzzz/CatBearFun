@@ -18,7 +18,7 @@ public class Solution {
      */
     public List<List<String>> partition(String s) {
         // write your code here
-        List<List<String>> results = new ArrayList<>();
+        List&lt;List<String>> results = new ArrayList<>();
         dfs(results, new ArrayList<String>(), 0, s);
         
         return results;
@@ -76,7 +76,10 @@ public class Solution {
 <div class="comment">
 Note:<br>
 1. return all possible solutions ->  DFS -> 观察答案发现无回溯 [a a b] [aa b] ->必定是subset模板  <br>
-2. 领会此题目的精华， pos在每层位置是不变的，变的是i, 所以用pos做开头，i做结尾，可以在每层组成不同的substring   <br>
+2. 领会此题目的精华，String str = s.substring(pos, i+1) pos在每层位置是不变的，变的是i, 所以用pos做开头，i做结尾，可以在每层组成不同的substring   <br>
+3. 理解并背诵此模板, 他能返回一个字符串的所有分割方法，非常有用<br>
+   输入为[abc] <br>
+   返回[a, b, c] , [ab, c] , [a, bc] , [abc] <br>
 </div>
 
 <img src="../../img/palindrome patition.JPG" alt="subset workflow" style="width:800;height:800;">
