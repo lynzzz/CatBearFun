@@ -1,0 +1,402 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+<div style="color:blue; font-size:30px;" > Solution 1. DFS 91% A/C hashset contains 时间复杂度高， worst case O(n) </div>
+
+public class Solution {
+    /**
+     * @param board: A list of lists of character
+     * @param word: A string
+     * @return: A boolean
+     */
+    class Node{
+        public int row;
+        public int col;
+        
+        public Node( int row, int col){
+            this.row = row;
+            this.col = col;
+        }
+        	        public boolean equals( Object o){
+	        	if ( o == this){
+	        		return true;
+	        	}
+	        	
+	            if ( ! (o instanceof Node) ){
+	                return false;
+	            }
+	            
+	            Node n = (Node)o;
+	            
+	            return  n.row == this.row && n.col == this.col;
+	        }
+	        
+	        public int hashCode(){
+	        	return this.row * this.col;
+	        }
+    } 
+     
+    public static boolean ans = false;
+    
+    public boolean exist(char[][] board, String word) {
+        // write your code here
+        ArrayList<Node> starts = getStartPosition(board, word);
+        
+        for( Node n : starts){
+            StringBuilder sb = new StringBuilder();
+            sb.append(board[n.row][n.col]);
+            HashSet<Node> visited = new HashSet<>();
+            visited.add(n);
+    
+            dfs( visited , board, word, sb, n);
+            if ( ans ){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private void dfs(HashSet<Node> visited, char[][] board, String word, StringBuilder result, Node cur){
+        if ( result.length() == word.length() ){
+                ans = true;
+                return;
+        }
+        
+        for( Node c : getNeighborNode(cur, board) ){
+            if ( board[c.row][c.col] == word.charAt(result.length()) && !visited.contains(c) ){
+                result.append(board[c.row][c.col]);
+                visited.add(c);
+                dfs(visited, board, word, result, c);
+                visited.remove(c);
+                result.deleteCharAt(result.length()-1);
+            }
+        }
+    }
+    
+    
+    ArrayList<Node> getStartPosition(char[][] board, String word){
+        ArrayList<Node> ret = new ArrayList<>();
+        
+        for( int i=0; i<board.length; i++){
+            for( int j=0; j<board[0].length; j++){
+                if ( board[i][j] == word.charAt(0) ){
+                    ret.add( new Node(i, j) );
+                }
+            }
+        }
+        return ret;
+    }
+    
+    ArrayList<Node> getNeighborNode( Node n, char[][] board){
+        ArrayList<Node> ret = new ArrayList<>();
+        int row = board.length;
+        int col = board[0].length;
+        // left
+        if ( n.col > 0){
+            ret.add( new Node(n.row, n.col-1) );
+        }
+        
+        // right
+        if ( n.col < col-1){
+            ret.add( new Node(n.row, n.col+ 1) );
+        }
+        
+        // up
+        if ( n.row >0 ){
+            ret.add( new Node(n.row-1, n.col) );
+        }
+        
+        // down
+        if ( n.row < row-1){
+            ret.add( new Node(n.row+1, n.col) );
+        }
+        
+        return ret;
+    }
+    
+}
+
+<div class="comment">
+// DFS permutation 模板 
+
+
+// java技巧 : HashSet stores customized object and then call contains
+//1. you have to implement int hashcode() and boolean equals(Object o) method in the customized class<br>
+/
+
+// 2. HashSet.contains->hashCode()->equals()   如果你不写 int hashCode() 则编译器给你默认的是返回instance的内存地址，所以不同的instance即使member variable一样也会被hashset认为是不一样的。<br>
+
+//  In case of Custom Objects, HashSet calculates hashcode for that key object, if hashcodes are same then only it checks for equals method and because hashcode for above two country objects uses default hashcode method,Both will have different memory address hence different hashcode.
+//Read more at http://www.java2blog.com/2014/07/how-hashset-works-in-java.html#X4fIE7ps1er1Dza0.99
+</div>
+
+<div style="color:blue; font-size:30px;" > Solution 2. DFS 优化 91% A/C </div>
+
+
+
+public class Solution {
+    /**
+     * @param board: A list of lists of character
+     * @param word: A string
+     * @return: A boolean
+     */
+    class Node{
+        public int row;
+        public int col;
+        
+        public Node( int row, int col){
+            this.row = row;
+            this.col = col;
+        }
+    } 
+     
+    public static boolean ans = false;
+    
+    public boolean exist(char[][] board, String word) {
+        // write your code here
+        ArrayList<Node> starts = getStartPosition(board, word);
+        
+        for( Node n : starts){
+
+
+            dfs( board, word, n, 1);
+            if ( ans ){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private void dfs( char[][] board, String word,  Node cur, int pos){
+        if ( pos == word.length() ){
+                ans = true;
+                return;
+        }
+        
+        for( Node c : getNeighborNode(cur, board) ){
+            if ( board[c.row][c.col] == word.charAt(pos) ){
+                board[c.row][c.col] = '#';
+                dfs( board, word, c, pos + 1);
+                board[c.row][c.col] = word.charAt(pos);
+            }
+        }
+    }
+    
+    
+    ArrayList<Node> getStartPosition(char[][] board, String word){
+        ArrayList<Node> ret = new ArrayList<>();
+        
+        for( int i=0; i<board.length; i++){
+            for( int j=0; j<board[0].length; j++){
+                if ( board[i][j] == word.charAt(0) ){
+                    ret.add( new Node(i, j) );
+                }
+            }
+        }
+        return ret;
+    }
+    
+    ArrayList<Node> getNeighborNode( Node n, char[][] board){
+        ArrayList<Node> ret = new ArrayList<>();
+        int row = board.length;
+        int col = board[0].length;
+        // left
+        if ( n.col > 0){
+            ret.add( new Node(n.row, n.col-1) );
+        }
+        
+        // right
+        if ( n.col < col-1){
+            ret.add( new Node(n.row, n.col+ 1) );
+        }
+        
+        // up
+        if ( n.row >0 ){
+            ret.add( new Node(n.row-1, n.col) );
+        }
+        
+        // down
+        if ( n.row < row-1){
+            ret.add( new Node(n.row+1, n.col) );
+        }
+        
+        return ret;
+    }
+    
+}
+</code></pre>
+<div class="comment">
+1。因为HashSet.contains 用在customized class上 时间复杂度worst case为 O(n)
+且需要自己实现 int hashCode()和 boolean equals(Object o)
+所以耗时且复杂。 这里优化是直用二维矩阵boolean[][] 或者直接把矩阵元素标记成 “#” 在回来 <br>
+
+2。 StringBuilder append 开销也是 O(n), 但是这样写结束条件比用层次控制副清楚些( +1 -1 很容易混)，我喜欢用StringBuilder<br>
+
+2。 因为便利没有返回值，需要全部走完，所以时间长， 九章解法是用分治， boolean b= a ||b||b ,
+只要有一个是true, 就可以返回true,不用全部执行完。<br>
+
+
+1. 广义搜索
+   for( 循环当前层的所有元素 ）{
+       取
+	   下一层
+       放
+   }
+</div>
+
+<br>
+<div style="color:blue; font-size:30px;" > 此题目不能用BFS解答, 需总结不能用BFS 搜索的题目 </div>
+
+<pre><code>
+public class Solution {
+    /**
+     * @param board: A list of lists of character
+     * @param word: A string
+     * @return: A boolean
+     */
+    class Node{
+        public int row;
+        public int col;
+        
+        public Node( int row, int col){
+            this.row = row;
+            this.col = col;
+        }
+        
+        public boolean equals( Object o){
+            if ( ! (o instanceof Node) ){
+                return false;
+            }
+            
+            Node n = (Node)o;
+            
+            return  n.row == this.row && n.col == this.col;
+        }
+        
+        public int hashCode(){
+	        	return this.row * this.col;
+	     }
+    } 
+     
+
+    public boolean exist(char[][] board, String word) {
+        // write your code here
+        ArrayList<Node> starts = getStartPosition(board, word);
+        
+        boolean ans = false;
+        for( Node n : starts){
+            ans = bfs(n, board, word);
+            if ( ans ){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private boolean  bfs( Node n, char[][] board, String word ){
+        HashSet<Node> visited = new HashSet<>();
+        Queue<Node> q = new LinkedList<>();
+        
+        visited.add(n);
+        q.add(n);
+        
+        int level = 0;
+        
+        while( !q.isEmpty() ){
+            
+
+            int size = q.size();
+            
+            for( int i=0; i&lt;size; i++){
+                Node parent = q.poll();   
+                
+                // 当前层处理
+                if ( word.charAt(level) == board[parent.row][parent.col] ){
+                    if ( level == word.length()-1 ){
+                        return true;
+                    }
+                   
+                    // 下一层处理
+                    for( Node child : getNeighborNode(parent, board) ){
+                        if ( !visited.contains(child) ){
+                            visited.add(child);
+                            q.add(child);
+                        }
+                    }
+                }
+            }
+            level++;
+        }
+        return false;
+    }
+    
+    
+    ArrayList<Node> getStartPosition(char[][] board, String word){
+        ArrayList<Node> ret = new ArrayList<>();
+        
+        for( int i=0; i<board.length; i++){
+            for( int j=0; j<board[0].length; j++){
+                if ( board[i][j] == word.charAt(0) ){
+                    ret.add( new Node(i, j) );
+                }
+            }
+        }
+        return ret;
+    }
+    
+    ArrayList<Node> getNeighborNode( Node n, char[][] board){
+        ArrayList<Node> ret = new ArrayList<>();
+        int row = board.length;
+        int col = board[0].length;
+        // left
+        if ( n.col > 0){
+            ret.add( new Node(n.row, n.col-1) );
+        }
+        
+        // right
+        if ( n.col < col-1){
+            ret.add( new Node(n.row, n.col+ 1) );
+        }
+        
+        // up
+        if ( n.row >0 ){
+            ret.add( new Node(n.row-1, n.col) );
+        }
+        
+        // down
+        if ( n.row < row-1){
+            ret.add( new Node(n.row+1, n.col) );
+        }
+        
+        return ret;
+    }
+    
+}
+</code></pre>
+
+错误例子 ：["ABCE","SFES","ADEE"], "ABCESEEEFS" <br>
+
+<img src="../../img/SearchWordBFS.JPG" height="500px" width="500px">
+
+
+
+
+
+
+
+
+
+</body>
