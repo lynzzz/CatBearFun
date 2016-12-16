@@ -1,0 +1,76 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    /**
+     * @param A and B: sorted integer array A and B.
+     * @return: A new sorted integer array
+     */
+    public int[] mergeSortedArray(int[] A, int[] B) {
+        // Write your code here
+        int m = A.length;
+        int n = B.length;
+        int i=0;
+        int j=0;
+        int k = 0;
+        int[] ret = new int[m+n];
+        
+        while( i&lt;m && j&lt;n){
+            if ( A[i] < B[j]){
+                ret[k] = A[i];
+                i++;
+                k++;
+            }else{
+                ret[k] = B[j];
+                j++;
+                k++;
+            }
+        }
+        
+        while( i < m){
+            ret[k] = A[i];
+            i++;
+            k++;
+        }
+        
+        while( j < n){
+            ret[k] = B[j];
+            j++;
+            k++;
+        }
+        return ret;
+    }
+}
+
+// Time O(m+n)
+// space O(m+n) extra memory
+
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+// merge two sorted array 模板 背诵
+// 1. 先一起merge,在分别merge. 两个指针一起动
+</div>
+
+
+
+
+</body>

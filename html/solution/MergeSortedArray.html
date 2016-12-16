@@ -1,0 +1,68 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    /**
+     * @param A: sorted integer array A which has m elements, 
+     *           but size of A is m+n
+     * @param B: sorted integer array B which has n elements
+     * @return: void
+     */
+    public void mergeSortedArray(int[] A, int m, int[] B, int n) {
+        // write your code her
+        int i = m-1;
+        int j = n-1;
+        int k = m+n-1;
+        
+        while( i>=0 && j >=0){
+            if ( A[i] > B[j]){
+                A[k] = A[i];
+                i--;
+            }else{
+                A[k] = B[j];
+                j--;
+            }
+            k--;
+        }
+        
+        while( j >= 0){
+            A[k] = B[j];
+            j--;
+            k--;
+        }
+    }
+}
+
+// time O(n+n)
+// space O(1)
+
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+//Note:
+//  merge two sorted array模板 
+// 从后面开始merge,注意两个指针一起变化 
+</div>
+
+
+
+
+</body>

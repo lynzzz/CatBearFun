@@ -1,0 +1,69 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param s a string
+     * @param wordDict a set of words
+     */
+    public List<String> wordBreak(String s, Set<String> wordDict) {
+        // Write your code here
+        List<String> results = new ArrayList<>();
+        dfs(results, new ArrayList<String>(), 0, s, wordDict);
+        return results;
+        
+    }
+    
+    private void dfs( List<String> results, List<String> result, int pos, String s, Set<String> wordDict){
+        
+        if ( pos == s.length() ){
+            StringBuilder sb = new StringBuilder();
+            for( String str : result){
+                sb.append(str);
+                sb.append(' ');
+            }
+            sb.deleteCharAt(sb.length()-1);
+            results.add(sb.toString());
+            return;
+        }
+        
+        for( int i=pos; i<s.length(); i++ ){
+            String temp = s.substring(pos, i+1);
+            if ( !wordDict.contains(temp)){
+                continue;
+            }
+            
+            result.add(temp);
+            dfs(results, result, i+1, s, wordDict);
+            result.remove(result.size()-1);
+        }
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+// subset substring 模板  
+// time O(n*2^n) where n is the size of the String s.
+</div>
+
+
+
+
+</body>

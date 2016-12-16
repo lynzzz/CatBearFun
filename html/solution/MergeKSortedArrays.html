@@ -1,0 +1,91 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param arrays k sorted integer arrays
+     * @return a sorted array
+     */
+    public List<Integer> mergekSortedArrays(int[][] arrays) {
+        // Write your code here
+        if ( arrays == null || arrays.length == 0 ) return null;
+        
+        return helper( arrays, 0, arrays.length-1);
+    }
+    
+    List<Integer> helper(int[][] arrays, int start, int end){
+        
+        if ( start == end){
+            ArrayList<Integer> ret = new ArrayList<Integer>();
+            for( int i : arrays[start]){
+                ret.add(i);
+            }
+            return ret;
+        }
+        
+        int mid = start + ( end - start )/2;
+        
+        List<Integer> left = helper(arrays, start, mid);
+        List<Integer> right = helper(arrays, mid + 1 , end);
+        
+        return mergeTwoSortedArray(left, right);
+    }
+    
+    List<Integer> mergeTwoSortedArray(List<Integer> l, List<Integer> r){
+        
+        int m = l.size();
+        int n = r.size();
+        int i=0;
+        int j=0;
+
+        List<Integer> ret = new ArrayList<Integer>();
+        
+        while( i&lt;m && j&lt;n){
+            if ( l.get(i) < r.get(j) ){
+                ret.add(l.get(i));
+                i++;
+            }else{
+                ret.add(r.get(j));
+                j++;
+            }
+        }
+        
+        while( i&lt;m){
+            ret.add(l.get(i));
+            i++;
+        }
+        
+        while( j&lt;n){
+            ret.add(r.get(j));
+            j++;
+        }
+        
+        return ret;
+    }
+}
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+// Merge sort 模板
+
+</div>
+
+
+
+
+</body>
