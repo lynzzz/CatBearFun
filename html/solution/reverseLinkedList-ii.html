@@ -1,0 +1,67 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if (m >= n || head == null) {
+            return head;
+        }
+        
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        head = dummy;
+        
+        for (int i = 1; i < m; i++) {
+
+            head = head.next;
+        }
+        
+        ListNode premNode = head;
+        ListNode pre =null, cur = head.next;
+        for (int i = m; i < n+1; i++) {
+ 
+            ListNode temp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = temp;
+        }
+        
+        head.next.next = cur;
+        head.next = pre;
+        
+        return dummy.next;
+    }
+}
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time O(n)                              <br>
+
+Note : 反转链表模板                   <br>
+
+1. 找到返转莲表前面那个点             <br>
+2. 用模板反转链表                      <br>
+3. 在链回去                             <br>
+
+
+</div>
+
+
+
+
+</body>

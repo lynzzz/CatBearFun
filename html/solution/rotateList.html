@@ -1,0 +1,99 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param head: the List
+     * @param k: rotate to the right k places
+     * @return: the list after rotation
+     */
+    public ListNode rotateRight(ListNode head, int k) {
+        // write your code here
+        if ( head == null || k==0) return head;
+        
+        
+        // 1. get the size of the linkedList
+        int size = 0;
+        ListNode savehead = head;
+        while( savehead != null){
+            size++;
+            savehead = savehead.next;
+        }
+        savehead = head;
+        
+        // 2. get the real step
+        k = k%size;
+        if ( k == 0 ) return head;
+        
+        // 3. move k-step-1 steps
+        for( int i=0; i&lt;size-k-1; i++){
+            savehead = savehead.next;
+        }
+        
+        // 4. get the head of the second LinkedList
+        ListNode newStart = savehead.next;
+        
+        // 5  disconnect 
+        savehead.next = null;
+        
+        // 6. get the end of the second linkedlist
+        ListNode newEnd = newStart;
+        while( newEnd.next != null){
+            newEnd = newEnd.next;
+        }
+        
+        // 7. connect
+        newEnd.next = head;
+        
+        return newStart;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(n)    <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.           <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

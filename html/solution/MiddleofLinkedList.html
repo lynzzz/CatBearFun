@@ -1,0 +1,65 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param head: the head of linked list.
+     * @return: a middle node of the linked list
+     */
+    public ListNode middleNode(ListNode head) { 
+        // Write your code here
+        
+        
+        // 如果只有一个数直接返回  
+        if ( head == null || head.next == null)
+            return head;
+            
+        
+        // 慢指针占第一个，快指针占第二个
+        ListNode slow = head;
+        ListNode fast = head.next;
+        
+        while( fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        return slow;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n)   <br>
+Space complexity :  O(1)   <br>
+
+
+
+
+// Note <br>
+1. 初始位置慢指针站第一个，快指针站第二个          <br>
+
+
+</div>
+
+
+
+
+</body>

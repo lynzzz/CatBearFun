@@ -1,0 +1,90 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param headA: the first list
+     * @param headB: the second list
+     * @return: a ListNode 
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        // Write your code here
+        if ( headA == null || headB == null) return null;
+        
+        
+        ListNode A = headA;
+        ListNode B = headB;
+        
+        int sizeA = 0;
+        while( A != null){
+            sizeA++;
+            A= A.next;
+        }
+        
+        int sizeB = 0;
+        while( B != null){
+            sizeB++;
+            B = B.next;
+        }
+        
+        if ( sizeA > sizeB){
+            int diff = sizeA - sizeB;
+            for( int i=0; i<diff; i++){
+                headA = headA.next;
+            }
+        }else{
+            int diff = sizeB - sizeA;
+            for( int i=0; i<diff; i++){
+                headB = headB.next;
+            }
+        }
+        
+        while( headA != null && headB != null){
+            if ( headA == headB){
+                return headA;
+            }
+            headA = headA.next;
+            headB = headB.next;
+        }
+        
+        return null;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(m+n)    <br>
+Space complexity : O(1)    <br>
+
+
+
+
+// Note <br>
+1.  巧妙的解法， 找出第一个链表长度m,第二个链表长度n, int diff = m-n, 长的那个链表往前移动diff步，然后两个链表同时往前走找交叉点         <br>
+2.  注意的是统计完链表长度后，指针到最后去了，所以开始要保存指针头         <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

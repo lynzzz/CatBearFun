@@ -1,0 +1,74 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param ListNode head is the head of the linked list
+     * @return: ListNode head of linked list
+     */
+    public static ListNode deleteDuplicates(ListNode head) { 
+    
+    if ( head == null){
+        return null;
+    }
+    
+    ListNode save = head;
+    
+    while( head.next != null){
+        if ( head.next.val == head.val){
+            head.next = head.next.next;
+        }else{
+            head = head.next;
+        }
+    }
+    
+    return save;
+    }
+}
+
+
+// Time O(n)
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Note :   <br>
+有序链表去重模板， 判断后一个值    <br>
+
+while( 下一个存在 ）{  <br>
+    相同则跳            <br>
+	不同则连            <br>
+}
+
+</div>
+
+
+
+
+</body>

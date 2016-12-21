@@ -84,6 +84,9 @@ public class Solution {
 
 
 <div class="comment">
+Time O( nlg(k))  : 因为priority queue每次add and remove都是log(k)， 每一个元素都要在里面过一次，所以复杂度是nlog(k)
+
+
 //Note
 // 把每个链的头指针加入priority queue, 在priority queue里反复进出，因为每个元素都链接到下一个
 // dummy node;
@@ -164,6 +167,8 @@ public class Solution {
 </code></pre>
 
 <div class="comment">
+Time O( nlg(k) ), where k is the number of recursion level. n is the total number of nodes. 每一层merge,所有node都要merge一次
+
 //Note
 //   merge sort模版
 

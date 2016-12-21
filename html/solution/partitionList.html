@@ -1,0 +1,93 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */ 
+public class Solution {
+    /**
+     * @param head: The first node of linked list.
+     * @param x: an integer
+     * @return: a ListNode 
+     */
+    public ListNode partition(ListNode head, int x) {
+        // write your code here
+        
+        
+        ListNode small = new ListNode(-1);
+        ListNode large = new ListNode(-1);
+        ListNode smallsave = small;
+        ListNode largesave = large;
+        
+        
+        while( head != null ){
+            if ( head.val < x){
+                small.next = head;
+                small = head;
+            }else{
+                large.next = head;
+                large = head;
+            }
+            head = head.next;
+        }
+        
+		//注意点
+        large.next = null;
+        
+        if ( large == null){
+            return smallsave.next;
+        }
+        
+        if ( small == null){
+            return largesave.next;
+        }
+        
+        small.next = largesave.next;
+        
+        return smallsave.next;
+    }
+}
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+time O(n)   <br>
+spcae O(1) <br>
+
+
+
+Note:
+1. 两个dummy node
+2. 注意大链结尾要加null, 不然仍然指着原来的节点
+
+</div>
+
+
+
+
+</body>

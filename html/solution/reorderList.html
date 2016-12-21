@@ -1,0 +1,122 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param head: The head of linked list.
+     * @return: void
+     */
+    public void reorderList(ListNode head) {  
+        // write your code here
+        if ( head == null || head.next == null) return;
+        
+        
+        ListNode mid = middleNode(head);
+        ListNode right = reverse(mid.next);
+        mid.next = null;
+        merge(head, right);
+    }
+    
+     public ListNode middleNode(ListNode head) { 
+        // Write your code here
+        
+        
+        // 如果只有一个数直接返回  
+        if ( head == null || head.next == null)
+            return head;
+            
+        
+        // 慢指针占第一个，快指针占第二个
+        ListNode slow = head;
+        ListNode fast = head.next;
+        
+        while( fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        return slow;
+    }
+    
+     public ListNode reverse(ListNode head) {
+        // write your code here
+        if ( head == null) return head;
+        
+        ListNode pre = null;
+        
+        while( head != null ){
+            ListNode save = head.next;
+            head.next = pre;
+            pre = head;
+            head = save;
+        }
+        
+        return pre;
+    }
+    
+    ListNode merge( ListNode l, ListNode r){
+        
+        int index = 0;
+        ListNode dummy = new ListNode(-1);
+        ListNode save = dummy;
+        
+        while( l != null && r != null){
+            if ( index %2 == 0){
+                dummy.next = l;
+                l = l.next;
+            }else{
+                dummy.next = r;
+                r= r.next;
+            }
+            dummy = dummy.next;
+            index++;
+        }
+        
+        if ( l != null)  dummy.next = l;
+        
+        if ( r != null)  dummy.next = r;
+        
+        return save.next;
+    }
+    
+    
+}
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n)   <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.   找中间点模板 + 反链模板 +　merge two list 模板        <br>
+2.   先找到中间点，断链，对右边进行反转，然后左右进行合并        <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

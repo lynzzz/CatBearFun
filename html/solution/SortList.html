@@ -1,0 +1,117 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param head: The head of linked list.
+     * @return: You should return the head of the sorted linked list,
+                    using constant space complexity.
+     */
+    public ListNode sortList(ListNode head) {  
+        // write your code here
+        
+        if ( head == null || head.next == null ) return head;
+        return divideConquer(head);
+    }
+    
+    public ListNode divideConquer(ListNode start){
+        
+        if ( start.next == null){
+            return start;
+        }
+        
+        ListNode mid = getMidNode(start);
+
+
+        ListNode right = divideConquer(mid.next);
+        mid.next = null;
+
+        
+        ListNode left = divideConquer(start);
+
+        return merge(left, right);
+    }
+    
+    ListNode merge(ListNode l, ListNode r){
+        
+        
+        ListNode dummy = new ListNode(-1);
+        ListNode save = dummy;
+        
+        while( l != null && r != null){
+            if ( l.val < r.val){
+                dummy.next = l;
+                l= l.next;
+            }else{
+                dummy.next = r;
+                r = r.next;
+            }
+            dummy = dummy.next;
+        }
+        
+        if ( l == null){
+            dummy.next = r;
+        }
+        
+        if ( r == null){
+            dummy.next = l;
+        }
+        return save.next;
+    }
+    
+    ListNode getMidNode(ListNode start){
+        if ( start == null || start.next == null){
+            return start;
+        }
+        
+        ListNode slow = start;
+        ListNode fast = start.next;
+        
+        while( fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        return slow;
+    }
+    
+}
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  nlg(n)    <br>
+Space complexity :  o(1)   <br>
+
+
+
+
+// Note <br>
+1. 模板一（find middle node in linked list) + 模板2 （ merge sort ) 变形          <br>
+2. 变形为 divideConquer只需要带一个参， 因为最后为null可以结束。先merge右边部分，中间断链，在merge左边部分          <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

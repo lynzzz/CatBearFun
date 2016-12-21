@@ -1,0 +1,74 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */ 
+public class Solution {
+    /**
+     * @param head: The first node of linked list.
+     * @return: True if it has a cycle, or false
+     */
+    public boolean hasCycle(ListNode head) {  
+        // write your code here
+        if ( head == null) return false;
+        ListNode slow = head;
+        ListNode fast = head;
+        while( fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+            
+            if ( slow == fast){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.  都从起点开始，慢的走一步，快的走两步，开是否会相遇          <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

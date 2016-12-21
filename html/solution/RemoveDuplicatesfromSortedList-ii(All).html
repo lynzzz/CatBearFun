@@ -1,0 +1,80 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param ListNode head is the head of the linked list
+     * @return: ListNode head of the linked list
+     */
+    public static ListNode deleteDuplicates(ListNode head) {
+        // write your code here
+        if ( head == null){
+            return null;
+        }
+        
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        head = dummy;
+        
+        while( head.next != null && head.next.next != null){
+            if ( head.next.val == head.next.next.val){
+                int n = head.next.val;    // 记录每个重复元素的值
+                
+                // 这个内部while需要一次性把连续的重复删除完
+                while( head.next != null && head.next.val == n){
+                    head.next = head.next.next;
+                }
+            }else{
+                head = head.next;
+            }
+        }
+    
+        return dummy.next;
+    }
+    
+    
+}
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time O(n)
+
+// 有序链表去重模板， 判断后两个值    <br>
+
+// 1. dummy node 模板 用于头结点不确定的地方
+
+</div>
+
+
+
+
+</body>
