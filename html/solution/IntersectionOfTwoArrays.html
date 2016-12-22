@@ -1,0 +1,148 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+    //解法一： 用两个hashset
+
+    public int[] intersection(int[] nums1, int[] nums2) {
+        // Write your code here
+        HashSet<Integer> set = new HashSet<Integer>();
+        for( int n : nums1){
+            set.add(n);
+        }
+        
+        HashSet<Integer> resultSet = new HashSet<Integer>();
+        for(int n : nums2){
+            if ( set.contains(n) && !resultSet.contains(n) ){
+                resultSet.add(n);
+            }
+        }
+        
+        int[] result = new int[resultSet.size()];
+        int index = 0;
+        for( int i : resultSet ){
+            result[index] = i;
+            index++;
+        }
+        
+        return result;
+    }
+}
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(n + m)    <br>
+Space complexity : O(n)    <br>
+
+
+
+
+// Note <br>
+1. 用两个HashSet          <br>
+2.           <br>
+3.           <br>
+
+
+// Java skill
+1. HashSet 不能用下标遍历。 遍历方法是 for( int n : set )
+
+</div>
+
+<pre><code>
+
+    //解法2： merge Sort
+    public int[] intersection(int[] nums1, int[] nums2) {
+        // Write your code here
+        if ( nums1 == null || nums2 == null) return null;
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        
+        int[] ret = new int[nums1.length];
+        
+        
+
+        
+        int m = nums1.length;
+        int n = nums2.length;
+        int i=0, j=0, k=0;
+        
+        while( i&lt;m && j&lt;n){
+            if ( nums1[i] == nums2[j] ){ 
+                if ( k==0 || ret[k-1] != nums1[i] ){
+                    ret[k] = nums1[i];
+                    k++;
+                }
+                    i++;
+                    j++;
+            }else if ( nums1[i] > nums2[j]){
+                j++;
+            }else{
+                i++;
+            }
+        }
+        
+        int[] result = new int[k];
+        for( i=0; i&lt;k; i++){
+            result[i] = ret[i];
+        }
+        
+        return result;
+        
+    }
+}
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(mlogm + nlogn + m + n) = O(mlom + nlgn)    <br>
+Space complexity : O(1)    <br>
+
+
+
+
+// Note <br>
+1. 注意去重过程下标的走法                     <br>     
+if ( nums1[i] == nums2[j] ){                    <br>
+	if ( k==0 || ret[k-1] != nums1[i] ){        <br>
+		ret[k] = nums1[i];                      <br>
+			k++;                                <br>
+	}                                           <br>
+	i++;                                        <br>
+	j++;                                        <br>
+}	<br>
+2.           <br>
+3.           <br>
+
+
+// Java skill
+1. HashSet 不能用下标遍历。 遍历方法是 for( int n : set )
+
+</div>
+
+
+</body>
