@@ -1,0 +1,68 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+
+    public int twoSumCloset(int[] nums, int target) {
+        // Write your code here
+        Arrays.sort(nums);
+        int i=0, j=nums.length-1;
+        int diff = Integer.MAX_VALUE;
+        
+        while( i &lt; j){
+            int sum = nums[i] + nums[j];
+            
+            if ( sum > target){
+                if ( (  sum - target) < diff ) {
+                    diff = sum - target;
+                }
+                j--;
+            }
+            else{
+                if ( target - sum < diff){
+                    diff = target - sum;
+                }
+                i++;
+            }
+        }
+        return diff;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n)   <br>
+Space complexity :    <br>
+
+
+
+
+// Note <br>
+1.  2pointer理念 先讨论 num[i] + num[j] > target ？         <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

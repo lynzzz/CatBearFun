@@ -1,0 +1,133 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+        // write your code here
+        HashMap<Integer, Integer> m = new HashMap<>();
+        
+        int[] ret = new int[2];
+        for( int i=0; i&lt;numbers.length; i++){
+            if ( m.containsKey(target - numbers[i]) ){
+                ret[0] = m.get(target-numbers[i]) + 1;
+                ret[1] = i+1;
+                return ret;
+            }
+            
+            m.put(numbers[i], i);
+        }
+        
+        return ret;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n)   <br>
+Space complexity :  O(n)   <br>
+
+
+
+
+// Note <br>
+1.           <br>
+2.           <br>
+3.           <br>
+<br>
+
+</div>
+
+<div class="comment">
+SOLUTION ii: 2 pointer 解法   <br>
+
+
+
+</div>
+<pre><code>
+
+public class Solution {
+    /*
+     * @param numbers : An array of Integer
+     * @param target : target = numbers[index1] + numbers[index2]
+     * @return : [index1 + 1, index2 + 1] (index1 < index2)
+     */
+     
+    class node{
+        public int val;
+        public int index;
+        public node(int val, int index){
+            this.val = val;
+            this.index = index;
+        }
+    } 
+    
+    Comparator<node> myComparator = new Comparator<node>(){
+      public int compare( node l, node r){
+          if ( l == null) return 1;
+          if ( r == null) return -1;
+          return l.val - r.val;
+      }
+        
+    };
+     
+    public int[] twoSum(int[] numbers, int target) {
+        // write your code here
+        int[] ret = new int[2];
+        if ( numbers == null || numbers.length == 0) return ret;
+        
+        node[] arr = new node[numbers.length];
+        for( int i=0; i< arr.length; i++){
+            arr[i] = new node(numbers[i], i);
+        }
+        
+        Arrays.sort(arr, myComparator);
+        
+        int i =0;
+        int j = arr.length - 1;
+        
+        while( i < j){
+            if ( arr[i].val + arr[j].val < target ){
+                i++;
+            }else if (arr[i].val + arr[j].val > target ){
+                j--;
+            }else{
+                ret[0] = Math.min( arr[i].index+1, arr[j].index+1);
+                ret[1] = Math.max( arr[i].index+1, arr[j].index+1);
+                return ret;
+            }
+        }
+        return ret;
+    }
+}
+</code></pre>
+
+<div class="comment">
+Time complexity :   O(nlgn)   <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.  经典two sum写法， 先必须sort         <br>
+2.  熟练掌握如何sort array that contains customized class a. create a new class, b. instanciate an array with the same size, c fill the new array, 4 write my comparator         <br>
+3.           <br>
+
+</body>

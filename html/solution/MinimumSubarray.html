@@ -1,0 +1,65 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param nums: a list of integers
+     * @return: A integer indicate the sum of minimum subarray
+     */
+    public int minSubArray(ArrayList<Integer> nums) {
+        // write your code
+        if ( nums == null || nums.size() == 0 ) return 0;
+        
+        int sum = 0;
+        int maxSum = 0;
+        int min = Integer.MAX_VALUE;
+        
+        for( int i=0; i&lt;nums.size(); i++ ){
+            sum = sum + nums.get(i);
+            min = Math.min(min, sum - maxSum);
+            maxSum = Math.max(maxSum,sum);
+        }
+        
+        return min;
+    }
+}
+
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1. // Maximum subarray的逆过程， 维持prefix sum and maximum prefix sum          <br>
+2. // 看见subarray, 首先应该想到的就是prefix sum          <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

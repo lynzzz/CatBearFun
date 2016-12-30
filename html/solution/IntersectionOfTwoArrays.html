@@ -145,4 +145,81 @@ if ( nums1[i] == nums2[j] ){                    <br>
 </div>
 
 
+<pre><code>
+
+    //解法3： binary search
+   public class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        // Write your code here
+        if ( nums1 == null || nums2 == null ) return null;
+        Arrays.sort(nums1);
+        
+        HashSet<Integer> set = new HashSet<>();
+        
+        for( int n : nums2){
+            
+            if ( set.contains(n) ){
+                continue;
+            }
+            
+            if( binary(nums1, n) ){
+                set.add(n);
+            }
+        }
+        
+        int[] ret = new int[set.size()];
+        int index = 0;
+        for( int n : set){
+            ret[index] = n;
+            index++;
+        }
+        return ret;
+    }
+    
+    boolean binary(int[] nums, int target){
+        if ( nums == null || nums.length == 0) return false;
+        
+        
+        int start = 0;
+        int end = nums.length - 1;
+        
+        while( start + 1 < end){
+            int mid = start + ( end - start)/2;
+            if ( nums[mid] == target){
+                end = mid;
+            }
+            else if( nums[mid] > target ){
+                end = mid;
+            }else{
+                start = mid;
+            }
+        }
+        
+        if ( nums[start] == target) return true;
+        
+        if ( nums[end] == target)  return true;
+        
+        return false;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(mlgm) + nlgm = O(lgm(m+n))  <br>
+Space complexity : O(n)    <br>
+
+
+
+
+// Note <br>
+
+</div>
+
+
 </body>

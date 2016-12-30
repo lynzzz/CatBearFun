@@ -1,0 +1,79 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return: An integer denotes the sum of max two non-overlapping subarrays
+     */
+    public int maxTwoSubArrays(ArrayList<Integer> nums) {
+        // write your code
+        int ret = Integer.MIN_VALUE;
+        
+        for( int i = 0; i&lt;nums.size()-1; i++ ){
+            ArrayList<Integer> l = new ArrayList<>();
+            ArrayList<Integer> r = new ArrayList<>();
+            
+            for( int j=0; j&lt;=i; j++){
+                l.add(nums.get(j));
+            }
+            
+            for( int k=i+1; k&lt;nums.size(); k++ ){
+                r.add(nums.get(k));
+            }
+            
+            ret = Math.max( ret, maxSubArray(l) + maxSubArray(r) );
+        }
+        
+        return ret;
+    }
+    
+    public int maxSubArray( ArrayList<Integer> nums){
+        
+        int sum = 0, minsum = 0, max = Integer.MIN_VALUE;
+        for( int i=0; i&lt;nums.size(); i++ ){
+            sum = sum + nums.get(i);
+            max = Math.max(max, sum - minsum);
+            minsum = Math.min(minsum, sum);
+        }
+        return max;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(n^2)    <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.   Maximum subarray模板  + 循环分割线        <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

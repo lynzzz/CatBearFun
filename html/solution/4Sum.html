@@ -1,0 +1,96 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    public ArrayList<ArrayList<Integer>> fourSum(int[] numbers, int target) {
+        ArrayList<ArrayList<Integer>> ret = new ArrayList<>();
+        if ( numbers == null || numbers.length == 0) return ret;
+
+        Arrays.sort(numbers);
+        
+        
+        for( int i=0; i&lt;numbers.length-3; ){
+            for( int j=i+1; j&lt;numbers.length-2;){
+                int m = j + 1;
+                int n = numbers.length - 1;
+                while( m &lt; n){
+                    
+                    int sum = numbers[i] + numbers[j] + numbers[m] + numbers[n];
+                    if ( sum == target){
+                        ArrayList<Integer> temp = new ArrayList<>();
+                        temp.add(numbers[i]);
+                        temp.add(numbers[j]);
+                        temp.add(numbers[m]);
+                        temp.add(numbers[n]);
+                        ret.add(temp);
+                        
+						//[1]
+                        m++;
+                        while( m<n && numbers[m] == numbers[m-1]){
+                            m++;
+                        }
+                        
+						//[2]
+                        n--;
+                        while( n>m && numbers[n] == numbers[n+1] ){
+                            n--;
+                        }
+                    }else if ( sum > target){
+                        n--;
+                    }else{
+                        m++;
+                    }
+                }
+                
+				//[3]
+                j++;
+                while( j<numbers.length-2 && numbers[j] == numbers[j-1]){
+                    j++;
+                }
+            }
+            
+			//[4]
+            i++;
+            while( i<numbers.length-3 && numbers[i] == numbers[i-1]){
+                i++;
+            }
+        }
+        return ret;
+    }
+}
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n^3)   <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.  Two sum原型         <br>
+2.  [1] [2] [3] [4] 四个地方去重         <br>
+3.   两个for 循环不需要自增符号        <br>
+
+
+</div>
+
+
+
+
+</body>

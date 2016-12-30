@@ -1,0 +1,58 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    public int maxSubArray(int[] nums) {
+        // write your code
+        if ( nums == null || nums.length == 0) return 0;
+        
+        int preFixSum = 0, preFixMinSum = 0, max = Integer.MIN_VALUE;
+        
+        for( int i=0; i<nums.length; i++){
+            preFixSum = preFixSum + nums[i];
+            max = Math.max(max, preFixSum - preFixMinSum);
+            preFixMinSum = Math.min(preFixMinSum, preFixSum);
+        }
+        
+        return max;
+    }
+}
+// 维持一个prefix sum 和一个prefix minsum
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(n)    <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.           <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

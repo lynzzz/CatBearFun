@@ -1,0 +1,97 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return: An integer indicate the value of maximum difference between two
+     *          Subarrays
+     */
+    public int maxDiffSubArrays(int[] nums) {
+        // write your code here
+    
+        // write your code
+        int ret = Integer.MIN_VALUE;
+        
+        for( int i = 0; &lt; nums.length-1; i++ ){
+            
+            int a = Math.abs( maxSubArray(nums, 0, i) - minSubArray(nums, i+1, nums.length-1) );
+            int b = Math.abs( minSubArray(nums, 0, i) - maxSubArray(nums, i+1, nums.length - 1 ));
+            
+            int tempMax = Math.max( a, b    );
+            
+            ret = Math.max( ret,  tempMax);
+        }
+        
+        return ret;
+    }
+    
+    public int maxSubArray( int[] nums, int start, int end){
+        
+        int sum = 0, minsum = 0, max = Integer.MIN_VALUE;
+        for( int i=start; i&lt;=end; i++ ){
+            sum = sum + nums[i];
+            max = Math.max(max, sum - minsum);
+            minsum = Math.min(minsum, sum);
+        }
+        return max;
+    }
+    
+    public int minSubArray(int[] nums, int start, int end) {
+        // write your code
+
+        int sum = 0;
+        int maxSum = 0;
+        int min = Integer.MAX_VALUE;
+        
+        for( int i=start; i&lt;=end; i++ ){
+            sum = sum + nums[i];
+            min = Math.min(min, sum - maxSum);
+            maxSum = Math.max(maxSum,sum);
+        }
+        
+        return min;
+    }
+}
+
+
+
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1. Maximum subarray + Minimum subarray组合   两种可能性都要考虑        <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>
