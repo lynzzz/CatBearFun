@@ -1,0 +1,86 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param A: Given an integer array
+     * @return: void
+     */
+    public void heapify(int[] A) {
+        // write your code here
+    
+        for( int i= A.length/2; i&gt;=0; i--){
+            moveDown(A, i);
+        }
+
+    }
+    
+    public void moveDown(int[] A, int i){
+           int l = 2*i + 1;
+           int r = 2*i + 2;
+           
+           while( l &lt; A.length || r < A.length){
+               
+               int lValue = l < A.length ? A[l] : Integer.MAX_VALUE;
+               int rValue = r < A.length ? A[r] : Integer.MAX_VALUE;
+               
+               int minValue = lValue < rValue ? lValue : rValue;
+               int minIndex = lValue < rValue ? l : r;
+               
+               if ( A[i] < minValue){
+                   break;
+               }
+               
+               swap(A, i, minIndex);
+               l = 2*minIndex + 1;
+               r = 2* minIndex + 2;
+               i = minIndex;
+           }
+    }
+    
+    public void swap( int[] a, int i, int j){
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O( nlog(n))    <br>
+Space complexity :  O(1) in place    <br>
+
+
+
+
+Note <br>
+property : A[paretn] < min ( A[l],  A[r] ) 如果违反了这个性质，parent和他下面最小的值交换。否则换上来了又违反性质  <br>
+
+ movedown的时候是和下面最小的值交换，否则换上来以后又要违反性质  <br>
+ Time: O( nlogn)    <br>
+ space : In place   <br>
+
+
+</div>
+
+
+
+
+</body>

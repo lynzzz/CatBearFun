@@ -1,0 +1,71 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return an integer
+     */
+    public int longestConsecutive(int[] num) {
+        // write you code here
+        
+        // Value->number of Sequence
+        HashMap<Integer, Integer> m = new HashMap<>();
+        int ret = 0;
+        
+        for( int i=0; i&lt;num.length; i++){
+            
+            if ( m.containsKey(num[i]) ) continue;
+            
+            int left = m.containsKey(num[i]-1) ? m.get(num[i] - 1) : 0;
+            int right = m.containsKey(num[i] + 1) ? m.get(num[i] + 1) : 0;
+            
+            int sum = left + right + 1;
+            m.put(num[i], sum);
+            ret = Math.max(ret, sum);
+            
+            m.put(num[i]+right, sum);
+            m.put(num[i]-left, sum);
+        }
+        
+        return ret;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n)   <br>
+Space complexity :  O(n)   <br>
+
+
+
+
+// Note <br>
+ 1. Map ( Integer->number of sequence)  <br>
+ 2. When pushing one element to map,  number of sequence = 左边 + 右边 + 1， 更新边界值 <br>
+ 中间的值无所谓，最关键的是边界值 <br>
+
+
+</div>
+
+
+
+
+</body>

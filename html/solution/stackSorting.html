@@ -1,0 +1,64 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+public class Solution {
+    /**
+     * @param stack an integer stack
+     * @return void
+     */
+    public void stackSorting(Stack<Integer> stack) {
+        // Write your code here
+        Stack<Integer> sortStack = new Stack<>();
+        
+        while( stack.size() != 0 ){
+		    int cur = stack.pop();
+            if ( sortStack.size() == 0 || cur &gt;= sortStack.peek() ){
+                sortStack.push(cur);
+            }else{
+                while( sortStack.size() != 0 && cur &lt; sortStack.peek() ){
+                    stack.push(sortStack.pop());
+                }
+				sortStack.push(cur);
+            }
+        }
+        
+        stack.addAll(sortStack);
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n^2)   <br>
+Space complexity :  O(n)   <br>
+
+
+
+
+// Note <br>
+1. Maintain a sorted stack and a cur element  <br>
+2. If cur > sortedStack.peek()  压进去， 否则出来一些在压进去 <br>
+
+
+</div>
+
+
+
+
+</body>

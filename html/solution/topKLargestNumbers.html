@@ -1,0 +1,64 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    public int[] topk(int[] nums, int k) {
+        // Write your code here
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+        for(int i=0; i&lt;k; i++){
+            pq.add(nums[i]);
+        }
+        
+        for( int i=k; i<nums.length; i++){
+            if ( nums[i] > pq.peek() ){
+                pq.remove();
+                pq.add(nums[i]);
+            }
+        }
+        
+        int[] ret = new int[k];
+        for( int i=k-1; i&gt;=0; i--){
+            ret[i] = pq.poll();
+        }
+        
+        return ret;
+    }
+};
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  priority Queue: add/remove O(lgn) peek: O(1)    <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1. priority queue 默认的是 min priority queue, 如果需要max priority queue,需要给constructor传两个参数进去 PriorityQueue(size, Collections.reverseOrder())          <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

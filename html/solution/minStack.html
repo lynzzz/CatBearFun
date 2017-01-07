@@ -1,0 +1,94 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class MinStack {
+    
+    class Node{
+        int val;
+        Node next;
+        public Node( int val){
+            this.val = val;
+        }
+    }
+    
+    private Node mainTop;
+    private Node minTop;
+    
+    public MinStack() {
+        // do initialize if necessary
+    }
+
+    public void push(int number) {
+        // write your code here
+        Node mainNode = new Node(number);
+        Node minNode = new Node(number);
+        
+        if ( mainTop == null ){
+            mainTop = mainNode;
+            minTop = minNode;
+        }else{
+            mainNode.next = mainTop;
+            mainTop = mainNode;
+            
+            if ( minNode.val &lt;= minTop.val){
+                minNode.next = minTop;
+                minTop = minNode;
+            }
+        }
+        
+    }
+
+    public int pop() {
+        // write your code here
+        int ret = mainTop.val;
+        mainTop = mainTop.next;
+        
+        if ( ret == minTop.val){
+            minTop = minTop.next;
+        }
+        return ret;
+    }
+
+    public int min() {
+        // write your code here
+        return minTop.val;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(1) for all   <br>
+Space complexity :  one more stack   <br>
+
+
+
+
+// Note <br>
+1. 辅助链不用每次都压值 <br>
+// 2. 辅助链 是 <= 时候压， 等于的时候弹，自己举列子说明      <br>
+
+
+
+</div>
+
+
+
+
+</body>

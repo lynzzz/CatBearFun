@@ -1,0 +1,87 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Stack {
+    // Push a new item into the stack
+    
+    Queue<Integer> q1 = new LinkedList<Integer>();
+    Queue<Integer> q2 = new LinkedList<Integer>();
+
+    
+    public void push(int x) {
+        // Write your code here
+        q1.add(x);
+    }
+
+    // Pop the top of the stack
+    public void pop() {
+          while( q1.size() != 1 ){
+              q2.add(q1.poll());
+          }
+          
+          Queue<Integer> temp = q1;
+          q1 = q2;
+          q2 = temp;
+          
+          q2.remove();
+    }
+
+    // Return the top of the stack
+    public int top() {
+         while( q1.size() != 1 ){
+             q2.add(q1.poll());
+         }
+         
+         int ret = q1.peek();
+         q2.add(q1.poll());
+         
+         Queue<Integer> temp = q1;
+         q1 = q2;
+         q2 = temp;
+         
+         return ret;
+    }
+
+    // Check the stack is empty or not.
+    public boolean isEmpty() {
+         return q1.size() == 0;
+    }    
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity : add: O(1) remove/peek: O(n)     <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.           <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>
