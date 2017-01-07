@@ -1,0 +1,234 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+Solution One : Using Two queues.
+
+public class AnimalShelter {
+
+   class Node{
+      String name;
+      int type;
+      int control;
+   
+      Node(String name, int type, int control){
+          this.name = name;
+          this.type = type;
+          this.control = control;
+      }
+   }
+   
+    Queue<Node> cat = new LinkedList<>();
+    Queue<Node> dog = new LinkedList<>();
+    
+   
+    public static int control = 0;
+    
+    public AnimalShelter() {
+        // do initialize if necessary
+    }
+
+    /**
+     * @param name a string
+     * @param type an integer, 1 if Animal is dog or 0
+     * @return void
+     */
+    void enqueue(String name, int type) {
+        // Write your code here
+        if ( type == 0){
+           cat.add(new Node(name, type, control));
+        }else{
+            dog.add(new Node(name, type, control));
+        }
+        control++;
+    }
+
+    public String dequeueAny() {
+        // Write your code here
+        if ( cat.size() == 0 ) return dog.poll().name;
+        
+        if ( dog.size() == 0 ) return cat.poll().name;
+        
+        
+        if ( cat.peek().control < dog.peek().control ){
+            return cat.poll().name;
+        }
+        return dog.poll().name;
+    }
+
+    public String dequeueDog() {
+        // Write your code here
+        return dog.poll().name;
+    }
+
+    public String dequeueCat() {
+        // Write your code here
+        return cat.poll().name;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  enqueue O(1) dequeu O(1)    <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.    两条链简单        <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+<div class="comment">
+Solution ii : using 一条链， 题目转变为一个自定义的queue上删除任意点。
+
+
+</div>
+
+
+<pre><code>
+
+public class AnimalShelter {
+
+   class Node{
+      String name;
+      int type;
+      Node next;
+
+      Node(String name, int type){
+          this.name = name;
+          this.type = type;
+      }
+   }
+ 
+    
+   Node front;
+   Node tail;
+
+    public AnimalShelter() {
+        // do initialize if necessary
+    }
+
+    /**
+     * @param name a string
+     * @param type an integer, 1 if Animal is dog or 0
+     * @return void
+     */
+    void enqueue(String name, int type) {
+        // Write your code here
+        Node n = new Node(name, type);
+        if ( front == null){
+            front = n;
+            tail = n;
+        }else{
+            tail.next = n;
+            tail = n;
+        }
+    }
+
+    public String dequeueAny() {
+        // Write your code here
+        String ret = front.name;
+        front = front.next;
+        return ret;
+    }
+
+    public String dequeueDog() {
+        // Write your code here
+        Node dummy = new Node("", 0);
+        dummy.next = front;
+        Node save = dummy;
+        
+        
+        while( dummy.next != null ){
+            if ( dummy.next.type == 1){
+                
+                if ( dummy.next.next == null){
+                    tail = dummy;
+                }
+                
+                String ret = dummy.next.name;
+                dummy.next = dummy.next.next;
+                front = save.next;
+                return ret;
+            }else{
+                dummy = dummy.next;
+            }
+        }
+        
+        return "";
+    }
+
+    public String dequeueCat() {
+        // Write your code here
+        Node dummy = new Node("", 1);
+        dummy.next = front;
+        Node save = dummy;
+        
+        while( dummy.next != null){
+            if ( dummy.next.type == 0){
+                
+                if ( dummy.next.next == null){
+                    tail = dummy;
+                }
+                
+                String ret = dummy.next.name;
+                dummy.next = dummy.next.next;
+                front = save.next;
+                return ret;
+            }else{
+                dummy = dummy.next;
+            }
+        }
+        
+        return "";
+    }
+}
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  enqueue O(1) dequeu O(n)    <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.   模型为自定义的queue上删除任意点，java写好的queue只能从头开始删除         <br>
+2.   因为头和尾都有可能变化，所以用dummy node处理头， 当删除最后一个值得时候，tail要手动的往前移动一个        <br>
+3.           <br>
+
+
+</div>
+
+
+</body>

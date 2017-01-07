@@ -1,0 +1,157 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+<div class="specialComment">
+
+Also known as Cartesian tree
+Solution 1 : Recursion, ( memory blows out, stack over flow error)
+
+</div>
+<pre><code>
+
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param A: Given an integer array with no duplicates.
+     * @return: The root of max tree.
+     */
+    public TreeNode maxTree(int[] A) {
+        // write your code here
+
+        if ( A == null || A.length == 0) return null;
+        
+        return helper(A, 0, A.length - 1);
+    }
+    
+    public TreeNode helper(int[] A, int start, int end){
+        
+        int index = getMaxIndex(A, start, end);
+        if ( index == -1){
+            return null;
+        }
+        
+        TreeNode root = new TreeNode(A[index]);
+        
+        root.left = helper(A, start, index - 1);
+        root.right = helper(A, index + 1, end);
+        return root;
+    }
+    
+    int getMaxIndex(int[] A, int start, int end){
+        
+        int ret = Integer.MIN_VALUE;
+        int index = -1;
+        
+
+        for( int i= start; i&lt;=end; i++){
+            if ( A[i] > ret){
+                ret = A[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  Worst case o(n^2)     <br>
+Space complexity : 2^n stack over flow    <br>
+
+
+
+
+// Note <br>
+1.           <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+<br>
+
+<div class="specialComment">
+Solution 2 : 单调栈: 理解然后背诵  <br>
+</div>
+
+<code><pre>
+public class Solution {
+    /**
+     * @param A: Given an integer array with no duplicates.
+     * @return: The root of max tree.
+     */
+    public TreeNode maxTree(int[] A) {
+        // write your code here
+        TreeNode[] trees = new TreeNode[A.length + 1];
+        Stack<TreeNode> s = new Stack<TreeNode>();
+
+        for( int i=0; i&lt;=A.length; i++){
+            trees[i] = i == A.length ? new TreeNode(Integer.MAX_VALUE) : new TreeNode(A[i]);
+            if ( !s.empty() ){
+                if ( trees[i].val > s.peek().val ){
+                    
+                    TreeNode firstPop = s.pop();
+                    
+                    while( !s.empty() && s.peek().val < trees[i].val ){
+                        TreeNode secondPop = s.pop();
+                        secondPop.right = firstPop;
+                        firstPop = secondPop;
+                    }
+                    trees[i].left = firstPop;
+                }
+            }
+            s.push(trees[i]);
+       }
+       return s.peek().left;
+   }
+}
+</pre></code>
+
+<div class="comment">
+Time complexity :  O(n)    <br>
+Space complexity : O(n)    <br>
+
+
+
+
+ Note <br>
+核心思路  ： <br>
+1. 新值比栈顶的值小，把新的值压入栈  <br>
+2. 新值比栈顶的值大，把栈里所有比新值小的元素依次弹出来，栈里新弹出来的右子树指向栈里旧弹出来的。 最后新值的 <br>
+   左子树指向栈里弹出来的元素构成的树的顶。  <br>
+   
+   
+3.  代码技巧: 最后加入一个无穷大，可以让所有值全部弹出来。 <br>
+4.  测试的时候用 [1,2,3]和 [3,2,1]
+ java skill Stack::empty()  <br>
+
+
+</div>
+
+</body>
