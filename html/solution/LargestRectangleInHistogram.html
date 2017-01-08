@@ -1,0 +1,148 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+<div class="specialcomment">
+Solution one : 枚举所有可能
+</div>
+
+public class Solution {
+    public int largestRectangleArea(int[] height) {
+        // write your code here
+        
+        int ret = 0;
+        for( int i=0; i&lt;height.length; i++){
+            ret = Math.max(ret, getMaxVolume(height, i) );
+        }
+        return ret;
+    }
+    
+    
+    public int getMaxVolume(int[] A, int index){
+        int ret = A[index];
+        for( int i=index - 1; i&gt;=0; i--){
+            int minheight = getMinHeight(A, i, index);
+            int volume = (index - i + 1) * minheight;
+            ret = Math.max(ret, volume);
+        }
+        return ret;
+    }
+    
+    
+    public int getMinHeight(int[] A, int start , int end){
+        int ret = Integer.MAX_VALUE;
+        for( int i=start; i<=end ;i++){
+            if ( A[i] < ret){
+                ret = A[i];
+            }
+        }
+        return ret;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n^2)   <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.    枚举所有可能，o(n^2) 慢       <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+<br>
+
+<div class="specialcomment">
+Solution two :  维持一个单调增栈, 这个版本用弹出来的数做宽度过不了   int w = s.empty() ? i : i - firstPopIndex;
+详细解释 ： http://www.cnblogs.com/lichen782/p/leetcode_Largest_Rectangle_in_Histogram.html
+</div>
+
+<code><pre>
+        for( int i =0; i&lt;=height.length; i++){
+            // 单调栈最后加一个0
+            int cur = i == height.length ? 0 : height[i];
+
+            while( !s.empty() && height[s.peek()] > cur ){
+                int firstPopIndex = s.pop();
+                int h = height[firstPopIndex];
+                int w = s.empty() ? i : i - firstPopIndex;
+                ret = Math.max(ret, h*w);
+            }
+            s.push(i);
+        }
+        return ret;
+    }
+</pre></code>
+
+<br>
+
+<div class="specialcomment">
+Solution three :  维持一个单调增栈, 这个版本用栈顶做宽度才能过，不知道为什么（只能背了 ）                  int w = s.empty() ? i : i - s.peek()-1 ;
+</div>
+
+<code><pre>
+public class Solution {
+    /**
+     * @param height: A list of integer
+     * @return: The area of largest rectangle in the histogram
+     */
+    public int largestRectangleArea(int[] height) {
+        // write your code here
+        Stack<Integer> s = new Stack<Integer>();
+        int ret = 0;
+        
+        for( int i =0; i&lt;=height.length; i++){
+            // 单调栈最后加一个0
+            int cur = i == height.length ? 0 : height[i];
+
+            while( !s.empty() && height[s.peek()] > cur ){
+                int firstPopIndex = s.pop();
+                int h = height[firstPopIndex];
+                int w = s.empty() ? i : i - s.peek()-1 ;
+                ret = Math.max(ret, h*w);
+            }
+            s.push(i);
+        }
+        return ret;
+    }
+}
+</pre></code>
+<div class="comment">
+
+Time complexity :   O/(n)   <br>
+Space complexity :   O(n)  <br>
+
+
+
+
+// Note <br>
+1.    维持一个递增的单调栈，当前数大于栈顶，就入栈; 当前数小的时候一直往前弹出到当前数大于栈顶,在此过程中维持最大值      <br>
+
+实现过程中注意 <br>
+1.    技巧是在最后加一个0，可以让所有数弹出来        <br>
+2.    宽度是和栈是否为空有关       <br>
+
+
+</body>
