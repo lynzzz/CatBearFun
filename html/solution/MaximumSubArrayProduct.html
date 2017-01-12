@@ -1,0 +1,71 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param nums: an array of integers
+     * @return: an integer
+     */
+    public int maxProduct(int[] nums) {
+        // write your code here
+         int[] max = new int[nums.length];
+         int[] min = new int[nums.length];
+         
+         max[0] = nums[0];
+         min[0] = nums[0];
+         
+         int ret = nums[0];
+         
+         for( int i=1; i&lt;nums.length; i++){
+             max[i] = Math.max(nums[i], Math.max(nums[i]*max[i-1], nums[i]*min[i-1]) );
+             min[i] = Math.min(nums[i], Math.min(nums[i]*max[i-1], nums[i]*min[i-1]) );
+             
+             ret = Math.max(ret, max[i]);
+         }
+         
+         return ret;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(n)     <br>
+Space complexity : O(n)    <br>
+
+
+
+
+// Note <br>
+1.   DP        <br>
+//此题目的套路是DP, 没见过必定挂   <br>
+//maintain两个矩阵DP, max, min  <br>
+
+//每个位置的最大值有三种可能,这三种可能性取最大值 <br>
+// a. 元素本num[i]                 <br>
+// b. 元素本身num[i] * max[i-1]    <br>
+// c. 远素本身num[i] * min[i-1]    <br>
+
+
+</div>
+
+
+
+
+</body>

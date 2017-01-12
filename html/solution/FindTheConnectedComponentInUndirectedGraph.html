@@ -1,0 +1,84 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+public class Solution {
+    /**
+     * @param nodes a array of Undirected graph node
+     * @return a connected set of a Undirected graph
+     */
+    public List<List<Integer>> connectedSet(ArrayList<UndirectedGraphNode> nodes) {
+        // Write your code here
+        HashSet<Integer> set = new HashSet<>();
+        Queue<UndirectedGraphNode> q = new LinkedList<>();
+        
+        List<List<Integer>> results = new ArrayList<>();
+        
+        for( UndirectedGraphNode n : nodes ){
+            
+            if ( !set.contains(n.label) ){
+                
+                List<Integer> result = new ArrayList<>();
+                set.add(n.label);
+                q.add(n);
+            
+                while( !q.isEmpty() ){
+                
+                    UndirectedGraphNode tempNode = q.poll();
+                    result.add(tempNode.label);
+                    for( UndirectedGraphNode tempNodeNeighbor : tempNode.neighbors){
+                        if ( !set.contains(tempNodeNeighbor.label) ){
+                            set.add(tempNodeNeighbor.label);
+                            q.add(tempNodeNeighbor);
+                        }
+                    }
+                }
+                Collections.sort(result);
+                results.add(new ArrayList<Integer>(result));
+                
+                while ( !q.isEmpty() ){
+                    q.remove();
+                }
+            }
+        }
+        
+        return results;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity : O(m+n)     <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.   BFS  Queue + hashSet       <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>

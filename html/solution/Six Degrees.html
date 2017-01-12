@@ -1,0 +1,86 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+public class Solution {
+    /**
+     * @param graph a list of Undirected graph node
+     * @param s, t two Undirected graph nodes
+     * @return an integer
+     */
+    public int sixDegrees(List<UndirectedGraphNode> graph,
+                          UndirectedGraphNode s,
+                          UndirectedGraphNode t) {
+        // Write your code here
+        
+        
+        // Level order BFS
+        HashSet<Integer> set = new HashSet<>();
+        Queue<UndirectedGraphNode> q = new LinkedList<>();
+        
+        set.add(s.label);
+        q.add(s);
+        int ret = 0;
+        
+        while ( !q.isEmpty() ){
+            
+            int size = q.size();
+
+            for( int i=0; i&lt;size; i++){
+                
+                UndirectedGraphNode temp = q.poll();
+                
+                if ( temp.label == t.label){
+                    return ret;
+                }
+                
+                for( UndirectedGraphNode n : temp.neighbors ){
+                    if ( !set.contains(n.label) ){
+                        set.add(n.label);
+                        q.add(n);
+                    }
+                }
+            }
+            ret++;
+        }
+        
+        return -1;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(m+n)   <br>
+Space complexity :     <br>
+
+
+
+
+// Note <br>
+1.   BFS        <br>
+2.           <br>
+3.           <br>
+
+
+</div>
+
+
+
+
+</body>
