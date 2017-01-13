@@ -1,12 +1,8 @@
 function goToCodingLayout(){
-    window.location = 'html/codingProblemsLayout.html';
+    window.location = 'html/codeLayout.html';
 }
 
 
 function goTousefulLink(){
-    window.location = 'html/usefulWebsite.html';
-}
-
-function goToMovieLink(){
-    window.location = "https://www.dnvod.eu/Movie/Readyplay.aspx?id=bjWJTxLX7T0%3d";
+    window.location = 'html/linkLayout.html';
 }

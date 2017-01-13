@@ -1,0 +1,5163 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)http://www.lintcode.com/en/ladder/ -->
+<html lang="en" class=" js no-touch no-android chrome no-firefox no-iemobile no-ie no-ie10 no-ie11 no-ios"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>LintCode - Coding interview questions online training system</title>
+<meta name="Keywords" content="Coding, Algorithm, Data Structure, OJ, Online Judge, Training, Interview, Code, Google, Facebook, Linkedin, Amazon, Microsoft, LeetCode, 面试题, 在线评测, 算法, 数据结构, 面试, 代码">
+<meta name="description" content="LintCode is a online judge for coding interview.">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="./LintCode - Coding interview questions online training system_files/simplemde.min.css" type="text/css">
+<link rel="stylesheet" href="./LintCode - Coding interview questions online training system_files/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="./LintCode - Coding interview questions online training system_files/animate.css" type="text/css">
+<link rel="stylesheet" href="./LintCode - Coding interview questions online training system_files/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="./LintCode - Coding interview questions online training system_files/font.css" type="text/css">
+<link rel="stylesheet" href="./LintCode - Coding interview questions online training system_files/plugin.css" type="text/css">
+<link rel="stylesheet" href="./LintCode - Coding interview questions online training system_files/app.css" type="text/css">
+<link rel="stylesheet" href="./LintCode - Coding interview questions online training system_files/mystyle.css" type="text/css">
+<link rel="stylesheet" href="./LintCode - Coding interview questions online training system_files/select2.min.css" type="text/css">
+<link rel="stylesheet" href="./LintCode - Coding interview questions online training system_files/search3.0.css" type="text/css">
+ 
+<script async="" src="./LintCode - Coding interview questions online training system_files/analytics.js.download"></script><script type="text/javascript">window.BWEUM||(BWEUM={});BWEUM.info = {"stand":true,"agentType":"browser","agent":"bi-collector.oneapm.com/static/js/bw-send-411.4.5.js","beaconUrl":"bi-collector.oneapm.com/beacon","licenseKey":"nB6Ui~yanbJiN3qY","applicationID":2284639};</script><script type="text/javascript" src="./LintCode - Coding interview questions online training system_files/bw-loader-411.4.5.js.download"></script>
+ 
+<!--[if lt IE 9]>
+        <script src="/static/todo/js/ie/respond.min.js" cache="false"></script>
+        <script src="/static/todo/js/ie/html5.js" cache="false"></script>
+        <script src="/static/todo/js/ie/fix.js" cache="false"></script>
+        <![endif]-->
+<script src="./LintCode - Coding interview questions online training system_files/jquery.min.js.download"></script>
+<script src="./LintCode - Coding interview questions online training system_files/simplemde.min.js.download"></script>
+<script> window.language_code = "en";</script>
+</head>
+<body>
+<section class="hbox stretch">
+<aside class="bg-dark aside-sm nav-vertical" id="nav">
+<section class="vbox">
+<header class="bg-black nav-bar nav-bar-fixed-top">
+<a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
+<i class="fa fa-bars"></i>
+</a>
+<a href="http://www.lintcode.com/" class="nav-brand">L<i class="fa fa-bolt"></i>ntCode</a>
+</header>
+<section class="w-f">
+<nav class="nav-primary hidden-xs">
+<ul class="nav">
+<li>
+<a href="http://www.lintcode.com/en/problem/">
+<i class="fa fa-puzzle-piece"></i> Problem
+</a>
+</li>
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/">
+<i class="fa fa-signal"></i> Ladder
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/contest/">
+<i class="fa fa-trophy"></i> Contest
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/favorite/list/">
+<i class="fa fa-star"></i> Favorites
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/submission/">
+<i class="fa fa-code"></i> Submissions
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/help/">
+<i class="fa fa-info"></i> Help
+</a>
+</li>
+</ul>
+</nav>
+</section>
+</section>
+</aside>
+<section id="main">
+<section class="vbox">
+<script>
+    function hideSuccessAlert(){
+        $("#successAlert").css("display", "none");
+    }
+</script>
+<div class="modal fade bs-example-modal-sm" id="favoriteModal" role="dialog" aria-label="favoriteModal" aria-hidden="true">
+<div class="modal-dialog modal-sm">
+<div class="modal-content">
+<div class="alert alert-success alert-block" id="successAlert" style="display: none">
+<button type="button" class="close" onclick="hideSuccessAlert()"><i class="fa fa-times"></i></button>
+<h4><i class="fa fa-bell-alt"></i>Success!</h4>
+<p>Action Success!
+</p></div>
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">×</span>
+</button>
+<h4 class="modal-title">My Favorite List</h4>
+</div>
+<div class="modal-body">
+<div id="favoriteModalBody">
+<div class="text-center" id="favoriteModalBodyCreateList"></div>
+</div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+</div>
+</div>
+</div>
+<div class="modal fade bs-example-modal-sm" id="favoriteRenameModal" role="dialog" aria-label="favoriteRenameModal" aria-hidden="true">
+<div class="modal-dialog modal-sm">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">×</span>
+</button>
+<h4 class="modal-title">Favorite Rename</h4>
+</div>
+<div class="modal-body">
+<form>
+<div class="form-group">
+<input class="form-control" type="text" id="favoriteRenameInput" name="favoriteRename" value="" placeholder="New name">
+</div>
+</form>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-success" id="favoriteRenameSaveBtn">Save</button>
+<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+</div>
+</div>
+</div>
+<header class="header bg-black navbar navbar-inverse">
+<div class="collapse navbar-collapse pull-in">
+<div class="navbar-form navbar-left m-t-sm m-l-n">
+<select onchange="redirect_problem(this.value)" name="problem" class="js-problem-ajax select2-hidden-accessible" tabindex="-1" style="width:350px" aria-hidden="true">
+<option value="" title="Search for problems or tags"></option>
+</select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 350px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-labelledby="select2-problem-r9-container"><span class="select2-selection__rendered" id="select2-problem-r9-container" title="Search for problems or tags">Search for problems or tags</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+</div>
+<script type="text/javascript">
+function redirect_problem(redirect_to) {
+  console.log('redirect to : ', redirect_to);
+  window.location.href = "/" + window.language_code + redirect_to;
+}
+</script>
+<ul class="nav navbar-nav navbar-right">
+<li class="dropdown">
+<a href="http://www.lintcode.com/en/ladder/#" class="dropdown-toggle" data-toggle="dropdown">
+Language
+<b class="caret"></b>
+</a>
+<ul class="dropdown-menu animated fadeInDown">
+<li>
+<a href="http://www.lintcode.com/en/ladder/#" class="language" value="en">
+English
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#" class="language" value="zh-cn">
+简体中文
+</a>
+</li>
+</ul>
+</li>
+<form action="http://www.lintcode.com/i18n/setlang/" method="post" id="i18n_form" style="display:none">
+<input type="hidden" name="csrfmiddlewaretoken" value="GELEtVy7Ma896gkccUxcotaFSYt7aaPn">
+<input name="next" type="hidden" value="/ladder/">
+<select name="language" id="i18n_language">
+<option value="en">English</option>
+<option value="zh-cn">简体中文</option>
+</select>
+</form>
+<li class="dropdown">
+<a href="http://www.lintcode.com/accounts/profile/" class="dropdown-toggle" data-toggle="dropdown">
+<span class="thumb-sm avatar pull-left m-t-n-xs m-r-xs">
+<img src="./LintCode - Coding interview questions online training system_files/saved_resource">
+</span>
+Lyn Zhiling Zeng
+<b class="caret"></b>
+</a>
+<ul class="dropdown-menu animated fadeInLeft">
+<span class="arrow top"></span>
+<li>
+<a href="http://www.lintcode.com/favorite/list/">My Favorites</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/submission/">My Submissions</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/accounts/profile/">Change Profile</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/avatar/change/">Change Avatar</a>
+</li>
+<li class="divider"></li>
+<li><a href="http://www.lintcode.com/feedback/?category=1" data-toggle="ajaxModal">
+Feature Request
+</a></li>
+<li><a href="http://www.lintcode.com/feedback/?category=2" data-toggle="ajaxModal">
+Bug Report
+</a></li>
+<li>
+<a href="http://www.lintcode.com/problem/create/" data-toggle="ajaxModal">
+Provide interview questions
+</a>
+</li>
+<li class="divider"></li>
+<li>
+<a href="http://www.lintcode.com/accounts/logout/">Logout</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</header>
+<script>
+    $("#favorite").on("click", function(){
+        getFavoriteLists();
+        $(document).off("click", ".fav_list");
+        $(document).on("click", ".fav_list", function () {
+            window.location = "/favorite/?name=" + $(this).text();
+        });
+    });
+</script>
+<section class="scrollable wrapper">
+<div class="alert alert-success">
+Congrats! You resolved all problems!
+</div>
+<ul class="breadcrumb">
+<li><a href="http://www.lintcode.com/ladder/?skip_default=true">
+<i class="fa fa-folder-o"></i> All Ladders
+</a></li>
+<li class="active">
+<span class="dropdown-label">
+Nine Chapters: Algorithm
+</span>
+</li>
+</ul>
+<div class="row">
+<div class="col-lg-9">
+<section class="panel m-b-sm">
+<header class="panel-heading bg-light lter bg-gradient" style="border-bottom:none">
+<ul class="nav nav-tabs pull-right">
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/#required1" data-toggle="tab">
+<i class="fa fa-tasks"></i>
+Required
+(1/1)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#optional1" data-toggle="tab">
+<i class="fa fa-coffee"></i>
+Optional
+(2/3)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#related1" data-toggle="tab">
+<i class="fa fa-link"></i>
+Related
+(2/2)
+</a>
+</li>
+</ul>
+<h4 class="m-n">
+<i class="fa fa-star-half-o text-warning m-r-xs"></i>
+<span class="text-md">1 - strStr &amp; Coding Style
+</span>
+</h4>
+</header>
+<div class="panel-body" style="padding:0px">
+<div class="tab-content">
+<div class="tab-pane active" id="required1">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/strstr" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+18 %
+</span>
+<span class="m-l-sm title">
+13. strStr
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="optional1">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/subsets-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+18. Subsets II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/subsets" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+26 %
+</span>
+<span class="m-l-sm title">
+17. Subsets
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/strstr-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+594. strStr II
+</span>
+<span class="label label-sm text-info hidden-xs">
+<i>new</i>
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="related1">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/permutations-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+16. Permutations II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/permutations" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+26 %
+</span>
+<span class="m-l-sm title">
+15. Permutations
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>  
+<section class="panel m-b-sm">
+<header class="panel-heading bg-light lter bg-gradient" style="border-bottom:none">
+<ul class="nav nav-tabs pull-right">
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/#required2" data-toggle="tab">
+<i class="fa fa-tasks"></i>
+Required
+(10/10)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#optional2" data-toggle="tab">
+<i class="fa fa-coffee"></i>
+Optional
+(2/9)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#related2" data-toggle="tab">
+<i class="fa fa-link"></i>
+Related
+(0/3)
+</a>
+</li>
+</ul>
+<h4 class="m-n">
+<i class="fa fa-star-half-o text-warning m-r-xs"></i>
+<span class="text-md">2 - Binary Search
+</span>
+</h4>
+</header>
+<div class="panel-body" style="padding:0px">
+<div class="tab-content">
+<div class="tab-pane active" id="required2">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/last-position-of-target" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+39 %
+</span>
+<span class="m-l-sm title">
+458. Last Position of Target
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/sqrtx" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+25 %
+</span>
+<span class="m-l-sm title">
+141. Sqrt(x)
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/first-position-of-target" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+33 %
+</span>
+<span class="m-l-sm title">
+14. First Position of Target
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/search-in-a-big-sorted-array" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+29 %
+</span>
+<span class="m-l-sm title">
+447. Search in a Big Sorted Array
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/wood-cut" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+22 %
+</span>
+<span class="m-l-sm title">
+183. Wood Cut
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/find-minimum-in-rotated-sorted-array" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+37 %
+</span>
+<span class="m-l-sm title">
+159. Find Minimum in Rotated Sorted Array
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/find-peak-element" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+48 %
+</span>
+<span class="m-l-sm title">
+75. Find Peak Element
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/first-bad-version" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+35 %
+</span>
+<span class="m-l-sm title">
+74. First Bad Version
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/search-in-rotated-sorted-array" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+29 %
+</span>
+<span class="m-l-sm title">
+62. Search in Rotated Sorted Array
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/copy-books" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+25 %
+</span>
+<span class="m-l-sm title">
+437. Copy Books
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="optional2">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/total-occurrence-of-target" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+25 %
+</span>
+<span class="m-l-sm title">
+462. Total Occurrence of Target
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/closest-number-in-sorted-array" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+40 %
+</span>
+<span class="m-l-sm title">
+459. Closest Number in Sorted Array
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/drop-eggs" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+32 %
+</span>
+<span class="m-l-sm title">
+254. Drop Eggs
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-minus text-danger"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/maximum-average-subarray" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+15 %
+</span>
+<span class="m-l-sm title">
+617. Maximum Average Subarray
+</span>
+<span class="label label-sm text-info hidden-xs">
+<i>new</i>
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/maximum-number-in-mountain-sequence" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+46 %
+</span>
+<span class="m-l-sm title">
+585. Maximum Number in Mountain Sequence
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/k-closest-numbers-in-sorted-array" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+21 %
+</span>
+<span class="m-l-sm title">
+460. K Closest Numbers In Sorted Array
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/divide-two-integers" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+16 %
+</span>
+<span class="m-l-sm title">
+414. Divide Two Integers
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/search-for-a-range" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+61. Search for a Range
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/search-a-2d-matrix-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+34 %
+</span>
+<span class="m-l-sm title">
+38. Search a 2D Matrix II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="related2">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/classical-binary-search" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+45 %
+</span>
+<span class="m-l-sm title">
+457. Classical Binary Search
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/find-minimum-in-rotated-sorted-array-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+34 %
+</span>
+<span class="m-l-sm title">
+160. Find Minimum in Rotated Sorted Array II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/search-in-rotated-sorted-array-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+40 %
+</span>
+<span class="m-l-sm title">
+63. Search in Rotated Sorted Array II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>  
+<section class="panel m-b-sm">
+<header class="panel-heading bg-light lter bg-gradient" style="border-bottom:none">
+<ul class="nav nav-tabs pull-right">
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/#required3" data-toggle="tab">
+<i class="fa fa-tasks"></i>
+Required
+(10/10)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#optional3" data-toggle="tab">
+<i class="fa fa-coffee"></i>
+Optional
+(3/19)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#related3" data-toggle="tab">
+<i class="fa fa-link"></i>
+Related
+(0/0)
+</a>
+</li>
+</ul>
+<h4 class="m-n">
+<i class="fa fa-star-half-o text-warning m-r-xs"></i>
+<span class="text-md">3 - Binary Tree &amp; Divide Conquer
+</span>
+</h4>
+</header>
+<div class="panel-body" style="padding:0px">
+<div class="tab-content">
+<div class="tab-pane active" id="required3">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/maximum-depth-of-binary-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+54 %
+</span>
+<span class="m-l-sm title">
+97. Maximum Depth of Binary Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/balanced-binary-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+38 %
+</span>
+<span class="m-l-sm title">
+93. Balanced Binary Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/binary-tree-preorder-traversal" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+41 %
+</span>
+<span class="m-l-sm title">
+66. Binary Tree Preorder Traversal
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/binary-tree-maximum-path-sum-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+43 %
+</span>
+<span class="m-l-sm title">
+475. Binary Tree Maximum Path Sum II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/inorder-successor-in-binary-search-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+31 %
+</span>
+<span class="m-l-sm title">
+448. Inorder Successor in Binary Search Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/validate-binary-search-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+22 %
+</span>
+<span class="m-l-sm title">
+95. Validate Binary Search Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/binary-tree-maximum-path-sum" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+94. Binary Tree Maximum Path Sum
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/lowest-common-ancestor" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+38 %
+</span>
+<span class="m-l-sm title">
+88. Lowest Common Ancestor
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/binary-tree-level-order-traversal" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+33 %
+</span>
+<span class="m-l-sm title">
+69. Binary Tree Level Order Traversal
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/binary-search-tree-iterator" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+35 %
+</span>
+<span class="m-l-sm title">
+86. Binary Search Tree Iterator
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="optional3">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/binary-tree-path-sum" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+22 %
+</span>
+<span class="m-l-sm title">
+376. Binary Tree Path Sum
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/lowest-common-ancestor-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+32 %
+</span>
+<span class="m-l-sm title">
+474. Lowest Common Ancestor II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/tweaked-identical-binary-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+39 %
+</span>
+<span class="m-l-sm title">
+470. Tweaked Identical Binary Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/identical-binary-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+46 %
+</span>
+<span class="m-l-sm title">
+469. Identical Binary Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/symmetric-binary-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+40 %
+</span>
+<span class="m-l-sm title">
+468. Symmetric Binary Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/complete-binary-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+27 %
+</span>
+<span class="m-l-sm title">
+467. Complete Binary Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/sort-integers-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+29 %
+</span>
+<span class="m-l-sm title">
+464. Sort Integers II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/minimum-depth-of-binary-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+31 %
+</span>
+<span class="m-l-sm title">
+155. Minimum Depth of Binary Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/insert-node-in-a-binary-search-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+42 %
+</span>
+<span class="m-l-sm title">
+85. Insert Node in a Binary Search Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/binary-tree-postorder-traversal" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+40 %
+</span>
+<span class="m-l-sm title">
+68. Binary Tree Postorder Traversal
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/binary-tree-inorder-traversal" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+40 %
+</span>
+<span class="m-l-sm title">
+67. Binary Tree Inorder Traversal
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/expression-expand" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+575. Expression Expand
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/construct-binary-tree-from-preorder-and-inorder-traversal" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+29 %
+</span>
+<span class="m-l-sm title">
+73. Construct Binary Tree from Preorder and Inorder Traversal
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/construct-binary-tree-from-inorder-and-postorder-traversal" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+31 %
+</span>
+<span class="m-l-sm title">
+72. Construct Binary Tree from Inorder and Postorder Traversal
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/binary-tree-zigzag-level-order-traversal" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+29 %
+</span>
+<span class="m-l-sm title">
+71. Binary Tree Zigzag Level Order Traversal
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-minus text-danger"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/binary-tree-level-order-traversal-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+41 %
+</span>
+<span class="m-l-sm title">
+70. Binary Tree Level Order Traversal II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/search-range-in-binary-search-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+37 %
+</span>
+<span class="m-l-sm title">
+11. Search Range in Binary Search Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/binary-tree-serialization" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+20 %
+</span>
+<span class="m-l-sm title">
+7. Binary Tree Serialization
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/remove-node-in-binary-search-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+26 %
+</span>
+<span class="m-l-sm title">
+87. Remove Node in Binary Search Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="related3">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<div style="padding:10px">Problem set is empty.</div>
+</div>
+</div>
+</div>
+</div>
+</section>  
+<section class="panel m-b-sm">
+<header class="panel-heading bg-light lter bg-gradient" style="border-bottom:none">
+<ul class="nav nav-tabs pull-right">
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/#required5" data-toggle="tab">
+<i class="fa fa-tasks"></i>
+Required
+(8/8)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#optional5" data-toggle="tab">
+<i class="fa fa-coffee"></i>
+Optional
+(0/1)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#related5" data-toggle="tab">
+<i class="fa fa-link"></i>
+Related
+(0/0)
+</a>
+</li>
+</ul>
+<h4 class="m-n">
+<i class="fa fa-star-half-o text-warning m-r-xs"></i>
+<span class="text-md">4 - Dynamic Programming I
+</span>
+</h4>
+</header>
+<div class="panel-body" style="padding:0px">
+<div class="tab-content">
+<div class="tab-pane active" id="required5">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/unique-paths-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+29 %
+</span>
+<span class="m-l-sm title">
+115. Unique Paths II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/unique-paths" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+39 %
+</span>
+<span class="m-l-sm title">
+114. Unique Paths
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/climbing-stairs" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+31 %
+</span>
+<span class="m-l-sm title">
+111. Climbing Stairs
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/minimum-path-sum" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+34 %
+</span>
+<span class="m-l-sm title">
+110. Minimum Path Sum
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/triangle" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+25 %
+</span>
+<span class="m-l-sm title">
+109. Triangle
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/jump-game-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+35 %
+</span>
+<span class="m-l-sm title">
+117. Jump Game II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/jump-game" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+37 %
+</span>
+<span class="m-l-sm title">
+116. Jump Game
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/longest-increasing-subsequence" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+29 %
+</span>
+<span class="m-l-sm title">
+76. Longest Increasing Subsequence
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="optional5">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/drop-eggs-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+36 %
+</span>
+<span class="m-l-sm title">
+584. Drop Eggs II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="related5">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<div style="padding:10px">Problem set is empty.</div>
+</div>
+</div>
+</div>
+</div>
+</section>  
+<section class="panel m-b-sm">
+<header class="panel-heading bg-light lter bg-gradient" style="border-bottom:none">
+<ul class="nav nav-tabs pull-right">
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/#required6" data-toggle="tab">
+<i class="fa fa-tasks"></i>
+Required
+(7/7)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#optional6" data-toggle="tab">
+<i class="fa fa-coffee"></i>
+Optional
+(3/8)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#related6" data-toggle="tab">
+<i class="fa fa-link"></i>
+Related
+(0/0)
+</a>
+</li>
+</ul>
+<h4 class="m-n">
+<i class="fa fa-star-half-o text-warning m-r-xs"></i>
+<span class="text-md">5 - Dynamic Programming II
+</span>
+</h4>
+</header>
+<div class="panel-body" style="padding:0px">
+<div class="tab-content">
+<div class="tab-pane active" id="required6">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/edit-distance" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+119. Edit Distance
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/distinct-subsequences" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+32 %
+</span>
+<span class="m-l-sm title">
+118. Distinct Subsequences
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/word-break" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+14 %
+</span>
+<span class="m-l-sm title">
+107. Word Break
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/palindrome-partitioning-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+23 %
+</span>
+<span class="m-l-sm title">
+108. Palindrome Partitioning II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/longest-common-substring" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+31 %
+</span>
+<span class="m-l-sm title">
+79. Longest Common Substring
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/longest-common-subsequence" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+39 %
+</span>
+<span class="m-l-sm title">
+77. Longest Common Subsequence
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/interleaving-string" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+27 %
+</span>
+<span class="m-l-sm title">
+29. Interleaving String
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="optional6">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/longest-repeating-subsequence" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+36 %
+</span>
+<span class="m-l-sm title">
+581. Longest Repeating Subsequence
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/decode-ways" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+19 %
+</span>
+<span class="m-l-sm title">
+512. Decode Ways
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/backpack-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+38 %
+</span>
+<span class="m-l-sm title">
+125. Backpack II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/backpack" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+92. Backpack
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/minimum-adjustment-cost" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+91. Minimum Adjustment Cost
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/word-break-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+18 %
+</span>
+<span class="m-l-sm title">
+582. Word Break II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-minus text-danger"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/wildcard-matching" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+26 %
+</span>
+<span class="m-l-sm title">
+192. Wildcard Matching
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/k-sum" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+89. k Sum
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="related6">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<div style="padding:10px">Problem set is empty.</div>
+</div>
+</div>
+</div>
+</div>
+</section>  
+<section class="panel m-b-sm">
+<header class="panel-heading bg-light lter bg-gradient" style="border-bottom:none">
+<ul class="nav nav-tabs pull-right">
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/#required4" data-toggle="tab">
+<i class="fa fa-tasks"></i>
+Required
+(10/10)
+</a>
+</li>
+<li class="">
+<a href="http://www.lintcode.com/en/ladder/#optional4" data-toggle="tab">
+<i class="fa fa-coffee"></i>
+Optional
+(6/18)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#related4" data-toggle="tab">
+<i class="fa fa-link"></i>
+Related
+(0/0)
+</a>
+</li>
+</ul>
+<h4 class="m-n">
+<i class="fa fa-star-half-o text-warning m-r-xs"></i>
+<span class="text-md">6 - Linked List
+</span>
+</h4>
+</header>
+<div class="panel-body" style="padding:0px">
+<div class="tab-content">
+<div class="tab-pane active" id="required4">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/remove-nth-node-from-end-of-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+174. Remove Nth Node From End of List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/partition-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+31 %
+</span>
+<span class="m-l-sm title">
+96. Partition List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/remove-duplicates-from-sorted-list-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+113. Remove Duplicates from Sorted List II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/convert-sorted-list-to-balanced-bst" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+106. Convert Sorted List to Balanced BST
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/copy-list-with-random-pointer" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+31 %
+</span>
+<span class="m-l-sm title">
+105. Copy List with Random Pointer
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/merge-k-sorted-lists" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+104. Merge k Sorted Lists
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/reorder-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+99. Reorder List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/sort-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+98. Sort List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/reverse-linked-list-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+36. Reverse Linked List II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/linked-list-cycle-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+37 %
+</span>
+<span class="m-l-sm title">
+103. Linked List Cycle II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="optional4">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/middle-of-linked-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+42 %
+</span>
+<span class="m-l-sm title">
+228. Middle of Linked List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info lter
+    " style="min-width:65px">
+Naive
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/remove-linked-list-elements" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+22 %
+</span>
+<span class="m-l-sm title">
+452. Remove Linked List Elements
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info lter
+    " style="min-width:65px">
+Naive
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/remove-duplicates-from-unsorted-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+37 %
+</span>
+<span class="m-l-sm title">
+217. Remove Duplicates from Unsorted List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/swap-nodes-in-pairs" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+35 %
+</span>
+<span class="m-l-sm title">
+451. Swap Nodes in Pairs
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/delete-node-in-the-middle-of-singly-linked-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+45 %
+</span>
+<span class="m-l-sm title">
+372. Delete Node in the Middle of Singly Linked List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/insertion-sort-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+31 %
+</span>
+<span class="m-l-sm title">
+173. Insertion Sort List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/add-two-numbers" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+21 %
+</span>
+<span class="m-l-sm title">
+167. Add Two Numbers
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/nth-to-last-node-in-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+43 %
+</span>
+<span class="m-l-sm title">
+166. Nth to Last Node in List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/merge-two-sorted-lists" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+39 %
+</span>
+<span class="m-l-sm title">
+165. Merge Two Sorted Lists
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/remove-duplicates-from-sorted-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+40 %
+</span>
+<span class="m-l-sm title">
+112. Remove Duplicates from Sorted List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/reverse-linked-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+41 %
+</span>
+<span class="m-l-sm title">
+35. Reverse Linked List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/swap-two-nodes-in-linked-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+19 %
+</span>
+<span class="m-l-sm title">
+511. Swap Two Nodes in Linked List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/add-two-numbers-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+31 %
+</span>
+<span class="m-l-sm title">
+221. Add Two Numbers II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-minus text-danger"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/palindrome-linked-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+29 %
+</span>
+<span class="m-l-sm title">
+223. Palindrome Linked List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/convert-binary-search-tree-to-doubly-linked-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+378. Convert Binary Search Tree to Doubly Linked List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/rotate-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+25 %
+</span>
+<span class="m-l-sm title">
+170. Rotate List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/linked-list-cycle" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+47 %
+</span>
+<span class="m-l-sm title">
+102. Linked List Cycle
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/reverse-nodes-in-k-group" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+32 %
+</span>
+<span class="m-l-sm title">
+450. Reverse Nodes in k-Group
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="related4">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<div style="padding:10px">Problem set is empty.</div>
+</div>
+</div>
+</div>
+</div>
+</section>  
+<section class="panel m-b-sm">
+<header class="panel-heading bg-light lter bg-gradient" style="border-bottom:none">
+<ul class="nav nav-tabs pull-right">
+<li class="">
+<a href="http://www.lintcode.com/en/ladder/#required9" data-toggle="tab">
+<i class="fa fa-tasks"></i>
+Required
+(10/10)
+</a>
+</li>
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/#optional9" data-toggle="tab">
+<i class="fa fa-coffee"></i>
+Optional
+(11/14)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#related9" data-toggle="tab">
+<i class="fa fa-link"></i>
+Related
+(0/0)
+</a>
+</li>
+</ul>
+<h4 class="m-n">
+<i class="fa fa-star-half-o text-warning m-r-xs"></i>
+<span class="text-md">7 - Array &amp; Numbers
+</span>
+</h4>
+</header>
+<div class="panel-body" style="padding:0px">
+<div class="tab-content">
+<div class="tab-pane" id="required9">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/intersection-of-two-arrays" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+23 %
+</span>
+<span class="m-l-sm title">
+547. Intersection of Two Arrays
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/subarray-sum" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+29 %
+</span>
+<span class="m-l-sm title">
+138. Subarray Sum
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/merge-sorted-array" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+34 %
+</span>
+<span class="m-l-sm title">
+64. Merge Sorted Array
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/maximum-subarray" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+38 %
+</span>
+<span class="m-l-sm title">
+41. Maximum Subarray
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/two-sum-closest" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+39 %
+</span>
+<span class="m-l-sm title">
+533. Two Sum Closest
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/sort-colors" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+35 %
+</span>
+<span class="m-l-sm title">
+148. Sort Colors
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/subarray-sum-closest" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+19 %
+</span>
+<span class="m-l-sm title">
+139. Subarray Sum Closest
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/two-sum" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+56. Two Sum
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/partition-array" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+31. Partition Array
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/median-of-two-sorted-arrays" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+23 %
+</span>
+<span class="m-l-sm title">
+65. Median of two Sorted Arrays
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane active" id="optional9">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/minimum-subarray" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+38 %
+</span>
+<span class="m-l-sm title">
+44. Minimum Subarray
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/merge-two-sorted-arrays" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+35 %
+</span>
+<span class="m-l-sm title">
+6. Merge Two Sorted Arrays
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/maximum-product-subarray" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+29 %
+</span>
+<span class="m-l-sm title">
+191. Maximum Product Subarray
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/best-time-to-buy-and-sell-stock-iii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+27 %
+</span>
+<span class="m-l-sm title">
+151. Best Time to Buy and Sell Stock III
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/best-time-to-buy-and-sell-stock-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+50 %
+</span>
+<span class="m-l-sm title">
+150. Best Time to Buy and Sell Stock II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/best-time-to-buy-and-sell-stock" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+42 %
+</span>
+<span class="m-l-sm title">
+149. Best Time to Buy and Sell Stock
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/sort-colors-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+34 %
+</span>
+<span class="m-l-sm title">
+143. Sort Colors II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/4sum" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+21 %
+</span>
+<span class="m-l-sm title">
+58. 4Sum
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/3sum" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+20 %
+</span>
+<span class="m-l-sm title">
+57. 3Sum
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/sort-letters-by-case" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+39 %
+</span>
+<span class="m-l-sm title">
+49. Sort Letters by Case
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/maximum-subarray-difference" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+45. Maximum Subarray Difference
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/maximum-subarray-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+25 %
+</span>
+<span class="m-l-sm title">
+42. Maximum Subarray II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/best-time-to-buy-and-sell-stock-iv" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+393. Best Time to Buy and Sell Stock IV
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/maximum-subarray-iii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+43. Maximum Subarray III
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="related9">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<div style="padding:10px">Problem set is empty.</div>
+</div>
+</div>
+</div>
+</div>
+</section>  
+<section class="panel m-b-sm">
+<header class="panel-heading bg-light lter bg-gradient" style="border-bottom:none">
+<ul class="nav nav-tabs pull-right">
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/#required8" data-toggle="tab">
+<i class="fa fa-tasks"></i>
+Required
+(10/10)
+</a>
+</li>
+<li class="">
+<a href="http://www.lintcode.com/en/ladder/#optional8" data-toggle="tab">
+<i class="fa fa-coffee"></i>
+Optional
+(12/13)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#related8" data-toggle="tab">
+<i class="fa fa-link"></i>
+Related
+(0/0)
+</a>
+</li>
+</ul>
+<h4 class="m-n">
+<i class="fa fa-star-half-o text-warning m-r-xs"></i>
+<span class="text-md">8 - Data Structure
+</span>
+</h4>
+</header>
+<div class="panel-body" style="padding:0px">
+<div class="tab-content">
+<div class="tab-pane active" id="required8">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/hash-function" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+19 %
+</span>
+<span class="m-l-sm title">
+128. Hash Function
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/top-k-largest-numbers" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+544. Top k Largest Numbers
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/merge-k-sorted-arrays" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+486. Merge k Sorted Arrays
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/rehashing" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+129. Rehashing
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/merge-k-sorted-lists" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+104. Merge k Sorted Lists
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/implement-queue-by-two-stacks" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+40 %
+</span>
+<span class="m-l-sm title">
+40. Implement Queue by Two Stacks
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/min-stack" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+33 %
+</span>
+<span class="m-l-sm title">
+12. Min Stack
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/ugly-number-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+23 %
+</span>
+<span class="m-l-sm title">
+4. Ugly Number II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/lru-cache" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+21 %
+</span>
+<span class="m-l-sm title">
+134. LRU Cache
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/largest-rectangle-in-histogram" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+27 %
+</span>
+<span class="m-l-sm title">
+122. Largest Rectangle in Histogram
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="optional8">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/implement-stack" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+43 %
+</span>
+<span class="m-l-sm title">
+495. Implement Stack
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/implement-stack-by-two-queues" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+494. Implement Stack by Two Queues
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/implement-queue-by-linked-list-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+493. Implement Queue by Linked List II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/implement-queue-by-linked-list" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+35 %
+</span>
+<span class="m-l-sm title">
+492. Implement Queue by Linked List
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/top-k-largest-numbers-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+27 %
+</span>
+<span class="m-l-sm title">
+545. Top k Largest Numbers II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question ++">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/stack-sorting" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+36 %
+</span>
+<span class="m-l-sm title">
+229. Stack Sorting
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/top-k-frequent-words" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+17 %
+</span>
+<span class="m-l-sm title">
+471. Top K Frequent Words
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/implement-three-stacks-by-single-array" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+224. Implement Three Stacks by Single Array
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/heapify" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+36 %
+</span>
+<span class="m-l-sm title">
+130. Heapify
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/longest-consecutive-sequence" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+33 %
+</span>
+<span class="m-l-sm title">
+124. Longest Consecutive Sequence
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/animal-shelter" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+26 %
+</span>
+<span class="m-l-sm title">
+230. Animal Shelter
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/lfu-cache" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+16 %
+</span>
+<span class="m-l-sm title">
+24. LFU Cache
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/max-tree" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+30 %
+</span>
+<span class="m-l-sm title">
+126. Max Tree
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="related8">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<div style="padding:10px">Problem set is empty.</div>
+</div>
+</div>
+</div>
+</div>
+</section>  
+<section class="panel m-b-sm">
+<header class="panel-heading bg-light lter bg-gradient" style="border-bottom:none">
+<ul class="nav nav-tabs pull-right">
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/#required7" data-toggle="tab">
+<i class="fa fa-tasks"></i>
+Required
+(10/10)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#optional7" data-toggle="tab">
+<i class="fa fa-coffee"></i>
+Optional
+(6/6)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#related7" data-toggle="tab">
+<i class="fa fa-link"></i>
+Related
+(0/0)
+</a>
+</li>
+</ul>
+<h4 class="m-n">
+<i class="fa fa-star text-warning m-r-xs"></i>
+<span class="text-md">9 - Graph &amp; Search
+</span>
+</h4>
+</header>
+<div class="panel-body" style="padding:0px">
+<div class="tab-content">
+<div class="tab-pane active" id="required7">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/six-degrees" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+32 %
+</span>
+<span class="m-l-sm title">
+531. Six Degrees
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/palindrome-partitioning" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+25 %
+</span>
+<span class="m-l-sm title">
+136. Palindrome Partitioning
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/find-the-connected-component-in-the-undirected-graph" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+23 %
+</span>
+<span class="m-l-sm title">
+431. Find the Connected Component in the Undirected Graph
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/clone-graph" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+137. Clone Graph
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/combination-sum" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+27 %
+</span>
+<span class="m-l-sm title">
+135. Combination Sum
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/topological-sorting" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+28 %
+</span>
+<span class="m-l-sm title">
+127. Topological Sorting
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/n-queens-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+40 %
+</span>
+<span class="m-l-sm title">
+34. N-Queens II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/subsets-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+18. Subsets II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/permutations-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+16. Permutations II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/word-ladder-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+18 %
+</span>
+<span class="m-l-sm title">
+121. Word Ladder II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-danger
+    " style="min-width:65px">
+Hard
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="optional7">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/string-permutation-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+19 %
+</span>
+<span class="m-l-sm title">
+10. String Permutation II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/word-ladder" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+21 %
+</span>
+<span class="m-l-sm title">
+120. Word Ladder
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/k-sum-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+35 %
+</span>
+<span class="m-l-sm title">
+90. k Sum II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/n-queens" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+24 %
+</span>
+<span class="m-l-sm title">
+33. N-Queens
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/subsets" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+26 %
+</span>
+<span class="m-l-sm title">
+17. Subsets
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/permutations" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+26 %
+</span>
+<span class="m-l-sm title">
+15. Permutations
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Frequently asked question +">
+<i class="fa fa-fire"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="related7">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<div style="padding:10px">Problem set is empty.</div>
+</div>
+</div>
+</div>
+</div>
+</section>  
+<section class="panel m-b-sm">
+<header class="panel-heading bg-light lter bg-gradient" style="border-bottom:none">
+<ul class="nav nav-tabs pull-right">
+<li class="active">
+<a href="http://www.lintcode.com/en/ladder/#required81" data-toggle="tab">
+<i class="fa fa-tasks"></i>
+Required
+(4/4)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#optional81" data-toggle="tab">
+<i class="fa fa-coffee"></i>
+Optional
+(0/0)
+</a>
+</li>
+<li>
+<a href="http://www.lintcode.com/en/ladder/#related81" data-toggle="tab">
+<i class="fa fa-link"></i>
+Related
+(0/0)
+</a>
+</li>
+</ul>
+<h4 class="m-n">
+<i class="fa fa-star text-warning m-r-xs"></i>
+<span class="text-md">10 - Seleted Problems in Past Examinations
+</span>
+</h4>
+</header>
+<div class="panel-body" style="padding:0px">
+<div class="tab-content">
+<div class="tab-pane active" id="required81">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<a href="http://www.lintcode.com/problem/climbing-stairs-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+35 %
+</span>
+<span class="m-l-sm title">
+272. Climbing Stairs II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-info
+    " style="min-width:65px">
+Easy
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/lowest-common-ancestor-iii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+20 %
+</span>
+<span class="m-l-sm title">
+578. Lowest Common Ancestor III
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+<span class="m-r-sm pull-right" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Has company tag">
+<i class="fa fa-briefcase"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/find-the-missing-number-ii" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+22 %
+</span>
+<span class="m-l-sm title">
+570. Find the Missing Number II
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+<a href="http://www.lintcode.com/problem/number-of-ways-to-represent-n-cents" class="problem-panel list-group-item" target="_blank">
+<span class="badge pull-right rate hidden-xs" style="margin: 0px 5px;min-width:50px">
+26 %
+</span>
+<span class="m-l-sm title">
+279. Number of Ways to Represent N Cents
+</span>
+<span class="
+      label
+      difficulty
+      text-sm
+      pull-left
+      hidden-xs
+      bg-success
+    " style="min-width:65px">
+Medium
+</span>
+<span class="pull-right" style="min-width:24px;min-height:1px">
+<i class="fa fa-check text-success"></i>
+</span>
+<span class="m-r-sm pull-right hidden-xs" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ladder Only">
+<i class="fa fa-signal"></i>
+</span>
+</a>
+</div>
+</div>
+<div class="tab-pane" id="optional81">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<div style="padding:10px">Problem set is empty.</div>
+</div>
+</div>
+<div class="tab-pane" id="related81">
+<div id="filter-loading" style="padding:10px;text-align: center; display: none;">
+<span><img src="./LintCode - Coding interview questions online training system_files/ajax-loader.gif" alt="Loading..."></span>
+</div>
+<div id="problem_list_pagination" class="list-group list m-b-none">
+<div style="padding:10px">Problem set is empty.</div>
+</div>
+</div>
+</div>
+</div>
+</section>  
+</div>  
+<div class="col-lg-3">
+<a href="http://www.lintcode.com/ladder/1/">
+</a><section class="panel"><a href="http://www.lintcode.com/ladder/1/">
+</a><div class="panel-body"><a href="http://www.lintcode.com/ladder/1/">
+</a><div class="clearfix text-center m-t"><a href="http://www.lintcode.com/ladder/1/">
+</a><div class="inline"><a href="http://www.lintcode.com/ladder/1/">
+</a><a href="http://www.lintcode.com/ladder/1/">
+<div class="easypiechart easyPieChart" data-percent="100" data-line-width="5" data-loop="false" data-bar-color="#92cf5c" data-track-color="#f5f5f5" data-scale-color="false" data-size="150" style="width: 150px; height: 150px; line-height: 150px;">
+<div class="thumb-lg">
+<img src="./LintCode - Coding interview questions online training system_files/jiuzhang.jpg" class="img-circle">
+</div>
+<canvas width="150" height="150"></canvas>
+<canvas width="150" height="150"></canvas></div>
+</a>
+</div>
+<div class="h4 m-t" style="min-height:45px"><a href="http://www.lintcode.com/ladder/1/">Nine Chapters: Algorithm</a></div>
+<div class="m-b">
+<small class="text-muted">
+<i class="fa fa-book"></i> Jiuzhang Users
+</small>
+</div>
+<small class="text-muted" style="display:block; min-height:70px"><p>Related problems for Nine Chapters online algorithm live course. More information on: <a href="http://www.jiuzhang.com/?source=ladder" title="Nine Chapters">http://www.jiuzhang.com/</a></p></small>
+</div>
+</div>
+<footer class="panel-footer bg-dark lter text-center">
+<div class="row pull-out">
+<div class="col-xs-4">
+<div class="padder-v">
+<span class="m-b-xs h4 block">10</span>
+<small class="text-muted">Levels</small>
+</div>
+</div>
+<div class="col-xs-4 bg-success">
+<div class="padder-v">
+<span class="m-b-xs h4 block">11</span>
+<small class="text-muted">Unlocked</small>
+</div>
+</div>
+<div class="col-xs-4">
+<div class="padder-v">
+<span class="m-b-xs h4 block">176</span>
+<small class="text-muted">Problems</small>
+</div>
+</div>
+</div>
+</footer>
+</section>
+
+</div>  
+</div>
+</section>
+</section>
+</section>
+</section>  
+ 
+<script src="./LintCode - Coding interview questions online training system_files/bootstrap.js.download"></script>
+ 
+<script src="./LintCode - Coding interview questions online training system_files/app.js.download"></script>
+<script src="./LintCode - Coding interview questions online training system_files/app.plugin.js.download"></script>
+<script src="./LintCode - Coding interview questions online training system_files/app.data.js.download"></script>
+<script src="./LintCode - Coding interview questions online training system_files/base.js.download"></script>
+ 
+<script>
+          function delete_confirm(){
+              return confirm("Delete action can't be restored. Continue?");
+          }
+          function displayCreateListDiv(){
+              var div = $("#favoriteModalBodyCreateList");
+              div.empty();
+              div.append('<a href="#"><h5 class="h5">Create Favorite List</h5></a>');
+              div.find("a").on("click", displayCreateListForm);
+          }
+
+          function displayCreateListForm(){
+              var div = $("#favoriteModalBodyCreateList");
+              div.find("a").remove();
+              var formNode = $("<form></form>");
+              var formDivNode = $("<div></div>").attr("class", "form-group");
+              var inputNode = $("<input>").attr("id", "newFavoriteListNameInput").attr("type", "text").attr("name", "favoriteListName").attr("class", "form-control").attr("value", "").attr("placeholder", "Favorite List Name");
+              var btnNode = $("<button></button>").attr("type", "button").attr("class", "btn btn-success btn-sm").html("Save").on("click", createFavoriteList);
+              var closeBtnNode = $("<button></button>").attr("type", "button").attr("class", "btn btn-default btn-sm").html("Close").on("click", displayCreateListDiv);
+              formDivNode.append(inputNode).append(btnNode).append(closeBtnNode);
+              formNode.append(formDivNode);
+              div.append(formNode);
+          }
+
+          function showFailure(){
+              alert("Create fail");//need refine
+          }
+
+          function createFavoriteList(){
+              var url = "/favorite/api/list/create/";
+              var input = document.querySelector("#newFavoriteListNameInput");
+              var listName = input.value;
+              $.ajax({
+                  url: url,
+                  data: {"name": listName},
+                  success: function(response){
+                      if(response.result == false){
+                          showFailure();
+                      }
+                  },
+                  timeout: showFailure,
+                  dataType: "json",
+                  async: false
+              });
+              getFavoriteLists();
+          }
+
+          function deleteFavoriteList(){
+              if(delete_confirm() == false)
+                  return;
+              var url = "/favorite/api/list/delete/";
+              var listId = $(this).data("id");
+              $.ajax({
+                  url: url,
+                  data: {"list_id": listId},
+                  success: function(response){
+                      if(response.result == false){
+                          alert("Delete fail");
+                      }
+                  },
+                  timeout: function(){alert("Delete fail");},
+                  dataType: "json",
+                  async: false
+              });
+              getFavoriteLists();
+          }
+
+          function getFavoriteLists(){
+              var url = "/favorite/api/list/";
+              var modalBody = $('#favoriteModalBody');
+              modalBody.find("a").remove();
+              $.getJSON(url, null, function(response){
+                  $.each($.parseJSON(response.favorite_lists), function(i, favorite_list){
+
+                      var node = $('<div></div>').attr("style", "margin-bottom:15px");
+                      var aNode = $('<a href="#"></a>').attr("class", "h5");
+                      var fa = $('<i></i>').attr("class", "pull-left fa fa-file");
+                      var content = $('<div></div>').attr("data-id", favorite_list.id).attr("class", "fav_list").text(favorite_list.name);
+                      aNode.append(fa);
+                      aNode.append(content);
+                      node.append(aNode);
+                      modalBody.prepend(node);
+                  });
+              });
+              displayCreateListDiv();
+              $('#favoriteModal').modal("show");
+          }
+      </script>
+ 
+<script src="./LintCode - Coding interview questions online training system_files/select2.full.js.download" cache="false"></script>
+<script src="./LintCode - Coding interview questions online training system_files/submissions.js.download"></script>
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-6324678-14', 'lintcode.com');
+        ga('send', 'pageview');
+      </script>
+<script src="./LintCode - Coding interview questions online training system_files/jquery.easy-pie-chart.js.download"></script>
+
+
+<script src="./LintCode - Coding interview questions online training system_files/bw-send-411.4.5.js.download"></script><script type="text/javascript" src="./LintCode - Coding interview questions online training system_files/saved_resource(1)" async=""></script></body></html>
