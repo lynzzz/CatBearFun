@@ -1,0 +1,75 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+    public int search(int[] A, int target) {
+        // write your code here
+        if ( A == null || A.length == 0){
+            return -1;
+        }
+        
+        int start = 0;
+        int end = A.length - 1;
+        while( start + 1 &lt; end){
+            int mid = start + ( end-start)/2;
+            
+            if ( A[mid] &gt; A[A.length - 1]){
+                if ( target >= A[0] && target <= A[mid]){
+                    end = mid;
+                }else{
+                    start = mid;
+                }
+            }else if ( A[mid] < A[A.length - 1]){
+                if ( target >= A[mid] && target <= A[A.length - 1]){
+                    start = mid;
+                }else{
+                    end = mid;
+                }
+            }else{
+                return mid;
+            }
+        }
+        
+        if ( A[start] == target) return start;
+        if ( A[end] == target ) return end;
+        
+        return -1;
+    }
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(lgn)    <br>
+Space complexity : O(1)    <br>
+
+
+Algorithm<br>
+
+1. 精典，见图  <br>
+
+<img src="../../img/searchinrotatedarray.JPG" width="800px" height="800px">
+
+</div>
+
+
+
+
+
+
+
+</body>

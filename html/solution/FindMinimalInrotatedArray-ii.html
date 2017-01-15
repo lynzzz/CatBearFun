@@ -1,0 +1,68 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param num: a rotated sorted array
+     * @return: the minimum number in the array
+     */
+    public int findMin(int[] num) {
+        // write your code here
+        
+        int ret = num[0];
+        for( int i= 1 ; i&lt;num.length; i++){
+            ret = Math.min(ret, num[i]);
+        }
+        
+        return ret;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity : O(n)     <br>
+Space complexity : O(1)   <br>
+
+
+
+
+<br>
+Algorithm<br>
+<a href="FindMinimalInrotatedArray.html">Find Minimal in rotated array</a>的变种，因为里面有duplicates. 当出现   [ 22202222222222222222222222222] 时， A[start] = A[end] = A[min]时候，二分查找无法判断舍弃那一边，所以此时时间复杂度最差的情况降低到 O(n)全部过一次 
+面试的时候指出这种情况，可能是O(n)就可以了
+
+1.   <br>
+
+<br>
+
+// Note <br>
+
+
+<br>
+
+
+// Java Skill
+
+
+</div>
+
+
+
+
+</body>

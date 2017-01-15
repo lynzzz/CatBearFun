@@ -18,7 +18,7 @@ public class Solution {
         
         int preFixSum = 0, preFixMinSum = 0, max = Integer.MIN_VALUE;
         
-        for( int i=0; i<nums.length; i++){
+        for( int i=0; i&lt;nums.length; i++){
             preFixSum = preFixSum + nums[i];
             max = Math.max(max, preFixSum - preFixMinSum);
             preFixMinSum = Math.min(preFixMinSum, preFixSum);

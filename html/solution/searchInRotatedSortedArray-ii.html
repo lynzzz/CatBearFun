@@ -1,0 +1,59 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+   public class Solution {
+    /** 
+     * param A : an integer ratated sorted array and duplicates are allowed
+     * param target :  an integer to be search
+     * return : a boolean 
+     */
+    public boolean search(int[] A, int target) {
+        // write your code here
+        boolean ret =false;
+        for( int i : A){
+            if ( i == target){
+                ret = true;
+            }
+        }
+        
+        return ret;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(n)    <br>
+Space complexity : O(1)    <br>
+
+
+Algorithm<br>
+<a href="searchInRotatedSortedArray.html">Search in rotated sorted array</a>变种，因为有duplicate,所以二分的性质被破坏。 例子 [22022222222222222222222222] 寻找0，A[0] == A[n-1] == A[mid],所以二分无法
+判断舍弃哪一边，这样只有scan the array, 时间复杂度下降至O(n)
+
+
+
+</div>
+
+
+
+
+
+
+
+</body>

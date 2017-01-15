@@ -1,0 +1,86 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+<div class="specialcomment">
+Solution one : sliding window
+</div>
+
+<pre><code>
+
+public class Solution {
+    /**
+     * @param nums an array with positive and negative numbers
+     * @param k an integer
+     * @return the maximum average
+     */
+    public double maxAverage(int[] nums, int k) {
+        // Write your code here
+        
+        double ret = getmaxAverage(nums, nums.length);
+        
+        for( int size = nums.length - 1; size>=k; size--){
+            ret = Math.max(ret, getmaxAverage(nums, size));
+        }
+        
+        return ret;
+    }
+    
+    
+    
+    public double getmaxAverage(int[] nums, int k){
+        
+        int maxSum = 0;
+        for( int startIndex = 0; startIndex &lt;= nums.length - k; startIndex++){
+            
+            int sum = 0;
+            for( int j=0; j&lt;k; j++){
+                sum = sum + nums[startIndex + j];
+            }
+            maxSum = Math.max(sum, maxSum);
+        }
+        
+        return (double)maxSum/k;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :    O(n)  <br>
+Space complexity :     <br>
+
+
+Algorithm<br>
+
+1.   <br>
+
+<br>
+
+// Note <br>
+
+
+<br>
+
+
+// Java Skill
+1.          <br>
+2.          <br>
+
+</div>
+
+
+
+
+</body>

@@ -1,0 +1,79 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+
+    public int searchMatrix(int[][] matrix, int target) {
+        // write your code here
+        
+        if( matrix == null || matrix.length == 0 || matrix[0].length == 0) return 0;
+        
+        
+        int row = matrix.length;
+        int col = matrix[0].length;
+        
+        int x = row - 1;
+        int y = 0;
+        int count = 0;
+        
+        while( x &gt;=0 && y &lt; col ){
+            if ( matrix[x][y] > target){
+                x--;
+            }else if ( matrix[x][y]< target){
+                y++;
+            }else{
+                count++;
+                x--;
+                y++;
+            }
+        }
+        
+        return count;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :    O(m+n) whree m is the row and n is the col  <br>
+Space complexity :     <br>
+
+
+
+// Algorithm <br>
+1. 从左下到右上， 如果小于target,则往右搜索，如果大宇target,则往上搜索<br>
+
+<br>
+
+
+// Note <br>
+1.   while的结束条件  while( x &gt;=0 & y &lt;col ) 为matrix里的所有元素        <br>
+2.           <br>
+3.           <br>
+
+<br>
+// JavaSkill <br>
+1. 二维矩阵的validity check    if ( m != null && m.length != 0 && m[0].length != 0 )
+
+</div>
+
+
+
+
+</body>
