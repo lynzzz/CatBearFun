@@ -1,0 +1,82 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+public class Solution {
+    /**
+     * @param a, b, the root of binary trees.
+     * @return true if they are identical, or false.
+     */
+    public boolean isIdentical(TreeNode a, TreeNode b) {
+        // Write your code here
+        // 结束条件
+        if ( a==null && b==null){
+            return true;
+        }
+        
+        if ( a == null || b==null) return false;
+        
+        
+        
+        // Divide
+        boolean bLeft = isIdentical(a.left, b.left);
+        boolean bRight = isIdentical(a.right, b.right);
+        
+        // Conquer
+        return a.val == b.val && bLeft && bRight;
+    }
+}
+
+
+// Binary tree分治模版
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+Algorithm<br>
+
+1.   <br>
+
+
+
+
+<br>
+Note <br>
+
+
+<br>
+Java Skill
+1.          <br>
+2.          <br>
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>
