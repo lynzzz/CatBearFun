@@ -1,0 +1,104 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer.
+     */
+    public int minDepth(TreeNode root) {
+        // write your code here
+        
+        // return condition
+        if ( root == null){
+            return 0;
+        }
+        
+        return helper(root);
+    }
+    
+    public int helper(TreeNode root){
+        
+        if ( root == null){
+            return Integer.MAX_VALUE;
+        }
+        
+        
+        if ( root.left == null && root.right ==null){
+            return 1;
+        }
+        
+        // divide
+        int l = helper(root.left);
+        int r = helper(root.right);
+        
+        return 1 + Math.min(l , r ); 
+    }
+}
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+Algorithm<br>
+// 此题目当成binary tree 分治模板背诵  <br>
+
+
+// 技巧：<br>
+// 1. 结束条件： 如果左右都为空，返回1； <br>
+// 2. 如果只有一边为空，设置成max, 这样取小就可以得到另一边<br>
+
+
+// 如果是空的返回max,这样比较的话就可以用另一边。<br>
+//                             1, #, 2, <br>
+//                             <br>
+//                             1            <br>
+//                                          <br>
+//                       max        1        <br>
+1.   <br>
+
+
+
+
+<br>
+Note <br>
+
+
+<br>
+Java Skill
+1.          <br>
+2.          <br>
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>
