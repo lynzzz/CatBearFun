@@ -1,0 +1,111 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    /**
+     * @param root the root of binary tree
+     * @return the length of the longest consecutive sequence path
+     */
+     
+    private int ret; 
+     
+    public int longestConsecutive(TreeNode root) {
+        // Write your code here
+    
+        helper(root);
+        return ret;
+    }
+    
+    public int helper( TreeNode root ){
+        
+        if ( root == null){
+            return 0;
+        }
+        
+        
+        //Divide
+        int left = helper(root.left);
+        int right = helper(root.right);
+        
+        // Conquer
+        int nSubtree = 1;   // at least we have root node
+        
+        if ( root.left != null && root.left.val == root.val + 1){
+            nSubtree = Math.max(left+1, nSubtree );
+        }
+        
+        if ( root.right != null && root.right.val == root.val + 1){
+            nSubtree = Math.max(right + 1, nSubtree);
+        }
+        
+        if ( nSubtree &gt; ret){
+            ret = nSubtree;
+        }
+        
+        return nSubtree;
+        
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+Algorithm<br>
+Divide and Conquer + 维持一个全局变量 
+
+
+1.   <br>
+
+
+
+
+<br>
+Note <br>
+
+
+<br>
+Java Skill
+1.          <br>
+2.          <br>
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>

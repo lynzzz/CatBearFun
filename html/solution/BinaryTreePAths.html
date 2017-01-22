@@ -1,0 +1,107 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param root the root of the binary tree
+     * @return all root-to-leaf paths
+     */
+    public List<String> binaryTreePaths(TreeNode root) {
+        // Write your code here
+        List<String> results = new ArrayList<>();
+
+        if ( root == null){
+            return results;
+        }
+        
+        
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(root.val);
+        
+        dfs(results, result, root);
+        return results;
+    }
+    
+    void dfs( List<String> results, ArrayList<Integer> result, TreeNode root){
+        
+        if ( root.left == null && root.right == null ){
+            String str ="";
+            for( int i = 0; i<result.size() -1; i++){
+                str = str + String.valueOf(result.get(i)) +"->"; 
+            }
+            str = str +  String.valueOf((result.get(result.size()-1)));
+            
+            results.add(str);
+            return;
+        }
+        
+        if ( root.left != null ){
+            result.add(root.left.val);
+            dfs(results, result, root.left);
+            result.remove(result.size()-1);
+        }
+        
+        
+        if ( root.right != null){
+            result.add(root.right.val);
+            dfs(results, result, root.right);
+            result.remove(result.size()-1);
+        }
+        
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n) 过一遍   <br>
+Space complexity :  Klg(n), k是符合条件的path数   <br>
+
+
+Algorithm<br>
+二分树遍历模板
+
+
+
+1.   <br>
+
+
+
+
+<br>
+Note <br>
+
+
+<br>
+Java Skill
+1.          <br>
+2.          <br>
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>
