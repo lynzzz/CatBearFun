@@ -1,0 +1,47 @@
+
+<html>
+<body>
+
+<pre><code>
+public class Solution {
+    public String reverseWords(String s) {
+        // write your code
+        
+        int i = s.length()-1;
+        String ret = "";
+        while( i &gt;= 0){
+            
+            while( i>=0 && s.charAt(i) == ' ' ){
+                i--;
+            }
+            
+            if ( i &lt; 0 ){
+                return ret;
+            }
+            
+            
+            if ( ret.length() != 0 ){
+                ret = ret + ' ';
+            }
+            
+            StringBuilder sb = new StringBuilder();
+            while( i>=0 && s.charAt(i) != ' ' ){
+                sb.append(s.charAt(i));
+                i--;
+            }
+            
+            ret = ret + sb.reverse().toString();
+            
+        }
+        
+        return ret;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+</html>
