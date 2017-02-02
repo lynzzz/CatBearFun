@@ -1,0 +1,121 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+public class Solution {
+    /**
+     * @param n an integer
+     * @param edges a list of undirected edges
+     * @return true if it's a valid tree, or false
+     */
+    public boolean validTree(int n, int[][] edges) {
+        // Write your code here
+        if ( n == 1 ) return true;
+        if ( edges == null || edges.length == 0) return false;
+        
+        int[][] dict = new int[n][n];
+
+        // construct adjacent matrix
+        for( int i=0; i&lt;edges.length; i++){
+            dict[edges[i][0]][edges[i][1]] = 1;
+            dict[edges[i][1]][edges[i][0]] = 1;
+        }
+        
+        // BFS
+        Queue<Integer> q = new LinkedList<Integer>();
+        HashSet<Integer> set = new HashSet<Integer>();
+        
+        q.add(0);
+        set.add(0);
+        
+        while( !q.isEmpty() ){
+            
+            int temp = q.poll();
+            
+            for( int i=0; i<n; i++){
+                
+                
+                if ( dict[temp][i] == 1 ){
+                    
+                    
+                    if ( set.contains(i) ){
+                        return false;
+                    }
+                    
+                    q.add(i);
+                    set.add(i);
+                    dict[temp][i] = 0;
+                    dict[i][temp] = 0;
+                }
+            }
+        }
+        
+        // Check isolation node
+        for( int i = 0; i< n ;i++){
+            if ( !set.contains(i) ){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(m + n)   <br>
+Space complexity :     <br>
+
+
+
+
+Algorithm<br>
+//无向图里BFS找环  HashSet + Queue<br>
+// Tree definition : 1. no cycle, 2. No isolation node  <br>
+
+
+// Solution : BFS 过河拆桥
+// 算法 ：建图，　然后BFS,　特殊之处在于，往下走的时候把来的路径断掉，（这样的用处是防止原路返回），　然后如果发现某个结点 <br>
+// 访问过了，那一定是有环。　走完之后如果有结点不在hashset里面，说明是孤立点  <br>
+1.   <br>
+
+
+
+
+<br>
+Note <br>
+
+
+<br>
+Java Skill
+1.          <br>
+2.          <br>
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>

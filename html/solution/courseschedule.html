@@ -1,0 +1,115 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param numCourses a total of n courses
+     * @param prerequisites a list of prerequisite pairs
+     * @return true if can finish all courses or false
+     */
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // Write your code here
+        if ( numCourses == 1 || prerequisites == null ||   prerequisites.length == 0 ) return true;
+
+        // construct adjacent matrix
+        List[] dict = new ArrayList[numCourses];
+        for( int i=0; i&lt;dict.length; i++){
+            dict[i] = new ArrayList<Integer>();
+        }
+
+
+        // Construct in-degree array           node index - > indegree
+        int[] indegree = new int[numCourses];
+        
+        for( int i=0; i<prerequisites.length; i++){
+            indegree[prerequisites[i][0]]++;
+            dict[prerequisites[i][1]].add(prerequisites[i][0]);
+        }
+        
+        
+        // Find all nodes that have 0 indegree, push it into a queue
+        Queue<Integer> q = new LinkedList<>();
+        for( int i=0; i<indegree.length; i++ ){
+            if ( indegree[i] == 0){
+                q.add(i);
+            }
+        }
+        
+        
+        // BFS
+        int count = 0;
+
+        
+        while( !q.isEmpty() ){
+            int temp = q.poll();
+            count++;
+            
+            for( int i=0; i<dict[temp].size(); i++){
+                    int neighbor = (int)dict[temp].get(i);
+                    
+                    indegree[neighbor]--;
+
+                    if ( indegree[neighbor] == 0){
+                        q.add(neighbor);
+                }
+            }
+        }
+        return count == numCourses;
+    }   
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(m+n)   <br>
+Space complexity :     <br>
+
+
+Algorithm<br>
+// Topological Sorting : 有向图排序 入度 + queue   <br>
+// 方法 ： 进度为0点BFS，更新进度，只有下一个进度为0，才能加入q,不用set<br>
+
+// 图可以用 adjacent matrix和 adjacent list表示 ，但是此题有一下的奇葩测试，含有 重复的边，adjacent matrix handle不了这种情况  <br>
+//  10, [[5,8],[3,5],[1,9],[4,5],[0,2],[1,9],[7,8],[4,9]]<br>
+1.   <br>
+
+
+
+
+<br>
+Note <br>
+
+
+<br>
+Java Skill
+1.          <br>
+2.          <br>
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>

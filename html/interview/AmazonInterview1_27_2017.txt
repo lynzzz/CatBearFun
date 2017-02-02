@@ -1,0 +1,75 @@
+A function that takes 2 input sentences and returns an array that contains unique words between 2 input sentences.
+
+// unique means - is present in one sentence but not another
+
+str1  I,  you 
+str2  you have a dream
+
+output : I ,you 
+
+first run : map : I you 
+second run :  
+
+str1: I have I have a dream
+str2: You have you have a dream   
+
+dict 1 : I have a dream
+dict 2 : you have a dream
+  
+ maerd - > dream 
+  
+ret : I , you
+
+ArrayList<String> getUniqueWords(String str1, String str2 ){
+
+    ArrayList<String> ret = new ArrayList<String>();
+
+      HashSet<String> dict1 = helper(str1, new HashSet<String>());
+      HashSet<String> dict2 = helper(str2, new HashSet<String>());
+     
+      for( String str : dict1 ){
+          if  ( !dict2.contains(str) ){
+              ret.add(str);
+          } 
+      }
+     
+      for( String str : dict2 ){
+          if  ( !dict1.contains(str) ){
+              ret.add(str);
+          } 
+      }
+     
+             
+     return ret;
+
+}
+
+Time : O(m+n)
+
+HashSet<String> helper(String str, HashSet<String> set){
+            
+     int i = str.length() -1 ;
+     while ( i >= 0 ){
+     
+         while( i >=0  && str.charAt(i) == ' ' ){
+             i--;
+         }
+         
+         if ( i < 0 ) return set;
+         
+         StringBuilder sb = new StringBuilder();
+         while( i>=0 && str.charAt(i) != ' ' ){
+            sb.append(str.charAt(i));
+            i--;
+         }
+     
+         sb.reverse();
+         if ( !set.contains(sb.toString()){
+         set.add(sb.toString());
+         }
+     } 
+      
+     return set;
+}
+
+ 
