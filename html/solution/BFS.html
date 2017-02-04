@@ -1,0 +1,112 @@
+<html>
+
+
+
+
+
+
+
+
+<body>
+
+
+Data sturcutre : Queue + HashSet  <br><br>
+
+Purpose of Queue : facilitate the process   <br>
+Purpose of Hashset : don't visit a node the second time <br><br>
+
+What's in queue and set ?<br>
+
+Graph : Node :                  // 对于reference type, HashSet::Contains 首先判断reference是否是同一个内存地址，在判断值<br><br>
+
+
+
+
+2D matrix : integer             // 对于primitive type HashSet::Contains 直接判断值<br>
+记住转换公式 ： given i, j  => int code = i * col + j;   given code => i = code/col; j=code%col;<br>
+
+
+
+
+<pre><code>
+
+原始模板1
+
+Queue&lt;D> q = new LinkedList<>();
+HashSet&lt;D> set = new HashSet<>();
+
+while( !q.isEmpty() ){
+    D d = q.poll();
+	
+	for( D d : 周围符合条件的d ){
+	     if ( !set.contains() ){
+		     q.add(d);
+			 set.add(d)
+		 }
+	
+	}
+}
+
+
+原始模板2 ： 分层扫，用来找最短距离
+while( !q.isEmpty() ){
+
+    int size = q.size();
+	
+	// 这个位置可以进行对层的统计
+	for( int i=0; i&lt;size; i++ ){
+        D d = q.poll();
+	
+	    for( D d : 周围符合条件的d ){
+	        if ( !set.contains() ){
+		        q.add(d);
+			    set.add(d)
+		    }
+	    }
+	}
+}
+
+
+适用题目 ： <br>
+无向图（包含二维矩阵)找最短路径,或者存不存在路径<br>
+
+
+
+
+1. 二位矩阵分块: 遍历整个矩阵，只要有符合条件的点，就BFS. 这个过程中可以修改元素的值就不需要Set去重，因为check值就可以达到去重的作用了　<li><a href="numberOfIslands.html">Number of Islands</a> <a href="http://www.lintcode.com/en/problem/number-of-islands/">Q</a></li>
+
+2. 起点到终点，按马步跳.  <li><a href="knightShortestpath.html">Knight shortest path</a> <a href="http://www.lintcode.com/en/problem/knight-shortest-path/">Q</a></li>
+3. 起点到终点，中间有地方走不过去。 （加入queue的时候判断是否能走)<li><a href="knightShortestpath.html">Knight shortest path</a> <a href="http://www.lintcode.com/en/problem/knight-shortest-path/">Q</a></li>      
+4. 多个起点一起走，按层扫。 （ 所有起点到要先进queue)  	 <li><a href="zombieinMatrix.html">Zombie in Matrix</a> <a href="http://www.lintcode.com/en/problem/zombie-in-matrix/">Q</a></li>
+
+
+
+图
+1. 模板      
+<li><a href="clonegraph.html">Clone Graph</a> <a href="http://www.lintcode.com/en/problem/clone-graph/">Q</a></li>
+<li><a href="RouteBetweenTwoNodesinGraph.html">Route between two nodes</a> <a href="http://www.lintcode.com/en/problem/route-between-two-nodes-in-graph/">Q</a></li>
+
+
+2. 有向图找路径， 先要统计入度，入度为0的点为BFS入口， 往下走的时候，减少入度，当入读为0的时候才能加入BFS， 不用set
+<li><a href="courseschedule.html">course schedule</a> <a href="http://www.lintcode.com/en/problem/course-schedule/">Q</a>  </li>  
+<li><a href="solution/topologicalSorting.html">Topological Sorting</a> <a href="http://www.lintcode.com/en/problem/topological-sorting/">Q</a>  </li>  
+
+
+3. 无向图找环， 往下走断开原来路径，避免从原路返回找到重复   <li><a href="ValidGraphTree.html">Valid Graph Tree(undirected Graph)</a> <a href="http://www.lintcode.com/en/problem/course-schedule/">Q</a>  </li>  
+
+4. 无向图分层 	 <li><a href="Six Degrees.html">Six degrees</a> <a href="http://www.lintcode.com/en/problem/six-degrees/">Q</a>  </li>
+
+5. 无向图分块 ： 未连接的图分块，遍历所有的点，只要有未访问的点，就BFS<li><a href="FindTheConnectedComponentInUndirectedGraph.html">Find the connected components in undirected graph</a> <a href="http://www.lintcode.com/en/problem/find-the-connected-component-in-the-undirected-graph/">Q</a>  </li>
+
+
+
+</code></pre>
+
+
+
+
+
+
+</body>
+
+</html>

@@ -54,7 +54,7 @@ public class Solution {
             int temp = q.poll();
             count++;
             
-            for( int i=0; i<dict[temp].size(); i++){
+            for( int i=0; i&lt;dict[temp].size(); i++){
                     int neighbor = (int)dict[temp].get(i);
                     
                     indegree[neighbor]--;

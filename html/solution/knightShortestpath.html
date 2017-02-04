@@ -1,0 +1,150 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param grid a chessboard included 0 (false) and 1 (true)
+     * @param source, destination a point
+     * @return the shortest path 
+     */
+    public int shortestPath(boolean[][] grid, Point source, Point destination) {
+        // Write your code here
+        
+        Queue<Integer> q = new LinkedList<>();
+        HashSet<Integer> set = new HashSet<>();
+        
+        int row = grid.length;
+        int col = grid[0].length;
+        
+        int code = source.x * col + source.y;
+        
+        q.add(code);
+        set.add(code);
+        int ret = -1;
+        
+        while( !q.isEmpty() ){
+            
+            int size = q.size();
+            ret++;
+            
+            for( int k=0; k<size; k++){
+                code = q.poll();
+                int i = code/col;
+                int j = code%col;
+            
+            
+                if ( destination.x == i && destination.y == j){
+                    return ret;
+                }
+            
+            
+                // right, down 1
+                if (  ( i + 1)< row && (j + 2)<col && !grid[i+1][j+2] && !set.contains((i+1)*col + j+2) ){
+                    set.add( (i+1)*col + j+2 );
+                    q.add((i+1)*col + j+2 );
+                }
+            
+                // right down 2
+                if (( i + 2) < row && (j+1)<col && !grid[i+2][j+1]  && !set.contains((i+2)*col + j+1) ){
+                    set.add((i+2)*col + j+1);
+                    q.add((i+2)*col + j+1 );
+                }
+            
+            
+                // right up 1
+                if (  ( i - 1 ) >= 0 &&  (j + 2) <col && !grid[i-1][j+2]  && !set.contains( (i-1)*col + j+2) ){
+                    set.add( ( i-1)*col + j + 2);
+                    q.add(   ( i-1)*col + j + 2);
+                }
+                
+                // right up 2
+                
+                if ( ( i - 2 ) >= 0 &&  (j+1) <col && !grid[i-2][j+1] && !set.contains( (i-2)*col + j+1) ){
+                    set.add( (i-2)*col + j+1);
+                    q.add(  (i-2)*col + j+1);
+                }
+                
+                
+                // left down 1
+                                // right, down 1
+                if (( i + 1)< row && (j - 2) >= 0 && !grid[i+1][j-2] && !set.contains((i+1)*col + j-2) ){
+                    set.add( (i+1)*col + j-2 );
+                    q.add((i+1)*col + j-2 );
+                }
+            
+                // right down 2
+                if (( i + 2) <row && (j-1) >= 0 && !grid[i+2][j-1]  && !set.contains((i+2)*col + j-1) ){
+                    set.add((i+2)*col + j-1);
+                    q.add((i+2)*col + j-1 );
+                }
+                
+                // left up 1
+                if (  ( i - 1 ) >= 0 &&  (j - 2) >=0 && !grid[i-1][j-2]  && !set.contains( (i-1)*col + j-2) ){
+                    set.add( ( i-1)*col + j - 2);
+                    q.add(   ( i-1)*col + j - 2);
+                }
+                
+                // left up 2
+                
+                if ( ( i - 2 ) >= 0 &&  (j-1) >= 0 && !grid[i-2][j-1] && !set.contains( (i-2)*col + j-1) ){
+                    set.add( (i-2)*col + j-1);
+                    q.add(  (i-2)*col + j-1);
+                }
+            }
+        }
+        
+        return -1;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(m*n)   <br>
+Space complexity :     <br>
+
+
+Algorithm<br>
+
+1.   <br>
+
+
+
+
+<br>
+Note <br>
+
+
+<br>
+Java Skill
+1.          <br>
+2.          <br>
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>
