@@ -1,0 +1,156 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+
+    public int shortestDistance(int[][] grid) {
+        // Write your code here
+        ArrayList&lt;Integer> houses = new ArrayList<Integer>();
+        int min = Integer.MAX_VALUE;
+        
+        int row = grid.length;
+        int col = grid[0].length;
+        
+        
+        // Find all houses
+        for( int i=0; i&lt;row; i++){
+            for( int j=0; j&lt;col; j++){
+                if ( grid[i][j] == 1){
+                    houses.add( i*col + j );
+                }
+            }
+        }
+        
+        // Loopthrough all point
+        
+        
+        for( int i=0; i&lt;row; i++){
+            for( int j=0; j&lt;col; j++){
+                
+                // loop through all houses
+
+                int des = i*col + j;
+                
+                int tempMin = 0;
+                int distance = 0;
+                for( int k=0; k&lt;houses.size();k++){
+                    
+                    distance = bfs(grid, houses.get(k), des);
+                    if ( distance == -1){
+                        break;
+                    }
+                    tempMin = tempMin + distance; 
+                }
+                
+                if (distance == -1){
+                    continue;
+                }
+                
+                if ( tempMin < min ){
+                    min = tempMin;
+                }
+                
+            }
+        }
+        
+        return min == Integer.MAX_VALUE ? -1 : min;
+    }
+    
+    
+    public int bfs(int[][] grid, int source, int des){
+        int row = grid.length;
+        int col = grid[0].length;
+        
+        Queue<Integer> q = new LinkedList<>();
+        HashSet<Integer> set = new HashSet<>();
+        
+        q.add(source);
+        set.add(source);
+        int ret = -1;
+        
+        while( !q.isEmpty() ){
+            
+            int size = q.size();
+            ret++;
+            for( int k=0; k<size; k++){
+                source = q.poll();
+                
+                int i = source/col;
+                int j = source%col;
+                
+                if ( i == des/col && j == des%col){
+                    return ret;
+                }
+                
+                // up
+                if ( ( i - 1) >= 0 && grid[i-1][j] == 0 && !set.contains( (i-1)*col + j) ){
+                    q.add(  (i-1)*col + j );
+                    set.add((i-1)*col + j  );
+                }
+                
+                // down
+                if ( ( i + 1)  <row && grid[i+1][j] == 0 && !set.contains( (i+1)*col + j) ){
+                    q.add(   (i+1)*col + j );
+                    set.add( (i+1)*col + j );
+                }
+                
+                // left
+                if (  (j-1)>=0 && grid[i][j-1] == 0 && !set.contains( i*col + j-1 ) ){
+                    q.add( i*col + j-1);
+                    set.add( i*col + j-1);
+                }
+                
+                //rigth
+                if (  (j+1)&lt;col && grid[i][j+1] == 0 && !set.contains( i*col + j+1 ) ){
+                    q.add( i*col + j+1);
+                    set.add( i*col + j+1);
+                }
+            }
+        }
+        
+        return -1;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(n^4)    <br>
+Space complexity : O(1)    <br> <br>
+
+
+Algorithm:<br>
+多点BFS
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+</body>

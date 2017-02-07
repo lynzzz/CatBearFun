@@ -25,7 +25,7 @@ public class Solution {
 
     void dfs( int pos, int n, String str, HashSet<Integer> visited){
         
-        if ( pos == str.length() && visited.size() == n-1){
+        if ( visited.size() == n-1){
 	       for( int i=1; i<=n ;i++){
 		       if ( !visited.contains(i)){
 			       ans = i;

@@ -1,0 +1,57 @@
+<html>
+
+<body>
+DFS subset 模版<br>
+
+适用题目 ： 得到一个整形数组或者字符串的所有分割方法， 结果的顺序和输入是一样的。  例子 { 1， 2， 3}  =>    { {1} {2,3} , {1,2} {3}, {1,2,3} } <br>
+
+输入 ： 大容器， 小容器， 输入， 往前控制符pos<br>
+
+模版 ：<br>
+
+<pre><code>
+public void dfs( ArrayList&lt;ArrayList&lt;Integer&gt;> results, ArrayList&lt;Integer> result, int[] nums, int pos){
+        
+        //  if condition
+		if ( pos == nums.length()){
+            results.add( new ArrayList&lt;Integer&gt;(result) );       // line c
+            return;
+		}
+        
+        
+        for( int i = pos; i&lt;nums.length; i++){                // line a
+            result.add(nums[i]);
+            dfs(results, result, nums, i+1);                     // line b
+            result.remove(result.size()-1);
+        }
+}
+</code></pre>
+
+需要注意的地方 ：  <br>
+a. Line a, 每一层是从往前控制符pos开始  <br>
+b. Line b, 下一层是 i+1, 因为在回溯的过程中i会变，pos不会变，这个 i+1严格控制了不会往回走  <br>
+c. Line c, 大容器加入小容器时需要new, 也就是照相，不然小容器内容最终将被清空，得到空的大容器。<br><br>
+
+
+Coding Questions :<br><br>
+
+Integer array :<br>
+     <li><a href="subset.html">Subset</a> <a href="http://www.lintcode.com/en/problem/subsets/">Q</a>  </li>  
+	 <li><a href="subsets-ii.html">Subset-ii</a> <a href="http://www.lintcode.com/en/problem/subsets-ii/">Q</a></li>
+	 <li><a href="combinations.html">Combinations</a> <a href="http://www.lintcode.com/en/problem/combinations/">Q</a></li>
+	 <li><a href="combinationsum.html">Combination Sum</a> <a href="http://www.lintcode.com/en/problem/combination-sum/">Q</a></li>
+	 
+
+String<br>
+<li><a href="palindrom partition.html">Palindrom Partition</a> <a href="http://www.lintcode.com/en/problem/palindrome-partitioning/#">Q</a></li>
+<li><a href="FindMissingNumber-ii.html">FindMissingNumber-ii</a> <a href="http://www.lintcode.com/en/problem/find-the-missing-number-ii/"> Q</a></li>
+<li><a href="restoreIPAdress.html">Restore IP Address</a> <a href="http://www.lintcode.com/en/problem/restore-ip-addresses/">Q</a></li>
+<li><a href="wordBreakII.html">Word Break II O(n*2^n) Lintcode过不了大数据</a> <a href="http://www.lintcode.com/en/problem/find-the-missing-number-ii/"> Q</a></li>
+
+
+</body>
+
+
+
+</html>
+
