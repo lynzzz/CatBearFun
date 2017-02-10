@@ -38,9 +38,11 @@ int lengthOfLongestSubstringTwoDistinct(String s, int k){
    return max;
 }
 
-// sliding window
+// 最长K个不同子串： sliding window
 // HashMap character ->number of occurrences
-// 维持一个开始系数，结束系数，hashmap   先处理头，在处理尾巴
+
+// 1. 先找到尾巴
+// 2. 在更新头 
 
 Time : O(n)  i和j 各自走了一遍
 
