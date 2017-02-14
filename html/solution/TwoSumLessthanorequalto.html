@@ -1,0 +1,38 @@
+<html>
+
+<body><pre><code>
+
+public class Solution {
+
+    public int twoSum5(int[] nums, int target) {
+        // Write your code here
+        int count  = 0;
+        Arrays.sort(nums);
+         
+        int i = 0, j = nums.length - 1;
+        
+        
+        while( i &lt; j){
+            
+            int sum = nums[i] + nums[j];
+            
+            if ( sum <= target){
+                count = count + j - i;
+                i++;
+            }else{
+                j--;
+            }
+        }
+        return count;
+    }
+}
+
+</code></pre>
+Time O(nlogn)
+
+// Two sum 模班 + 排序数组的性质 ：　一组小于 target =>前面必然存在　j-i组小于target                 count = count + j - i;
+[2,7,11,15]  target 23,    [2, 15]小于target　，可以推测出　[2,11] [2,7]必然小于target
+
+
+</body>
+</html>

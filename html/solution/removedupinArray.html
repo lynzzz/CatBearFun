@@ -1,0 +1,44 @@
+<html>
+<body>
+
+<pre><code>
+
+public class Solution {
+    public int deduplication(int[] nums) {
+        // Write your code here
+        if ( nums.length == 0){
+            return 0;
+        }
+        
+        Arrays.sort(nums);
+        
+        int i=0;
+        int j=0;
+        
+        
+        while( j < nums.length ){
+            
+            while ( j < nums.length && nums[j] == nums[i]){
+                j++;
+            }
+            
+            if ( j == nums.length){
+                break;
+            }
+            
+            i++;
+            nums[i] = nums[j];
+            j++;
+        }
+
+        return i+1;
+    }
+}
+</code></pre>
+Time O(n)
+
+1. 快慢指针模型
+2。 注意快指针走的时候不要过界  while ( j < nums.length && nums[j] == nums[i]){
+
+</body>
+</html>

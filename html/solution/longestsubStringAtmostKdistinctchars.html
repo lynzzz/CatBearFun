@@ -4,13 +4,13 @@
 
 <pre><code>
 int lengthOfLongestSubstringTwoDistinct(String s, int k){
- HashMap<Character, Integer> m = new HashMap<>();
+ HashMap&lt;Character, Integer&gt; m = new HashMap<>();
    
    int i,j=0;
-   int max = 0;;
+   int max = 0;
    
    for( i=0; i&lt;s.length();i++){
-        while( j < s.length()){
+        while( j &lt; s.length()){
 		    char c = s.charAt(j);
 		    if ( m.containsKey(c)){
 			    m.put(c, m.get(c) + 1 );

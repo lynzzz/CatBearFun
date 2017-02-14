@@ -1,0 +1,94 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+public class Solution {
+    public int twoSum6(int[] nums, int target) {
+        // Write your code here
+        
+        Arrays.sort(nums);
+        
+        int i =0;
+        int j = nums.length - 1;
+        int count = 0;
+        
+        while ( i &lt; j){
+            
+            int sum = nums[i] + nums[j];
+            
+            
+            if ( sum > target){
+                j--;
+            }else if ( sum < target){
+                i++;
+            }else{
+                
+                count++;
+                i++;
+                j--;
+                
+                while ( i < j && nums[i] == nums[i-1] ){
+                    i++;
+                }
+            
+                while(  i < j && nums[j] == nums[j+1] ){
+                    j--;
+                }
+            
+
+            }
+        }
+        return count;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(nlgn)   <br>
+Space complexity :     <br>
+
+
+Algorithm<br>
+
+1.   <br>
+
+
+
+
+<br>
+Note <br>
+// 2 sum 摸板： 找到pair在去重 
+
+<br>
+Java Skill
+1.          <br>
+2.          <br>
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>

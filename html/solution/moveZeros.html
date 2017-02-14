@@ -1,0 +1,44 @@
+<html>
+<body>
+
+<pre><code>
+public class Solution {
+        
+        int i = 0, j=0;
+        
+        while( j &lt; nums.length){
+        
+             // find zero
+             while( i < nums.length && nums[i] != 0){
+                 i++;
+             }
+         
+             if ( i == nums.length){
+                 return;
+             }
+         
+             // find non-zero
+             j = i + 1;
+             while( j < nums.length && nums[j] == 0 ){
+                 j++;
+             }
+         
+         
+             if ( j == nums.length){
+                 return;
+             }
+         
+             int temp = nums[i];
+             nums[i] = nums[j];
+             nums[j] = temp;
+             
+             i++;
+        }
+    }
+}
+</code></pre>
+time O(n)
+2pointers 模版 ： 因为要保持相对顺序，所以两个指针都从左往右搜索
+
+</body>
+</html>
