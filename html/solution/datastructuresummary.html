@@ -1,0 +1,65 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+Priority Queue<br><br>
+
+1. 如何初始化<br>
+PriorityQueue<T> pq = new PriorityQueue<>()  默认的情况是min priority queue   <br>
+priorityQueue<T> pq = new PriorityQueue<>(k, Collections.reverseOrder()); 这样是max priority queue<br><br>
+
+2. 时间复杂度：<br>
+add/remove  O(lgn)<br>
+min/max  O(1)<br><br>
+
+3. 算法： <br>
+3.1 求第k largest number, 用min priority queue, 比头大就去掉头，往里加， 最后头是第k个最大的数。 记忆方法是，你如果要求数组最大值，一般初始化成Integer.MIN_VALUE<br>
+3.2 求第k smallest number 用max priority queue，比头小就去掉头，往里加， 最后头是第K个最小的数。 记忆方法是，你如果要求数组最小值，一般初始化成Integer.MAX_VALUE<br><br>
+
+4. 模板 ： 以求第k个最大的数字为例子<br>
+
+
+<pre><code>
+PriorityQueue<T> pq = new PriorityQueue<T>();
+
+for( int i=0; i&lt;num.length; i++){
+     if ( pq.size() < k ){
+	     pq.add(nums[i];
+	 }else{
+	     if ( nums[i] > pq.peek()){
+		     pq.remove();
+			 pq.add(nums[i];
+		 }
+	 }
+
+}
+time complexity : O( nlgk)
+space : o(k);
+
+</code></pre>
+
+
+5. questions :
+
+ <li><a href="http://www.lintcode.com/en/problem/kth-smallest-numbers-in-unsorted-array/">Kth Smallest number in unsorted array</a></li>
+ <li><a href="http://www.lintcode.com/en/problem/top-k-largest-numbers/">Top K largest numbers</a></li>
+  <li><a href=" http://www.lintcode.com/en/problem/high-five/">High Five</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

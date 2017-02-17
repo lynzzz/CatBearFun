@@ -14,7 +14,33 @@ I. 两边往中间走<br>
 sort后， 前后两个指针往中间夹：<br><br>
 
 Questions：<br>
-two sum以及6种变种<br><br><br>
+two sum<br><br><br>
+
+
+two element pair可能性的个数: <br>
+
+模板： 因为排序，有一对符合条件，可以推导出有j-i对符合条件
+<pre><code>
+
+Arrays.sort(nums);
+int i=0, j = length - 1;
+count = 0;
+while( i &lt; j ){
+    int sum = num[i] + num[j];
+	if ( sum > target ){
+	    count = count + j - i;
+	    j--;
+	}else{
+	    i++;
+	}
+}
+
+
+</code></pre>
+
+ <li><a href="http://www.lintcode.com/en/problem/two-sum-greater-than-target/">Two Sum - Greater than target</a></li>
+ <li><a href="http://www.lintcode.com/en/problem/triangle-count/">Triangle Count （里面的while是模板，target是最后一位数）</a></li>
+
 
 
 II 两个指针从左往右走，一快一慢<br>
