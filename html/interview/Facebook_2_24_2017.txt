@@ -1,0 +1,101 @@
+
+Given a binary tree of integers, write code to store the tree into a list of integers and recreate the original tree from a list of integers.
+
+Here's what your method signatures should look like (in Java):
+
+List<Integer> store(Node root)
+Node restore(List<Integer> list)
+  
+  
+class Node {
+
+  int val;
+  Node left;
+  Node right;
+  
+  public Node(int val) {
+    this.val = val;
+  }
+}  
+
+
+     1
+    / \
+    2  3
+       /\
+      4  5
+       
+       
+ArrayList 1 2 3 null, null, 4, 5, (null, null)  
+       
+       
+       1
+        \
+         2
+          \
+           3
+           
+1, Null, 2, NUll, 3, null, null   
+       
+List<Integer> store(Node root){
+       ArrayList<Node> ret = new ArrayList<>();
+       ret.add(root);
+       
+       for( int i=0; i<ret.size(); i++){
+         Node n = ret.get(i);
+         if ( n == null ){
+           continue;
+         }
+         ret.add(n.left);
+         ret.add(n.right);
+       }
+       
+       List<Integer> results = new ArrayList<>();
+       for( int i=0; i<ret.size(); i++ ){
+         if ( ret.get(i) == null ){
+             results.add(null);
+         }else{
+             results.add(ret.get(i).val);
+         }
+       }
+}
+
+Integer x = null;
+int y = x;
+
+1, max, 2, max, 3, max, max
+
+Node restore(List<Integer> list){
+    ArrayList<Node> ret = new ArrayList<>();
+    if ( list == null || list.size() == 0 ){
+        return null;
+    }
+    
+    int index = 0;
+    boolean isLeft = true;
+    Node root = new Node(list.get(0));
+    
+    ret.add( root );
+    for( int i=1; i<list.size(); i++ ){
+        if ( list.get(i) != null ){
+            Node n = new Node(list.get(i).val);
+            if ( isLeft ){
+                ret.get(index).left = n;
+            }else{
+                ret.get(index).right = n;
+        
+            ret.add(n);
+        }
+        
+        if ( !isLeft ){
+            index++;
+        }
+        
+        isLeft = !isLeft;
+    
+    }
+    
+    return root;
+}
+1, 
+
