@@ -1,0 +1,106 @@
+// This is the text editor interface. 
+// Anything you type or change here will be seen by the other person in real time.
+
+
+/**
+ * Time Travelling HashMap
+ * 
+ * foo, 10 = bar
+ * foo, 20 = bar2
+ * foo, 30 = bar3
+ * 
+ * foo, 10? == bar
+ * foo, 20? == bar2
+ * foo, 29? == bar2
+ * foo, 30? == bar3
+ * foo, 10000 == bar3
+ * 
+ *
+ * Map<key, Map<time, value>> m
+ 
+   Map<key, List<Pair<time, value>>>
+ 
+   foo -> [{10, bar}, {20, bar2}, {30, bar3}, {40, bar3}, {50, bar3}, {60, bar3}, {70, bar3}]
+ */
+ import java.util.*;
+ 
+ class Pair{
+     public int key;
+     public String val;
+     
+     Pair(int key, String val){
+         this.key = key;
+         this.val = val;
+     }
+ }
+ 
+ class TravelHashMap{
+     
+    Comparator<Pair> myComparator = new Comparator<Pair>(){
+        public int compare(Pair l, Pair r){
+            if ( l.key < r.key ){
+                return -1;
+            }
+            
+            return 1;
+        }
+    };
+     
+     
+    private HashMap< String, ArrayList<Pair<Integer, String> > > m = new HashMap<String, ArrayList<Pair<Integer, String> >>();
+    
+    TravelHashMap(){
+        
+    }
+     
+    void put(String key, String val, int time){
+        
+        if( !m.containsKey(key) ){
+            Pair p = new Pair(time, val);
+            ArrayList<Pair> list = new ArrayList<>();
+            list.add(p);
+            m.put(key,list);
+        }else{
+            Pair p = new Pair(time, val);
+            m.get(key).add(p); 
+            Collections.sort(m.get(key), myComparator);
+        }
+    } 
+    
+    String get(String key, int time){
+        
+        ArrayList<Pair> list  = m.get(key);
+        
+        int start = 0;
+        int end = list.size() - 1;
+        
+        while( ( start + 1) < end ){
+            
+            int mid = start + (end - start)/2;
+            if( list.get(mid).key == time ){
+                end = mid;
+            }else if ( list.get(mid).key < time){
+                start = mid;
+            }else{
+                end = mid;
+            }
+        }
+        
+        if ( list.get(start).key < time ){
+            return list.get(start).val;
+        }
+        
+        return list.get(end).val;
+        
+    }
+    
+    
+    public static void main(String[] args) {
+        TravelHashMap map = new TravelHashMap();
+        map.put("foo", "bar", 10);
+        
+        System.out.println(map.get("foo", 10));
+    }
+     
+     
+ }
