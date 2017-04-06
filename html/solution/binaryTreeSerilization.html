@@ -1,0 +1,161 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+此题目和一般的二分树的区别是需要表示null<br>
+
+1<br>
+  \<br>
+   2<br>
+
+ 需要表示成  1, null, 2, null, null<br><br>
+ 
+Serilizaion : 用Queue做BFS, 需要把null压入ArrayList,不然无法知道树的结构。<br><br>
+
+deserilization : 数据结构 boolean isLeft, 和 当前root index, 建立ArrayList<Node>代表一棵树,遇到null就跳过，因为自然为null<br><br>
+
+Java skill : 可以把  null赋值给reference type,包括 Integer. <br>
+             Integer x = null  correct<br>
+			 Integer y = x     Wrong, nullpointer exception<br>
+			 null 不能赋值给primitive tyep<br>
+
+<pre><code>
+
+class Solution {
+     
+
+    public String serialize(TreeNode root) {
+        // write your code here
+       if ( root == null ){
+           return "";
+       }
+      
+       ArrayList&lt;TreeNode&gt; arr = new ArrayList<>();
+       Queue<TreeNode> q = new LinkedList<>();
+       
+       q.add(root);
+       
+       while( !q.isEmpty() ){
+           TreeNode n = q.poll();
+           
+           arr.add(n);
+           
+           if ( n != null){
+               q.add(n.left);
+               q.add(n.right);
+           }
+       }
+       
+          
+       StringBuilder str = new StringBuilder();
+       for( TreeNode n : arr){
+           if ( n == null){
+               str.append('#');
+           }else{
+               str.append(n.val);
+           }
+           str.append(',');
+       }
+       
+       str.deleteCharAt(str.length() - 1 );
+       
+       return str.toString();
+       
+    }
+    
+    /**
+     * This method will be invoked second, the argument data is what exactly
+     * you serialized at method "serialize", that means the data is not given by
+     * system, it's given by your own serialize method. So the format of data is
+     * designed by yourself, and deserialize it here as you serialize it in 
+     * "serialize" method.
+     */
+    public TreeNode deserialize(String data) {
+        // write your code here
+        if ( data.equals("")){
+            return null;
+        }
+        
+        
+        String[] strs = data.split(",");
+        
+        ArrayList<TreeNode> ret = new ArrayList<>();
+
+        TreeNode root = new TreeNode(Integer.valueOf(strs[0]));
+        ret.add(root);
+        
+        int index = 0;
+        boolean isLeft = true;
+        
+        for( int i=1; i&lt;strs.length; i++ ){
+            
+            if ( !strs[i].equals("#") ){
+                TreeNode n = new TreeNode(Integer.valueOf(strs[i]));
+                ret.add(n);
+
+                if ( isLeft){
+                    ret.get(index).left = n;
+                }else{
+                    ret.get(index).right = n;
+                }
+            }
+            
+            if ( !isLeft){
+                index++;
+            }
+            
+            isLeft = !isLeft;
+            
+        }
+        
+        return root;
+    }
+}
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+Algorithm<br>
+
+1.   <br>
+
+
+
+
+<br>
+Note <br>
+
+
+<br>
+Java Skill
+1.          <br>
+2.          <br>
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>
