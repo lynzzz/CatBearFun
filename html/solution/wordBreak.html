@@ -1,0 +1,99 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+public class Solution {
+    /**
+     * @param s: A string s
+     * @param dict: A dictionary of words dict
+     */
+    boolean ans = false;
+    public boolean wordBreak(String s, Set<String> dict) {
+        // write your code here   
+        
+       
+        // Write your code here
+        dfs(new ArrayList&lt;String>(), 0, s, dict);
+        return ans;
+        
+    }
+    
+    private void dfs( List&lt;String> result, int pos, String s, Set<String> dict){
+        
+        if ( pos == s.length() ){
+            
+           String str = "";
+           for( String s1 : result){
+               str = str + s1;
+           }
+           if ( str.equals(s) ){
+               ans = true;
+           }
+           
+           return;
+        }
+        
+        for( int i=pos; i&lt;s.length(); i++ ){
+            String temp = s.substring(pos, i+1);
+            if ( !dict.contains(temp)){
+                continue;
+            }
+            
+            result.add(temp);
+            dfs( result, i+1, s, dict);
+            result.remove(result.size()-1);
+        }
+    }
+}
+
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+Algorithm<br>
+
+1.   <br>
+
+
+
+
+<br>
+Note <br>
+
+
+<br>
+Java Skill
+1.          <br>
+2.          <br>
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>
