@@ -11,14 +11,6 @@
 
 
 <pre><code>
-/**
- * Definition for Directed graph.
- * class DirectedGraphNode {
- *     int label;
- *     ArrayList<DirectedGraphNode> neighbors;
- *     DirectedGraphNode(int x) { label = x; neighbors = new ArrayList<DirectedGraphNode>(); }
- * };
- */
 public class Solution {
     /**
      * @param graph: A list of Directed graph node
@@ -26,36 +18,35 @@ public class Solution {
      */    
     public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) {
         // write your code here
-        HashMap<Integer, Integer> m = new HashMap<>();       // label -> count
-        for( DirectedGraphNode node : graph){                  // loop through each node
-            for( DirectedGraphNode neighbor : node.neighbors){ // loop neighbor of each node
-                if ( !m.containsKey(neighbor.label) )
-                    m.put(neighbor.label, 1 );
-                else
-                    m.put(neighbor.label, m.get(neighbor.label)+1);
-            }
-        }
-        
-        ArrayList<DirectedGraphNode> ret = new ArrayList<>();  // find the 0 indegree node
-        for( DirectedGraphNode n : graph){
-            if ( !m.containsKey(n.label) ){
-                ret.add(n);
-            }
-        }
-        
-        Queue<DirectedGraphNode> q = new LinkedList<>();        // BFS 
         ArrayList<DirectedGraphNode> answer = new ArrayList<>();
 
-        for( DirectedGraphNode n : ret){
-            q.add(n);
+
+        // construct indegree table
+        HashMap<DirectedGraphNode, Integer> m = new HashMap<>();       
+            for( DirectedGraphNode neighbor : node.neighbors){ 
+                if ( !m.containsKey(neighbor) )
+                    m.put(neighbor, 1 );
+                else
+                    m.put(neighbor, m.get(neighbor)+1);
+            }
         }
         
+        // find the node not in indegree map, which are start points
+        Queue<DirectedGraphNode> q = new LinkedList<>();         
+        for( DirectedGraphNode n : graph){
+            if ( !m.containsKey(n) ){
+                q.add(n);
+            }
+        }
+        
+
+        // BFS + indegree table update
         while( !q.isEmpty() ){
             DirectedGraphNode n = q.poll();
             answer.add(n);
             for( DirectedGraphNode neighbor : n.neighbors){
-                m.put(neighbor.label, m.get(neighbor.label)-1);
-                if ( m.get(neighbor.label) == 0 ){
+                m.put(neighbor, m.get(neighbor)-1);     // 可以理解为断开连表
+                if ( m.get(neighbor) == 0 ){
                     q.add(neighbor);
                 }
             }
@@ -74,7 +65,11 @@ public class Solution {
 
 
 <div class="comment">
-1. Topological sorting :拓扑排序 ：有向图BFS:  入度 + queue  
+Topological sorting （中文名拓扑排序）: 有向图从入口到出口遍历，有环的点遍历不到。<br>
+方法：<br> 
+1.构造adjacent list, 构造进度表 <br>
+2.进度为0点BFS，更新进度，只有下一个进度为0，才能加入queue,不用set<br>
+
 </div>
 
 
