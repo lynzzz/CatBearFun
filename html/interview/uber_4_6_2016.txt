@@ -47,7 +47,7 @@
     };
      
      
-    private HashMap< String, ArrayList<Pair<Integer, String> > > m = new HashMap<String, ArrayList<Pair<Integer, String> >>();
+    private HashMap< String, ArrayList<Pair<Integer, String> > > m = new HashMap<String, ArrayList<Pair<Integer, String> >>();                      // 数据结构的语法定义错了，导致不能编译
     
     TravelHashMap(){
         
@@ -104,3 +104,117 @@
      
      
  }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ///////////////////////////////////////////////////////////////////////////////// Correct Solution ///////////////////////////////////////////////////////////////////////////////////
+ 
+ 数据结构定义 
+ HashMap<Integer, String> m
+ m.put("Hello", 100);            // Hashmap put函数帮你做了两件事 Pair p = new Pair(“hello",100), m.add(p);
+ 
+ List<Node> l
+ Node n = new Node("hello",100);
+ l.add(n);
+ 
+ 
+ 
+ import java.util.*;
+
+public class TimeMachine {
+
+	 class Node{
+	     public int key;
+	     public String val;
+	     
+	     Node(int key, String val){
+	         this.key = key;
+	         this.val = val;
+	     }
+	 }
+	 
+	 public class MyComparator implements Comparator<Node>{
+		 public int compare(Node l, Node r){
+			 if ( l.key < r.key ){
+				 return -1;
+			 }
+			 return 1;
+		 }
+	 }
+	 
+	    public static void main(String[] args) {
+	    	TimeMachine map = new TimeMachine();
+	    	
+	        map.put("foo", 10, "Bar");
+	        map.put("foo", 20, "Bar2");
+	        map.put("foo", 30, "Bar3");
+
+	        System.out.println(map.get("foo", 10));
+	        System.out.println(map.get("foo", 20));
+	        System.out.println(map.get("foo", 29));
+	        System.out.println(map.get("foo", 30));
+	        System.out.println(map.get("foo", 10000));
+
+	    }
+	    
+	 
+    private HashMap< String, ArrayList<Node> > m = new HashMap<String, ArrayList<Node>>();
+
+    void put(String key, int time, String val ){
+    	Node p = new Node(time, val);
+        if( !m.containsKey(key) ){
+            ArrayList<Node> list = new ArrayList<>();
+            list.add(p);
+            m.put(key,list);
+        }else{
+            m.get(key).add(p); 
+        }
+        Collections.sort(m.get(key), new MyComparator());
+    } 
+    
+    String get(String key, int time){
+        
+        ArrayList<Node> list  = m.get(key);
+        
+        int start = 0;
+        int end = list.size() - 1;
+        
+        while( ( start + 1) < end ){
+            
+            int mid = start + (end - start)/2;
+            if( list.get(mid).key == time ){
+                return list.get(mid).val ;
+            }else if ( list.get(mid).key < time){
+                start = mid;
+            }else{
+                end = mid;
+            }
+        }
+        
+        if ( list.get(start).key == time ){
+            return list.get(start).val;
+        }
+        
+        if ( list.get(end).key == time ){
+            return list.get(end).val;
+        }
+        
+        if ( list.get(start).key < time &&  list.get(end).key > time){
+            return list.get(start).val;
+        }
+        
+        return list.get(end).val;
+        
+    }
+    
+}
