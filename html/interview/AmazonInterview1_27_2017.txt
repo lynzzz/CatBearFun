@@ -72,4 +72,32 @@ HashSet<String> helper(String str, HashSet<String> set){
      return set;
 }
 
+ /////////////////////////////////////////////////////////////// Correct Solution//////////////////////////////////////////////////////
  
+提取一句话里的单词用以下函数 
+String str = "  I have a dream";
+String[] ret = str.trim().split(" ");
+
+
+然后加一个HashSet, 因为他不应许重复，所以你加重复值，他也不可能duplicate.
+ 
+ 
+ 		String str1 = "  I have a dream ";
+		String[] ret1 = str1.trim().split(" ");
+        
+		String str2 = " I also have a dream yes";
+		String[] ret2= str2.trim().split(" ");
+		
+		HashSet<String> set = new HashSet<String>();
+		
+		for(String s : ret1){
+			set.add(s);
+		}
+		
+		for(String s : ret2){
+			set.add(s);
+		}
+		
+		for(String s : set){
+			System.out.println(s);
+		}

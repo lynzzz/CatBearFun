@@ -16,7 +16,7 @@
  * foo, 10000 == bar3
  * 
  *
- * Map<key, Map<time, value>> m
+ * Map<key, Map<time, value>> m                               // HashMap is unordered, 用这个数据结构不能按自己的想法sorting
  
    Map<key, List<Pair<time, value>>>
  
