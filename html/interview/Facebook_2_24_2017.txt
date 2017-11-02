@@ -99,3 +99,98 @@ Node restore(List<Integer> list){
 }
 1, 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////  正解解法 ： 这题非常难，没做过很难写出来  //////////////////////////////////////////////////////
+
+
+class Solution {
+
+	 
+	 class Node {
+
+  int val;
+  Node left;
+  Node right;
+  
+  public Node(int val) {
+    this.val = val;
+  }
+}  
+
+
+    List<Integer> store(Node root){
+		List<Integer> ret = new ArrayList<>();
+		
+        if ( root == null) return ret;
+	
+		Queue<Node>  q = new LinkedList<>();
+		q.add(root);
+		
+		
+		while( !q.isEmpty()){
+		    Node n = q.poll();
+			ret.add( n != null ? n.val : null);
+		    
+			if ( n == null ){
+			    continue;
+			}
+			
+			q.add(n.left);
+			q.add(n.right);
+		}    
+        
+        return ret;
+    }
+    
+    ///  这个Q+array 不是特别好想出来
+    
+    public TreeNode deserialize( List<Integer> list ){
+    {
+           if ( list == null || list.size() == 0 ) return null;
+           
+           Queue<Node> q = new LinkedList<>();
+           
+           Node root = new TreeNode( list.get(0) );
+           q.add( root );
+           
+           for( int i=1; i<list.size(); i++){                // i从1开始，往后走流程， 能不能做左子树？能不能做右子树？可以就压入queue,做下一次的parent. 不用处理null
+               Node parent = q.poll();
+               
+               if ( list.get(i) != null ){
+                   Node left = new Node(list.get(i));
+                   parent.left = left;
+                   q.add(left);
+               }
+               
+               i++;
+               
+               if (  list.get(i) != null ){
+                   Node right = new Node(list.get(i));
+                   parent.right = right;
+                   q.add(right);
+               }
+           }
+           
+           return root;
+    }
+
+}
+
+Serilization : BFS
+Deserilization : Queue + array
+
