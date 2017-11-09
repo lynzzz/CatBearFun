@@ -25,6 +25,17 @@
     cursor: pointer;
 }
 
+#OfficeLinkButton{
+    position:absolute;
+    transition: .5s ease;
+    top: 1%;
+    left: 88%;
+	background-color : #a9e0ea;
+	border: none;
+	font-weight: bold;
+    cursor: pointer;
+}
+
 #movidButton{
     position:absolute;
     transition: .5s ease;

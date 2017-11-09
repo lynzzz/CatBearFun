@@ -115,7 +115,63 @@ Last Time completed at :
 
 </div>
 
+//////////////////////////////////////////////////////////////////////////////  解法2，思维上要简单些，用到了图论的结论///////////////////////////////////////////////////////////////////////
 
+<pre><code>
+ public boolean validTree(int n, int[][] edges) {
+        // What is valid tree?
+        // 1. no circle
+        // 2. no isolated node
+
+
+        // 此题目的结论 n 个点图无环，只能有n-1条路径
+        if ( edges.length != n - 1){
+            return false;
+        }
+
+
+        
+        HashMap&lt;Integer, List<Integer>> graph = new HashMap<>();
+        
+        // Create adjacent list
+        // since there are n nodes, labeled from 0 to n-1, 必然有通往这n个点的路径，可以创造adjacent list.
+        
+        for( int i=0; i&lt;n; i++){
+            graph.put(i, new ArrayList<Integer>() );
+        }
+        
+        for( int i=0; i&lt;edges.length; i++){
+            int from = edges[i][0];
+            int to = edges[i][1];
+            graph.get(from).add(to);
+            graph.get(to).add(from);
+        }
+        
+        
+        // BFS, 遍历图，保证无isolated点
+        Queue<Integer> q = new LinkedList<>();
+        HashSet<Integer> visited = new HashSet<>();
+        
+        q.add(0);
+        visited.add(0);
+        
+        while( !q.isEmpty() ){
+            
+            int node = q.poll();
+            
+            for( int i : graph.get(node)){
+                if ( !visited.contains(i) ){
+                    q.add(i);
+                    visited.add(i);
+                }
+            } 
+        }
+        
+        return visited.size() == n;
+        
+    }
+}
+</code></pre>
 
 
 </body>

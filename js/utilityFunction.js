@@ -9,5 +9,9 @@ function goToCodingLayout(){
     window.location = 'html/codeLayout.html';
 }
 
+function goToOfficeLink(){
+    window.location = 'html/office.html';
+
+}
 
 
