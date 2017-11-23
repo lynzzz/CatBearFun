@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 
 <head>
    <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
@@ -34,9 +34,6 @@ public class Solution {
     
     
     private void dfs( List<List<Integer>> results, List<Integer> result, TreeNode root, int target){
-        if ( root == null){
-            return;
-        }
         
         int sum = 0;
         for( int n : result){
@@ -77,35 +74,18 @@ public class Solution {
 
 
 <div class="comment">
-Time complexity :      <br>
-Space complexity :     <br>
 
 
-Algorithm<br>
-all possible sulutions -> DFS 遍历 <br>
+all possible sulutions -> DFS -> Binary tree Tranversal ->答案在参数中  <br>
 
-1.   <br>
-
-
-
-
-<br>
-Note <br>
-binary tree遍历模板
-// 参数 ： 大容器，小容器<br>
-// 递归结束条件， 左右<br>
 
 此题的技巧，在遍历之前把树顶先加进去，这样左遍历结束的时候可以保留树顶，然后开始右遍历<br>
 
-<br>
-Java Skill
-1.          <br>
-2.          <br>
 
-
+测试的时候用 1，  1，2，# 测试   <br>
 
 <br>
-Last Time completed at :
+Last Time completed at : 11/14/2017
 
 
 </div>

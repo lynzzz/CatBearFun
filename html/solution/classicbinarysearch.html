@@ -12,7 +12,7 @@
 
 <pre><code>
 public class Solution {
-    public int findPosition(int[] nums, int target) {
+    public int findFirstPosition(int[] nums, int target) {
         // Write your code here
         if ( nums == null || nums.length == 0) return -1;
         
@@ -28,14 +28,60 @@ public class Solution {
             }else if ( nums[mid] < target){
                 start = mid;
             }else{
-                return mid;
+                end = mid;                               // 这里是精华，去掉后半段
             }
         }
+		
+		// 最后只剩两个来处理，先处理前面
+		if( nums[start] == target ){
+		    return start;
+		}
+		
+		if ( nums[end] == target ){
+		    rturn end;
+		}
         
         return -1;
     }
 }
 
+
+
+
+
+public class Solution {
+    public int findLastPosition(int[] nums, int target) {
+        // Write your code here
+        if ( nums == null || nums.length == 0) return -1;
+        
+        int start = 0;
+        int end = nums.length - 1;
+        
+        while ( ( start + 1) &lt; end ){
+            
+            int mid = start + (end - start)/2;
+            
+            if ( nums[mid] &gt; target){
+                end = mid;
+            }else if ( nums[mid] < target){
+                start = mid;
+            }else{
+                start = mid;                               // 这里是精华，去掉前半段
+            }
+        }
+		
+		// 最后只剩两个来处理, 先处理后面
+		if( nums[end] == target ){
+		    return end;
+		}
+		
+		if ( nums[start] == target ){
+		    return start;
+		}
+        
+        return -1;
+    }
+}
 
 </code></pre>
 

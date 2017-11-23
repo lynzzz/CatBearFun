@@ -2,6 +2,9 @@
 
 
 <body>
+
+经典排列模板（permutation)<br>
+
 <pre><code>
 class Solution {
      * @param nums: A list of integers.
@@ -40,14 +43,28 @@ class Solution {
 </code></pre>
 
 <div style="color:red; font-size:20px">    
-permutaion global search<br>
-!!!!!!!!!!!!!!   经典的排列模板 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！<br>
-输入为 ： 大容器，小容器， 访问控制的boolean array<br>
-例子 ：  [123] [132] [231][213]<br>
 
-Note:<br>
-1. 只有没有访问的位置才能访问，用visited[i]控制<br>
-2. 访问的flag, 和加入的值在递归返回时必须重制。<br>
+
+permutation必须回溯，无pos位置控制符
+
+<pre><code>
+    void permutationDFS(){
+        
+        for( int i=0; i&lt;nums.length; i++){                     // 从0开始循环
+           
+                dfs(.... );
+        }
+    }
+	
+subsets不能回溯，有pos位置控制符号
+
+	void subsetDFS(int pos){
+        
+        for( int i=pos; i &lt; nums.length; i++){
+            dfs( ... i+1 );
+        }
+    }
+</code></pre>
 </div>
 
 
