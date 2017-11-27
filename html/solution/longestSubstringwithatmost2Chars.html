@@ -1,0 +1,64 @@
+
+<html>
+<body>
+
+<pre><code>
+public int lengthOfLongestSubstringTwoDistinct(String s) {
+        
+        Map&lt;Character, Integer> m = new HashMap<>();
+        
+        int start = 0;
+        int length = 0;
+        int i =0;
+        
+        for( ; i&lt;s.length(); i++){
+            
+            if ( m.size() < 2){
+                if ( !m.containsKey(s.charAt(i))){
+                    m.put(s.charAt(i), 1);
+                }else{
+                    m.put(s.charAt(i), m.get(s.charAt(i)) + 1);
+                }
+            }else{
+                
+                if ( m.containsKey(s.charAt(i))){
+                    m.put(s.charAt(i), m.get(s.charAt(i)) + 1);
+                }else{
+                    
+                    // update
+                    int tempLength = i - start;
+                    if ( tempLength > length){
+                        length = tempLength;
+                    }
+                    
+                    char c = s.charAt(start);
+                    m.put(c, m.get(c) - 1);
+                    if ( m.get(c) == 0){
+                        m.remove(c);
+                    }
+                    
+                    start++;
+                    i--;
+                }   
+            }
+            
+            
+
+        }
+        
+                    int tempLength = i - start;
+            if ( tempLength > length){
+                length = tempLength;
+            }
+        return length;
+
+最长的只包含最多两个字母的字串。 （与最长无重复字串数据结构类似）
+		
+数据结构： hashmap<Integer, count>, start, i
+
+算法： 当map小于两个字母，更新map。 当等于两个且新字母没在map里， 更新length, start对应子母在map里递减直到去除。
+
+Trick : 结束时需要在check一次长度，因为更新长度是在else里面。
+
+
+</code></pre>
