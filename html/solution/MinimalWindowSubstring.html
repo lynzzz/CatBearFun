@@ -14,61 +14,59 @@
 
 
      
-    public String minWindow(String source, String target) {
-        // write your code
+      public String minWindow(String s, String t) {
         
-        // build reference dict
-        int[] dict = new int[256];
-        for( int i=0; i&lt;target.length(); i++ ){
-            char c = target.charAt(i);
-            dict[c]++;
+
+        
+        int[] targetDict = new int[256];
+        for(int i=0; i &lt; t.length(); i++){
+            targetDict[t.charAt(i)]++;
         }
         
+        int[] flowDict = new int[256];
         
-        int[] srcDict = new int[256];
-
-        int i = 0;
-        int start = 0;
         int count = 0;
-        String ret = source;
-        boolean found = false;
+        int start = 0;
+        String ret = "";
         
-
-        for( ; i&lt;source.length();  i++){
+        for( int i=0; i &lt; s.length(); i++){
+            char c = s.charAt(i);
             
-            // As we go, we build srcDict and count qulified characters
-            char c = source.charAt(i);
-            srcDict[c]++;
-            
-            if ( srcDict[c] <= dict[c]){
+            if ( flowDict[c] < targetDict[c]   ){
                 count++;
             }
+            flowDict[c]++;
             
-            if ( count == target.length() ){
+            if ( count == t.length())   // find the end of the string
+            {
                 
-                found = true;
+                while ( true ){
+                    char front = s.charAt(start);
                 
-                // move head
-                
-                while( start < i && srcDict[source.charAt(start)] > dict[source.charAt(start)] ){
-                    srcDict[source.charAt(start)]--;
-                    start++;
+                    if ( flowDict[front] > targetDict[front]){
+                        flowDict[front]--;
+                        start++;
+                    }else{
+                        String str = s.substring(start, i+1);
+                        
+                        if ( ret.equals("")){
+                            ret = str;
+                        }
+                        else if ( str.length() < ret.length() ){
+                            ret = str;
+                        }
+                        break;
+                    }
                 }
                 
-                
-                // update string
-                if ( ( i - start + 1) < ret.length() ){
-                    ret = source.substring(start, i+1);
-                }
-
-                //破坏这个平衡，头尾向前走一步 
-                srcDict[source.charAt(start)]--;
+                flowDict[s.charAt(start)]--;
                 start++;
                 count--;
+                
             }
         }
         
-        return found ? ret : "";
+        return ret;
     }
 
 
@@ -80,39 +78,16 @@
 
 
 <div class="comment">
-Time complexity :  O(n)    <br>
-Space complexity : O(n)    <br>
 
 
-Algorithm<br>
-
-map char->number of occurences
-
-最短窗口子串 ： Sliding window
-1 先找到尾巴，技巧： 数有效字符个数 if ( count == target.length() )
-2 在移动头去掉多余的
-3 头往前移动一步打破平衡，在去找新的尾巴
-
-
-// 判断满足条件的字符串方法不容易想到 ：
-1.   <br>
+此题目的精华在于如何判断找到了尾巴 ？  有效字符个数count == target.length()
 
 
 
 
-<br>
-Note <br>
-
-
-<br>
-Java Skill
-1.          <br>
-2.          <br>
 
 
 
-<br>
-Last Time completed at :
 
 
 </div>
