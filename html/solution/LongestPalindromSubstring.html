@@ -1,0 +1,64 @@
+
+<html>
+<body>
+
+
+
+Solution 1:<br>
+
+<pre><code>
+
+
+class Solution {
+    public String longestPalindrome(String s) {
+                
+        int n = s.length();
+        
+        String ret = "";
+        
+        for( int i=0; i&lt;n; i++ ){
+           String str = getPalindrome(i, i, s);
+           
+           ret = str.length() > ret.length() ? str : ret;
+            
+           str = getPalindrome(i, i+1, s);
+            
+           ret = str.length() > ret.length() ? str : ret;
+        }
+        
+        return ret;
+    }
+    
+    
+    
+    String getPalindrome(int l, int r, String s){
+        
+        while ( l&gt;=0 && r&lt;s.length() && s.charAt(l) == s.charAt(r)){
+            l--;
+            r++;
+        }
+        return s.substring(l+1, r);
+    }
+}
+</code></pre>
+
+
+ 最长回文子串：  <br>
+
+
+对称轴解法
+
+
+
+
+
+time O(n^2))
+</code></pre>
+
+
+
+
+
+
+
+</html>
