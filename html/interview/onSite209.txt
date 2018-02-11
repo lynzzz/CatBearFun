@@ -1,0 +1,23 @@
+Amazon onsite interview 2/9/2018
+
+1. Number of ways going from upper left to bottom right in a 2D matrix, 0 means can path, -1 means can't pass. (2D DP)
+2. Given two trees, tell if one tree is a subtree of another
+3. System design: There is a log file with errors, web server looks for a specific error and then notify user. Start with one user
+
+a      webserver + push service.  Client registers to push service first, websever find the error and notify push service, and then notify user. ( workable solution)
+b.     There are 1m users want to receive the message. Master + slave, master has the user list and then shard the user and distribute the user to slave servers.
+c.     There are 1m errors in log file. How to optimize? Using cache, because websever cannot parse the large log file, since it is routing the traffic.
+
+
+ 
+Leadership:
+1. unclear responsibility
+2. 做一件本不该你做的事情，同一个项目
+3。proudest project.
+4. Disagree with someone最后别人改了. ( QA code review)..  QA后来改了吗？
+5。Disagree 最后你改了
+6。答应别人但没做的人
+7。解决的一个复杂的问题， multithreding, 问用了多少个CPU,用了哪些函数，如何实现同步的，是怎么做的 。 （乱编的例子没想到会一直问细节）
+8。在Elekta做的工作
+9。一个项目在deadline里面没有做完，如何解决的。 你是如何知道做不完的，谁决定的 
+10。一个项目在deadline里做完了。
