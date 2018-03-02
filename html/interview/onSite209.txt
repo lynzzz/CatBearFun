@@ -2,6 +2,71 @@ Amazon onsite interview 2/9/2018
 
 1. Number of ways going from upper left to bottom right in a 2D matrix, 0 means can path, -1 means can't pass. (2D DP)
 2. Given two trees, tell if one tree is a subtree of another
+
+
+这是我写的，不能handle duplicate number 的case
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        
+        TreeNode r = findRoot(s, t.val);
+        if ( r == null) return false;
+        
+        return areTheSameTree(r, t);
+    }
+    
+    
+    TreeNode findRoot(TreeNode root, int val ){
+        if ( root == null ) return null;
+        
+        if ( root.val == val) return root;
+        
+        TreeNode left = findRoot(root.left, val);
+        
+        if ( left != null){
+            return left;
+        }
+        
+        return findRoot(root.right, val);
+    }
+    
+    
+    boolean areTheSameTree(TreeNode t1, TreeNode t2){
+        
+        if ( t1 == null && t2 == null) return true;
+        if ( t1 == null || t2 == null ) return false;
+        if ( t1.val != t2.val ) return false;
+        
+        return areTheSameTree(t1.left, t2.left) && areTheSameTree(t1.right, t2.right);
+    }  
+}
+
+正确答案：
+
+能够判断dupliate value. 
+
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        
+         if ( s == null) return false;
+         if ( areTheSameTree(s, t)) return true;
+        
+         return isSubtree(s.left, t) || isSubtree(s.right, t);
+    }
+    
+    
+    boolean areTheSameTree(TreeNode t1, TreeNode t2){
+        
+        if ( t1 == null && t2 == null) return true;
+        if ( t1 == null || t2 == null ) return false;
+        if ( t1.val != t2.val ) return false;
+        
+        return areTheSameTree(t1.left, t2.left) && areTheSameTree(t1.right, t2.right);
+    }
+    
+    
+    
+}
+
 3. System design: There is a log file with errors, web server looks for a specific error and then notify user. Start with one user
 
 a      webserver + push service.  Client registers to push service first, websever find the error and notify push service, and then notify user. ( workable solution)
