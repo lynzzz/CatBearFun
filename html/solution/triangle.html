@@ -74,13 +74,13 @@ public class Solution {
         
         
         // init
-        for( int i=0; i<row; i++){
+        for( int i=0; i&lt;row; i++){
             dp[row-1][i] = triangle[row-1][i];
         }
         
         // transform
-        for( int i=row -2; i>=0; i--){
-            for( int j=0; j<i+1; j++){
+        for( int i=row -2; i&gt;=0; i--){
+            for( int j=0; j&lt;i+1; j++){
                 dp[i][j] = triangle[i][j] + Math.min( dp[i+1][j], dp[i+1][j+1] );
             }
         }

@@ -1,0 +1,57 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+public class Solution {
+
+    public int uniquePaths(int m, int n) {
+             //
+             
+             // state : unique path at coordinate (m, n)
+             int[][] dp = new int[m][n];
+             
+             // initial
+             for( int i=0; i&lt;m; i++){
+                 dp[i][0] = 1;
+             }
+             
+             for( int i=0; i&lt;n; i++){
+                 dp[0][i] = 1;
+             }
+             
+             // transfer function
+             for( int i=1; i&lt;m; i++){
+                 for( int j=1; j&lt;n; j++){
+                     dp[i][j] = dp[i-1][j] + dp[i][j-1];
+                 }
+             }
+             
+             // result
+             
+             return dp[m-1][n-1];
+             
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+
+
+
+</body>
