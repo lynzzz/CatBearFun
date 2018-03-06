@@ -1,0 +1,62 @@
+<html>
+<body>
+
+
+
+
+<pre><code>
+    public int longestIncreasingSubsequence(int[] nums) {
+        
+        // check corner case
+        if ( nums == null || nums.length == 0) return 0;
+        
+        // dp[i] means the LIS at nums[i]
+        int[] dp = new int[nums.length];
+        
+        
+        // init
+        for( int i=0; i&lt;nums.length; i++){
+            dp[i] = 1;
+        }
+        
+        // transform
+        
+        for(int i=1; i &lt;nums.length; i++){
+            
+                for( int j=0; j&lt;i; j++){
+                    if ( nums[i] &gt; nums[j] ){
+                        dp[i] = Math.max(dp[i], dp[j] + 1);
+                    }
+                }
+        }
+        
+        
+        // ret
+        int ret = Integer.MIN_VALUE;
+        
+        for ( int i=0; i&lt;nums.length; i++){
+            if ( dp[i] &gt; ret ){
+                ret = dp[i];
+            }
+        }
+        
+
+        return ret;
+    }
+
+
+</code></pre>
+
+
+注意点 <br>
+1. 初始化结果是 dp[i] = 1 <br>
+2.  A[i] < A[i-1] 推导不出  dp[i] = dp[i-1]        [ 4, 10 ,4 6] 会得出错误答案 <br>
+3.  答案不是最后一个值A[n-1]  <br>
+
+
+
+
+
+
+
+</html>
