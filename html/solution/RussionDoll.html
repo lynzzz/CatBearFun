@@ -30,7 +30,7 @@ class Solution {
         
         if ( envelopes == null || envelopes.length == 0) return 0;
         
-        // 
+       
         Arrays.sort( envelopes, new Comparator<int[]>(){
             
             public int compare( int[] l, int[] r){
@@ -60,8 +60,8 @@ class Solution {
             
             for( int j=0; j&lt;i; j++){
                 
-                if ( envelopes[j][0] < envelopes[i][0] && envelopes[j][1] < envelopes[i][1] ){
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                if ( envelopes[j][0] < envelopes[i][0] && envelopes[j][1] < envelopes[i][1] && ((dp[j] + 1) &gt; dp[i]) ){
+                    dp[i] =  dp[j] + 1;
                 }           
             }
         }
