@@ -1,0 +1,60 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+    public boolean canJump(int[] A) {
+        // write your code here
+        
+        // check corner case
+        if ( A == null || A.length == 0) return false;
+        
+        // Def: dp[i] means if we can go to A[i]
+        boolean[] dp = new boolean[A.length];
+        
+        // init
+        dp[0] = true;
+        
+        // transform
+        
+        for( int i=1; i&lt;A.length; i++){
+            for( int j=0; j&lt;i; j++){
+                if ( dp[j] && A[j] &gt;= (i-j) ){
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        
+        // ret
+        return dp[A.length - 1];
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<br>
+DP O(n^2)
+贪心 O(n) :不需要掌握
+
+
+</div>
+
+
+
+
+</body>
