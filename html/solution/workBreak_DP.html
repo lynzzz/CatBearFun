@@ -1,0 +1,72 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        
+        //Def : dp[i] means can or can not break at s[0 , i];
+        int n = s.length();
+        boolean[] dp = new boolean[n];
+        
+        // init
+        dp[0] = hasString(wordDict,  s.substring(0, 1) );
+        
+        // func
+        for( int i=1; i&lt;n; i++){
+            for( int j=0; j&lt;i; j++){                                            ab can be broken in  [a, b]
+                
+                String end = s.substring(j+1, i+1);
+                
+                
+                if (  dp[j] && hasString(wordDict, end) ){
+                    dp[i] = true;
+                    break;
+                }
+            }
+            
+            if ( hasString(wordDict, s.substring(0, i+1) ) ){                      ab can be used as a whole
+                dp[i] = true;
+            }
+        }
+        
+        // ret
+        return dp[n-1];
+    }
+    
+    boolean hasString(List<String> wordDict, String target){
+        for( int i=0; i&lt;wordDict.size(); i++){
+            if ( wordDict.get(i).equals(target)){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   n^3   <br>
+
+
+
+
+
+
+</body>
