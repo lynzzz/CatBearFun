@@ -52,51 +52,39 @@ public class Solution {
 }
 
 DFS
-/**
- * Definition for Directed graph.
- * class DirectedGraphNode {
- *     int label;
- *     ArrayList<DirectedGraphNode> neighbors;
- *     DirectedGraphNode(int x) {
- *         label = x;
- *         neighbors = new ArrayList<DirectedGraphNode>();
- *     }
- * };
- */
+
+
 public class Solution {
-   /**
-     * @param graph: A list of Directed graph node
-     * @param s: the starting Directed graph node
-     * @param t: the terminal Directed graph node
-     * @return: a boolean value
-     */
-    public static boolean found = false; 
+
+    private boolean ret = false; 
      
-    public boolean hasRoute(ArrayList<DirectedGraphNode> graph, 
-                            DirectedGraphNode s, DirectedGraphNode t) {
-        // write your code here
-        if ( s.label == t.label){
-            return true;
-        }
+    public boolean hasRoute(ArrayList<DirectedGraphNode> graph, DirectedGraphNode s, DirectedGraphNode t) {
+
+        HashSet<DirectedGraphNode> set = new HashSet<>();
+        set.add(s);
         
-        dfs(new HashSet<DirectedGraphNode>(), s, t);
         
-        return found;
+        dfs(graph, s, t, set);
+        return ret;
     }
     
-    private void dfs( HashSet<DirectedGraphNode> set, DirectedGraphNode s, DirectedGraphNode t){
+    
+    void dfs( ArrayList<DirectedGraphNode> graph, DirectedGraphNode s, 
+              DirectedGraphNode t, HashSet<DirectedGraphNode> set ){
         
-        if ( s.label == t.label){
-            found = true;
+        if ( s == t){
+            ret = true;
             return;
         }
         
-        for( DirectedGraphNode node : s.neighbors){
-            if ( !set.contains(node) ){
-                set.add(node);
-                dfs(set, node, t);
-                set.remove(node);
+        for( DirectedGraphNode neighbor : s.neighbors){
+            if ( set.contains(neighbor)){
+                continue;
             }
+            
+            set.add(neighbor);
+            dfs( graph, neighbor, t, set);
+            set.remove(neighbor);
         }
     }
 }
