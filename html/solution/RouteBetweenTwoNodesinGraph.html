@@ -13,20 +13,12 @@
 <pre><code>
 BFS
 public class Solution {
-   /**
-     * @param graph: A list of Directed graph node
-     * @param s: the starting Directed graph node
-     * @param t: the terminal Directed graph node
-     * @return: a boolean value
-     */
+
     public boolean hasRoute(ArrayList<DirectedGraphNode> graph, 
                             DirectedGraphNode s, DirectedGraphNode t) {
-        // write your code here
-        if ( s.label == t.label){
-            return true;
-        }
+
         
-        Queue&lt;DirectedGraphNode> q = new LinkedList<DirectedGraphNode>();
+        Queue<DirectedGraphNode> q = new LinkedList<DirectedGraphNode>();
         HashSet<DirectedGraphNode> set = new HashSet<DirectedGraphNode>();
         
         q.add(s);
@@ -35,15 +27,18 @@ public class Solution {
         while( !q.isEmpty() ){
             DirectedGraphNode node = q.poll();
             
+            if ( node == t){
+                return true;
+            }
+            
             for( DirectedGraphNode child : node.neighbors){
-                if ( !set.contains(child) ){
+               
+               if ( set.contains(child) ){
+                   continue;
+               }
                     
-                    if ( child.label == t.label){
-                        return true;
-                    }
-                    set.add(child);
-                    q.add(child);
-                }
+               set.add(child);
+               q.add(child);
             }
         }
         
@@ -89,11 +84,62 @@ public class Solution {
     }
 }
 
+Google 面试题目： 能不能从一点走到另外一点， 
+在第一象限内一点（x,y）, 每次可以走一步，下一步可以是(x+x, y), 或者（x, y+y）， 求问能否走到一个点（m,n）。注意，x>0, y>0，刚开始认为是四个象限，如果都是正数，不难。没有找出最优解，小姐姐说没关系，她觉得正常人需要一两天才能找出最优解。做完还剩5分钟，小姐姐要我问问题，我太累了，不想问，小姐姐还是觉得我应该问，我只好问了，然后去上厕所。
+
+BFS解法
+class Node{
+int x;
+int y;
+
+}
+void BFS(int x, int y, int m, int n){
+
+     Queue<Node> q = new LinkedList<>();
+	 q.add(new Node(x,y));
+	 
+	 while( ！q.isEmpty（））{
+	     Node node = q.poll();
+		 
+		 if （ node.x == m, && node.y  == n){
+		      return true;
+		 }
+		 
+		 if ( 2*node.x <= m && node.y <= n)
+		     q.add(Node(2*n.x, y);
+		 
+		 if ( n.x <= m && 2n.y<= m)
+		     q.add(Node(n.x, 2*n.y(;
+	 }
+     
+	 return false;
+}
+
+
+DFS 解法 
+boolean ans = false;
+
+void DFS(int x, int y, int m, int n){
+    if ( x == m && y == n ){
+	    ans = true;
+		return;
+	}
+	
+	if ( x > m || y > n ){
+	    return;
+	}
+
+    DFS(2x, y, m, n);
+	DFS(x, 2y, m, n);
+}
+
+
+
 
 </code></pre>
 
 
-
+DFS，BFS都能解决是否能从图中一点走到另一点， 有时候DFS更简单，熟练理解DFS
 
 
 
