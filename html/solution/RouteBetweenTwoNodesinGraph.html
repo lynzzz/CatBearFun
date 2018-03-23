@@ -72,7 +72,7 @@ public class Solution {
             return;
         }
         
-        for( DirectedGraphNode neighbor : s.neighbors){
+        for( DirectedGraphNode neighbor : s.neighbors){                                     CADR : continue, add, DFS, remove
             if ( set.contains(neighbor)){
                 continue;
             }
@@ -119,7 +119,7 @@ void BFS(int x, int y, int m, int n){
 DFS 解法 
 boolean ans = false;
 
-void DFS(int x, int y, int m, int n){
+void DFS(int x, int y, int m, int n){        
     if ( x == m && y == n ){
 	    ans = true;
 		return;
@@ -129,7 +129,7 @@ void DFS(int x, int y, int m, int n){
 	    return;
 	}
 
-    DFS(2x, y, m, n);
+    DFS(2x, y, m, n);                                                         CADR : 因为不可能重复，所以不需要set, 就没有contiue, add, remove, 只剩下DFS了 
 	DFS(x, 2y, m, n);
 }
 
