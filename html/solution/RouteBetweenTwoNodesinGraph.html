@@ -139,14 +139,30 @@ void DFS(int x, int y, int m, int n){
 </code></pre>
 
 
-DFS，BFS都能解决是否能从图中一点走到另一点， 有时候DFS更简单，熟练理解DFS
+DFS模板：
+什么时候用DFS : 能否在图中一点走到另外一点，且求出这条路径的权重，这种题目只能用DFS解答, 
+
+void DFS(){
+
+   if (){
+       递归的结束条件   I
+   }
+
+   递归的分解           II
+}
+
+
+1. 注意的是图里面的DFS要用去重。
+2. 如果DFS的图是无限大的，你要强行加上结束条件，如上题。
+
+
+
+
 
 
 
 <div class="comment">
-1. BFS or DFS 图里面搜索一般用BFS.  <br>
-2. 此题 DFS为permutation末班， （大容器，小容器，boolean array) 因为此题目没有让返回所有解，所以说不需要大容器，小容器，只用一个hashset去重，保证路径不会原路返回。<br>
-   注意此题用了一个全局变量表示结果，因为dfs不返回值，所以当找到了，就在外面记录<br>
+1. BFS or DFS 图里面搜索一般用BFS. 有时候DFS比BFS要好写些。 <br>
 </div>
 
 
