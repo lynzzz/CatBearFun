@@ -17,8 +17,8 @@ class Solution {
     private double ans = -1;
     
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
-        HashMap<String, List<String>> mNodes = new HashMap<>();
-        HashMap<String, List<Double>> mValues = new HashMap<>();
+        HashMap&lt;String, List<String>> mNodes = new HashMap<>();
+        HashMap&lt;String, List<Double>> mValues = new HashMap<>();
         
         
         for( int i =0; i&lt;equations.length; i++ ){
@@ -43,24 +43,20 @@ class Solution {
         
         double[] rets = new double[queries.length];
         Arrays.fill(rets, -1);
-        
-        HashSet<String> set = new HashSet<>();
-        
-        for( int i=0; i<rets.length; i++){
+                
+        for( int i=0; i&lt;rets.length; i++){
             
             String start = queries[i][0];
             
             String end =   queries[i][1];
             
+            HashSet<String> set = new HashSet<>();
+
             set.add(start);
             
-            dfs(mNodes, mValues, start, end, 1, set);
+            dfs(mNodes, mValues, start, end, 1, set );
             rets[i] = ans;
-            ans = -1;
-            
-            
-            set.clear();
-            
+            ans = -1;                 
         }
         return rets;
     }
