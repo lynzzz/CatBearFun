@@ -1,0 +1,109 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+public class Solution {
+
+    private boolean isSurround = true;
+
+    public void surroundedRegions(char[][] board) {
+        // write your code here
+         for( int i=0;i&lt;board.length; i++){
+            for( int j=0; j&lt;board[0].length; j++){
+                if (board[i][j] == 'O'){
+                    DFSCheck(board, i, j);
+                    if ( isSurround ){
+                        DFSFillX(board, i, j);
+                    }
+                    isSurround = true;
+                }
+            }
+        }
+        
+        for( int i=0;i&lt;board.length; i++){
+            for( int j=0; j&lt;board[0].length; j++){
+                if (board[i][j] == '1'){
+                    board[i][j] = 'O';
+                }
+            }
+        }
+    }
+    
+    
+     void DFSCheck(char[][] board, int i, int j){
+         int row = board.length;
+         int col = board[0].length;
+        
+         if ( i &lt; 0 || i == row || j<0 || j == col){
+             isSurround = false;
+             return;
+         }
+        
+         if ( board[i][j] == 'X'){
+             return;
+         }
+        
+         if ( board[i][j] == '1'){
+             return;
+         }
+        
+         board[i][j] = '1';
+         DFSCheck(board, i-1, j);
+         DFSCheck(board, i+1, j);
+         DFSCheck(board, i, j-1);
+         DFSCheck(board, i, j+1);
+    }
+    
+    
+    void DFSFillX(char[][] board, int i, int j){
+         int row = board.length;
+         int col = board[0].length;
+        
+         if ( i &lt; 0 || i == row || j<0 || j == col){
+             return;
+         }
+        
+         if ( board[i][j] == 'X'){
+             return;
+         }
+        
+         board[i][j] = 'X';
+         DFSFillX(board, i-1, j);
+         DFSFillX(board, i+1, j);
+         DFSFillX(board, i, j-1);
+         DFSFillX(board, i, j+1);
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+
+
+
+
+<br>
+Last Time completed at :
+
+
+</div>
+
+
+
+
+</body>
