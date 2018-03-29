@@ -1,0 +1,113 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        
+        UF uf = new UF(m, n);
+        
+        int[][] board = new int[m][n];
+        int[][] delta = {{-1,0}, {1,0}, {0,1}, {0,-1}};
+        List<Integer>  ret = new ArrayList<>();
+        
+        for( int i=0; i<positions.length; i++){
+            
+             int row = positions[i][0];
+             int col = positions[i][1];
+             uf.makeSet(m,n,row, col);
+             board[row][col] = 1;
+             for( int[] d : delta){
+                 
+                 int x = row + d[0];
+                 int y = col + d[1];
+                 
+                 if ( x >=0 && x < m && y >=0 && y&lt;n && board[x][y] == 1 ){
+                     int id1 = row * n + col;
+                     int id2 = x *n + y;
+                     uf.union(id1, id2);
+                 }
+             }
+             ret.add(uf.count);
+        }
+        
+        
+        return ret;
+    }
+}
+
+class UF{
+    
+    public int count = 0;
+    private int[] parent = null;
+    private int[] rank = null;
+    
+    public UF(int m, int n){
+        parent = new int[m * n];
+        rank = new int[m*n];
+    }
+    
+    public void makeSet( int m, int n, int i, int j){
+        
+        int index =  i * n + j;
+        parent[index] = index;
+        rank[index] = 0;
+        count++;
+    }
+    
+    public int find(int index){
+        if ( parent[index] == index) return index;
+        
+        return find(parent[index]);
+    }
+    
+    public void union( int l1, int l2){
+        int id1 = find(l1);
+        int id2 = find(l2);
+        
+        if ( id1 == id2){
+            return;
+        }
+       
+        if ( rank[id1] &gt; rank[id2] ){
+            parent[id2] = id1;
+        }else if ( rank[id1] &lt; rank[id2]){
+            parent[id1] = id2;
+        }else{
+            parent[id1] = id2;
+            rank[id2]++;
+        }
+        
+        
+        count--;
+    }
+    
+    
+    
+}
+
+
+</code></pre>
+
+
+union时间复杂度是lg(n), where n is the number of nodes.
+
+算法： 每加一个1，self disjoint count + 1, 在和上下左右merge
+
+
+
+</div>
+
+
+
+
+</body>

@@ -1,0 +1,59 @@
+
+
+
+Union Find algorithm ( disjoint set, 中文是 不可交集）<br><br>
+<a href="https://www.youtube.com/watch?v=UBY4sF86KEY">Youtube tutorial</a>  <br>
+
+用处 ：<br>
+ 无向图分组。<br>
+ 无向图判断有无环<br><br>
+
+算法<br>  Step 1 : 图里的每一个点是一个独立的不可交集<br>
+        step 2 : 按照你自己定义的法则进行合并。<br><br>
+		
+		
+代码实现 ：<br><br>
+数据结构 : 需要一个parent hashmap指向自己的parent,  和一个 rank hashmap返回每个点的rank<br>
+函数     ： Find() take一个节点，找这个节点的root, <br>
+            union() take两个节点, 合并这两个节点的根节点, 高rank root成为新的root<br>
+
+<pre><code>
+class UF{
+
+private HashMap< Node, Node> parent    
+private HashMap< Node, Integer> rank
+
+      UF(){
+	       每个节点指向自己，自成一个不可交集 
+	  }
+	  
+	  
+	  public int find( int node ){
+	       if ( parent.get(node) == node ){
+		      return node;
+		   }
+	       return find( parent.get(node));
+	  }
+	  
+	  public void union( int node1, int node 2){
+	         
+	        int root1 = find(node1);
+			int root2 = find(node2);
+			
+			if ( root1 == root2 ) return;
+			
+			if ( rank.get(node1) > rank.get(node2 ) ){
+			    parent.put(node2, node1); 
+			}else if ( rank.get(node1) < rank.get(node2) ){
+			    parent.put(node, node2)
+			}else{
+			    parent.put(node1, node2);
+			    rank.put(node2, rank.get(node2) + 1);
+			}
+	  }
+
+}
+
+</code>
+</pre>
+

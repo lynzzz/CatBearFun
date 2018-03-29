@@ -1,0 +1,90 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+        UF uf = new UF(edges);
+        for( int[] edge : edges){
+            if (!uf.union(edge[0], edge[1])){
+                return edge;
+            }
+        }
+        
+        return new int[2];
+    }
+}
+
+
+class UF{
+    
+    private HashMap<Integer, Integer> parent = new HashMap<>();
+    private HashMap<Integer, Integer> rank = new HashMap<>();
+    
+    public UF(int[][] edges){
+        
+        for( int[] edge : edges){
+            if ( !parent.containsKey(edge[0])){
+                parent.put(edge[0], edge[0]);
+                rank.put(edge[0], 0);
+            }
+            if ( !parent.containsKey(edge[1])){
+                parent.put(edge[1], edge[1]);
+                rank.put(edge[1], 0);
+            }
+        }   
+    }
+    
+    public int find( int id){
+        if ( parent.get(id) == id){
+            return id;
+        }
+        return find(parent.get(id));
+    }
+    
+    public boolean union(int id1, int id2){
+        int root1 = find(id1);
+        int root2 = find(id2);
+        
+        if ( root1 == root2){
+
+            return false;
+        }
+        
+        if ( rank.get(root1) > rank.get(root2)){
+            parent.put(root2, root1);
+        }else if ( rank.get(root1) < rank.get(root2)){
+            parent.put(root1, root2);
+        }else{
+            parent.put(root1, root2);
+            rank.put(root2, rank.get(root2)+1);
+        }
+        
+        return true;
+    }
+    
+    
+}
+
+</code></pre>
+
+
+
+
+
+</div>
+
+
+
+
+</body>
