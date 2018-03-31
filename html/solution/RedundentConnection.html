@@ -12,6 +12,9 @@
 
 <pre><code>
 
+Solution I : Union find
+Time complexity : O ( e lg(e) ), where e is the number of edges.
+
 class Solution {
     public int[] findRedundantConnection(int[][] edges) {
         UF uf = new UF(edges);
@@ -75,6 +78,64 @@ class UF{
     
     
 }
+
+
+
+Solution II DFS  : 建图之前先两点间走一次DFS,如果能走通，则说明这条边是多余的
+Time complexity : O ( e * e )   = O(e^2);
+
+class Solution {
+    
+    private boolean isCycle = false;
+    
+    public int[] findRedundantConnection(int[][] edges) {
+        
+        
+        HashMap<Integer, ArrayList<Integer>> m = new HashMap<>();
+        for( int i=0; i<=1000; i++){
+            m.put(i, new ArrayList<>());
+        }
+        
+        
+        HashSet<Integer> set = new HashSet<>();
+
+        for( int[] e : edges){
+            
+            if ( m.get(e[0]).size() != 0 && m.get(e[1]).size() != 0 )
+            {
+                set.add(e[0]);
+                dfs( e[0], e[1], set, m);
+                set.remove(e[0]);
+            }
+            
+            if ( isCycle) return e;
+            
+            m.get(e[0]).add(e[1]);
+            m.get(e[1]).add(e[0]);
+            
+        }
+        
+        return new int[2];
+    }
+    
+    void dfs(int start, int end, HashSet<Integer> set, HashMap<Integer, ArrayList<Integer> > m){
+        if ( start == end){
+            isCycle = true;
+            return;
+        }
+        
+        for( int n : m.get(start) ){
+            if ( set.contains(n)){
+                continue;
+            }
+            
+            set.add(n);
+            dfs(n, end, set, m);
+            set.remove(n);
+        }
+    }
+}
+
 
 </code></pre>
 

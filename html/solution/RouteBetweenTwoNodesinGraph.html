@@ -57,9 +57,9 @@ public class Solution {
 
         HashSet<DirectedGraphNode> set = new HashSet<>();
         set.add(s);
-        
-        
         dfs(graph, s, t, set);
+		set.remove(s);                                                 // 当最高层的DFS返回时，要把原来的start,清零。 不然多次DFS会出错。
+		
         return ret;
     }
     
@@ -83,6 +83,9 @@ public class Solution {
         }
     }
 }
+
+图的遍历事件复杂度对于DFS, BFS都是 O(m+n)  ~= O(m) ~= O(n^2), where m is the number of edge and n is number of vertex
+
 
 Google 面试题目： 能不能从一点走到另外一点， 
 在第一象限内一点（x,y）, 每次可以走一步，下一步可以是(x+x, y), 或者（x, y+y）， 求问能否走到一个点（m,n）。注意，x>0, y>0，刚开始认为是四个象限，如果都是正数，不难。没有找出最优解，小姐姐说没关系，她觉得正常人需要一两天才能找出最优解。做完还剩5分钟，小姐姐要我问问题，我太累了，不想问，小姐姐还是觉得我应该问，我只好问了，然后去上厕所。

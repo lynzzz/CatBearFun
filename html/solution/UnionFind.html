@@ -5,8 +5,7 @@ Union Find algorithm ( disjoint set, 中文是 不可交集）<br><br>
 <a href="https://www.youtube.com/watch?v=UBY4sF86KEY">Youtube tutorial</a>  <br>
 
 用处 ：<br>
- 无向图分组。<br>
- 无向图判断有无环<br><br>
+ 无向图合并
 
 算法<br>  Step 1 : 图里的每一个点是一个独立的不可交集<br>
         step 2 : 按照你自己定义的法则进行合并。<br><br>
@@ -28,7 +27,7 @@ private HashMap< Node, Integer> rank
 	  }
 	  
 	  
-	  public int find( int node ){
+	  private int find( int node ){
 	       if ( parent.get(node) == node ){
 		      return node;
 		   }
@@ -53,6 +52,8 @@ private HashMap< Node, Integer> rank
 	  }
 
 }
+
+time complexity : Union是唯一的对外的interface, 时间复杂度是 O( lgn), where n is the number of nodes.
 
 </code>
 </pre>
