@@ -1,0 +1,64 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+
+<pre><code>
+
+记住以下结论：
+1. 有向图遍历用topological sorting
+2. topological sorting 不能遍历环
+
+
+
+Topological sorting 数据结构 
+进度表 + 点图 => 进度BFS
+
+进度表  HashMap&lt;Integer, Integer> degree = new HashSet<>();
+点图    HashMap&lt;Integer, HashSet<Integer>> = new HashMap<>(); 用HashSet的原因是adjacent list里不应该有重复的边，建图的时候要注意去掉重复的边，不然进度表和图都不对
+
+进度BFS实现 
+
+step 1 :找到进度为0的点 
+
+Queue&lt;Integer> q = new LinkedList<>();
+for( int key : degree.keySet()){
+    if ( degree.get(key) == 0 ){
+	    q.add(key);
+	}
+}
+
+Step 2: 进度控制BFS
+
+while( !q.isEmpty() ){
+     int n = q.poll();
+	 
+	 // 取结果 
+	 
+	 for( int neighbor : graph.get(n) ){
+	       degree.put(neighbor, degree.get(nbeighbor)-1);
+		   if ( degree.get(neighbor) == 0 ){
+		       q.add(neighbor);
+		   }
+	 }
+}
+
+需要注意的是进度BFS不用HashSet去重，因为是从进度为0的点出发，逐步加入进度为0的点， 所以不会往会走，所以不会有重复，所以不需要去重。
+
+
+
+</code></pre>
+
+
+
+
+
+</body>
