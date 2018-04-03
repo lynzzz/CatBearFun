@@ -9,73 +9,67 @@
 
 
 <pre><code>
-public class Solution {
-    /**
-     * @param numCourses a total of n courses
-     * @param prerequisites a list of prerequisite pairs
-     * @return true if can finish all courses or false
-     */
+class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        // Write your code here
-
-        // construct adjacent list
-        HashMap<Integer, ArrayList<Integer>> mapNodeToNeighbors = new HashMap<>();
-        for( int i =0; i&lt&prerequisites.length; i++){
-            int from = prerequisites[i][0];
-            int to = prerequisites[i][1];
-            if ( !mapNodeToNeighbors.containsKey(from) ){
-                ArrayList<Integer> arr = new ArrayList<>();
-                arr.add(to);
-                mapNodeToNeighbors.put(from, arr);
-
-            }else{
-                ArrayList<Integer> arr = mapNodeToNeighbors.get(from);
-                arr.add(to);
-                mapNodeToNeighbors.put(from, arr);
-            }
-        }
-
-
-        // Construct in-degree array           node - > indegree
-        HashMap<Integer, Integer> mapNodeTOIndegree = new HashMap<>();
-        for( int i=0; i&lt&prerequisites.length; i++){
-            int to = prerequisites[i][1];
-            if ( !mapNodeTOIndegree.containsKey(to)){
-                mapNodeTOIndegree.put(to, 1);
-            }else{
-                mapNodeTOIndegree.put(to, mapNodeTOIndegree.get(to) + 1 );
-            }
+        
+        HashMap&lt;Integer, Integer> degree = new HashMap<>();
+        HashMap&lt;Integer, HashSet&lt;Integer>> graph = new HashMap<>();
+        
+        
+        // construct degree
+        for( int i=0; i&lt;numCourses;i++){
+            degree.put(i, 0);
         }
         
-        
-        // Find all nodes not in degree map, which are start points
-        Queue<Integer> q = new LinkedList<>();
-        
-        for( int i=0; i&lt&numCourses; i++){
-            if ( !mapNodeTOIndegree.containsKey(i) ){
-                q.add(i);
-            }
-        }
-        
-        
-        // BFS
-        int count = 0;
-
-        
-        while( !q.isEmpty() ){
-            int temp = q.poll();
-            count++;
+        //construct graph
+        for( int[] e : prerequisites){
             
-            if ( mapNodeToNeighbors.containsKey(temp) ){
-            for(int n : mapNodeToNeighbors.get(temp)){
-                    mapNodeTOIndegree.put(n, mapNodeTOIndegree.get(n)-1);
-                    if ( mapNodeTOIndegree.get(n) == 0){
-                        q.add(n);
+            int from = e[1];
+            int to = e[0];
+            if ( !graph.containsKey(from)){
+                HashSet<Integer> set = new HashSet<>();
+                set.add(to);
+                graph.put(from, set);
+                degree.put(to, degree.get(to) + 1);
+            }else{
+                HashSet<Integer> set = graph.get(from);
+                if ( !set.contains(to)){
+                    set.add(to);
+                    degree.put(to, degree.get(to) + 1);
                 }
             }
+        }
+        
+        // BFS
+        Queue<Integer> q = new LinkedList<>();
+        for(int key : degree.keySet()){
+            if ( degree.get(key) == 0){
+                q.add(key);
             }
         }
+        
+        int count = 0;
+        
+        while( !q.isEmpty()){
+            int n = q.poll();
+            count++;
+            
+            if ( graph.containsKey(n)){                            // topological sorting最后一层的点和孤立的点没有边，所以没有在graph里
+                for( int neighbor : graph.get(n)){
+                    degree.put(neighbor, degree.get(neighbor) - 1);
+                    if ( degree.get(neighbor) == 0){
+                        q.add(neighbor);
+                    }
+                }
+            }
+        }
+        
+        
         return count == numCourses;
+        
+        
+    }
+}
     }   
 }
 
@@ -86,15 +80,13 @@ public class Solution {
 
 
 
-
 <div class="comment">
 Time complexity :   O(m+n)   <br>
 
 
-Topological Sorting 不能遍历有环的点， 用遍历的点数和总点数比较有没有环。<br>
+ topological sorting最后一层的点和孤立的点没有边，所以没有在新建的点图graph里， 所以需要check存在与否,不然BFS会爆
 
 
-Last Time completed at : 6/1/2017 <br>
 
 </div>
 </body>
