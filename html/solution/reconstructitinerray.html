@@ -1,0 +1,98 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+class Solution {
+    
+    List<String> ans = null;
+    
+    public List<String> findItinerary(String[][] tickets) {
+        
+        HashMap<String, List<String>> m = new HashMap<>();
+        
+        
+        for(String[] str : tickets){
+            String from = str[0];
+            String to = str[1];
+            if ( !m.containsKey(from)){
+                List<String> toList = new ArrayList<String>();
+                toList.add(to);
+                m.put(from, toList);
+            }else{
+                m.get(from).add(to);
+                Collections.sort(m.get(from));
+            }
+        }
+        
+        List<String> result = new ArrayList<String>();
+        result.add("JFK");
+        
+        dfs("JFK", result, m, tickets);
+        
+        return ans;
+        
+        
+    }
+    
+    
+    public void dfs(String start, List<String> result, HashMap<String, List<String>> m, String[][] tickets){
+        
+        
+        
+        if ( !m.containsKey(start) || m.get(start).size() == 0 ){
+            if ( result.size() - 1 == tickets.length ){
+                ans = new ArrayList<String>(result);
+            }
+            return;
+        }
+        
+        List<String> nextLevel = m.get(start);
+    
+        for( int i=0; i&lt;nextLevel.size(); i++){
+            String str = nextLevel.get(i);
+            
+            result.add(str);
+            nextLevel.remove(i);
+            dfs(str, result, m, tickets);
+            
+            if ( ans != null){
+                return;
+            }
+            
+            result.remove(result.size()-1);
+            nextLevel.add(i, str);
+        }
+        
+    }
+}
+
+
+无向图和有向图的区别：
+
+无向图  1--2，  一条边在1，2之间， 1的下一层里有2， 2的下一层里也有1，所以DFS开始走的时候从1走到2，然后从2继续往下遍历的时候，2可能原路返回1，所以我们会用一个HashSet check, 如果访问过了就不在访问
+
+有向图  1->2,   一条边从1走到2， 1的下一层有2， 2的下一层可没有1， 所以DFS开始走的时候从1到2， 在从2往下走的时候，是不能通过下一层DFS到达1的，但是DFS有回溯的功能，此层DFS结束后，会自动回到上一层到达
+                这里产生的问题是， 在回溯之前，应该防止这条边被反复使用， 所以通过此条边往下走的时候，要把这条边断开， 同理，回溯之后，要把这条边加上，可以之后继续使用。
+				
+
+此题是要返回一个lexical order, 因为最开始是sorted, 一旦找到后立马返回，因为第一个找到的结果一定是lexical order, 不然返回的是最后一个不一定是lexical order.
+
+</code></pre>
+
+
+
+
+
+
+
+</body>

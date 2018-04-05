@@ -17,8 +17,8 @@ class Solution {
     private double ans = -1;
     
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
-        HashMap&lt;String, List<String>> mNodes = new HashMap<>();
-        HashMap&lt;String, List<Double>> mValues = new HashMap<>();
+        HashMap&lt;String, List&lt;String>> mNodes = new HashMap<>();
+        HashMap&lt;String, List&lt;Double>> mValues = new HashMap<>();
         
         
         for( int i =0; i&lt;equations.length; i++ ){
@@ -61,7 +61,7 @@ class Solution {
         return rets;
     }
     
-    void dfs( HashMap<String, List<String>> Nodes, HashMap<String, List<Double>> values, String start, String end, double result, HashSet<String> set){
+    void dfs( HashMap&lt;String, List<String>> Nodes, HashMap&lt;String, List<Double>> values, String start, String end, double result, HashSet&lt;String> set){
         
         if ( !Nodes.containsKey(start) || !Nodes.containsKey(end)){
             return;
@@ -74,8 +74,8 @@ class Solution {
         }
         
         
-        List<String> subNodes = Nodes.get(start);
-        List<Double> subValues = values.get(start);
+        List&lt;String> subNodes = Nodes.get(start);
+        List&lt;Double> subValues = values.get(start);
         
         for( int i=0; i&lt;subNodes.size(); i++){                                    CADR   continue, add, dfs, remove
             
