@@ -14,16 +14,19 @@
 
 class Solution {
     
-    List<String> ans = null;
+    List&lt;String> ans = null;
     
-    public List<String> findItinerary(String[][] tickets) {
+    List&lt;String> result = new ArrayList<String>();
+    HashMap&lt;String, List<String>> m = new HashMap<>();
+
+    public List&lt;String> findItinerary(String[][] tickets) {
         
-        HashMap<String, List<String>> m = new HashMap<>();
         
-        
+    
         for(String[] str : tickets){
             String from = str[0];
             String to = str[1];
+            
             if ( !m.containsKey(from)){
                 List<String> toList = new ArrayList<String>();
                 toList.add(to);
@@ -34,10 +37,9 @@ class Solution {
             }
         }
         
-        List<String> result = new ArrayList<String>();
         result.add("JFK");
         
-        dfs("JFK", result, m, tickets);
+        dfs("JFK", tickets);
         
         return ans;
         
@@ -45,35 +47,36 @@ class Solution {
     }
     
     
-    public void dfs(String start, List<String> result, HashMap<String, List<String>> m, String[][] tickets){
+    public void dfs(String start,  String[][] tickets){
         
-        
-        
-        if ( !m.containsKey(start) || m.get(start).size() == 0 ){
-            if ( result.size() - 1 == tickets.length ){
-                ans = new ArrayList<String>(result);
-            }
-            return;
+        if ( !m.containsKey(start) || m.get(start).size() == 0){
+             if ( result.size() -1 == tickets.length){
+                 ans = new ArrayList<String>(result);
+             }
+             return;
         }
         
-        List<String> nextLevel = m.get(start);
-    
-        for( int i=0; i&lt;nextLevel.size(); i++){
-            String str = nextLevel.get(i);
+        List&lt;String> nextLevel = m.get(start);
+        
+        for(int i=0; i&lt;nextLevel.size(); i++){
+            String neighbor = nextLevel.get(i);
             
-            result.add(str);
+            result.add(neighbor);
             nextLevel.remove(i);
-            dfs(str, result, m, tickets);
+            dfs(neighbor,tickets);
             
             if ( ans != null){
                 return;
             }
             
+            nextLevel.add(i, neighbor);
             result.remove(result.size()-1);
-            nextLevel.add(i, str);
         }
         
+        
     }
+    
+    
 }
 
 
@@ -87,9 +90,44 @@ class Solution {
 
 此题是要返回一个lexical order, 因为最开始是sorted, 一旦找到后立马返回，因为第一个找到的结果一定是lexical order, 不然返回的是最后一个不一定是lexical order.
 
+
+
+有向图模板总结
+
+   public void dfs(String start,  String[][] tickets){
+        
+        if ( !m.containsKey(start) || m.get(start).size() == 0){              有向图走到底的判断条件： 没有下层边，或者下层边的个数为0（因为往下走的时候不断断边）
+             if ( result.size() -1 == tickets.length){                        if ( !m.containskey(start) || m.get(start).size() = 0 )
+                 ans = new ArrayList<String>(result);
+             }
+             return;
+        }
+        
+        List&lt;String> nextLevel = m.get(start);
+        
+        for(int i=0; i&lt;nextLevel.size(); i++){
+            String neighbor = nextLevel.get(i);
+            
+            result.add(neighbor);
+            nextLevel.remove(i);                                               //递归之前断掉当前边                               
+            dfs(neighbor,tickets);
+            
+            if ( ans != null){
+                return;
+            }
+            
+            nextLevel.add(i, neighbor);                                        //递归之后恢复当前边，记住这种写法
+            result.remove(result.size()-1);
+        }
+        
+        
+    }
+    
+    
+}
 </code></pre>
 
-
+时间复杂度看上去像 n*n!
 
 
 
