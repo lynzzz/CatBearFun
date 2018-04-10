@@ -1,0 +1,202 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+
+
+Solution I BFS : O(n^2)， 太慢
+
+class Solution {
+    
+    HashMap<Integer, List<Integer>> graph = new HashMap<>();
+
+    
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        
+        HashMap<Integer, Integer> l = new HashMap<>();
+        
+        for( int[] e: edges){
+            
+            int from = e[0];
+            int to = e[1];
+            
+            if ( !graph.containsKey(from)){
+                List<Integer> toList = new ArrayList<>();
+                toList.add(to);
+                graph.put(from , toList);
+            }else{
+                graph.get(from).add(to);
+            }
+            
+            
+            if ( !graph.containsKey(to)){
+                List<Integer> fromList = new ArrayList<>();
+                fromList.add(from);
+                graph.put(to, fromList);
+            }else{
+                graph.get(to).add(from);
+            }   
+        }
+        
+        
+        for( int i=0; i<n; i++){
+            l.put(i, bfs(i));
+        }
+        
+        
+        int min = Integer.MAX_VALUE;
+        for( int key : l.keySet()){
+            if ( l.get(key) < min){
+                min = l.get(key);
+            }
+        }
+        
+        ArrayList<Integer> ret = new ArrayList<>();
+        
+        for( int key : l.keySet()){
+            if ( l.get(key) == min){
+                ret.add(key);
+            }
+        }
+        
+        return ret;
+        
+    }
+    
+    public int bfs(int n){
+        
+        Queue&lt;Integer> q = new LinkedList<>();
+        HashSet&lt;Integer> set = new HashSet<>();
+        
+        q.add(n);
+        set.add(n);
+        
+        int level = 0;
+        while( !q.isEmpty()){
+            int size = q.size();
+            for( int i=0; i&lt;size; i++){
+                int node = q.poll();
+                
+                if ( graph.containsKey(node)){
+                    for( int neighbor : graph.get(node)){
+                        if ( set.contains(neighbor)){
+                            continue;
+                        }
+                    
+                        set.add(neighbor);
+                        q.add(neighbor);
+                    }
+                }
+            }
+            level++;
+        }
+        
+        return level;
+    }
+}
+
+
+Solution II : 外围减枝法  O(n)
+
+class Solution {
+    
+
+    
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        if ( n == 1){
+            ArrayList<Integer> ret = new ArrayList<>();
+            ret.add(0);
+            return ret;
+        }
+        
+        HashMap&lt;Integer, HashSet<Integer>> graph = new HashMap<>();
+        for( int i=0; i&lt;n; i++){
+            graph.put(i, new HashSet<Integer>());
+        }
+        
+        
+        for( int[] e: edges){
+            graph.get(e[0]).add(e[1]);
+            graph.get(e[1]).add(e[0]);                   //Assuming no duplicate edges
+        }
+        
+        HashSet<Integer> roots = new HashSet<>();
+        
+        for( int key : graph.keySet()){
+            if ( graph.get(key).size() == 1){
+                roots.add(key);
+            }
+        }
+        
+        
+        while( n > 2){
+            
+            HashSet<Integer> newRoots = new HashSet<>();
+            for( int root : roots){
+                
+                for( int upLevelRoot : graph.get(root)){
+                
+                    graph.get(upLevelRoot).remove(root);
+                
+                    if ( graph.get(upLevelRoot).size() == 1){
+                        newRoots.add(upLevelRoot);
+                    }
+                }
+            }
+            n = n - roots.size();
+            roots = newRoots;
+        }
+        
+        ArrayList<Integer> ret = new ArrayList<>();
+        for( int i : roots){
+            ret.add(i);
+        }
+        
+        return ret;
+    }
+}
+
+
+
+Tree的定义：三无
+1. 无向
+2. 无环
+3. 无孤
+
+Tree的边和点的关系
+O(V) = n
+O(E)= n - 1;
+
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+</body>
