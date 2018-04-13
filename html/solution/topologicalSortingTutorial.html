@@ -13,18 +13,37 @@
 
 <pre><code>
 
-记住以下结论：
-1. 有向图遍历用topological sorting
-2. topological sorting 不能遍历环的节点
-3. topological sorting 必须从进度为0的点出发
+记住togological sorting以下结论：
+用处 ： 有向图层次遍历, 找环
+注意 ： 必须从进度为0的点出发， 不能遍历环的节点
 
 
 
 Topological sorting 数据结构 
 进度表 + 点图 => 进度BFS
 
-进度表  HashMap&lt;Integer, Integer> degree = new HashSet<>();
-点图    HashMap&lt;Integer, HashSet<Integer>> = new HashMap<>(); 用HashSet的原因是adjacent list里不应该有重复的边，建图的时候要注意去掉重复的边，不然进度表和图都不对
+进度表  HashMap&lt;Integer, Integer> degree = new HashMap<>();
+点图    HashMap&lt;Integer, HashSet&lt;Integer>> = new HashMap<>(); 用HashSet的原因是adjacent list里不应该有重复的边，建图的时候要注意去掉重复的边，不然进度表和图都不对, 如果注明了没有重复的边，可以用List&lt;Integer> 代替
+
+
+
+构造进度表和图 
+1. 先初始化图和进度表，这样就保证了每个点都在图和进度表里，这样写的好处是，构造图的时候不用考虑点存不存在图中，做BFS时候也不用考虑点是否存在于图中。
+
+        for( int i=0; i&lt;numCourses;i++){
+            degree.put(i, 0);
+            graph.put(i, new HashSet<>());
+        }
+
+2.  构造图和进度表
+        for( int[] e : prerequisites){
+            
+            int from = e[1];
+            int to = e[0];
+            graph.get(from).add(to);
+            degree.put(to, degree.get(to) + 1);
+        }
+
 
 进度BFS实现 
 
@@ -66,6 +85,8 @@ return count == degree.size();
 1. 需要注意的是进度BFS不用HashSet去重，因为是从进度为0的点出发，逐步加入进度为0的点， 所以不会往会走，所以不会有重复，所以不需要去重。
 2. BFS需要判断每个点在新图中是否存在，topological sorting最后一层和孤立点没有自己的边，所以不存在新建的图graph里。 要check不然会BFS会 throw null point exception
 
+有向图时间复杂度
+O( V + E) = O( V + V^2) = O(E)
 
 </code></pre>
 

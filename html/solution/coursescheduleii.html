@@ -1,0 +1,81 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+<pre><code>
+
+
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        
+        HashMap&lt;Integer, Integer> degree = new HashMap<>();
+        HashMap&lt;Integer, List&lt;Integer>> graph = new HashMap<>();
+        
+        for( int i=0; i&lt;numCourses; i++){
+            degree.put(i,0);
+            graph.put(i, new ArrayList<>());
+        }
+        
+        for( int[] e : prerequisites){
+            int from = e[1];
+            int to = e[0];
+           
+            graph.get(from).add(to); 
+            degree.put(to, degree.get(to) + 1);
+        }
+        
+        
+        Queue&lt;Integer> q = new LinkedList<>();
+        ArrayList&lt;Integer> ret = new ArrayList<>();
+        for( int key : degree.keySet()){
+            if ( degree.get(key) == 0){
+                q.add(key);
+                ret.add(key);
+            }
+        }
+        
+        
+        
+        while( !q.isEmpty()){
+            int node = q.poll();
+            
+            for( int neighbor : graph.get(node)){
+                degree.put(neighbor, degree.get(neighbor) - 1);
+                if ( degree.get(neighbor) == 0){
+                    q.add(neighbor);
+                    ret.add(neighbor);
+                }
+            }
+        }
+        
+        if ( ret.size() != numCourses){
+            return new int[0];
+        }
+        
+        int[] ans = new int[ret.size()];
+        for(int i=0; i&lt;ret.size(); i++){
+            ans[i] = ret.get(i);
+        }
+        
+        return ans;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+<div class="comment">
+开始初始化进度表会很好写，见course schedule I
+
+</div>
+</body>
