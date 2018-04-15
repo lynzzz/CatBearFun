@@ -14,42 +14,31 @@
 
 
 
-Solution I BFS : O(n^2)， 太慢
+Solution I 每个点做BFS : O(n^2)， 太慢
 
 class Solution {
     
-    HashMap<Integer, List<Integer>> graph = new HashMap<>();
+    HashMap&lt;Integer, List<Integer>> graph = new HashMap<>();
 
     
-    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+    public List&lt;Integer> findMinHeightTrees(int n, int[][] edges) {
         
-        HashMap<Integer, Integer> l = new HashMap<>();
+        HashMap&lt;Integer, Integer> l = new HashMap<>();
+        for( int i=0; i&lt;n; i++){
+            graph.put(i, new ArrayList<Integer>());                             //初始化图的好处： 每个点都在图里，构造图的时候不用判断这个点是否在图里，做BFS时候也不用判断点是否在图里。
+        }
         
         for( int[] e: edges){
             
             int from = e[0];
             int to = e[1];
             
-            if ( !graph.containsKey(from)){
-                List<Integer> toList = new ArrayList<>();
-                toList.add(to);
-                graph.put(from , toList);
-            }else{
-                graph.get(from).add(to);
-            }
-            
-            
-            if ( !graph.containsKey(to)){
-                List<Integer> fromList = new ArrayList<>();
-                fromList.add(from);
-                graph.put(to, fromList);
-            }else{
-                graph.get(to).add(from);
-            }   
+            graph.get(from).add(to);
+            graph.get(to).add(from);
         }
         
         
-        for( int i=0; i<n; i++){
+        for( int i=0; i&lt;n i++){
             l.put(i, bfs(i));
         }
         
@@ -87,15 +76,13 @@ class Solution {
             for( int i=0; i&lt;size; i++){
                 int node = q.poll();
                 
-                if ( graph.containsKey(node)){
-                    for( int neighbor : graph.get(node)){
-                        if ( set.contains(neighbor)){
-                            continue;
-                        }
-                    
-                        set.add(neighbor);
-                        q.add(neighbor);
+                for( int neighbor : graph.get(node)){
+                    if ( set.contains(neighbor)){
+                        continue;
                     }
+                    
+                    set.add(neighbor);
+                    q.add(neighbor);
                 }
             }
             level++;
@@ -106,22 +93,22 @@ class Solution {
 }
 
 
-Solution II : 外围减枝法  O(n)
+Solution II : Topological sorting  O(n)
 
 class Solution {
     
 
     
-    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+    public List&lt;Integer> findMinHeightTrees(int n, int[][] edges) {
         if ( n == 1){
             ArrayList<Integer> ret = new ArrayList<>();
             ret.add(0);
             return ret;
         }
         
-        HashMap&lt;Integer, HashSet<Integer>> graph = new HashMap<>();
+        HashMap&lt;Integer, ArrayList<Integer>> graph = new HashMap<>();
         for( int i=0; i&lt;n; i++){
-            graph.put(i, new HashSet<Integer>());
+            graph.put(i, new ArrayList<Integer>());
         }
         
         
@@ -130,36 +117,47 @@ class Solution {
             graph.get(e[1]).add(e[0]);                   //Assuming no duplicate edges
         }
         
-        HashSet<Integer> roots = new HashSet<>();
+        
+        
+        Queue<Integer> q = new LinkedList<Integer>();
         
         for( int key : graph.keySet()){
             if ( graph.get(key).size() == 1){
-                roots.add(key);
+                q.add(key);
             }
         }
         
         
         while( n > 2){
             
-            HashSet<Integer> newRoots = new HashSet<>();
-            for( int root : roots){
+            int size = q.size();
+            
+            for( int k=0; k&lt;size; k++){
                 
-                for( int upLevelRoot : graph.get(root)){
+                int outRoot = q.poll();
                 
-                    graph.get(upLevelRoot).remove(root);
+                int innerRoot = graph.get(outRoot).get(0);
+                ArrayList<Integer> innerRootNextLevel = graph.get(innerRoot);
                 
-                    if ( graph.get(upLevelRoot).size() == 1){
-                        newRoots.add(upLevelRoot);
+                for( int i=0; i&lt;innerRootNextLevel.size(); i++){
+                    if ( innerRootNextLevel.get(i) == outRoot){
+                        innerRootNextLevel.remove(i);
+                        break;
                     }
                 }
+                
+                if ( graph.get(innerRoot).size() == 1){
+                    q.add(innerRoot);
+                }
             }
-            n = n - roots.size();
-            roots = newRoots;
+            
+            n = n - size;
         }
         
+        
         ArrayList<Integer> ret = new ArrayList<>();
-        for( int i : roots){
-            ret.add(i);
+        while( !q.isEmpty()){
+            ret.add(q.poll());
         }
         
         return ret;
@@ -176,6 +174,9 @@ Tree的定义：三无
 Tree的边和点的关系
 O(V) = n
 O(E)= n - 1;
+
+
+Topological sorting + level order traversal
 
 </code></pre>
 

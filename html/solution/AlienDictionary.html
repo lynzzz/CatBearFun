@@ -12,25 +12,28 @@
 
 <pre><code>
 
+
+
 class Solution {
     public String alienOrder(String[] words) {
-        HashMap<Character, Integer> degree = new HashMap<>();
-        HashMap<Character, HashSet<Character> > graph = new HashMap<>();
+        HashMap&lt;Character, Integer> degree = new HashMap<>();
+        HashMap&lt;Character, HashSet&lt;Character> > graph = new HashMap<>();
         
-        // construct indegree map
+        // initialize indgree table and graph
         for( String str : words){
             for( char c : str.toCharArray() ){
                 degree.put( c, 0);
+				graph.put(c, new HashSet&lt;Character>());
             }
         }
         
-        // construct vertex graph
+        // construct indegree table and graph
         int n = words.length;
-        for(int i=0; i<=n-2; i++){
+        for(int i=0; i&lt;=n-2; i++){
             String str1 = words[i];
             String str2 = words[i+1];
             int size = Math.min(str1.length(), str2.length());
-            for( int j=0;j<size;j++){
+            for( int j=0;j&lt;size;j++){
                 if  ( str1.charAt(j) == str2.charAt(j) ){
                     continue;
                 }
@@ -52,7 +55,7 @@ class Solution {
         }
         
         // BFS
-        Queue<Character> q = new LinkedList<>();
+        Queue&lt;Character> q = new LinkedList<>();
         for( char c : degree.keySet()){
             if ( degree.get(c) == 0){
                 q.add(c);
@@ -67,13 +70,11 @@ class Solution {
             char c = q.poll();
             ret = ret + c;
             
-            if ( graph.containsKey(c)){
-                for( char neighbor : graph.get(c)){
-
-                    degree.put(neighbor, degree.get(neighbor)-1);
-                    if ( degree.get(neighbor) == 0){
-                        q.add(neighbor);
-                    }
+            for( char neighbor : graph.get(c)){
+			
+                degree.put(neighbor, degree.get(neighbor)-1);
+                if ( degree.get(neighbor) == 0){
+                    q.add(neighbor);
                 }
             }
         }
@@ -87,26 +88,16 @@ class Solution {
 }
 
 
-
-Java 技巧 ： 
-
-for-each 遍历字符串
-
-for( char c : str.toCharArray()){
-       c
-}
+Topological sorting(有重复边)
 
 
-遍历HashMap
-
-for( int key : graph.get(key) ){
-      int value = graph.get(key);
-}
+处理方法：
+1.图用 HashMap&lt;char, HashSet&lt;Char>> graph, 这样好检查node是否存在于下一层， 
+2.建图的时候单独处理from, to和进度的递增
 
 
 
 </code></pre>
-
 
 
 </div>
