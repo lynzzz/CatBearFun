@@ -19,16 +19,16 @@ public class Solution {
      */
     public List<List<Integer>> connectedSet(ArrayList<UndirectedGraphNode> nodes) {
         // Write your code here
-        HashSet<Integer> set = new HashSet<>();
-        Queue<UndirectedGraphNode> q = new LinkedList<>();
+        HashSet&lt;Integer> set = new HashSet<>();
+        Queue&lt;UndirectedGraphNode> q = new LinkedList<>();
         
-        List<List<Integer>> results = new ArrayList<>();
+        List&lt;List&lt;Integer>> results = new ArrayList<>();
         
         for( UndirectedGraphNode n : nodes ){
             
             if ( !set.contains(n.label) ){
                 
-                List<Integer> result = new ArrayList<>();
+                List&lt;Integer> result = new ArrayList<>();
                 set.add(n.label);
                 q.add(n);
             
@@ -64,16 +64,11 @@ public class Solution {
 
 
 <div class="comment">
-Time complexity : O(m+n)     <br>
-Space complexity :     <br>
+Time complexity : O(V + E)     <br>
+Space complexity : O( V + E)     <br>
 
 
-
-
-// Note <br>
-1.   BFS  Queue + hashSet       <br>
-2.           <br>
-3.           <br>
+图的BFS由点及面
 
 
 </div>

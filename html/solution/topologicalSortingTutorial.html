@@ -85,8 +85,14 @@ return count == degree.size();
 1. 需要注意的是进度BFS不用HashSet去重，因为是从进度为0的点出发，逐步加入进度为0的点， 所以不会往会走，所以不会有重复，所以不需要去重。
 2. BFS需要判断每个点在新图中是否存在，topological sorting最后一层和孤立点没有自己的边，所以不存在新建的图graph里。 要check不然会BFS会 throw null point exception
 
-有向图时间复杂度
-O( V + E) = O( V + V^2) = O(E)
+
+
+无向图遍历的时间复杂度  O( V + E) = O(N)
+有向图遍历的时间复杂度  O( V + E) = O(N^2)
+
+
+无向图搜索的时间复杂度：N!
+有向图搜索的时间复杂度：N^N
 
 </code></pre>
 

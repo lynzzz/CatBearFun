@@ -26,27 +26,6 @@ Time complexity :      <br>
 Space complexity :     <br>
 
 
-Algorithm<br>
-
-1.   <br>
-
-
-
-
-<br>
-Note <br>
-
-
-<br>
-Java Skill
-1.          <br>
-2.          <br>
-
-
-
-<br>
-Last Time completed at :
-
 
 </div>
 
