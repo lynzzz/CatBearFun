@@ -4,76 +4,64 @@
 
 
 
-Solution 1:<br>
 
 <pre><code>
 
 
 class Solution {
     public int lengthOfLongestSubstring(String s) {
+        int[] m = new int[256];
+        Arrays.fill(m, -1);
         
-        int[] dict = new int[256];
-        Arrays.fill(dict, -1);
-        int start = 0;
-        int ret = Integer.MIN_VALUE;
+        int length = 0;
+        int start =0;
         int i=0;
         
-        for( ; i&lt;s.length(); i++){
+        for( ; i&lt;s.length();){
+            char c = s.charAt(i);
             
-            if ( dict[s.charAt(i)] != -1){
+            if ( m[c] == -1 ){
+                m[c] = i;
+                i++;
+            }else{
                 
-                int length = i - start;
-                if ( length > ret){
-                    ret = length;
+                if ( ( i - start) > length ){
+                    length = i - start;
                 }
-                int oldPos = dict[s.charAt(i)];
                 
+                int index = m[c];
                 
-        
-                // referesh dict
-                /*    solution I
+                for( int j=0; j&lt;256; j++){
+                    if ( m[j] <= index){
+                        m[j] = -1;
+                    }
+                }
                 
-                
-                for( int j=start; j<=oldPos; j++){
-                    dict[s.charAt(j)] = -1;
-                }   
-                start =  oldPos + 1;
-            
-                */
-            
-                
-                // Solution II
-                start = Math.max(start, oldPos + 1);
+                start = index + 1;
             }
-            dict[s.charAt(i)] = i;
         }
         
-        
-        if ( ( i - start) > ret ){
-            ret = i - start;
+        if ( ( i - start) > length ){
+            length = i - start;
         }
         
-        return ret;
+        return length;
     }
 }
 </code></pre>
 
+Two pointers moving forward
 
- 最长无重复子串：  <br>
-
-1. Char - > index
-2. 此题的Trick在于start的位置可能会往后走。 例子是 pwkewp, 第一次找到重复后，start位置在k, 第二次找到重复后，start位置有可能回到w, 有两种办法解决
-   第一种是，每次找到重复后把前面的字母所对应系数清零，如solution I所示
-   第二种就是严格限定start不能后退，如solution II。这种方法比较简单。
-   
-3  最后需要在check一次，因为对于无重复并没有check,对于重复的但是start可能往后推的情况也是一次更新。
+最长无重复子串<br>
+ 
+用Array做字典，原因是如果用HashMap做字典，需要在循环HashMap时候去掉里面的key, 这种操作需要用iterator来完成，且时间复杂度高，所以说要用array当字典。 Charactor是类整数 
 
 
 
 
 
 
-time O(n)
+Time O(n)
 </code></pre>
 
 
