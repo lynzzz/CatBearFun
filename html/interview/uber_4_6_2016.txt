@@ -118,6 +118,23 @@
  
  
  ///////////////////////////////////////////////////////////////////////////////// Correct Solution ///////////////////////////////////////////////////////////////////////////////////
+ Lesson learned:
+ 
+ HashMap<Integer, String>      Hashmap不保证顺序
+ 
+ 等同于 
+ List<Node>
+ 
+ where 
+ class Node{
+    int   key;
+	String  value;
+ }
+ 
+HashMap可以被List取代掉，这样写的好处是可以按照自己的方式对节点进行排序
+ 
+ 
+ 
  
  数据结构定义 
  HashMap<Integer, String> m
