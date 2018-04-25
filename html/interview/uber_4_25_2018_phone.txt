@@ -1,0 +1,171 @@
+// This is the text editor interface. 
+// Anything you type or change here will be seen by the other person in real tim
+
+Question 1. Go language
+输入是一个String, 用逗号隔开，每一个entry是， key value string pair,把这些pair放入一个Map输出
+
+例子：
+
+Example 1:
+input "i1 int, s1 string"
+
+output => {"i1": "int", "s1": "string"}
+
+
+// input: "age int, name string, id int"
+
+// output: {"age": "int", "name": "string", "id":"int"}
+
+
+
+Follow up:
+每一个entry里可能有多个key
+
+Example
+input: "age id int, name address string"
+output: {"age": "int", "name": "string", "address":"string", "id":"int"}
+
+
+Code
+
+HashMap<String, String> toString(String s){
+
+    HashMap<String, String> ret = new HashMap<>();
+
+    if ( s == null || s.length() == 0 ){
+        return ret;
+    }
+    
+    String[] pairs = s.split(',');                       
+    
+    for( String pair : pairs){                               
+        String[] keyValueString = pair.split(' ');           
+        int size = keyValueString.length;
+        
+        if ( size == 0){                                        // 他指出可能有这种input, entry为空，    "age id int,   , name address string"
+            continue;
+        }
+        
+        String type = keyValueString[size-1];
+        for(int i =0; i<size - 1; i++){
+            ret.put(keyValueString[i], type);
+        }
+    }
+    
+    return ret;
+}
+
+
+
+Question 2:
+判断两个字符串是不是相同：
+1. 如果有一个字符不同，是相同
+2. 如果少了一个字符，也是相同
+3。如果多一个字符，也是相同。
+3. 如果两个字符一样，也是一样的。
+
+Interviewer
+1. Hint: 此题目的trick是要保证第一个字符串比第二个字符串长 （方法是如果短就交换输入), 这样多一个字符和少一个字符就变成了一种情况
+2. 忘记了些最简单的case, where two strings are the same.
+3  isOneCharDifferent可以更简单。
+
+boolean isOneCharDifferent(String str1, String str2){
+      int count = 0;
+	  for( int i=0; i<str1.length() ; i++ ){
+	      if (str1.charAt(i) !=str2.charAt(i) ){
+		      count++;
+		  }
+	  }
+	  
+	  return count == 1;
+}
+
+算法：保证第一个字符比第二个字符长或者相同
+如果长度相同判断是否只有一个字符不一样，一次遍历数不同个数， 
+如果长度不同则用两个指针从头往后走， 遇到不同的跳， 判断只能能跳了一次，且指针同时结束.
+
+in SSN: Chriis Brown
+        Chrais Brown
+DL:     Chris Brown
+
+input: "Chriis Brown", "Chris Brown"
+output: boolean, true when str === str, or up to one char off (extra, missing, or wrong)
+
+
+
+first   chrii
+second  chkii
+
+
+boolean aretheSame(String str1, String str2){
+    if ( str1.length() < str2.length() ){
+        return aretheSame(str2, str1);
+    }
+    
+    if ( str1.equals(str2) ){
+        return true;
+    }
+    
+    if ( str1.length() == str2.length() && isOneCharDifferent(str1, str2) ){
+        return true;
+    }
+    
+    return isOneCharOff(str1, str2);
+}
+
+boolean isOneCharDifferent(String str1, String str2){
+    
+    for( int i=0; i<str1.length(); i++ ){                O(26n) = O(n)
+    
+        if ( str1.charAt(i) == str2.charAt(i) ){
+            continue;
+        }
+        
+        StringBuilder sb = new StringBuilder(str1);
+        for( char c = 'a'; c<='z'; c++){                 O(26)
+            sb.setCharAt(i, c);
+            if ( sb.toString().equals(str2) ){
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+        
+boolean isOneCharOff(String str1, String str2){
+    
+    
+    int i =0, j=0;
+    int count = 0;
+    while( i<str1.length() && j<str2.length() ){
+        
+        if ( str1.charAt(i) == str2.charAt(j) ){
+            i++;
+            j++;
+            continue;
+        }
+        
+        count++;
+        if ( count == 2){
+            return false;
+        }
+        
+        i++;
+        
+        
+    }
+    
+    return i==str1.length() && j==str2.length();
+    
+}
+
+
+
+
+
+
+
+
+
+

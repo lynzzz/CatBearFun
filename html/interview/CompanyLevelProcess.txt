@@ -1,0 +1,92 @@
+Google interview
+
+ phone, 
+             5 rounds on site, one of which is a system design. Each round has 45 minutes.
+
+
+      2.   Tech level will be determined by experience   
+
+            Level 3  new grads
+            Level 4  4 - 7   years            228k          My case
+            Level 5   6 - 8  years            360k
+
+
+      3.   Freezing period
+            6 - 12 months, unless you practice coding everyday.
+
+
+ 
+      4.   6-8 weeks hiring process, can speed up if you have pending offer.
+
+      5.   特点是无原题，变种，不好实现代码
+
+
+
+
+
+
+
+
+
+
+
+Facebook Onsite
+4 Rounds:  2Coding + 1 System Design + 1 Manager Behavior
+
+E3 for new grads
+E4 for 3-6 
+E5 for 6+         : My case
+
+Freezing period  :  6 - 12 months
+
+特点是基本是LC原题
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Uber:
+1 hour phone interview
+
+4 Rounds : 2Coding + 1System design + 1 Manager Behaviour
+
+Level : flat level
+
+Freezing period  :  6 - 12 months
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Amazon:
+5 rounds :  2 coding + 1 system design + 2 pure BQ
+
+Tech Level : SDEII L5 :                          myCase
+             SDEIII(Senior SDE) L6
+			 
+			 
+Freezing period : 6 months
+
+面试题目不是特别难
+
