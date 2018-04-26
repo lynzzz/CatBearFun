@@ -1,0 +1,103 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    public int calculate(String s) {
+        if ( s == null || s.length() == 0){
+            return 0;
+        }
+        
+        s = s.replace(" ", "");
+        
+        int sign = '+';
+        int number = 0;
+        Stack*lt;Integer> myStack = new Stack<>();
+        
+        for( int i=0; i&lt;s.length(); i++){
+            
+            char c = s.charAt(i);
+            
+            
+            if ( Character.isDigit(c)){
+                
+                int start = i;
+                while( i&lt;s.length() && Character.isDigit(s.charAt(i))){
+                    i++;
+                }
+                number = Integer.valueOf(s.substring(start, i));
+                
+                i--;
+            }
+            
+            if ( !Character.isDigit(c) || i == s.length()-1){
+                if ( sign =='+'){
+                    myStack.push(number);
+                }
+                
+                if ( sign =='-'){
+                    myStack.push(-number);
+                }
+                
+                if ( sign == '*'){
+                   myStack.push( myStack.pop() * number);
+                }
+                
+                if ( sign == '/'){
+                    myStack.push( myStack.pop() /number);
+                }
+                
+                sign = c;
+            }
+        }
+        
+        int ret = 0;
+        for( int i: myStack){
+            ret = ret + i;
+        }
+        
+        return ret;
+    }
+}
+
+
+Java Skill
+遍历Stack
+
+int ret = 0;
+for( int i : stack){
+    ret = ret + i
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+算法： 用一个stack往里面加数，最后在计算，读字符串的过程中不计算。 <br>
+如果遇到数字就读， 如果遇到+-*/,就去判断之前的符号，如果是+,-就直接压进去， 如果是*/, 就弹出值来和当前值做*/ <br>
+
+这题目非常难在人脑里进行模拟 <br>
+
+
+
+</div>
+
+
+
+
+</body>
+
