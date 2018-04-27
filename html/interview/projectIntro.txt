@@ -1,0 +1,18 @@
+1. I am a software engineer currently with Siemens, 
+2. my primary job responsibility is backend development, feature implementation and workflow creation.
+3. My tech stack is Java and C++
+4. Cumulatively, I have 6 years experience and I am looking for a backend position. 
+
+
+
+
+
+
+
+
+What Elekta does is Elekta delivers oncology software treating cancer and brain disorder. In high level, it does three things, 
+1. Read the CT image into our software, and display it three diemsnions, trasverse, sagittal and coronal.
+2. It provides contouring feature that allows user to draw the contour of organ and contour of tumor. We also provide a machine learning algo that draws the contour of organ automoatically.
+3. Based on contour of tumor, the system calculate how much does is needed to kill the tumor and pass this information to hardware machine, which delivers the dose to patient.
+
+I was with Elekta for three years, I touched frontEnd, backend, algorithm layer, infrastructure layer, persistence layer, unit test layer, pretty much everthing a little bit.

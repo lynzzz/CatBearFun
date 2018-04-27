@@ -88,5 +88,5 @@ Tech Level : SDEII L5 :                          myCase
 			 
 Freezing period : 6 months
 
-面试题目不是特别难
+面试题目不是特别难， BQ非常重要，甚至比coding重要，要准备好有说服力的段子对常见BQ
 

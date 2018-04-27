@@ -119,12 +119,12 @@ c.     There are 1m errors in log file. How to optimize? Using cache, because we
  
 Leadership:
 1. unclear responsibility
-2. 做一件本不该你做的事情，同一个项目
+2. 做一件本不该你做的事情，同一个项目　　: 自己做的东西依赖于其他组的library,　他们没时间改, 我帮他们做好了，让他们code review.
 3。proudest project.
 4. Disagree with someone最后别人改了. ( QA code review)..  QA后来改了吗？
 5。Disagree 最后你改了
 6。答应别人但没做的人
 7。解决的一个复杂的问题， multithreding, 问用了多少个CPU,用了哪些函数，如何实现同步的，是怎么做的 。 （乱编的例子没想到会一直问细节）
-8。在Elekta做的工作
+8。在Elekta做的工作 : 见首页工作总结
 9。一个项目在deadline里面没有做完，如何解决的。 你是如何知道做不完的，谁决定的 
 10。一个项目在deadline里做完了。
