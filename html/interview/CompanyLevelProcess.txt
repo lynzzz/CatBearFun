@@ -57,14 +57,43 @@ Freezing period  :  6 - 12 months
 
 
 
-Uber:
-1 hour phone interview
+Uber 2018 / Driver team
+Phone : 1 hour phone interview(data structure, algorithm)
 
-4 Rounds : 2Coding + 1System design + 1 Manager Behaviour
+on site :  5 rounds
+1 coding ( data structure, algorithm)                        1 hour
+1 OOP design    (technical depth)                            1 hour
+1 System design  (technical depth)                           1 hour
+1 Bar Raiser ( wild card : Design or/and BQ white board)     45 minutes
+1 Hiring manager ( BQ)                                       45 minutes
 
-Level : flat level
+What are they looking for?
 
-Freezing period  :  6 - 12 months
+0. Senior position focus on design aspect vs junior engineer focuses on coding
+1. you need to drive the interview.
+1. Impact on the team/cross team
+2. Can you mentor people( 能不能带队伍）
+3. Passion to join Uber.
+
+Conclusion : Bar is high and the level will be determined in the interview.
+
+
+
+
+Level is decided in the interview, L4 or L5 depends on the interview. 10 yrs can get L4, 5 yrs can get L5, 
+Eng1  L3  new grads
+Eng2  L4                  
+Eng3  L5  senior 
+
+
+Note:
+1. Bring you own laptop. Parpare to code on either whiteboard or laptop
+2. They only cover one night.
+
+
+Freezing period  :  6 - 12 months?
+
+
 
 
 
@@ -80,7 +109,8 @@ Freezing period  :  6 - 12 months
 
 
 Amazon:
-5 rounds :  2 coding + 1 system design + 2 pure BQ
+Phone : OA
+On site : 5 rounds :  2 coding + 1 system design + 2 pure HM BQ ( 45mins)  
 
 Tech Level : SDEII L5 :                          myCase
              SDEIII(Senior SDE) L6

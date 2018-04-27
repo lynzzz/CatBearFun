@@ -1,0 +1,164 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+Solution I : 暴力，我想出来的 
+
+class Solution {
+    public String nextClosestTime(String time) {
+        
+        if ( time.equals("00:00")){
+            return "00:00";
+        }
+        
+        String[] hourAndMin = time.split(":");
+        String str = hourAndMin[0] + hourAndMin[1];
+        
+        HashSet&lt;Character> set = new HashSet<>();        
+        for( char c : str.toCharArray()){
+            set.add(c);
+        }
+                
+        int number = Integer.valueOf(str);
+
+        
+        
+        String ans = "";
+        while( true  ){
+            
+            number++;
+            if ( number == 2400){
+                number = 0;
+            }
+            
+            ans = String.valueOf(number);
+            if ( ans.length() != 4){
+                int diff = 4 - ans.length();
+                for( int i=0; i&lt;diff; i++){
+                    ans = '0' + ans;
+                }
+            }
+            
+            if ( isTimeStringValid( ans ) && canStringBeReused(ans, set) ){
+                break;
+            }
+        }
+        
+
+        
+        
+        StringBuilder sb = new StringBuilder(ans);
+        sb.insert(2, ':');
+        
+        return sb.toString();
+    }
+        
+    
+    
+    
+    boolean isTimeStringValid(String number){
+            
+            
+            char[] str = number.toCharArray();
+            
+            if ( str[0] &lt; '2'){
+                return str[1] <='9' && str[2]<='5' && str[3]<='9';
+            }
+            
+            return str[1] <='3' && str[2]<='5' && str[3]<='9';
+        }
+        
+    boolean canStringBeReused( String number, HashSet<Character> set){
+           
+            for( char c : number.toCharArray()){
+                if ( !set.contains(c)){
+                    return false;
+                }
+            }
+            
+            return true;
+    }
+}
+
+Solution II : 转换成分钟计算，更简单
+算法 ：把当前时间转换成分钟，自增，然后mod(24*60), 保证了值一直在有效范围内变化。 然后反算四位数。
+hour = cur/60, minute = cur%60  结果的第一位为ret/10, 结果的第二位为ret%10
+
+class Solution {
+    public String nextClosestTime(String time) {
+        
+        String[] strs = time.split(":");
+        int curMinute = Integer.valueOf(strs[0])*60 + Integer.valueOf(strs[1]);
+        
+        HashSet&lt;Integer> set = new HashSet<>();
+        for( String str : strs){
+            for ( char c : str.toCharArray()){
+                set.add(c - '0');
+            }
+        }
+        
+        StringBuilder sb = null;
+        while( true){
+            curMinute = (curMinute + 1)%(24 * 60);
+            
+            int[] numbers = new int[] { curMinute/60/10, curMinute/60%10, curMinute%60/10, curMinute%60%10 };
+
+            int i = 0;
+            for( ; i&lt;numbers.length; i++){
+                if ( !set.contains(numbers[i])){
+                    break;
+                }
+            }
+            
+            if ( i != numbers.length){
+                continue;
+            }
+            
+            sb = new StringBuilder();
+            for( int n : numbers){
+                sb.append(n);
+            }
+            sb.insert(2, ':');
+            return sb.toString();
+
+        }
+        
+
+        
+        
+    }
+}
+
+java提示： 
+把 '0' - '9'的字符转换成整数不能用Integer.valueOf(c), 不知道为什么
+方法是 c - '0'
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :    O(1)   3 * 10 * 6 * 10 = 1800个数字按着找  <br>
+Space complexity :   O(1)  <br>
+
+
+
+</div>
+
+
+
+
+</body>
