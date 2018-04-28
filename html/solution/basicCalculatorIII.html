@@ -1,0 +1,96 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    public int calculate(String s) {
+        if ( s == null || s.length() == 0) return 0;
+        s = s.replace(" ", "");
+        
+        Stack&lt;Long> s1 = new Stack<>();
+        Stack&lt;Character> s2 = new Stack<>();
+        char sign = '+';
+
+        for( int i=0; i&lt;s.length(); i++){
+            char c  = s.charAt(i);
+            
+            if ( Character.isDigit(c)){
+                int start = i;
+                
+                while( i&lt;s.length()&& Character.isDigit(s.charAt(i)) ){
+                    i++;
+                }
+                
+                long number =  Long.valueOf(s.substring(start, i));
+                i--;
+                s1.push(process(number, sign, s1));
+            }else if ( c == '('){
+                s1.push(Long.MAX_VALUE);
+                s2.push(sign);
+                sign = '+';
+            }else if ( c == ')'){
+                long sum = 0;
+                while( s1.peek() != Long.MAX_VALUE){
+                    sum = sum + s1.pop();
+                }
+                
+                s1.pop();
+                s1.push(process(sum, s2.pop() , s1));
+                    
+            }else{
+                sign = c;
+            }
+        }
+        
+        long ret = 0;
+        for( long n : s1){
+            ret = ret + n;
+        }
+        
+        return (int)ret;
+    }
+    
+    public long process(long number, char sign, Stack<Long> s1){
+        if ( sign == '+'){
+            return number;
+        }else if ( sign == '-'){
+            return -number;
+        }else if ( sign == '*'){
+            return s1.pop()*number;
+        }else{
+            return s1.pop()/number;
+        }
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+数据结构： 用一个stack存分段值, 一个stack存符号 <br>
+
+解法与Basic calculator II相似，多一个stack存括号前的符号
+
+
+
+</div>
+
+
+
+
+</body>
+

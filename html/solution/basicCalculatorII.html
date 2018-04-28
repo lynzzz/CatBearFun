@@ -19,9 +19,8 @@ class Solution {
         
         s = s.replace(" ", "");
         
-        int sign = '+';
-        int number = 0;
-        Stack*lt;Integer> myStack = new Stack<>();
+        char sign = '+';
+        Stack&lt;Integer> myStack = new Stack<>();
         
         for( int i=0; i&lt;s.length(); i++){
             
@@ -34,28 +33,12 @@ class Solution {
                 while( i&lt;s.length() && Character.isDigit(s.charAt(i))){
                     i++;
                 }
-                number = Integer.valueOf(s.substring(start, i));
+                int number = Integer.valueOf(s.substring(start, i));
                 
                 i--;
-            }
-            
-            if ( !Character.isDigit(c) || i == s.length()-1){
-                if ( sign =='+'){
-                    myStack.push(number);
-                }
                 
-                if ( sign =='-'){
-                    myStack.push(-number);
-                }
-                
-                if ( sign == '*'){
-                   myStack.push( myStack.pop() * number);
-                }
-                
-                if ( sign == '/'){
-                    myStack.push( myStack.pop() /number);
-                }
-                
+                myStack.push( process(number, sign, myStack));
+            }else{
                 sign = c;
             }
         }
@@ -66,6 +49,19 @@ class Solution {
         }
         
         return ret;
+    }
+    
+    public int process( int number, char sign, Stack<Integer> myStack){
+        if ( sign =='+'){
+            return number;
+        }else if ( sign =='-'){
+            return -number;
+        }else if ( sign == '*'){
+           return myStack.pop() * number;
+        }
+        else{
+           return myStack.pop() /number;
+        }
     }
 }
 
@@ -91,13 +87,11 @@ s = s.replace(" ", "")
 
 
 <div class="comment">
-数据结构： 用一个stack存分段值，不用存符号<br>
+数据结构： 用一个stack存分段值<br>
 
-维持一个 number, 一个符号
+算法 ：如果遇到数字就提取出来处理【1】，如果遇到符号就变号。
 
-算法简介 ：遇到符号，往前处理<br>
-
-1如果遇到数字就读， 如果遇到符号,就去判断之前的符号，如果是+,-就直接压进去， 如果是*/, 就弹出值来和当前值做*/， 然后在压进去 <br>
+【1】数字处理方法，前面符号是 +-,就直接压，前面符号是*/,把前面的值弹出来和当前值做*/然后在压栈。
 
 
 
