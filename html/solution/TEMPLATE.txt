@@ -11,7 +11,73 @@
 
 
 <pre><code>
+Solution I :自己写的暴力
 
+class Solution {
+    public List<List<String>> groupStrings(String[] strings) {
+        HashMap&lt;Integer, List&lt;String>> m = new HashMap<>();
+
+        for( int i=0; i&lt;strings.length; i++){
+            String str = strings[i];
+            int size = str.length();
+
+            if ( !m.containsKey(size)){
+                List<String> l = new ArrayList<>();
+                l.add(str);
+                m.put(size, l);
+            }else{
+                m.get(size).add(str);
+            }
+        }
+
+        List&lt;List&lt;String>> results = new ArrayList<>();
+
+        for( int key : m.keySet()){
+            List<String> strs = m.get(key);
+
+            int start = 0;
+            while( start &lt; strs.size() ){
+
+                 List<String> result = new ArrayList<>();
+
+
+                 String firstString = strs.get(start);
+                 result.add(firstString);
+
+                 int count  = 0;
+                 for( int i=start + 1; i&lt;strs.size();i++){
+                     if ( areTheSameGroup( firstString, strs.get(i) ) ){
+                         result.add(strs.get(i));
+                     }else{
+                         count++;
+                         if ( count == 1){
+                             start = i;
+                         }
+                     }
+                 }
+                 results.add(result);
+            }
+        }
+
+        return results;
+    }
+
+
+    boolean areTheSameGroup(String str1, String str2){
+        if ( str1.length() == 1 && str2.length() == 1) return true;
+
+        int diff = str1.charAt(0) - str2.charAt(0);
+
+        for( int i=1; i<str1.length() ; i++){
+            int delta = str1.charAt(i) - str2.charAt(i);
+            if ( diff != delta){
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
 
 
 </code></pre>
