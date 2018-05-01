@@ -1,0 +1,82 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+  class Solution {
+      public int kEmptySlots(int[] flowers, int k) {
+
+          //        day -> position, where day i is 0 to N-1, position x is from 1 to N
+          // flowers[i] -> x
+
+          // reverse position - > x   where i is position, x is day
+          int[] positionsToDays = new int[flowers.length];
+          for( int i=0; i&lt;flowers.length; i++){
+              positionsToDays[flowers[i] - 1] = i + 1;
+          }
+
+          int left = 0;
+          int right = left + k + 1;
+          int ans = Integer.MAX_VALUE;
+
+          while( right &lt; flowers.length){
+
+              int i = left + 1;
+              for(  ; i&lt;right; i++){
+                  if ( positionsToDays[i] &lt; positionsToDays[left] || positionsToDays[i] &lt; positionsToDays[right]){
+                      left = i;
+                      right = left + k + 1;
+                      break;
+                  }
+              }
+
+              if ( i != right){
+                  continue;
+              }
+
+              ans = Math.min(ans, Math.max(positionsToDays[left], positionsToDays[right]));
+
+              left = right;
+              right = left + k + 1;
+
+          }
+
+          return ans == Integer.MAX_VALUE ? -1 : ans;
+      }
+  }
+
+算法：
+1 (day -> position) => (position -> day)
+2 转换为sliding window problem
+  2.1 两个position端点必须是时间值最小的，否则时间轴上不存在这个窗口
+  2.2 不存在相交的情况，所以窗口直接往前移动一口窗口的距离。
+
+  [ left1,  right1], [left 2, right 2]
+  ( left1, left2, right1, right2) 对第一个窗口， Time(left2) > time[right1] ,对第二个窗口，  Time[left2] < time【right1】自相矛盾
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(N)    <br>
+Space complexity : O(N)    <br>
+
+
+
+</div>
+
+
+
+
+</body>
