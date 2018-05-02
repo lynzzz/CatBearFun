@@ -11,6 +11,14 @@
 
 
 <pre><code>
+
+                                           什么时候用DFS : 能否在图中一点走到另外一点，这种题目能用DFS解答, <br>
+										   
+										   
+										
+
+无向图做BFS,DFS一定要去重， 否则A-> B ， B->A 可以反复递归无法结束。 但是递归结束可以返回上一层。
+
 BFS
 public class Solution {
 
@@ -18,8 +26,8 @@ public class Solution {
                             DirectedGraphNode s, DirectedGraphNode t) {
 
         
-        Queue<DirectedGraphNode> q = new LinkedList<DirectedGraphNode>();
-        HashSet<DirectedGraphNode> set = new HashSet<DirectedGraphNode>();
+        Queue&lt;DirectedGraphNode> q = new LinkedList<DirectedGraphNode>();
+        HashSet&lt;DirectedGraphNode> set = new HashSet<DirectedGraphNode>();
         
         q.add(s);
         set.add(s);
@@ -87,6 +95,33 @@ public class Solution {
 图的遍历事件复杂度对于DFS, BFS都是 O(m+n)  ~= O(m) ~= O(n^2), where m is the number of edge and n is number of vertex
 
 
+
+
+
+
+
+
+
+棋盘类DFS模板 
+
+void dfs( start, matrix){
+
+    1. 递归的结束条件 （ 一般是越界，或者撞墙）
+	
+	2. 递归达到某种要求（走到某点， 返回 ）
+	
+	3. 去重 （ 这一步，要开题目的走法， 如果按照题目的意思，你可以走回原来的坐标，就一定需要去重（如number of islands) 如果走不回去就可以不去重，因为下一层取不到, 如下题）
+	   去重的方法一般是标记为墙。
+	
+	4.  braodcast DFS
+}
+
+棋盘类的BFS就标记为墙就可以了，如number of islands, 不需要用hashSet
+
+
+
+
+
 Google 面试题目： 能不能从一点走到另外一点， 
 在第一象限内一点（x,y）, 每次可以走一步，下一步可以是(x+x, y), 或者（x, y+y）， 求问能否走到一个点（m,n）。注意，x>0, y>0，刚开始认为是四个象限，如果都是正数，不难。没有找出最优解，小姐姐说没关系，她觉得正常人需要一两天才能找出最优解。做完还剩5分钟，小姐姐要我问问题，我太累了，不想问，小姐姐还是觉得我应该问，我只好问了，然后去上厕所。
 
@@ -122,17 +157,20 @@ void BFS(int x, int y, int m, int n){
 DFS 解法 
 boolean ans = false;
 
-void DFS(int x, int y, int m, int n){        
+void DFS(int x, int y, int m, int n){
+
+	if ( x > m || y > n ){
+	    return;
+	}
+	
     if ( x == m && y == n ){
 	    ans = true;
 		return;
 	}
 	
-	if ( x > m || y > n ){
-	    return;
-	}
 
-    DFS(2x, y, m, n);                                                         CADR : 因为不可能重复，所以不需要set, 就没有contiue, add, remove, 只剩下DFS了 
+
+    DFS(2x, y, m, n);                                                    
 	DFS(x, 2y, m, n);
 }
 
@@ -142,17 +180,14 @@ void DFS(int x, int y, int m, int n){
 </code></pre>
 
 
-DFS模板：<br>
-什么时候用DFS : 能否在图中一点走到另外一点，且求出这条路径的权重，这种题目只能用DFS解答, <br>
 
-void DFS(){<br>
 
-   if (){<br>
-       递归的结束条件   I<br>
-   }<br>
 
-   递归的分解           II<br>
-}<br>
+
+
+
+
+
 
 
 1. 注意的是图里面的DFS要用去重。<br>
