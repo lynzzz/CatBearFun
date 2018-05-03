@@ -1,0 +1,99 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+class Solution {
+    
+    boolean ans = false;
+    
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+               int row = maze.length;
+        int col = maze[0].length;
+        boolean[][] visited = new boolean[row][col];
+        
+        dfs(start[0], start[1], destination[0], destination[1], maze, visited);
+        return ans;
+    }
+    
+    void dfs(int x, int y, int a, int b, int[][] maze, boolean[][] visited){
+        int row = maze.length;
+        int col = maze[0].length;
+        
+        if ( x &lt; 0 || x == row || y &lt;0 || y == col || maze[x][y] == 1 || visited[x][y]){
+            return;
+        }
+        
+        if ( x == a && y == b){
+            ans = true;
+            return;
+        }
+        
+        
+        visited[x][y] = true;
+        
+        int l = y-1;   //left
+        int r = y+1;
+        int u = x-1;
+        int d = x+1;
+        
+        // down
+        while( d &lt; row && maze[d][y] == 0 ){
+            d++;
+        }
+        d--;
+        dfs(d, y, a, b, maze, visited);
+        
+        // up 
+        while( u >=0 && maze[u][y] == 0){
+            u--;
+        }
+        u++;
+        dfs(u, y, a, b, maze, visited);
+        
+        // left
+        while( l>=0 && maze[x][l] == 0){
+            l--;
+        }
+        l++;
+        dfs( x, l, a, b, maze, visited);
+        
+        // right
+        while( r &lt; col && maze[x][r] == 0){
+            r++;
+        }
+        r--;
+        dfs( x , r, a, b, maze, visited);
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+DFS 如果棋盘走的步子不是连续的（比如象此题直着走到底，或者马跳，不能用标记为墙去重，否则整个棋盘全部会标记为墙， 正确解法是传一个boolean array去重。
+
+Time complexity :    O(mn)  <br>
+Space complexity :   O(mn)  <br>
+
+
+
+</div>
+
+
+
+
+</body>
