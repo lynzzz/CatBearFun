@@ -12,101 +12,11 @@
 
 <pre><code>
 
-                                           什么时候用DFS : 能否在图中一点走到另外一点，这种题目能用DFS解答, <br>
-										   
-										   
-										
-
-无向图做BFS,DFS一定要去重， 否则A-> B ， B->A 可以反复递归无法结束。 但是递归结束可以返回上一层。
-
-BFS
-public class Solution {
-
-    public boolean hasRoute(ArrayList<DirectedGraphNode> graph, 
-                            DirectedGraphNode s, DirectedGraphNode t) {
-
-        
-        Queue&lt;DirectedGraphNode> q = new LinkedList<DirectedGraphNode>();
-        HashSet&lt;DirectedGraphNode> set = new HashSet<DirectedGraphNode>();
-        
-        q.add(s);
-        set.add(s);
-        
-        while( !q.isEmpty() ){
-            DirectedGraphNode node = q.poll();
-            
-            if ( node == t){
-                return true;
-            }
-            
-            for( DirectedGraphNode child : node.neighbors){
-               
-               if ( set.contains(child) ){
-                   continue;
-               }
-                    
-               set.add(child);
-               q.add(child);
-            }
-        }
-        
-        return false;
-    }
-}
-
-DFS
-
-
-public class Solution {
-
-    private boolean ret = false; 
-     
-    public boolean hasRoute(ArrayList<DirectedGraphNode> graph, DirectedGraphNode s, DirectedGraphNode t) {
-
-        HashSet<DirectedGraphNode> set = new HashSet<>();
-        set.add(s);
-        dfs(graph, s, t, set);
-		set.remove(s);                                                 // 当最高层的DFS返回时，要把原来的start,清零。 不然多次DFS会出错。
-		
-        return ret;
-    }
-    
-    
-    void dfs( ArrayList<DirectedGraphNode> graph, DirectedGraphNode s, 
-              DirectedGraphNode t, HashSet<DirectedGraphNode> set ){
-        
-        if ( s == t){
-            ret = true;
-            return;
-        }
-        
-        for( DirectedGraphNode neighbor : s.neighbors){                                     CADR : continue, add, DFS, remove
-            if ( set.contains(neighbor)){
-                continue;
-            }
-            
-            set.add(neighbor);
-            dfs( graph, neighbor, t, set);
-            set.remove(neighbor);
-        }
-    }
-}
-
-图的遍历事件复杂度对于DFS, BFS都是 O(m+n)  ~= O(m) ~= O(n^2), where m is the number of edge and n is number of vertex
-
-
-
-
-
-
-
-
-
-棋盘类DFS模板, 用boolean array去重
+棋盘类DFS模板, 数据结构： 用boolean array去重
 
 void dfs( start, matrix){
 
-    1. 递归的结束条件 （ 一般是越界，或者撞墙， 或者访问过）
+    1. 递归的三个结束条件判断 （ 一般是越界，或者撞墙， 或者访问过）
 	
 	2. 递归达到某种要求（走到某点， 返回 ）
 	
@@ -222,7 +132,7 @@ void DFS(int x, int y, int m, int n， boolean[][] visited){
 }
 
 
-
+例子见此章的Maze
 
 </code></pre>
 
@@ -231,10 +141,12 @@ void DFS(int x, int y, int m, int n， boolean[][] visited){
 
 
 
-
-
 <div class="comment">
-1. BFS or DFS 图里面搜索一般用BFS. 有时候DFS比BFS要好写些。 <br>
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+
 </div>
 
 
