@@ -9,25 +9,19 @@
 <pre><code>
 
 
-public class Solution {
-    /**
-     * @param candidates: A list of integers
-     * @param target:An integer
-     * @return: A list of lists of integers
-     */
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         // write your code here
         Arrays.sort(candidates);
         
-        List<List<Integer>> results = new ArrayList<>();
-        List<Integer> result = new ArrayList<>();
+        List&lt;List<Integer>> results = new ArrayList<>();
+        List&lt;Integer> result = new ArrayList<>();
         dfs(results, result, candidates, target, 0);
         
         return results;
     }
     
     
-    private void dfs( List<List<Integer>> results, List<Integer> result, int[] candidates, int target, int level){
+    private void dfs( List&lt;List<Integer>> results, List<Integer> result, int[] candidates, int target, int level){
         
         int sum = 0;
         for( int n : result){
@@ -35,30 +29,20 @@ public class Solution {
         }
         
         if ( sum == target){
-            results.add(new ArrayList<Integer>(result));
+            results.add(new ArrayList(result));
             return;
         }
         else if ( sum > target){
             return;   
         }
         
-        for( int i=level; i&ltcandidates.length; i++){
-            
-            if ( i>=1 && candidates[i] == candidates[i-1] ){
-                continue;
-            }
+        for( int i=level; i&lt;candidates.length; i++){
             
             result.add(candidates[i]);
             dfs(results, result, candidates, target, i);
             result.remove(result.size()-1);
         }
     }
-}
-/*
-// time complexity O(n*2^(n))
-// space O(1)
-*/
-
 
 <div class="comment">
 Note:
