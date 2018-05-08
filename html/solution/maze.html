@@ -11,6 +11,8 @@
 
 
 <pre><code>
+DFS:
+
 
 class Solution {
     
@@ -46,14 +48,16 @@ class Solution {
         int u = x-1;
         int d = x+1;
         
-        // down
-        while( d &lt; row && maze[d][y] == 0 ){
+		
+		// 下一层DFS点有四种可能性，因为要一直走到底，不知道在哪里，所以先要找到这四个点。
+        // down                        
+        while( d &lt; row && maze[d][y] == 0 ){                
             d++;
         }
         d--;
         dfs(d, y, a, b, maze, visited);
         
-        // up 
+        // up                                                 
         while( u >=0 && maze[u][y] == 0){
             u--;
         }
@@ -76,6 +80,96 @@ class Solution {
     }
 }
 
+
+BFS:
+
+class Solution {
+        
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        
+        int row = maze.length;
+        int col = maze[0].length;
+         
+        Queue&lt;Integer> q = new LinkedList<>();
+        HashSet&lt;Integer> set = new HashSet<>();
+        
+        int i = start[0];
+        int j = start[1];
+        int a = destination[0];
+        int b = destination[1];
+        
+        int code = i*col + j;
+        
+        q.add(code);
+        set.add(code);
+        
+        while( !q.isEmpty()){
+            
+            int n = q.poll();
+            int x = n/col;
+            int y = n%col;
+            
+            if ( x == a && y == b){
+                return true;
+            }
+            
+            int l = y-1;   //left
+            int r = y+1;   // right
+            int u = x-1;   // up
+            int d = x+1;   // down
+            
+			
+			// 下一层加入的点有四种可能性，因为要一直走到底，不知道在哪里，所以先要找到这四个点。
+
+            // left
+            while( l>=0 && maze[x][l] == 0 ){
+                l--;
+            }
+            l++;
+            
+            if ( !set.contains(x*col + l)){
+                q.add(x*col + l);
+                set.add(x*col + l);
+            }
+            
+            
+            // right
+            while( r &lt; col && maze[x][r] == 0){
+                r++;
+            }
+            r--;
+            if ( !set.contains(x*col + r)){
+                q.add(x*col + r);
+                set.add(x*col + r);
+            }
+            
+            // up
+            while( u >=0 && maze[u][y] == 0){
+                u--;
+            }
+            u++;
+            
+            if ( !set.contains(u*col + y)){
+                q.add(u*col + y);
+                set.add(u*col + y);
+            }
+            
+            // down
+            while( d &lt; row && maze[d][y] == 0 ){
+                d++;
+            }
+            d--;
+            
+            if ( !set.contains(d*col + y)){
+                q.add(d*col + y);
+                set.add(d*col + y);
+            }
+        }
+        
+        
+        return false;
+    }
+}
 </code></pre>
 
 
