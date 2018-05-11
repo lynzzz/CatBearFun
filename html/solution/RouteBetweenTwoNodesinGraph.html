@@ -13,11 +13,17 @@
 <pre><code>
 										   
 										   
-解决问题？ 无向图两点之间能否联通？    BFS, DFS模板，必背
-
+解决问题： 图中两点之间能否联通
+适用范围： 既可以用于无向图，也可以用于有向图。
 无向图做BFS,DFS一定要去重， 否则A-> B ， B->A 可以反复递归无法结束。 但是递归结束可以返回上一层。
 
-BFS : Queue + HashSet
+
+
+
+BFS模板 : Queue + HashSet
+ 例题
+ <li><a href="solution/ValidGraphTree.html">Valid Graph Tree(无向图求连通子图个数)</a> <a href=https://www.lintcode.com/problem/graph-valid-tree/description>Q</a>  </li>
+
 public class Solution {
 
     public boolean hasRoute(ArrayList<DirectedGraphNode> graph, 
@@ -52,8 +58,11 @@ public class Solution {
     }
 }
 
-DFS  HashSet 对点去重( 这个模板要熟背诵，这是很多题目的基础函数)
-<li><a href="solution/RedundentConnection.html">Redundant Connection （无向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
+DFS  HashSet模板(一定要熟背）！
+Function signature takes 4 parameters : ( start, end, graph, hashset)
+
+<li><a href="solution/RedundentConnection.html">Redundant Connection （有向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
+<li><a href="solution/EvaluateDivision.html">Evaluate Division(有向图里能否从一点到另一点，返回权重)</a> <a href="https://leetcode.com/problems/evaluate-division/description/">Q</a>  </li>
 
 
 public class Solution {
@@ -102,9 +111,10 @@ public class Solution {
 
 
 
-
-有向图一般是对边去重，断边加边， 不用Set。 但是此题对点去重也可以对。
-参见例题 <li ><a href="solution/reconstructitinerray.html">Reconstruct Itinerary(有向图DFS搜索某种路径：断边法)</a> <a href="https://leetcode.com/problems/reconstruct-itinerary/description/">Q</a>  </li>
+有向图还可以对边去重，断边加边， 不用Set。 但是此题对点去重也可以对。
+参见例题 
+<li ><a href="solution/reconstructitinerray.html">Reconstruct Itinerary(有向图DFS搜索某种路径：断边法)</a> <a href="https://leetcode.com/problems/reconstruct-itinerary/description/">Q</a>  </li>
+<li><a href="solution/RedundentConnection.html">Redundant Connection （有向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
 
 
 public class Solution {
