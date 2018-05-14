@@ -27,32 +27,26 @@ int helper(TreeNode root){
    if ( root == null )
    // 结束条件
 
-   
+
    int left = helper(root.left);
    int right = helper(root.right);
-   
-   
-   // 一直会走到最底层的node, where root.left == null && root.right == null. 
-   // Business logic 从这里开始写
-   
-   
+
+   此时到达最下面的结点了，然后开始处理
    //conquer
-   
-    
-
-
-
 
 }
 
+分治要注意的是，递归函数会返回一个值，要理解这个值的定义是什么
+全局会维护一个值，要理解维护的值是什么
 
 
 </code></pre>
 
-
+例子题目<br>
 <ol>
 <li><a href="BinaryTreeLongestConsecutiveSequence.html">Binary tree longest consecutive sequence</a></li>
 <li><a href="subTreeWithMaxiumAverage.html">sub Tree With Maxium average(</a></li>
+<li><a href="solution/BinaryTreeMaximumPathSum.html">Binary Tree Maximum PathSum(此题目不好理解)</a> <a href=https://leetcode.com/problems/binary-tree-maximum-path-sum/description/>Q</a>  </li>
 
 
 </ol>

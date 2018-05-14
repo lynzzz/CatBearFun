@@ -13,7 +13,7 @@
 <pre><code>
 
 class Solution {
-    public boolean isSubtree(TreeNode s, TreeNode t) {                  // 点对树模板
+    public boolean isSubtree(TreeNode s, TreeNode t) {                  // 判断是否为子树的模板
         
          if ( s == null) return false;
          if ( areTheSameTree(s, t)) return true;
@@ -22,13 +22,12 @@ class Solution {
     }
     
     
-    boolean areTheSameTree(TreeNode t1, TreeNode t2){                  //树对树模板
+    boolean areTheSameTree(TreeNode t1, TreeNode t2){                  // 判断两颗树是否相同模板
         
         if ( t1 == null && t2 == null) return true;
         if ( t1 == null || t2 == null ) return false;
-        if ( t1.val != t2.val ) return false;
         
-        return areTheSameTree(t1.left, t2.left) && areTheSameTree(t1.right, t2.right);
+        return t1.val == t2.val && areTheSameTree(t1.left, t2.left) && areTheSameTree(t1.right, t2.right);
     }
     
     

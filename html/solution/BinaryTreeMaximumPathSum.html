@@ -1,0 +1,71 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+  class Solution {
+
+      private int ans = Integer.MIN_VALUE;
+
+      public int maxPathSum(TreeNode root) {
+
+          helper(root);
+          return ans;
+
+      }
+
+      public int helper(TreeNode root){
+          if ( root == null ){
+              return 0;
+          }
+
+          int l = helper(root.left);
+          int r = helper(root.right);
+
+          if ( l &lt; 0) l = 0;
+          if ( r &lt; 0) r = 0;
+
+          int sum = root.val + l + r;
+          if ( sum > ans){
+              ans = sum;
+          }
+
+          return root.val + Math.max(l, r);
+      }
+
+
+
+      // Divide and conquer, 从下往上走
+      // 每个点可能是最后的顶点，也可能不是。
+      // 函数返回的是当前点不是顶点的最大值，
+      // 全局变量维持的是当前点是顶点的最大值
+      // 此题目不是特别好理解
+  }
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+
+</div>
+
+
+
+
+</body>
