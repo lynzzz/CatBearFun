@@ -12,7 +12,7 @@
 
 <pre><code>
 public class Solution {
-     
+
     class TreeHelperNode{
         int sum;
         int size;
@@ -21,38 +21,40 @@ public class Solution {
             this.size = size;
         }
     }
-     
+
     TreeNode result;
-    TreeHelperNode resultHepler;
-     
+
     public TreeNode findSubtree2(TreeNode root) {
         // Write your code here
         dfs(root);
         return result;
     }
-    
+
     // 递归的定义 ： 构造一个和原来的树一模一样的树，但是每个节点是TreeHelperNode
     TreeHelperNode dfs(TreeNode root){
-        
+
         // return condition ??
         if( root == null){
             return new TreeHelperNode(0,0);
         }
-        
+
         TreeHelperNode leftHelper = dfs(root.left);
         TreeHelperNode rightHelper = dfs(root.right);
-        
-        TreeHelperNode rootHelper = new TreeHelperNode(root.val + leftHelper.sum + rightHelper.sum, 
+
+        TreeHelperNode rootHelper = new TreeHelperNode(root.val + leftHelper.sum + rightHelper.sum,
                                                           1 + leftHelper.size + rightHelper.size);
-        
+
         if ( result == null || rootHelper.sum * resultHepler.size > resultHepler.sum * rootHelper.size  ){
             result = root;
-            resultHepler = rootHelper;
         }
-        
+
         return rootHelper;
     }
 }
+
+Divide and conqure 分治从下往上走
+函数返回的是当前TreeNode对应的新的TreeHelpNode
+全局维护的是TreeNode平均值的最大点
 
 
 </code></pre>
