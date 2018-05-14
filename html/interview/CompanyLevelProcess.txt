@@ -71,9 +71,9 @@ What are they looking for?
 
 0. Senior position focus on design aspect vs junior engineer focuses on coding
 1. you need to drive the interview.
-1. Impact on the team/cross team
-2. Can you mentor people( 能不能带队伍）
-3. Passion to join Uber.
+1. Impact on the team/cross team       Scientist/QA/different SDE team/   meeting together？ talk? 
+2. Can you mentor people( 能不能带队伍） ： intern, junior SDE they ask me how to solve a problem ? First draw UML sequence -> sit with them -> management( hope they can give me a update, ask them are you stuck anywhere need help?)
+3. Passion to join Uber.  Company/project/person
 
 Conclusion : Bar is high and the level will be determined in the interview.
 
@@ -88,7 +88,7 @@ Eng3  L5  senior
 
 Note:
 1. Bring you own laptop. Parpare to code on either whiteboard or laptop
-2. They only cover one night.
+2. They only cover one night.( they finally give me 2 nights after they identified I have to take red-eye flight back)
 
 
 Freezing period  :  6 - 12 months?

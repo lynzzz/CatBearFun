@@ -41,13 +41,13 @@ private HashMap< Node, Integer> rank
 			
 			if ( root1 == root2 ) return;
 			
-			if ( rank.get(node1) > rank.get(node2 ) ){
-			    parent.put(node2, node1); 
-			}else if ( rank.get(node1) < rank.get(node2) ){
-			    parent.put(node, node2)
+			if ( rank.get(root1) > rank.get(root2 ) ){
+			    parent.put(root2, root1); 
+			}else if ( rank.get(root1) < rank.get(root2) ){
+			    parent.put(root1, root2)
 			}else{
-			    parent.put(node1, node2);
-			    rank.put(node2, rank.get(node2) + 1);
+			    parent.put(root1, root2);
+			    rank.put(root2, rank.get(root2) + 1);
 			}
 	  }
 
