@@ -1,0 +1,93 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+  class Solution {
+      public String decodeString(String s) {
+
+          if ( s == null || s.length() == 0 )  return "";
+
+          Stack&lt;Integer> s1 = new Stack&lt;>();
+          Stack&lt;String>  s2 = new Stack&lt;>();
+
+          for( int i=0; i<s.length() ; i++){
+
+              char c = s.charAt(i);
+
+              if ( Character.isDigit(c)){
+
+                  int start = i;
+                  while( i < s.length() && Character.isDigit(s.charAt(i))){
+                      i++;
+                  }
+
+                  int number = Integer.valueOf(s.substring(start, i));
+                  s1.push(number);
+                  i--;
+              }else if ( Character.isLetter(c)){
+                  int start = i;
+                  while( i < s.length() && Character.isLetter(s.charAt(i))){
+                      i++;
+                  }
+
+                  if ( !s2.empty() && !s2.peek().equals("["))
+                      s2.push( s2.pop() + s.substring(start, i));
+                  else
+                      s2.push( s.substring(start, i));
+
+                  i--;
+              }
+              else if ( c == '['){
+                  s2.push("[");
+              }else if (c == ']'){
+
+                  String str = s2.pop();
+                  s2.pop();
+
+                  int number = s1.pop();
+
+                  StringBuilder sb = new StringBuilder();
+                  for( int j=0; j<number; j++){
+                      sb.append(str);
+                  }
+
+                  if ( !s2.empty() && !s2.peek().equals("["))
+                      s2.push( s2.pop() + sb.toString());
+                  else
+                      s2.push(sb.toString());
+              }
+          }
+
+          String ret = "";
+          while( !s2.empty()){
+              ret = s2.pop() + ret;
+          }
+
+          return ret;
+      }
+  }
+
+  // 一个栈存数字，一个栈存字符串 。 此题的难点是，压字符串的时候要和前面的字符串结合有几种情况
+</code></pre>
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+
+
+</body>
