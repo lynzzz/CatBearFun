@@ -14,10 +14,10 @@
    2<br>
 
  需要表示成  1, null, 2, null, null<br><br>
- 
+
 Serilizaion : 用Queue做BFS, 需要把null压入ArrayList,不然无法知道树的结构。<br><br>
 
-deserilization : 数据结构 boolean isLeft, 和 当前root index, 建立ArrayList<Node>代表一棵树,遇到null就跳过，因为自然为null<br><br>
+deserilization : 数据结构 Queue, 把第一个值当成头，压进queue,循环数组后面的，依次左右，压栈<br><br>
 
 Java skill : 可以把  null赋值给reference type,包括 Integer. <br>
              Integer x = null  correct<br>
@@ -27,133 +27,85 @@ Java skill : 可以把  null赋值给reference type,包括 Integer. <br>
 <pre><code>
 
 class Solution {
-     
 
+
+  class Solution {
+    /**
+     * This method will be invoked first, you should design your own algorithm
+     * to serialize a binary tree which denote by a root node to a string which
+     * can be easily deserialized by your own "deserialize" method later.
+     */
     public String serialize(TreeNode root) {
-        // write your code here
-       if ( root == null ){
-           return "";
-       }
-      
-       ArrayList&lt;TreeNode&gt; arr = new ArrayList<>();
-       Queue<TreeNode> q = new LinkedList<>();
-       
-       q.add(root);
-       
-       while( !q.isEmpty() ){
-           TreeNode n = q.poll();
-           
-           arr.add(n);
-           
-           if ( n != null){
-               q.add(n.left);
-               q.add(n.right);
-           }
-       }
-       
-          
-       StringBuilder str = new StringBuilder();
-       for( TreeNode n : arr){
-           if ( n == null){
-               str.append('#');
-           }else{
-               str.append(n.val);
-           }
-           str.append(',');
-       }
-       
-       str.deleteCharAt(str.length() - 1 );
-       
-       return str.toString();
-       
+        if ( root == null) return "";
+
+		Queue&lt;TreeNode>  q = new LinkedList&lt;>();
+		q.add(root);
+
+		StringBuilder sb = new StringBuilder();
+
+		while( !q.isEmpty()){
+		    TreeNode n = q.poll();
+			sb.append( n != null ? n.val : "$");
+			sb.append( ',');
+
+
+			if ( n == null ){
+			    continue;
+			}
+
+			q.add(n.left);
+			q.add(n.right);
+		}
+
+        return sb.toString();
     }
-    
+
+
+
     /**
      * This method will be invoked second, the argument data is what exactly
      * you serialized at method "serialize", that means the data is not given by
      * system, it's given by your own serialize method. So the format of data is
-     * designed by yourself, and deserialize it here as you serialize it in 
+     * designed by yourself, and deserialize it here as you serialize it in
      * "serialize" method.
      */
     public TreeNode deserialize(String data) {
-        // write your code here
-        if ( data.equals("")){
-            return null;
-        }
-        
-        
-        String[] strs = data.split(",");
-        
-        ArrayList<TreeNode> ret = new ArrayList<>();
+           if ( data.equals("") ) return null;
 
-        TreeNode root = new TreeNode(Integer.valueOf(strs[0]));
-        ret.add(root);
-        
-        int index = 0;
-        boolean isLeft = true;
-        
-        for( int i=1; i&lt;strs.length; i++ ){
-            
-            if ( !strs[i].equals("#") ){
-                TreeNode n = new TreeNode(Integer.valueOf(strs[i]));
-                ret.add(n);
+           Queue&lt;TreeNode> q = new LinkedList&lt;>();
 
-                if ( isLeft){
-                    ret.get(index).left = n;
-                }else{
-                    ret.get(index).right = n;
-                }
-            }
-            
-            if ( !isLeft){
-                index++;
-            }
-            
-            isLeft = !isLeft;
-            
-        }
-        
-        return root;
+           String[] strs = data.split(",");
+           TreeNode root = new TreeNode( Integer.valueOf(strs[0]) );
+           q.add( root );
+
+           for( int i=1; i&lt;strs.length; i++){
+               TreeNode parent = q.poll();
+
+               if ( !strs[i].equals("$") ){
+                   TreeNode left = new TreeNode(Integer.valueOf(strs[i]));
+                   parent.left = left;
+                   q.add(left);
+               }
+
+               i++;
+
+               if ( !strs[i].equals("$") ){
+                   TreeNode right = new TreeNode(Integer.valueOf(strs[i]));
+                   parent.right = right;
+                   q.add(right);
+               }
+           }
+
+           return root;
     }
+
 }
+
 
 
 
 </code></pre>
 
-
-
-
-
-
-<div class="comment">
-Time complexity :      <br>
-Space complexity :     <br>
-
-
-Algorithm<br>
-
-1.   <br>
-
-
-
-
-<br>
-Note <br>
-
-
-<br>
-Java Skill
-1.          <br>
-2.          <br>
-
-
-
-<br>
-Last Time completed at :
-
-
-</div>
 
 
 

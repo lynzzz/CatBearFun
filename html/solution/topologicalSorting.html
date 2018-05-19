@@ -11,50 +11,61 @@
 
 
 <pre><code>
-public class Solution {
-    /**
-     * @param graph: A list of Directed graph node
-     * @return: Any topological order for the given graph.
-     */    
-    public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) {
-        // write your code here
-        ArrayList<DirectedGraphNode> answer = new ArrayList<>();
+  public class Solution {
+      /*
+       * @param graph: A list of Directed graph node
+       * @return: Any topological order for the given graph.
+       */
+      public ArrayList&lt;DirectedGraphNode> topSort(ArrayList&lt;DirectedGraphNode> graph) {
+
+      // 定义图和进度表
+       HashMap&lt;DirectedGraphNode, List&lt;DirectedGraphNode>> myGraph = new HashMap&lt;>();
+       HashMap&lt;DirectedGraphNode, Integer> degree = new HashMap&lt;>();
 
 
-        // construct indegree table
-        HashMap<DirectedGraphNode, Integer> m = new HashMap<>();       
-            for( DirectedGraphNode neighbor : node.neighbors){ 
-                if ( !m.containsKey(neighbor) )
-                    m.put(neighbor, 1 );
-                else
-                    m.put(neighbor, m.get(neighbor)+1);
-            }
-        }
-        
-        // find the node not in indegree map, which are start points
-        Queue<DirectedGraphNode> q = new LinkedList<>();         
-        for( DirectedGraphNode n : graph){
-            if ( !m.containsKey(n) ){
-                q.add(n);
-            }
-        }
-        
+          // 初始化图和进度表，保证每个点都在里面，后面不用判断是否contains
+          for( DirectedGraphNode d : graph){
+               myGraph.put(d, new ArrayList&lt;DirectedGraphNode>() );
+               degree.put(d, 0);
+          }
 
-        // BFS + indegree table update
-        while( !q.isEmpty() ){
-            DirectedGraphNode n = q.poll();
-            answer.add(n);
-            for( DirectedGraphNode neighbor : n.neighbors){
-                m.put(neighbor, m.get(neighbor)-1);     // 可以理解为断开连表
-                if ( m.get(neighbor) == 0 ){
-                    q.add(neighbor);
-                }
-            }
-        }
-        
-        return answer;
-    }
-}
+          // 构造图和进度表
+          for( DirectedGraphNode d : graph ){
+              for( DirectedGraphNode neighbor : d.neighbors){
+                  myGraph.get(d).add(neighbor);
+                  degree.put(neighbor , degree.get(neighbor) + 1 );
+              }
+          }
+
+
+          //找到进度为0的起点，可以有多个
+          Queue&lt;DirectedGraphNode> q = new LinkedList&lt;>();
+          for( DirectedGraphNode key : degree.keySet()){
+              if ( degree.get(key) == 0 ){
+          	    q.add(key);
+          	}
+          }
+
+
+          ArrayList&lt;DirectedGraphNode> ret = new ArrayList&lt;>();
+
+          while( !q.isEmpty() ){
+
+                   DirectedGraphNode n = q.poll();
+                   ret.add(n);
+
+          		 for( DirectedGraphNode neighbor : myGraph.get(n) ){
+          			   degree.put(neighbor, degree.get(neighbor)-1);
+          			   if ( degree.get(neighbor) == 0 ){
+          				   q.add(neighbor);
+          			   }
+          		 }
+          }
+
+          return ret;
+      }
+  }
+
 
 
 </code></pre>
@@ -66,14 +77,14 @@ public class Solution {
 
 <div class="comment">
 Topological sorting （中文名拓扑排序）: 有向图从入口到出口遍历，有环的点遍历不到。<br>
-方法：<br> 
+方法：<br>
 1.构造adjacent list, 构造进度表 <br>
 2.进度为0点BFS，更新进度，只有下一个进度为0，才能加入queue,不用set<br>
 
 
 进度表  + 点图  => BFS
 
- 
+
 </div>
 
 
