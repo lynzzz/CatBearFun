@@ -1,0 +1,48 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+  class Solution {
+      public int pathSum(TreeNode root, int sum) {
+          if ( root == null) return 0;
+
+          return pathSumOnlyStartFromRoot(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
+      }
+
+
+      public int pathSumOnlyStartFromRoot(TreeNode root, int sum){
+          if ( root == null){
+              return 0;
+          }
+
+          if ( root.val == sum){
+              return 1 + pathSumOnlyStartFromRoot(root.left, sum - root.val) + pathSumOnlyStartFromRoot(root.right, sum - root.val);
+          }
+
+          return pathSumOnlyStartFromRoot(root.left, sum - root.val) + pathSumOnlyStartFromRoot(root.right, sum - root.val);
+      }
+  }
+
+</code></pre>
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n^2)   <br>
+Space complexity :     <br>
+
+
+
+
+</body>
