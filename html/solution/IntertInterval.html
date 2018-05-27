@@ -1,0 +1,55 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+  class Solution {
+      public List&lt;Interval> insert(List&lt;Interval> intervals, Interval newInterval) {
+          List&lt;Interval> ret = new ArrayList&lt;>();
+
+          for( Interval i : intervals){
+              if ( newInterval == null || i.end < newInterval.start){
+                  ret.add(i);
+              }else if ( i.start > newInterval.end ){
+                  ret.add(newInterval);
+                  ret.add(i);
+                  newInterval = null;
+              }
+              else{
+                  newInterval.start = Math.min(newInterval.start, i.start);
+                  newInterval.end = Math.max(newInterval.end, i.end);
+              }
+          }
+
+          if ( newInterval != null){
+              ret.add(newInterval);
+          }
+
+          return ret;
+      }
+  }
+
+经典算法，理解背诵
+
+</code></pre>
+
+
+
+
+
+<div class="comment">
+Time complexity : O(n)     <br>
+Space complexity :     <br>
+
+
+
+
+</body>
