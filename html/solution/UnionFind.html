@@ -10,13 +10,13 @@ Union Find algorithm ( disjoint set, 中文是 查并集）<br><br>
 <li><a href="solution/RedundentConnection.html">Redundant Connection （有向图找环， DFS）</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
 <li><a href="solution/isolatedislandII.html">island count ii (无向图求连通子图个数）</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
 
- 
+
 对外接口就是两个节点。
 
 算法<br>  Step 1 : 图里的每一个点是一个独立的不可交集<br>
         step 2 : 按照你自己定义的法则进行合并。<br><br>
-		
-		
+
+
 代码实现 ：<br><br>
 数据结构 : 需要一个parent hashmap指向自己的parent,  和一个 rank hashmap返回每个点的rank<br>
 函数     ： Find() take一个节点，找这个节点的root, <br>
@@ -25,30 +25,30 @@ Union Find algorithm ( disjoint set, 中文是 查并集）<br><br>
 <pre><code>
 class UF{
 
-private HashMap< Node, Node> parent    
+private HashMap< Node, Node> parent
 private HashMap< Node, Integer> rank
 
       UF(){
-	       每个节点指向自己，自成一个不可交集 
+	       每个节点指向自己，自成一个不可交集
 	  }
-	  
-	  
+
+
 	  private int find( int node ){
 	       if ( parent.get(node) == node ){
 		      return node;
 		   }
 	       return find( parent.get(node));
 	  }
-	  
+
 	  public void union( int node1, int node 2){
-	         
+
 	        int root1 = find(node1);
 			int root2 = find(node2);
-			
+
 			if ( root1 == root2 ) return;
-			
+
 			if ( rank.get(root1) > rank.get(root2 ) ){
-			    parent.put(root2, root1); 
+			    parent.put(root2, root1);
 			}else if ( rank.get(root1) < rank.get(root2) ){
 			    parent.put(root1, root2)
 			}else{
@@ -59,8 +59,32 @@ private HashMap< Node, Integer> rank
 
 }
 
-time complexity : Union是唯一的对外的interface, 时间复杂度是 O( lgn), where n is the number of nodes.
+如果不知道节点的个数，可以用array来做parent, 问题太复杂了，可以把rank去掉
+class UF
+{
+    int[] parent = new int[10000];
+
+    UF(){
+        for( int i=0; i&lt;10000; i++){
+            parent[i] = i;
+        }
+    }
+
+    int find(int node){
+        if ( parent[node] == node){
+            return node;
+        }
+        return find(parent[node]);
+    }
+
+    void union(int n1, int n2){
+        int p1 = find(n1);
+        int p2 = find(n2);
+        parent[p1] = p2;
+    }
+
+
+}
 
 </code>
 </pre>
-
