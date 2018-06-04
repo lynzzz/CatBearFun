@@ -95,7 +95,102 @@ Freezing period  :  6 - 12 months?
 
 
 
+大领导说了要筹备上市很缺人，让我们大力内推。。。。
+来吧！燥起来！Uber内推！咱们秉着互帮互助，严肃对待的态度。
+简单介绍一下tech stack情况和各个大组，
+1，legacy code大量的python（flask ,tornado都有）,nodejs,react,react native
+2，现在逐步standardalization，全公司大力push用golang和java，然后react native
+也要换成swift等真正的native。要重写很多service。
+3，内部全部是micro service + RPC call
+4，eats势头很好，盈利。这个部门就是管eats app以及所有business logic
+5，freight也不错，势头很好。就是管feight app以及他的所有business logic
+6，marketplace组就是算钱的和管dispatch的，现在没有dispatch组了（应该是)。绝
+大部分岗位都是backend 岗位
+7，ATG是做自动驾驶相关的，现在和freight有精密合作。
+8，driver组是做就是管driver那个app以及他的所有business logic。driver app是另
+一个app，我们平时用的是rider app。driver很大，从sign up，onboarding到driver 
+experience都是一个单独的team。
+9，infra组泛指各种infra，
+比如persistence，那就是mysql, postgre，hadoop之类的
+比如seach,那就是ELK stack
+比如MQ，那就是Kafka
+10，除此之外还有大量的内部tool组，和其他公司可能不一样，我司的tool组极其重要
+，因为作为一个产品driven的公司，每天都有大量的AB test和各种test在做，这些都
+是tool组提供的。简单来说就是从模拟一个driver注册，到模拟接人，到模拟GPS移动
+，到模拟spike，这些都有人做，用的几乎全部都是open source
+11，data science比较独立一点儿，常见的infra全都有，工具齐全。
+12，转组挺常见，不难。但不是说你来了就可以随便转，也要有一定的契机才可以转。
+如果是对组不满意，我会建议先进公司后转组。因为显然有的组对外部的candidate 
+bar奇高，对内部会宽容很多。这是因为对内部的面试流程通常比较松散，也不需要经
+过HR严格的安排5个面官面试，通常是去对面聊聊，双方都满意就好了。
 
+另外，
+1，new grad绝对是Eng I。但Eng I也有可能给1-2年经验的experienced hire。取决于
+你面试
+的情况以及competing offer
+2，Eng II跨度很大，因为Eng II和senior之间有很大的gap，Eng II可以是1年多经验
+的人，也可以是五六年经验的人。
+3，Senior跨度也很大，可以是四五年经验的，也可以是十几年的。这个取决于你进入
+的时机和面试情况了，也看大组项目需要。
+4，senior在各组里基本上就独当一面了，对senior的expectation基本上是要能自己
+design，implement，test，deliver，还能coach别人，所有senior还挺强调沟通能力
+的。
+5，基本上senior + Eng II构成了整个公司的中坚力量。
+6，senior eng II每个org可能只有几个，如果你target for sr II，那100%是不需要
+我这小兵来内推了。。。
+7，由于以前manager少，大量的决定都是eng lead说了算，现在process要改，所以要
+招很多manager，所以manager职位也挺多。。。
+
+关于生活的，
+1，oncall不太严重，现在都比较成熟了，没那么多oncall。
+2，早晚管饭，晚上7点开饭。饭的话其实还行，但选择少。
+3，每个月有uber credit，credit可以在eats点餐吃。
+4，从bart或者caltrain站到公司的这一段commute，有program可以报销。
+5，snack种类还可以，保险，健身费， corporate phone这些都有，是一个成熟公司应
+有的样子。但目前没有401k match。有需要的用品可以直接在Amazon business买，填
+写适当的justification，5K刀以下自动approve并抄送manager。当然一般人是不会买
+这么贵的东西的，但是你买个三四百快的耳机（我感觉我的org人手一个Bose 
+QuietComfort 35或者Beoplay),一两百块的键盘是不会有人质疑你的。算是一点点小福
+利吧。
+
+所以，
+1，generally来说，有go经验的话，会有一些加分。Java主要在map等一些没有Go支持
+的地方用。
+2，和其他所有公司一样，infra组（也就是mysql,kafka，presto等等）要求match程度
+高，application（也就是实现business logic的，比如driver,rider等）组要求略低
+一些，大部分组容许你没有直接的相关经验
+3，招人是整个大org招，然后大组里随机安排面试官给你，但是你具体进哪个小组是不
+一定的。如果你有明确的想进哪个大组/小组的preference，记得在邮件里跟我提一下。
+4，社招有很多职位，都没有写经验要求，因为很多时候做的事情差别也没有那么大。
+就是说你在1-5+ 年经验都可以去面，面的好了就给senior不好就给Eng II。当然一般
+还是和你的经验匹配的，很少downgrade。new grad是额外的pool，现在招的也相对少
+了，一般都从intern里给return offer
+
+
+以上是我能给你的uber的信息，希望能帮助你判断是否要申请。
+下面是我对你的一些期望：
+1，刷题肯定要熟练的，算是基本功吧，至少做个几百题
+2，如果想给你Eng II及以上，就必定有system design
+3，senior及以上职位，system design特别多，behavior question也特别多，建议你
+多practice一下。刷题不是主要的。
+4，没有自己申请过，没有找别人内推过。
+5，没准备好的话不要着急，再准备一段时间，砍柴不在乎这几天或者几个月磨刀的功
+夫。
+6，希望你多描述一下自己准备的情况，具体一些不要泛泛而谈，
+好的例子：“我做了300题LeetCode，其中大部分10分钟以内可以accept，难的比如
+text justification写不出来，但Word Break II, wildcard Matching可以bug free。
+此外我还系统的复习过XXX，看的材料有XXX，能够从data model, concurrency，micro
+-service架构等角度回答诸如design a uber,design a uber eats的问题”
+不好的例子：“LeetCode刷了4遍了，求内推！”， “XX本科，常春藤ms，刷题5遍，
+求内推！”
+这样我能根据你的简历和描述对你目前是否ready的情况做一个更加完善的感知。
+
+如有兴趣，请发送你的简历，第三人称叙述，
+以及你想申请的职位到uber_transaswater@hotmail.com
+
+毫无疑问我肯定会每周查看几次，但根据我上一次内推经验显示，一旦发了帖子，真的
+是会收到很多很多邮件，不可能每一份都有精力回复。如果2周内没有收到我的回复，
+请move on
 
 
 

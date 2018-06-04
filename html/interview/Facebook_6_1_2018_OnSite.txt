@@ -1,0 +1,48 @@
+
+1 behavior work experience。  中国manager
+  Conflict with manager. How to solve? Who won?
+  How often is 1 on 1 with manager : 答 couple of months, 震惊！ 反问： 答 1week! 反震惊
+  讲一个most pround project.
+  
+  Passport web : 画前段 + web server + db + third party website  + socket
+  问用的什么web server :答 AWS, 结果别人继续问是不是Apache? 答是
+  问你自己做的哪部分? 答web workflow + db
+  问QPS多少 ： 答没有多少，因为用户很有限
+  问数据库里有多少用户： 答hundreds.
+  问做了多久 ： 每天一个小时， 用了一个月。
+  
+  在让讲一个工作上最近的project 
+  讲了 test web service: React 前段 + spring boot后端(scheduling service) + db
+                        runtest web service => write log
+						Notify service ( cache log, notify QA)
+  问QPS多少 ： 答给QA的，没多少
+  问你自己做的哪部分
+  问runttest service 多少秒扫一下schedulling service: 答一天，表示很吃惊
+
+
+
+2. Find sub tree that has deepest tree. 中国小哥
+   用BFS level order traversal写完了，问时间复杂度，答O(n), 空间复杂 O(n) 让简化空间，说可以只保留最后两层，在让简化时间复杂，说可以用一个带parent的数据结构放进去
+   
+3. System design, design memcached。  Hashtable, linkedlist 中国中年男
+   问接口可以handle, string, integer, 问底层如何设计。 答Hashmap,问hashmap如何实现。答RB tree,问RB tree如何实现， 方向错了，最后答用Array,说对了
+   Hash(key)%size => index
+   问如何处理collision -> 每个element装linkedlist
+   问如何分配内存， 
+   问内存加倍的时候，旧的东西要重新mapping,同时接受新的请求，如何handle?
+   
+4. Given two d array, find the first column that has one.  白男带一个国男
+   先口述了一个遍历整个数组，O(mn) 让优化， 说用binary search, 脑子短路，说是lg(n), 别人提示是mlg(n)，收微软sb烙印影响， 坚持是lg(n）
+   写了一个完整的binary search, 然后再问时间复杂度， 这时反应过来是mlg(n)
+   
+   看了答案可以优化到o(m+n) 从第一层右边开始找1，然后往左下找下一个1.
+
+
+
+5. find continuous elements in an array that sums to a target ( presum)       秒    ABC女带一个劳模
+   IsValid Binary serch tree:  这个最后一个test case 有点脑子短路，没有说清楚，被提示了下） 秒
+
+   
+第一轮工作经验挂点，没有处理过大的QPS系统
+第三轮System design挂点，没有深入讨论MemcacheD
+第四轮挂点： 纠缠了很久时间复杂度，只做了一道题

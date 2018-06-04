@@ -1,0 +1,18 @@
+1. Manager behavior ： 
+                      How to solve junior engineers conflict?
+                      What can you bring to microsoft, list three things( 
+					  1. 6 years experience, proven history of finishing project on time on quality, top performer  
+  					  2   passiate about tech, eager to learn, career intersts foucus on open source framework, open source database(cassandra, radis, memcached)
+   Coding, MinQueue  o(1)  (提示下才做出来的， maintain 2 queues)
+
+2. Second largest element in a tournament tree(象足球比赛一样，2个进一个，最后产生冠军) use recursion,写代码。
+   Follow up,不用recursion怎么做， 用stack， 描述算法
+
+3. Given a list of integer, find all possible ways that sum to a target, 从左往右取， 元素可以反复取。 (permutation)
+   Given a list of String of integers, return the maximum number that you put all strings together. (Sort by prefix 9-0) 
+   这轮之讨论算法，没有要求实现，说是加分轮。
+
+4. 谢代码实现Merge two linked list, 
+   问如何merge k sorted list   (时间复杂度 nlg(k) )，where n is total number of nodes, k is the size of linkedlist array.
+   写代码实现merge sort
+   Design a card
