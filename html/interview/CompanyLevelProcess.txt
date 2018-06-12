@@ -18,7 +18,7 @@ Google interview
  
       4.   6-8 weeks hiring process, can speed up if you have pending offer.
 
-      5.   特点是无原题，变种，不好实现代码
+      5.   特点是无原题，都是变种，不好实现代码
 
 
 
@@ -31,7 +31,7 @@ Google interview
 
 
 Facebook Onsite
-4 Rounds:  2Coding + 1 System Design + 1 Manager Behavior
+4 Rounds:  3Coding + 1 System Design + 1 Manager Behavior
 
 E3 for new grads
 E4 for 3-6 
@@ -39,7 +39,7 @@ E5 for 6+         : My case
 
 Freezing period  :  6 - 12 months
 
-特点是基本是LC原题
+特点是基本是LC原题，但是一轮期望你写出两道题，要快。
 
 
 
@@ -62,7 +62,7 @@ Phone : 1 hour phone interview(data structure, algorithm)
 
 on site :  5 rounds
 1 coding ( data structure, algorithm)                        1 hour
-1 OOP design    (technical depth)                            1 hour
+1 OOP design    (technical depth) 这轮事实证明还是coding         1 hour
 1 System design  (technical depth)                           1 hour
 1 Bar Raiser ( wild card : Design or/and BQ white board)     45 minutes
 1 Hiring manager ( BQ)                                       45 minutes
@@ -93,6 +93,9 @@ Note:
 
 Freezing period  :  6 - 12 months?
 
+特点：
+Coding都是LC原题目，他们原话说初级马公可以和高级马公写的一样好，只是最基本的一项。
+Uber非常看重system Design, 和Web大型系统的经验, 他们对web经验非常看重，高级职位没有经验比较难进去。
 
 
 大领导说了要筹备上市很缺人，让我们大力内推。。。。

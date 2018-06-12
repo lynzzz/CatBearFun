@@ -1,5 +1,5 @@
 
-1 behavior work experience。  中国manager
+1 behavior work experience。  中国manager  (Pass)
   Conflict with manager. How to solve? Who won?
   How often is 1 on 1 with manager : 答 couple of months, 震惊！ 反问： 答 1week! 反震惊
   讲一个most pround project.
@@ -21,17 +21,18 @@
 
 
 
-2. Find sub tree that has deepest tree. 中国小哥
+2. Find sub tree that has deepest tree. 中国小哥  (pass)
    用BFS level order traversal写完了，问时间复杂度，答O(n), 空间复杂 O(n) 让简化空间，说可以只保留最后两层，在让简化时间复杂，说可以用一个带parent的数据结构放进去
    
-3. System design, design memcached。  Hashtable, linkedlist 中国中年男
+   
+3. System design, design memcached。  Hashtable, linkedlist 中国中年男  (Fail)
    问接口可以handle, string, integer, 问底层如何设计。 答Hashmap,问hashmap如何实现。答RB tree,问RB tree如何实现， 方向错了，最后答用Array,说对了
    Hash(key)%size => index
    问如何处理collision -> 每个element装linkedlist
    问如何分配内存， 
    问内存加倍的时候，旧的东西要重新mapping,同时接受新的请求，如何handle?
    
-4. Given two d array, find the first column that has one.  白男带一个国男
+4. Given two d array, find the first column that has one.  白男带一个国男(Fail) 时间复杂度答错了，且只做了一道题
    先口述了一个遍历整个数组，O(mn) 让优化， 说用binary search, 脑子短路，说是lg(n), 别人提示是mlg(n)，收微软sb烙印影响， 坚持是lg(n）
    写了一个完整的binary search, 然后再问时间复杂度， 这时反应过来是mlg(n)
    
@@ -39,10 +40,10 @@
 
 
 
-5. find continuous elements in an array that sums to a target ( presum)       秒    ABC女带一个劳模
+5. find continuous elements in an array that sums to a target ( presum)       秒    ABC女带一个劳模 （pass)
    IsValid Binary serch tree:  这个最后一个test case 有点脑子短路，没有说清楚，被提示了下） 秒
 
    
-第一轮工作经验挂点，没有处理过大的QPS系统
-第三轮System design挂点，没有深入讨论MemcacheD
-第四轮挂点： 纠缠了很久时间复杂度，只做了一道题
+第一轮工作经验挂点，没有处理过大的QPS系统（ 过了 )
+第三轮System design挂点，没有深入讨论MemcacheD （挂！）
+第四轮挂点： 纠缠了很久时间复杂度，只做了一道题 （挂）

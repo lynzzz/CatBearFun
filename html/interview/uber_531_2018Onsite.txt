@@ -1,8 +1,8 @@
 Uber onsite
 
-1 find target in an rotated 2d array。   use binary search lg(m*n)    Lisen ( Driver )
+1 find target in an rotated 2d array。   use binary search lg(m*n)    Lisen ( Driver )      pass
 
-2 system design, how to see cars around you.                         max    ( Driver)
+2 system design, how to see cars around you.                         max    ( Driver)      Fail
   前段http protocal传什么，后端返回什么，如何找到周围的车
   db什么样子，
   估计QPS for driver and rider.
@@ -10,21 +10,23 @@ Uber onsite
 
 Lunch talk. Ke karan Wang
 
-3. Culture fit/ 对西门子的经验很看不上，说bored. 挂点。                       烙印     (Market)
+3. Culture fit/ 对西门子的经验很看不上，说bored. 挂点。                       烙印     (Market)      Fail
 
-4.                                                                   YingYing  (Driver)
+4.                                                                   YingYing  (Driver)    pass
    Tell if it is a palindrome.
    find all combination of palindromes in a string.       编译器里写，要跑出结果正确。
 
 
-5. Manager talk. Project, what can you do differently?   
+5. Manager talk. Project, what can you do differently?                                     pass
    白板上画web service, db, workflow, 问你做什么。
 
 
-feedback: coding is ok, Architecure design fails( HR说more or less techincal issue)
 
 自己估计：
 2轮： 挂点， design没有深入。
 3轮： 挂点， 没有client server application经验， lack of design experience.
 
 Uber非常看重design experience!
+
+结果
+Uber feedback from HR ： coding is ok, architecure design fails， more or less techincal issue, lack of experience
