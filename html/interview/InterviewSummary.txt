@@ -14,3 +14,10 @@ onsite心得
 5. System design非常重要，具有一票否决权。
 6. 工作经验要狂吹嘘Web相关的经验，特别要说吹嘘QPS高，facebook对高QPS分布式系统非常感兴趣，不要说造车的软件，Uber面试官一脸嫌弃, 各种被鄙视，问你就做这个？
 7. 要审时度势，facebook面试官一直问时间复杂度为什么不是mlg(n), 而我受烙印的影响坚持是lg(n), 后来发现自己是错的，要临场判断形势，面试官非常坚持的，你要顺着说。
+8. Facebook, uber每一轮coding都问你时间复杂和空间复杂，自己刷题的时候养成好的习惯，刷完一道题，自己判断时间复杂和空间复杂。
+
+
+Target :
+Facebook E5:
+Web experience + 深刻理解Design（两轮）+ 快速两道(LC medium) = offer
+Web experience + 深刻理解Design（两轮）+ 快速两道(LC medium) + compete offer = big offer
