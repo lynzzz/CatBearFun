@@ -13,59 +13,68 @@
 
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
+        Map&lt;Integer, Integer> indegree = new HashMap<>();
+        Map&lt;Integer, List<Integer>> graph = new HashMap<>();
         
-        HashMap&lt;Integer, Integer> degree = new HashMap<>();
-        HashMap&lt;Integer, List&lt;Integer>> graph = new HashMap<>();
-        
+        // init
         for( int i=0; i&lt;numCourses; i++){
-            degree.put(i,0);
-            graph.put(i, new ArrayList<>());
+            indegree.put(i, 0);
+            graph.put(i, new ArrayList<Integer>());
         }
         
-        for( int[] e : prerequisites){
-            int from = e[1];
-            int to = e[0];
-           
-            graph.get(from).add(to); 
-            degree.put(to, degree.get(to) + 1);
+        // construct graph
+        for( int[] edge : prerequisites){
+            int to = edge[0];
+            int from = edge[1];
+            
+            indegree.put(to, indegree.get(to) + 1);
+            graph.get(from).add(to);
         }
         
-        
+        // find the node that has 0 indgree
         Queue&lt;Integer> q = new LinkedList<>();
-        ArrayList&lt;Integer> ret = new ArrayList<>();
-        for( int key : degree.keySet()){
-            if ( degree.get(key) == 0){
-                q.add(key);
-                ret.add(key);
-            }
+        for( int key : indegree.keySet()){
+             if ( indegree.get(key) == 0){
+                 q.add(key);
+             }            
         }
         
         
+        // BFS
+        List&lt;Integer> ret = new ArrayList<>();
+        int count = 0;
         
         while( !q.isEmpty()){
-            int node = q.poll();
+            int n = q.poll();
+            count++;
+            ret.add(n);
+
+            List&lt;Integer> neighbors = graph.get(n);
             
-            for( int neighbor : graph.get(node)){
-                degree.put(neighbor, degree.get(neighbor) - 1);
-                if ( degree.get(neighbor) == 0){
+            for( int neighbor : neighbors){
+                indegree.put(neighbor, indegree.get(neighbor)-1);
+                
+                if ( indegree.get(neighbor) == 0){
                     q.add(neighbor);
-                    ret.add(neighbor);
                 }
             }
         }
         
-        if ( ret.size() != numCourses){
+        if ( count != numCourses){
             return new int[0];
         }
         
-        int[] ans = new int[ret.size()];
-        for(int i=0; i&lt;ret.size(); i++){
-            ans[i] = ret.get(i);
+        int[] results = new int[numCourses];
+        
+        for( int i=0; i&lt;ret.size(); i++){
+            results[i] = ret.get(i);
         }
         
-        return ans;
+        return results;
+        
     }
 }
+
 
 
 </code></pre>
@@ -75,7 +84,11 @@ class Solution {
 
 
 <div class="comment">
-开始初始化进度表会很好写，见course schedule I
+时间复杂度 ： O(V+E) <br>
+空间复杂度 : O(V+E) <br> <br>
+
+注意Topological sorting为有向图层次遍历， 不能遍历环。 所以最后要确认下遍历的顶点个数和给定的顶点个数是否一致。不一致的话就不存在这种层次遍历顺序。
+
 
 </div>
 </body>
