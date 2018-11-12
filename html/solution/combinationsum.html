@@ -1,4 +1,4 @@
-<html>
+l<html>
 
 <head>
    <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
@@ -12,32 +12,32 @@
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         // write your code here
         Arrays.sort(candidates);
-        
+
         List&lt;List<Integer>> results = new ArrayList<>();
         List&lt;Integer> result = new ArrayList<>();
         dfs(results, result, candidates, target, 0);
-        
+
         return results;
     }
-    
-    
+
+
     private void dfs( List&lt;List<Integer>> results, List<Integer> result, int[] candidates, int target, int level){
-        
+
         int sum = 0;
         for( int n : result){
             sum = sum + n;
         }
-        
+
         if ( sum == target){
             results.add(new ArrayList(result));
             return;
         }
         else if ( sum > target){
-            return;   
+            return;
         }
-        
+
         for( int i=level; i&lt;candidates.length; i++){
-            
+
             result.add(candidates[i]);
             dfs(results, result, candidates, target, i);
             result.remove(result.size()-1);
