@@ -1,0 +1,67 @@
+﻿<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+BFS
+public class Solution {
+
+
+    public boolean hasRoute(ArrayList<DirectedGraphNode> graph, 
+                            DirectedGraphNode s, DirectedGraphNode t) {
+        // write your code here
+  
+        
+        Queue&lt;DirectedGraphNode> q = new LinkedList<DirectedGraphNode>();
+        HashSet<DirectedGraphNode> set = new HashSet<DirectedGraphNode>();
+        
+        q.add(s);
+        set.add(s);
+        
+        while( !q.isEmpty() ){
+            DirectedGraphNode node = q.poll();
+            
+            for( DirectedGraphNode child : node.neighbors){
+                if ( set.contains(child) ){
+                    
+                    return true;
+                }else{
+                    set.add(child);
+                    q.add(child);
+                    
+                    // 往下一层加的时候要断掉链接边，否则后走回来产生错误
+                    graph.get(node).remove(child);
+                    graph.get(child).remove(node);
+                }
+            }
+        }
+        
+        return false;
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+1. BFS or DFS 图里面搜索一般用BFS.  <br>
+2. 无向图找环加下一层的时候需要断边。
+</div>
+
+
+
+
+</body>
