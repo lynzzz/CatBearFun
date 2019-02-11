@@ -11,69 +11,43 @@
 
 
 <pre><code>
-public class Solution {
-    /**
-     * @param s: A string s
-     * @param dict: A dictionary of words dict
-     */
-    boolean ans = false;
-    public boolean wordBreak(String s, Set<String> dict) {
-        // write your code here   
-        
-       
-        // Write your code here
-        dfs(new ArrayList&lt;String>(), 0, s, dict);
-        return ans;
-        
-    }
-    
-    private void dfs( List&lt;String> result, int pos, String s, Set<String> dict){
-        
-        if ( pos == s.length() ){
-            
-           String str = "";
-           for( String s1 : result){
-               str = str + s1;
-           }
-           if ( str.equals(s) ){
-               ans = true;
-           }
-           
-           return;
-        }
-        
-        for( int i=pos; i&lt;s.length(); i++ ){
-            String temp = s.substring(pos, i+1);
-            if ( !dict.contains(temp)){
-                continue;
-            }
-            
-            result.add(temp);
-            dfs( result, i+1, s, dict);
-            result.remove(result.size()-1);
-        }
-    }
-}
+  class Solution {
 
+      boolean ret = false;
+
+      public boolean wordBreak(String s, List&lt;String> wordDict) {
+          dfs(s, wordDict, 0);
+          return ret;
+      }
+
+      void dfs(String s, List&lt;String> wordDict, int pos){
+
+          if ( pos == s.length()){
+              ret = true;
+              return;
+          }
+
+
+          for( int i=pos; i&lt;s.length(); i++){
+              String str = s.substring(pos, i + 1);
+              if ( !wordDict.contains(str)){
+                  continue;
+              }
+
+              dfs(s, wordDict, i+1);
+          }
+
+      }
+  }
 
 
 </code></pre>
-
-思路：
-可不可以 =>  DFS ->  subset 模板，可以用来切割字符串。
-
-注意：递归的结束条件可能是自然结束也可能是找到了满足条件的，所以需要check。
-
-
+DFS subset 模版
 
 
 <div class="comment">
 Time complexity :      n*(2^n)
 慢过不了AC,但是解法是正确的。
-
-
-
-
 
 
 </div>
