@@ -11,43 +11,39 @@
 
 
 <pre><code>
+
   class Solution {
-
-      private int ans = Integer.MIN_VALUE;
-
+      int ans = Integer.MIN_VALUE; // 过这个点的最大值
       public int maxPathSum(TreeNode root) {
+          if ( root == null) return 0;
 
           helper(root);
           return ans;
-
-      }
-
-      public int helper(TreeNode root){
-          if ( root == null ){
-              return 0;
-          }
-
-          int l = helper(root.left);
-          int r = helper(root.right);
-
-          if ( l &lt; 0) l = 0;
-          if ( r &lt; 0) r = 0;
-
-          int sum = root.val + l + r;
-          if ( sum > ans){
-              ans = sum;
-          }
-
-          return root.val + Math.max(l, r);
       }
 
 
+      // 分治返回过这个顶点的单枝最大值 （自己，自己+左枝最大值，自己加右枝最大值，不能左支右支都加，会产生重复计算）
+      int helper(TreeNode root){
+          if ( root == null) return 0;
 
-      // Divide and conquer, 从下往上走
-      // 每个点可能是最后的顶点，也可能不是。
-      // 函数返回的是当前点不是顶点的最大值，
-      // 全局变量维持的是当前点是顶点的最大值
-      // 此题目不是特别好理解
+          int left = helper(root.left);
+          int right = helper(root.right);
+
+
+          // take left branch
+          int takeself = root.val;
+          int takeleft = root.val + left;
+          int takeright = root.val + right;
+          int takeboth = root.val + left + right;
+
+          int ret = Math.max(takeself, Math.max(takeleft, Math.max(takeright, takeboth)) );
+
+          if ( ret > ans){
+              ans = ret;
+          }
+
+          return Math.max(takeself, Math.max(takeleft, takeright) );
+      }
   }
 
 </code></pre>
@@ -58,8 +54,8 @@
 
 
 <div class="comment">
-Time complexity :      <br>
-Space complexity :     <br>
+Time complexity :  O(n)    <br>
+Space complexity : O(1)    <br>
 
 
 
