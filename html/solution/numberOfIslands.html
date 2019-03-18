@@ -12,12 +12,12 @@
 class Solution {
     public int numIslands(char[][] grid) {
         int count = 0;
-        
+
         if ( grid == null || grid.length == 0) return count;
-        
+
         int row = grid.length;
         int col = grid[0].length;
-        
+
         for( int i=0; i&lt;row; i++){
             for( int j=0; j&lt;col; j++){
                 if ( grid[i][j] == '1'){
@@ -28,38 +28,39 @@ class Solution {
         }
         return count;
     }
-    
-    void dfs(char[][] grid, int i, int j){
-        
-        int gridRow = grid.length;
-        int gridColumn = grid[0].length;
-       
-        if ( i &lt; 0 || i == gridRow || j&lt;0 || j==gridColumn || grid[i][j] == '0') return;
-        
-            
-        grid[i][j] = '0';
-            
-        dfs(grid, i-1, j);
-        dfs(grid, i+1, j);
-        dfs(grid, i, j+1);
-        dfs(grid, i, j-1);
+
+    void helper(char[][] grid, int x, int y) {
+        int row = grid.length;
+        int col = grid[0].length;
+
+        if (x &lt; 0 || x == row || y &lt; 0 || y == col) {
+            return;
+        }
+
+        if (grid[x][y] == '1') {
+            grid[x][y] = '0';
+            helper(grid, x-1, y);
+            helper(grid, x+1, y);
+            helper(grid, x, y+1);
+            helper(grid, x, y-1);
+        }
     }
 }
 </code></pre>
 
 <pre><code>
 
-	
+
 public class Solution {
 
-     
+
     public int numIslands(boolean[][] grid) {
         // Write your code here
         if ( grid == null || grid.length == 0) return 0;
-        
+
         int count = 0;
-        
-    
+
+
         for( int i=0; i&lt;grid.length; i++){
             for( int j = 0; j<grid[0].length; j++){
                 if ( grid[i][j]){
@@ -68,49 +69,49 @@ public class Solution {
                 }
             }
         }
-        
+
         return count;
     }
-    
-    
+
+
     void bfsFill(boolean[][] grid, int i, int j){
-        
+
         int row = grid.length;
         int col = grid[0].length;
         Queue<Integer> q = new LinkedList<>();
 
         int code = i * col + j;
-        
-        
+
+
         q.add(code);
 
-        
+
         while ( !q.isEmpty() ){
-            
+
             code  = q.poll();
             i = code/col;
             j = code%col;
             grid[i][j] = false;
 
 
-            // up 
+            // up
             if (  (i-1)>=0  && grid[i-1][j]  ){
                 q.add(   (i-1) * col + j);
             }
-            
+
             // down
             if ( (i + 1) < grid.length && grid[i+1][j]  ){
                 q.add(   (i+1) * col + j );
 
             }
-            
-                        
+
+
             // left
             if ( (j-1) >= 0 && grid[i][j-1]){
                 q.add(i*col + j-1);
 
             }
-            
+
             // right
             if ( (j + 1) < col && grid[i][j+1] ){
                 q.add( i*col + j+1);
