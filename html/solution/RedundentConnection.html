@@ -6,77 +6,106 @@
 
 
 <body>
-
-
-
-
 <pre><code>
+Union find Version easy without rank map, 时间复杂度稍微高。
 
-Solution I : Union find
-Time complexity : O ( e lg(e) ), where e is the number of edges.
+  class Solution {
+  int[] findRedundantConnection(int[][] edges) {
+      UF uf = new UF();
+      for (int[] edge : edges) {
+          if (uf.union(edge[0], edge[1])) {
+              return edge;
+          }
+      }
+      return null;
+  }
+
+  class UF {
+      int[] parent;
+      UF() {
+          parent = new int[2000];
+          for (int i = 0; i < 2000; i++) {
+              parent[i] = i;
+          }
+      }
+
+      int find(int n) {
+          if (parent[n] == n) {
+              return n;
+          }
+          return find(parent[n]);
+      }
+
+      boolean union(int n1, int n2) {
+          int p1 = find(n1);
+          int p2 = find(n2);
+          if (p1 == p2) {
+              return true;
+          }
+
+          parent[p1] = p2;
+          return false;
+      }
+  };
+
+  }
+
+
+
+Union find with rank map
+Time complexity : O (e), where e is the number of edges.
 
 class Solution {
-    public int[] findRedundantConnection(int[][] edges) {
-        UF uf = new UF(edges);
-        for( int[] edge : edges){
-            if (!uf.union(edge[0], edge[1])){
+    int[] findRedundantConnection(int[][] edges) {
+        UF uf = new UF();
+        for (int[] edge : edges) {
+            if (uf.union(edge[0], edge[1])) {
                 return edge;
             }
         }
-        
-        return new int[2];
+        return null;
     }
-}
 
-
-class UF{
-    
-    private HashMap<Integer, Integer> parent = new HashMap<>();
-    private HashMap<Integer, Integer> rank = new HashMap<>();
-    
-    public UF(int[][] edges){
-        
-        for( int[] edge : edges){
-            if ( !parent.containsKey(edge[0])){
-                parent.put(edge[0], edge[0]);
-                rank.put(edge[0], 0);
+    class UF {
+        int[] parent;
+        int[] rank;
+        UF() {
+            parent = new int[2000];
+            rank = new int[2000];
+            for (int i = 0; i < 2000; i++) {
+                parent[i] = i;
+                rank[i] = 0;
             }
-            if ( !parent.containsKey(edge[1])){
-                parent.put(edge[1], edge[1]);
-                rank.put(edge[1], 0);
-            }
-        }   
-    }
-    
-    public int find( int id){
-        if ( parent.get(id) == id){
-            return id;
         }
-        return find(parent.get(id));
-    }
-    
-    public boolean union(int id1, int id2){
-        int root1 = find(id1);
-        int root2 = find(id2);
-        
-        if ( root1 == root2){
 
+        int find(int n) {
+            if (parent[n] == n) {
+                return n;
+            }
+            return find(parent[n]);
+        }
+
+        boolean union(int n1, int n2) {
+            int p1 = find(n1);
+            int p2 = find(n2);
+            if (p1 == p2) {
+                return true;
+            }
+            else if (rank[p1] > rank[p2]) {
+                parent[p2] = p1;
+            }
+            else if (rank[p1] < rank[p2]) {
+                parent[p1] = p2;
+            }
+            else {
+                parent[p1] = p2;
+                rank[p2]++;
+            }
             return false;
         }
-        
-        if ( rank.get(root1) > rank.get(root2)){
-            parent.put(root2, root1);
-        }else if ( rank.get(root1) < rank.get(root2)){
-            parent.put(root1, root2);
-        }else{
-            parent.put(root1, root2);
-            rank.put(root2, rank.get(root2)+1);
-        }
-        
-        return true;
-    }
-    
-    
+    };
+}
+
 }
 
 
@@ -85,50 +114,50 @@ Solution II DFS  : 建图之前先两点间走一次DFS,如果能走通，则说
 Time complexity : O ( e * e )   = O(e^2);
 
 class Solution {
-    
+
     private boolean isCycle = false;
-    
+
     public int[] findRedundantConnection(int[][] edges) {
-        
-        
+
+
         HashMap<Integer, ArrayList<Integer>> m = new HashMap<>();
         for( int i=0; i<=1000; i++){
             m.put(i, new ArrayList<>());
         }
-        
-        
+
+
         HashSet<Integer> set = new HashSet<>();
 
         for( int[] e : edges){
-            
+
             if ( m.get(e[0]).size() != 0 && m.get(e[1]).size() != 0 )
             {
                 set.add(e[0]);
                 dfs( e[0], e[1], set, m);
                 set.remove(e[0]);
             }
-            
+
             if ( isCycle) return e;
-            
+
             m.get(e[0]).add(e[1]);
             m.get(e[1]).add(e[0]);
-            
+
         }
-        
+
         return new int[2];
     }
-    
+
     void dfs(int start, int end, HashSet<Integer> set, HashMap<Integer, ArrayList<Integer> > m){
         if ( start == end){
             isCycle = true;
             return;
         }
-        
+
         for( int n : m.get(start) ){
             if ( set.contains(n)){
                 continue;
             }
-            
+
             set.add(n);
             dfs(n, end, set, m);
             set.remove(n);
