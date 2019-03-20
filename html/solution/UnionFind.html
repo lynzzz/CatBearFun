@@ -1,28 +1,59 @@
 
 
 
-Union Find algorithm ( disjoint set, 中文是 查并集）<br><br>
-<a href="https://www.youtube.com/watch?v=UBY4sF86KEY">Youtube tutorial</a>  <br>
+Union Find algorithm ( disjoint set, 查并集）<br><br>
+應用 ： 節點分類<br>
 
-泛行用处 ：图里面合并节点<br>
-具体用处 ： 1图里找联通子图个数，2图里找环
-具体应用题目：
+<li><a href="solution/numberOfIslands.html">number of islands(无向图求连通子图个数）</a> <a href="https://leetcode.com/problems/number-of-islands/">Q</a>  </li>
 <li><a href="solution/RedundentConnection.html">Redundant Connection （有向图找环， DFS）</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
-<li><a href="solution/isolatedislandII.html">island count ii (无向图求连通子图个数）</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
 
 
-对外接口就是两个节点。
+
 
 算法<br>  Step 1 : 图里的每一个点是一个独立的不可交集<br>
         step 2 : 按照你自己定义的法则进行合并。<br><br>
 
 
-代码实现 ：<br><br>
-数据结构 : 需要一个parent hashmap指向自己的parent,  和一个 rank hashmap返回每个点的rank<br>
-函数     ： Find() take一个节点，找这个节点的root, <br>
-            union() take两个节点, 合并这两个节点的根节点, 高rank root成为新的root<br>
 
+数据结构 :  hashmap <br>
+函数     ：
+            constructor 傳入總的節點的個數<br>
+            Find take一个节点，return 这个节点的root<br>
+            union take两个节点, 合并这两个节点的根节点,  每union(A, B)一次，這兩個點就歸為一類<br>
 <pre><code>
+
+
+簡單版本：
+class UF
+{
+    int[] parent = new int[10000];
+
+    UF(){
+        for( int i=0; i&lt;10000; i++){
+            parent[i] = i;
+        }
+    }
+
+    int find(int node){
+        if ( parent[node] == node){
+            return node;
+        }
+        return find(parent[node]);
+    }
+
+    void union(int n1, int n2){
+        int p1 = find(n1);
+        int p2 = find(n2);
+        parent[p1] = p2;
+    }
+
+
+}
+
+
+
+複雜版本：帶rank
+
 class UF{
 
 private HashMap< Node, Node> parent
@@ -56,33 +87,6 @@ private HashMap< Node, Integer> rank
 			    rank.put(root2, rank.get(root2) + 1);
 			}
 	  }
-
-}
-
-如果不知道节点的个数，可以用array来做parent, 问题太复杂了，可以把rank去掉
-class UF
-{
-    int[] parent = new int[10000];
-
-    UF(){
-        for( int i=0; i&lt;10000; i++){
-            parent[i] = i;
-        }
-    }
-
-    int find(int node){
-        if ( parent[node] == node){
-            return node;
-        }
-        return find(parent[node]);
-    }
-
-    void union(int n1, int n2){
-        int p1 = find(n1);
-        int p2 = find(n2);
-        parent[p1] = p2;
-    }
-
 
 }
 
