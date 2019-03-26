@@ -14,16 +14,15 @@
 
 
 解决问题： 图中两点之间能否联通
-适用范围： 既可以用于无向图，也可以用于有向图。
+解决方法： BFS,DFS
+适用范围： 无向图，有向图。都需要去重。
 无向图做BFS,DFS一定要去重， 否则A-> B ， B->A 可以反复递归无法结束。 但是递归结束可以返回上一层。
 
 
 
 
 BFS模板 : Queue + HashSet
- 例题
- <li><a href="solution/ValidGraphTree.html">Valid Graph Tree(无向图求连通子图个数)</a> <a href=https://www.lintcode.com/problem/graph-valid-tree/description>Q</a>  </li>
-
+例题
 public class Solution {
 
     public boolean hasRoute(ArrayList<DirectedGraphNode> graph,
@@ -60,10 +59,6 @@ public class Solution {
 
 DFS  HashSet模板(一定要熟背）！
 Function signature takes 4 parameters : ( start, end, graph, hashset)
-
-<li><a href="solution/RedundentConnection.html">Redundant Connection （无向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
-<li><a href="solution/EvaluateDivision.html">Evaluate Division(有向图里能否从一点到另一点，返回权重)</a> <a href="https://leetcode.com/problems/evaluate-division/description/">Q</a>  </li>
-
 
 public class Solution {
 
