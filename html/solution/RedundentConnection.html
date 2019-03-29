@@ -7,7 +7,8 @@
 
 <body>
 <pre><code>
-Union find Version easy without rank map, 时间复杂度稍微高。
+Union find Version easy without rank map
+Time complexity 近似O(e)。 Leetcode: 1ms
 
   class Solution {
   int[] findRedundantConnection(int[][] edges) {
@@ -53,7 +54,7 @@ Union find Version easy without rank map, 时间复杂度稍微高。
 
 
 Union find with rank map
-Time complexity : O (e), where e is the number of edges.
+Time complexity : O(e), Leetcode 1ms
 
 class Solution {
     int[] findRedundantConnection(int[][] edges) {
@@ -72,7 +73,7 @@ class Solution {
         UF() {
             parent = new int[2000];
             rank = new int[2000];
-            for (int i = 0; i < 2000; i++) {
+            for (int i = 0; i < 1001; i++) {
                 parent[i] = i;
                 rank[i] = 0;
             }
@@ -88,19 +89,19 @@ class Solution {
         boolean union(int n1, int n2) {
             int p1 = find(n1);
             int p2 = find(n2);
-            if (p1 == p2) {
-                return true;
-            }
-            else if (rank[p1] > rank[p2]) {
+
+            if ( p1 == p2) return true;
+
+            if ( rank[p1] > rank[p2]){
                 parent[p2] = p1;
             }
-            else if (rank[p1] < rank[p2]) {
+            else if( rank[p1] < rank[p2]){
                 parent[p1] = p2;
-            }
-            else {
+            }else{
                 parent[p1] = p2;
                 rank[p2]++;
             }
+
             return false;
         }
     };
@@ -110,8 +111,8 @@ class Solution {
 
 
 
-Solution II DFS  : 建图之前先两点间走一次DFS,如果能走通，则说明这条边是多余的
-Time complexity : O ( e * e )   = O(e^2);
+Solution II DFS  : 非常巧妙，无向图找环，拆分成了无向图两点能否联通
+Time complexity : O (e) * O(e + v)  = O(e^2);   Leetcode: 20ms
 
 class Solution {
 
@@ -120,22 +121,20 @@ class Solution {
     public int[] findRedundantConnection(int[][] edges) {
 
 
-        HashMap<Integer, ArrayList<Integer>> m = new HashMap<>();
+        HashMap&lt;Integer, ArrayList&lt;Integer>> m = new HashMap&lt;>();
         for( int i=0; i<=1000; i++){
-            m.put(i, new ArrayList<>());
+            m.put(edge[0], new ArrayList&lt;Integer>());
+            m.put(edge[1], new ArrayList&lt;Integer>());
         }
 
 
-        HashSet<Integer> set = new HashSet<>();
+        HashSet&lt;Integer> set = new HashSet&lt;>();
 
         for( int[] e : edges){
 
-            if ( m.get(e[0]).size() != 0 && m.get(e[1]).size() != 0 )
-            {
-                set.add(e[0]);
-                dfs( e[0], e[1], set, m);
-                set.remove(e[0]);
-            }
+            set.add(e[0]);
+            dfs( e[0], e[1], set, m);
+            set.remove(e[0]);
 
             if ( isCycle) return e;
 
@@ -144,10 +143,10 @@ class Solution {
 
         }
 
-        return new int[2];
+        return null;
     }
 
-    void dfs(int start, int end, HashSet<Integer> set, HashMap<Integer, ArrayList<Integer> > m){
+    void dfs(int start, int end, HashSet&lt;Integer> set, HashMap&lt;Integer, ArrayList&lt;Integer> > m){
         if ( start == end){
             isCycle = true;
             return;
