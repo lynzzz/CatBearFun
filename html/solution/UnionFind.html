@@ -42,6 +42,10 @@ class UF
     void union(int n1, int n2){
         int p1 = find(n1);
         int p2 = find(n2);
+
+        if ( p1 == p2){
+          return;
+        }
         parent[p1] = p2;
     }
 
@@ -66,27 +70,28 @@ int[] rank;
 
 
 	  private int find( int node ){
-	       if ( parent.get(node) == node ){
+	       if ( parent[node] == node ){
 		      return node;
 		   }
-	       return find( parent.get(node));
+	       return find( parent[node]);
 	  }
 
-	  public void union( int node1, int node 2){
+	  public void union( int n1, int n2){
 
-	    int root1 = find(node1);
-			int root2 = find(node2);
+	    int p1 = find(n1);
+			int p2 = find(n2);
 
-			if ( rank[root1] > rank[root2] ) ){
-			    parent[root2] = root1;
-			}else if ( rank[root1] < rank[root2] ){
-			    parent[root1] =root2;
+      if ( p1 == p2 ) return;              // return if p1 and p2 are the same node.
+
+			if ( rank[p1] > rank[p2] ) ){
+			    parent[p2] = p1;
+			}else if ( rank[p1] < rank[p2] ){
+			    parent[p1] =p2;
 			}else{
-			    parent[root1]= root2;
-			    rank[root2]++;
+			    parent[p1]= p2;
+			    rank[p2]++;
 			}
 	  }
-
 }
 
 </code>
