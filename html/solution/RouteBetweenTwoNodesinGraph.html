@@ -12,11 +12,11 @@
 
 <pre><code>
 
-
-解决问题： 图中两点之间能否联通
-解决方法： BFS,DFS
-适用范围： 无向图，有向图。都需要去重。
-无向图做BFS,DFS一定要去重， 否则A-> B ， B->A 可以反复递归无法结束。 但是递归结束可以返回上一层。
+Question: 图中两点之间能否联通
+Solution： BFS,DFS
+适用范围:
+无向图对点去重， 否则A-> B ， B->A
+有向图比较难，一般不会出现，出现的话应该对边去重
 
 
 
@@ -25,12 +25,12 @@ BFS模板 : Queue + HashSet
 例题
 public class Solution {
 
-    public boolean hasRoute(ArrayList<DirectedGraphNode> graph,
+    public boolean hasRoute(ArrayList&lt;DirectedGraphNode> graph,
                             DirectedGraphNode s, DirectedGraphNode t) {
 
 
-        Queue&lt;DirectedGraphNode> q = new LinkedList<DirectedGraphNode>();
-        HashSet&lt;DirectedGraphNode> set = new HashSet<DirectedGraphNode>();
+        Queue&lt;DirectedGraphNode> q = new LinkedList&lt;DirectedGraphNode>();
+        HashSet&lt;DirectedGraphNode> set = new HashSet&lt;DirectedGraphNode>();
 
         q.add(s);
         set.add(s);
@@ -66,27 +66,27 @@ public class Solution {
 
     private boolean ret = false;
 
-    public boolean hasRoute(ArrayList<DirectedGraphNode> graph, DirectedGraphNode s, DirectedGraphNode t) {
+    public boolean hasRoute(ArrayList&lt;DirectedGraphNode> graph, DirectedGraphNode s, DirectedGraphNode t) {
 
-        HashSet<DirectedGraphNode> set = new HashSet<>();
+        HashSet&lt;DirectedGraphNode> set = new HashSet&lt;>();
 
         set.add(s);
         dfs(graph, s, t, set);
-		set.remove(s);                                                 // 当最高层的DFS返回时，要把原来的start,清零。 不然多次DFS会出错。
+		    set.remove(s);
 
         return ret;
     }
 
 
-    void dfs( ArrayList<DirectedGraphNode> graph, DirectedGraphNode s,
-              DirectedGraphNode t, HashSet<DirectedGraphNode> set ){
+    void dfs( ArrayList&lt;DirectedGraphNode> graph, DirectedGraphNode s,
+              DirectedGraphNode t, HashSet&lt;DirectedGraphNode> set ){
 
         if ( s == t){
             ret = true;
             return;
         }
 
-        for( DirectedGraphNode neighbor : s.neighbors){                                     CADR : continue, add, DFS, remove
+        for( DirectedGraphNode neighbor : s.neighbors){
             if ( set.contains(neighbor)){
                 continue;
             }
@@ -108,17 +108,16 @@ public class Solution {
 
 
 
-有向图还可以对边去重，断边加边， 不用Set。 但是此题对点去重也可以对。
-参见例题
+有向图题目
 <li ><a href="solution/reconstructitinerray.html">Reconstruct Itinerary(有向图DFS搜索某种路径：断边法)</a> <a href="https://leetcode.com/problems/reconstruct-itinerary/description/">Q</a>  </li>
-<li><a href="solution/RedundentConnection.html">Redundant Connection （有向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
+<li><a href="solution/RedundentConnection.html">Redundant Connection （有向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection-ii/">Q</a>  </li>
 
 
 public class Solution {
 
     private boolean ans = false;
 
-    public boolean hasRoute(ArrayList<DirectedGraphNode> graph, DirectedGraphNode s, DirectedGraphNode t) {
+    public boolean hasRoute(ArrayList&lt;DirectedGraphNode> graph, DirectedGraphNode s, DirectedGraphNode t) {
 
            dfs(s, t);
            return ans;
@@ -166,8 +165,8 @@ void dfs( start, matrix){
 
         int code = i * col + j;
 
-        Queue&lt;Integer> q = new LinkedList<Integer>();
-        HashSet&lt;Integer> set = new HashSet<Integer>();
+        Queue&lt;Integer> q = new LinkedList&lt;Integer>();
+        HashSet&lt;Integer> set = new HashSet&lt;Integer>();
 
         q.add(s);
         set.add(s);
@@ -213,8 +212,8 @@ int y;
 }
 void BFS(int x, int y, int m, int n){
 
-     Queue<Node> q = new LinkedList<>();
-	 HashSet<Node> set = new HashSet<>();
+     Queue&lt;Node> q = new LinkedList&lt;>();
+	 HashSet&lt;Node> set = new HashSet&lt;>();
 
 
 	 q.add(new Node(x,y));
