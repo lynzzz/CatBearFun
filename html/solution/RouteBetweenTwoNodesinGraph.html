@@ -12,11 +12,9 @@
 
 <pre><code>
 
-Question: 图中两点之间能否联通
-Solution： BFS,DFS
-适用范围:
-无向图对点去重， 否则A-> B ， B->A
-有向图比较难，一般不会出现，出现的话应该对边去重
+Question I: 图(无向，有向)中两点之间能否联通
+Solution： BFS, DFS
+时间复杂： O(E + V)
 
 
 
@@ -71,16 +69,14 @@ public class Solution {
         HashSet&lt;DirectedGraphNode> set = new HashSet&lt;>();
 
         set.add(s);
-        dfs(graph, s, t, set);
+        dfs(s, t, set);
 		    set.remove(s);
 
         return ret;
     }
 
 
-    void dfs( ArrayList&lt;DirectedGraphNode> graph, DirectedGraphNode s,
-              DirectedGraphNode t, HashSet&lt;DirectedGraphNode> set ){
-
+    void dfs( DirectedGraphNode s, DirectedGraphNode t, HashSet&lt;DirectedGraphNode> set ){
         if ( s == t){
             ret = true;
             return;
@@ -92,13 +88,14 @@ public class Solution {
             }
 
             set.add(neighbor);
-            dfs( graph, neighbor, t, set);
+            dfs( neighbor, t, set);
             set.remove(neighbor);
         }
     }
 }
 
-图的遍历事件复杂度对于DFS, BFS都是 O(m+n)  ~= O(m) ~= O(n^2), where m is the number of edge and n is number of vertex
+图的遍历事件复杂度对于DFS, BFS都是 O(m+n)   where m is the number of edge and n is number of vertex.
+对于有向图来说 O(m+n) = O(n*n + n) = O(n^2)
 
 
 
@@ -106,11 +103,13 @@ public class Solution {
 
 
 
+Question II:
+1. 无向图如何找环： Union Find, DFS
+2. 有向图如何找环：
 
-
-有向图题目
+<li><a href="solution/RedundentConnection.html">Redundant Connection （无向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection/">Q</a>  </li>
+<li><a href="solution/RedundentConnection-ii.html">Redundant Connection （有向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection-ii/">Q</a>  </li>
 <li ><a href="solution/reconstructitinerray.html">Reconstruct Itinerary(有向图DFS搜索某种路径：断边法)</a> <a href="https://leetcode.com/problems/reconstruct-itinerary/description/">Q</a>  </li>
-<li><a href="solution/RedundentConnection.html">Redundant Connection （有向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection-ii/">Q</a>  </li>
 
 
 public class Solution {
