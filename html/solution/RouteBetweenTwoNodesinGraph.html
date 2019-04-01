@@ -12,8 +12,9 @@
 
 <pre><code>
 
-Question I: 图(无向，有向)中两点之间能否联通
+Question I: 图中两点之间能否联通
 Solution： BFS, DFS
+适用范围：无向图有向图都可以。
 时间复杂： O(E + V)
 
 
@@ -104,11 +105,10 @@ public class Solution {
 
 
 Question II:
-1. 无向图如何找环： Union Find, DFS
-2. 有向图如何找环：
+1. 无向图如何找环： Union Find, DFS(把找环分解成了能不能联通两个点）
 
 <li><a href="RedundentConnection.html">Redundant Connection （无向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection/">Q</a>  </li>
-<li><a href="RedundentConnection-ii.html">Redundant Connection II（有向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection-ii/">Q</a>  </li>
+
 <li ><a href="reconstructitinerray.html">Reconstruct Itinerary(有向图DFS搜索某种路径：断边法)</a> <a href="https://leetcode.com/problems/reconstruct-itinerary/description/">Q</a>  </li>
 
 
