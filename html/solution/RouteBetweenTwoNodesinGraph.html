@@ -145,15 +145,17 @@ public class Solution {
 
 void dfs( start, matrix){
 
-    1. 递归的结束条件 （ 一般是越界，或者撞墙，或者访问过的）
+        1. 递归的结束条件 
+           a. 越界，撞墙，访问过
+           b. 已经找到Target
 
-	2. 递归达到某种要求（走到某点， 返回 ）
 
-	3. 标记为访问过，如果连续走，可以直接mark图，否则用boolean array不破坏图
+	2. 标记为访问过
 
-	4. 找到下一层的所有坐标，分别做DFS broadcast
+	3. 对下一层坐标DFS broadcast
 }
-
+<li ><a href="numberOfislands">Example: Number Of Islands
+</a></li>
 
 
 
@@ -186,12 +188,6 @@ void dfs( start, matrix){
                set.add(child);
                q.add(child);
             }
-
-			if ( 过界， 撞墙，没有访问过 ）
-               set.add(child);
-               q.add(child);
-            }
-
         }
 
         return false;
