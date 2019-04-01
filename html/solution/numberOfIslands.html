@@ -34,17 +34,17 @@ class Solution {
         int row = grid.length;
         int col = grid[0].length;
 
-        if (x &lt; 0 || x == row || y &lt; 0 || y == col) {
+        if (x &lt; 0 || x == row || y &lt; 0 || y == col || grid[x][y] =='0') {
             return;
         }
 
-        if (grid[x][y] == '1') {
-            grid[x][y] = '0';
-            helper(grid, x-1, y);
-            helper(grid, x+1, y);
-            helper(grid, x, y+1);
-            helper(grid, x, y-1);
-        }
+        grid[x][y] = '0';
+
+        helper(grid, x-1, y);
+        helper(grid, x+1, y);
+        helper(grid, x, y+1);
+        helper(grid, x, y-1);
+   }
     }
 }
 </code></pre>
