@@ -62,11 +62,11 @@ class Solution {
         // What is valid tree?
         // 1. no circle
         // 2. no isolated node
-		// 3. undirected edge
-		无向，无环，无孤
+	无环，无孤
 
 
         // 此题目的结论 n 个点图无环，只能有n-1条路径
+        // 这只是必要条件，剩下的反例是有两个子图，且有一个子图有环，需要在加上BFS
         if ( edges.length != n - 1){
             return false;
         }
@@ -102,12 +102,12 @@ class Solution {
             int node = q.poll();
 
             for( int i : graph.get(node)){
-                if ( visited.contains(i) )
-				{
-				    continue;
-				}
-                    q.add(i);
-                    visited.add(i);
+                if ( !visited.contains(i) ){
+		    continue
+                }
+
+                q.add(i);
+                visited.add(i);
             }
         }
 
