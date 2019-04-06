@@ -5,18 +5,18 @@ Union Find( disjoint set, 并查集）<br><br>
 <li><a href="RedundentConnection.html">Redundant Connection(无向图找环)</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
 <li><a href="ValidGraphTree.html">Valid Graph Tree(无向图找环：Union Find, BFS)</a> <a href=https://www.lintcode.com/problem/graph-valid-tree/description>Q</a>  </li>
 <li><a href="https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/">Number of connected components in an undirected graph（无向图分类)</a>  </li>
-   <li><a href="MergeEmailAccount.html">Merge email accounts</a> <a href=https://leetcode.com/problems/accounts-merge/solution/>Q</a></li>
+   <li><a href="MergeEmailAccount.html">Merge email accounts(Union find 应用，比较难想出如何用union find)</a> <a href=https://leetcode.com/problems/accounts-merge/solution/>Q</a></li>
 
 
-算法：   Step 1 : 图里的每一个点是一个独立的集<br>
-        step 2 : 按照你自己定义的法则进行合并。<br><br>
+算法：  Step 1 : 判断这题目里的不可交集是什么（点，email account）<br>
+        step 2 : 判断题目里的合并的依据是什么（两点连边，矩阵元素相邻，同一个用户的email)。<br><br>
 
 
 
 数据结构 :  hashmap <br>
 函数     ：
             constructor<br>
-            find: 返回这个节点的root<br>
+            find: 返回这个节点的root,这是模版<br>
             union: 合并这两个节点的根节点,  每union(A, B)一次，和两个点就归为一类,  时间复杂度近似O(1)
 <pre><code>
 
