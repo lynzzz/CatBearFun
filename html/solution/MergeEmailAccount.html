@@ -8,15 +8,15 @@
 <body>
 
 
-核心思想：把Email转换成ID进行分类
+核心思想：把Email转换成ID进行分类<br><br>
 
-算法： 1. 遍历Accounts,构造一个EmailToID map 和一个EmailToName map
-       2. 同一个name下的email必然是一类的就合并在一起。
-       3. 遍历email把相同的parent ID 的email 合并在一起构造答案
+算法： 1. 遍历Accounts,构造一个EmailToID map 和一个EmailToName map<br>
+       2. 同一个name下的email必然是一类的就合并在一起。<br>
+       3. 遍历email把相同的parent ID 的email 合并在一起构造答案<br>
 
-Union Find的思考障碍：
-1. 要把email当成节点合并，而不是name.
-2. 要把email转换成integer后在进行分类。
+Union Find的思考障碍：<br>
+1. 要把email当成节点合并，而不是name<br>
+2. 要把email转换成integer后在进行分类。<br>
 
 
 <pre><code>
