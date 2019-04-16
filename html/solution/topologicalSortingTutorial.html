@@ -7,6 +7,15 @@
 
 <body>
 
+  <li><a href="topologicalSorting.html">Topological Sorting</a>  <a href=https://www.lintcode.com/problem/topological-sorting/description>Q</a></li>
+  <li><a href="courseschedule.html">course schedule(Topological sorting</a> <a href="http://www.lintcode.com/en/problem/course-schedule/">Q</a>  </li>
+  <li><a href="coursescheduleii.html">course schedule II</a> <a href="http://www.lintcode.com/en/problem/course-schedule-ii/">Q</a>  </li>
+  <li><a href="AlienDictionary.html">Alien dictionary(Topological sorting with duplicate edges)</a> <a href=https://leetcode.com/problems/alien-dictionary/description/>Q</a></li>
+  <li><a href="EvaluateDivision.html">Evaluate Division(有向图里能否从一点到另一点，返回权重，DFS)</a> <a href="https://leetcode.com/problems/evaluate-division/description/">Q</a>  </li>
+  <li><a href="reconstructitinerray.html">Reconstruct Itinerary(有向图DFS搜索某种路径： 断边法)</a> <a href="https://leetcode.com/problems/reconstruct-itinerary/description/">Q</a>  </li>
+  <li><a href="FindEventualSafeStates.html">Find Eventual safe sttes(有向图DFS找环：暴力搜索法， 染色法)</a> <a href=https://leetcode.com/problems/find-eventual-safe-states/description/>Q</a>  </li>
+  <li><a href="NetworkDelayTime.html">NetWork Delay(有向图DFS, 求全局权重最优)</a> <a href=https://leetcode.com/problems/network-delay-time/description/>Q</a>  </li>
+  <li><a href="MinimalHeightTree.html">Tree Graph（树图剪枝法）</a> <a href="https://leetcode.com/problems/minimum-height-trees/description/">Q</a>  </li>
 
 
 
@@ -19,7 +28,7 @@
 
 
 
-Topological sorting 数据结构 
+Topological sorting 数据结构
 进度表 + 点图 => 进度BFS
 
 进度表  HashMap&lt;Integer, Integer> degree = new HashMap<>();
@@ -27,7 +36,7 @@ Topological sorting 数据结构
 
 
 
-构造进度表和图 
+构造进度表和图
 1. 先初始化图和进度表，这样就保证了每个点都在图和进度表里，这样写的好处是，构造图的时候不用考虑点存不存在图中，做BFS时候也不用考虑点是否存在于图中。
 
         for( int i=0; i&lt;numCourses;i++){
@@ -37,7 +46,7 @@ Topological sorting 数据结构
 
 2.  构造图和进度表
         for( int[] e : prerequisites){
-            
+
             int from = e[1];
             int to = e[0];
             graph.get(from).add(to);
@@ -45,9 +54,9 @@ Topological sorting 数据结构
         }
 
 
-进度BFS实现 
+进度BFS实现
 
-step 1 :找到进度为0的点 
+step 1 :找到进度为0的点
 
 Queue&lt;Integer> q = new LinkedList<>();
 for( int key : degree.keySet()){
@@ -61,9 +70,9 @@ Step 2: 进度控制BFS
 int count = 0
 while( !q.isEmpty() ){
      int n = q.poll();
-	 
+
 	 count++;
-	 
+
 	 if ( graph.contains(n) ){
 		 for( int neighbor : graph.get(n) ){
 			   degree.put(neighbor, degree.get(nbeighbor)-1);
