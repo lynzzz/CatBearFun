@@ -14,7 +14,7 @@
   class DirectedGraphNode {
        int label;
        ArrayList&lt;DirectedGraphNode> neighbors;
-       DirectedGraphNode(int x) { label = x; neighbors = new ArrayList<DirectedGraphNode>(); }
+       DirectedGraphNode(int x) { label = x;}
   };
 
   public class Solution {
@@ -72,6 +72,11 @@ Topological sorting （中文名拓扑排序）: 有向图从入口到出口遍�
 1.构造进度表 <br>
 2.进度为0点BFS，更新进度，只有下一个进度为0，才能加入queue, 不用set<br>
 
+Note:<br>
+m.put(node, m.get(node)++) won't work, since Integer is immutable, cannot increment<br>
+m.put(node, m.get(node)+1) works, auto boxing and auto unboxing
+
+m.get(node) + 1 won't work, since the old reference stays unchanged. 
 
 </div>
 
