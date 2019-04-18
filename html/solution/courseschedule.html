@@ -16,26 +16,26 @@ Solution 1 : 写法最简单，最不容易出错，开始初始化点图和进�
 
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        
+
         HashMap&lt;Integer, Integer> degree = new HashMap<>();
         HashMap&lt;Integer, List&lt;Integer>> graph = new HashMap<>();
-        
-        
+
+
         // 初始化图和进度表，保证了每个点都存在于图和进度表里面, 这里写的好处是， 建图的时候好写，BFS的时候不需要判断点是否在图里面。
         for( int i=0; i&lt;numCourses;i++){
             degree.put(i, 0);
             graph.put(i, new ArrayList<>());
         }
-        
+
         //construct graph and degree table
         for( int[] e : prerequisites){
-            
+
             int from = e[1];
             int to = e[0];
             graph.get(from).add(to);
             degree.put(to, degree.get(to) + 1);
         }
-        
+
         // BFS
         Queue<Integer> q = new LinkedList<>();
         for(int key : degree.keySet()){
@@ -43,13 +43,13 @@ class Solution {
                 q.add(key);
             }
         }
-        
+
         int count = 0;
-        
+
         while( !q.isEmpty()){
             int n = q.poll();
             count++;
-            
+
             for( int neighbor : graph.get(n)){
                 degree.put(neighbor, degree.get(neighbor) - 1);
                 if ( degree.get(neighbor) == 0){
@@ -57,93 +57,13 @@ class Solution {
                 }
             }
         }
-        
-        
+
+
         return count == numCourses;
-        
-        
+
+
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-Solution 2 :开始不初始化点图，构图的时候写着麻烦，做BFS要判断点是否存在于图中。
-
-
-
-class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        
-        HashMap&lt;Integer, Integer> degree = new HashMap<>();
-        HashMap&lt;Integer, HashSet&lt;Integer>> graph = new HashMap<>();
-        
-        
-        // construct degree
-        for( int i=0; i&lt;numCourses;i++){
-            degree.put(i, 0);
-        }
-        
-        //construct graph
-        for( int[] e : prerequisites){
-            
-            int from = e[1];
-            int to = e[0];
-            if ( !graph.containsKey(from)){
-                HashSet<Integer> set = new HashSet<>();
-                set.add(to);
-                graph.put(from, set);
-                degree.put(to, degree.get(to) + 1);
-            }else{
-                HashSet<Integer> set = graph.get(from);
-                if ( !set.contains(to)){
-                    set.add(to);
-                    degree.put(to, degree.get(to) + 1);
-                }
-            }
-        }
-        
-        // BFS
-        Queue<Integer> q = new LinkedList<>();
-        for(int key : degree.keySet()){
-            if ( degree.get(key) == 0){
-                q.add(key);
-            }
-        }
-        
-        int count = 0;
-        
-        while( !q.isEmpty()){
-            int n = q.poll();
-            count++;
-            
-            if ( graph.containsKey(n)){                            // topological sorting最后一层的点和孤立的点没有边，所以没有在graph里，不check就会暴
-                for( int neighbor : graph.get(n)){
-                    degree.put(neighbor, degree.get(neighbor) - 1);
-                    if ( degree.get(neighbor) == 0){
-                        q.add(neighbor);
-                    }
-                }
-            }
-        }
-        
-        
-        return count == numCourses;
-        
-        
-    }
-}
-    }   
-}
-
 
 </code></pre>
 
@@ -153,10 +73,9 @@ class Solution {
 
 <div class="comment">
 Time complexity :   O(m+n)   <br>
-
-第一种写法:  简单，不易出错
-第二种写法： topological sorting最后一层的点和孤立的点没有边，所以没有在新建的点图graph里， 所以需要check存在与否,不然BFS会爆
-
+结论<br>
+topological sorting 遍历有向图，如果有向图有环，则无法遍历所有点<br>
+用顶点数和遍历的顶点数比较就知道有无欢。
 
 
 </div>
