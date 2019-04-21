@@ -7,73 +7,78 @@
 
 <body>
 
+  <li><a href="https://leetcode.com/problems/redundant-connection/description/">Stream of Characters(把单词倒序建Trie, 方便从最后一个字母开始查找)</a>  </li>
 
 
 
 <pre><code>
+
+  class TrieNode{
+      TrieNode[] children = new TrieNode[26];
+      boolean isEnd;
+
+      TrieNode getNode(char c){
+          return children[c - 'a'];
+      }
+
+      void setNode(char c){
+          children[c - 'a'] = new TrieNode();
+      }
+
+      boolean contains(char c){
+          return children[c-'a'] != null;
+      }
+  }
+
   class Trie {
 
       TrieNode root = new TrieNode();
 
+      public Trie() {
+
+      }
 
       public void insert(String word) {
-          TrieNode node = root;
+          TrieNode rootSave = root;
           for( char c : word.toCharArray()){
-              if ( node.contains(c)){
-                  node = node.get(c);                            // node.get(c) 直接走到自己的儿子了
+              if ( !rootSave.contains(c)){
+                  rootSave.setNode(c);
+                  rootSave = rootSave.getNode(c);
               }else{
-                  node.put(c, new TrieNode());
-                  node = node.get(c);
+                  rootSave = rootSave.getNode(c);
               }
           }
-          node.isEnd = true;
+          rootSave.isEnd = true;
       }
 
-      public TrieNode startsWithPrefix(String str){
-          TrieNode node = root;
-          for( char c : str.toCharArray()){
-              if ( node.contains(c)){
-                  node = node.get(c);
-              }else{
-                  return null;
-              }
-          }
-          return node;
-      }
-
-      /** Returns if the word is in the trie. */
       public boolean search(String word) {
-                  TrieNode n = startsWithPrefix(word);
-                  return n!=null && n.isEnd;
+
+          TrieNode rootSave = root;
+
+          for( char c : word.toCharArray()){
+              if ( !rootSave.contains(c)){
+                  return false;
+              }else{
+                  rootSave = rootSave.getNode(c);
+              }
+          }
+          return rootSave.isEnd;
       }
 
-      /** Returns if there is any word in the trie that starts with the given prefix. */
       public boolean startsWith(String prefix) {
-          TrieNode n = startsWithPrefix(prefix);
-          return n!= null;
+
+          TrieNode rootSave = root;
+
+          for( char c : prefix.toCharArray()){
+              if ( !rootSave.contains(c)){
+                  return false;
+              }else{
+                  rootSave = rootSave.getNode(c);
+              }
+          }
+
+          return true;
       }
-
-
-  }
-
-
-  class TrieNode{
-      private TrieNode[] children = new TrieNode[26];
-      public boolean isEnd;
-
-
-      TrieNode get(char c){
-          return children[c - 'a'];
-      }
-
-      void put(char c, TrieNode n){
-               children[c - 'a'] = n;
-      }
-
-      boolean contains(char c){
-          return children[c - 'a'] != null;
-      }
-
   }
 
 </code></pre>
@@ -85,10 +90,6 @@
 
 <div class="comment">
 Time complexity :   Insert O(m), where m is the length of the string, search O(m)   <br>
-Space complexity :  Insert worst case O(m)   <br>
-
-
-
 </div>
 
 
