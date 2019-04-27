@@ -12,7 +12,8 @@
 <li><a href="numberOfIslands.html">Number of islands</a> <a href=https://leetcode.com/problems/number-of-islands/description/>Q</a></li>
 <li><a href="maxAreaOfIslands.html">Max area of islands</a> <a href=https://leetcode.com/problems/max-area-of-island/description/>Q</a></li>
 <li><a href="floodFill.html">flood fill</a> <a href=https://leetcode.com/problems/flood-fill/description/>Q</a></li>
-<li><a href="SurroundedRegions.html">surrounded Area(撞墙)</a> <a href=http://www.lintcode.com/en/problem/surrounded-regions/>Q</a></li>
+<li><a href="SurroundedRegions.html"></a> <a href=http://www.lintcode.com/en/problem/surrounded-regions/>Q</a></li>
+<li><a href=https://leetcode.com/problems/word-search//>word search in a 2D array</a></li>
 
 
 
@@ -30,6 +31,8 @@ void dfs( start, matrix)
 	3. 标记为访问过，如果连续走，可以直接mark图，否则用boolean array不破坏图
 
 	4. 找到下一层的所有坐标，分别做DFS broadcast
+
+  5. 把图的标记还原.
 }
 
 
@@ -53,10 +56,12 @@ void DFS(int x, int y, int m, int n， boolean[][] visited){
 		return;
 	}
 
-    visited[x][y] = 1;
+    visited[x][y] = true;
 
     DFS(2x, y, m, n);
 	  DFS(x, 2y, m, n);
+
+    visited[x][y] = false;
 }
 
 
