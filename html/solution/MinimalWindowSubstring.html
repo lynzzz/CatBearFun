@@ -13,42 +13,43 @@
 <pre><code>
 
 
-     
-      public String minWindow(String s, String t) {
-        
 
-        
+      public String minWindow(String s, String t) {
+
+
+
         int[] targetDict = new int[256];
         for(int i=0; i &lt; t.length(); i++){
             targetDict[t.charAt(i)]++;
         }
-        
+
         int[] flowDict = new int[256];
-        
+
         int count = 0;
         int start = 0;
         String ret = "";
-        
+
         for( int i=0; i &lt; s.length(); i++){
             char c = s.charAt(i);
-            
+
             if ( flowDict[c] < targetDict[c]   ){
                 count++;
             }
             flowDict[c]++;
-            
+
             if ( count == t.length())   // find the end of the string
             {
-                
+
                 while ( true ){
                     char front = s.charAt(start);
-                
+
+                    前面指针一直走到这个字母不能去掉为止
                     if ( flowDict[front] > targetDict[front]){
                         flowDict[front]--;
                         start++;
                     }else{
                         String str = s.substring(start, i+1);
-                        
+
                         if ( ret.equals("")){
                             ret = str;
                         }
@@ -58,14 +59,14 @@
                         break;
                     }
                 }
-                
+
                 flowDict[s.charAt(start)]--;
                 start++;
                 count--;
-                
+
             }
         }
-        
+
         return ret;
     }
 

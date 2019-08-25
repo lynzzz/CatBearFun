@@ -22,6 +22,8 @@ public int lengthOfLongestSubstringTwoDistinct(String s) {
             max = Math.max(max,  i - start );
 
             char save = s.charAt(start);
+
+            前面指针一直往前走，走到与当前字母不同停止
             while( s.charAt(start) == save){
                 m.put(s.charAt(start), m.get(s.charAt(start)) - 1);
                 start++;
