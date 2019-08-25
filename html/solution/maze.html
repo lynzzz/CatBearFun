@@ -13,70 +13,50 @@
 <pre><code>
 DFS:
 
-
 class Solution {
-    
+
     boolean ans = false;
-    
+
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
-               int row = maze.length;
-        int col = maze[0].length;
-        boolean[][] visited = new boolean[row][col];
-        
-        dfs(start[0], start[1], destination[0], destination[1], maze, visited);
+
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        int[][] dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+
+        dfs(start[0], start[1], destination, maze, visited, dirs);
         return ans;
     }
-    
-    void dfs(int x, int y, int a, int b, int[][] maze, boolean[][] visited){
+
+    void dfs(int x, int y, int[] destination, int[][] maze, boolean[][] visited, int[][] dirs){
         int row = maze.length;
         int col = maze[0].length;
-        
-        if ( x &lt; 0 || x == row || y &lt;0 || y == col || maze[x][y] == 1 || visited[x][y]){
+
+        if (  visited[x][y]){
             return;
         }
-        
-        if ( x == a && y == b){
+
+        if ( x == destination[0] &amp;&amp; y == destination[1]){
             ans = true;
             return;
         }
-        
-        
+
         visited[x][y] = true;
-        
-        int l = y-1;   //left
-        int r = y+1;
-        int u = x-1;
-        int d = x+1;
-        
-		
-		// 下一层DFS点有四种可能性，因为要一直走到底，不知道在哪里，所以先要找到这四个点。
-        // down                        
-        while( d &lt; row && maze[d][y] == 0 ){                
-            d++;
+
+        for(int[] dir : dirs){
+            int i = x + dir[0];
+            int j = y + dir[1];
+
+            while( i>=0 &amp;&amp; i&l;trow &amp;&amp; j>=0 &amp;&amp; j&lt;col &amp;&amp; maze[i][j] == 0 ){
+                i = i + dir[0];
+                j = j + dir[1];
+            }
+
+            i = i- dir[0];
+            j = j - dir[1];
+
+            if ( !visited[i][j]){
+                dfs(i, j, destination, maze, visited, dirs);
+            }
         }
-        d--;
-        dfs(d, y, a, b, maze, visited);
-        
-        // up                                                 
-        while( u >=0 && maze[u][y] == 0){
-            u--;
-        }
-        u++;
-        dfs(u, y, a, b, maze, visited);
-        
-        // left
-        while( l>=0 && maze[x][l] == 0){
-            l--;
-        }
-        l++;
-        dfs( x, l, a, b, maze, visited);
-        
-        // right
-        while( r &lt; col && maze[x][r] == 0){
-            r++;
-        }
-        r--;
-        dfs( x , r, a, b, maze, visited);
     }
 }
 
@@ -84,89 +64,44 @@ class Solution {
 BFS:
 
 class Solution {
-        
+
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
-        
+
+        Queue&lt;int[]> q = new LinkedList&lt;>();
         int row = maze.length;
         int col = maze[0].length;
-         
-        Queue&lt;Integer> q = new LinkedList<>();
-        HashSet&lt;Integer> set = new HashSet<>();
-        
-        int i = start[0];
-        int j = start[1];
-        int a = destination[0];
-        int b = destination[1];
-        
-        int code = i*col + j;
-        
-        q.add(code);
-        set.add(code);
-        
+
+        boolean[][] visited = new boolean[row][col];
+        int[][] dirs = { {-1, 0}, {1, 0}, {0, 1}, {0, -1} };
+
+        q.add(new int[] {start[0], start[1]});
+        visited[start[0]][start[1]] = true;
+
         while( !q.isEmpty()){
-            
-            int n = q.poll();
-            int x = n/col;
-            int y = n%col;
-            
-            if ( x == a && y == b){
+            int[] n = q.poll();
+            if ( n[0] == destination[0] &amp;&amp; n[1] == destination[1]){
                 return true;
             }
-            
-            int l = y-1;   //left
-            int r = y+1;   // right
-            int u = x-1;   // up
-            int d = x+1;   // down
-            
-			
-			// 下一层加入的点有四种可能性，因为要一直走到底，不知道在哪里，所以先要找到这四个点。
 
-            // left
-            while( l>=0 && maze[x][l] == 0 ){
-                l--;
-            }
-            l++;
-            
-            if ( !set.contains(x*col + l)){
-                q.add(x*col + l);
-                set.add(x*col + l);
-            }
-            
-            
-            // right
-            while( r &lt; col && maze[x][r] == 0){
-                r++;
-            }
-            r--;
-            if ( !set.contains(x*col + r)){
-                q.add(x*col + r);
-                set.add(x*col + r);
-            }
-            
-            // up
-            while( u >=0 && maze[u][y] == 0){
-                u--;
-            }
-            u++;
-            
-            if ( !set.contains(u*col + y)){
-                q.add(u*col + y);
-                set.add(u*col + y);
-            }
-            
-            // down
-            while( d &lt; row && maze[d][y] == 0 ){
-                d++;
-            }
-            d--;
-            
-            if ( !set.contains(d*col + y)){
-                q.add(d*col + y);
-                set.add(d*col + y);
+            for( int[] dir : dirs){
+                int x = n[0] + dir[0];
+                int y = n[1] + dir[1];
+
+                while( x>=0 &amp;&amp; x&lt;row &amp;&amp; y>=0 &amp;&amp; y&lt;col &amp;&amp;maze[x][y] == 0){
+                    x = x + dir[0];
+                    y = y + dir[1];
+                }
+
+                x = x-dir[0];
+                y = y-dir[1];
+
+                if ( !visited[x][y]){
+                    visited[x][y] = true;
+                    q.add(new int[]{x, y});
+                }
             }
         }
-        
-        
+
         return false;
     }
 }
@@ -178,7 +113,6 @@ class Solution {
 
 
 <div class="comment">
-DFS 如果棋盘走的步子不是连续的（比如象此题直着走到底，或者马跳，不能用标记为墙去重，否则整个棋盘全部会标记为墙， 正确解法是传一个boolean array去重。
 
 Time complexity :    O(mn)  <br>
 Space complexity :   O(mn)  <br>

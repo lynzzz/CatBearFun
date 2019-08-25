@@ -6,43 +6,41 @@
 class Solution {
     public int lengthOfLongestSubstringKDistinct(String s, int k) {
 
-        if ( s == null || s.length() == 0 || k == 0) return 0;
+      if ( s == null || s.length() == 0 || k == 0) return 0;
 
-        HashMap&lt;Character, Integer> map = new HashMap<>();
+              HashMap&lt;Character, Integer> m = new HashMap&lt;>();
+              int start = 0;
+              int ret = 0;
+              int i=0;
 
-        int start = 0;
-        int length = 0;
-        int i = 0;
+              for( ; i&lt;s.length(); i++){
+                  char c = s.charAt(i);
 
-        for( ; i&lt;s.length();){
-            char c = s.charAt(i);
-            if ( map.containsKey(c)){
-                map.put(c, map.get(c) + 1);
-                i++;
-            }else{
-                if ( map.size() &lt; k){
-                    map.put(c, 1);
-                    i++;
-                }else{
-                    if ( ( i - start) > length ){
-                        length = i - start;
-                    }
+                  if (m.size()&lt;k){
+                     m.put(c, m.getOrDefault(c, 0) + 1);
+                  }else{
+                      if ( m.containsKey(c)){
+                          m.put(c, m.get(c) + 1);
+                      }else{
+                          ret = Math.max(ret, i-start);
 
-                    char startChar = s.charAt(start);
-                    map.put(startChar, map.get(startChar)-1);
-                    if ( map.get(startChar) == 0){
-                        map.remove(startChar);
-                    }
-                    start++;
-                }
-            }
-        }
+                          char saveStart = s.charAt(start);
 
-        if ( ( i - start) > length ){
-            length = i - start;
-        }
+                          while( s.charAt(start) == saveStart){
+                              m.put(saveStart, m.get(saveStart)-1);
+                              start++;
+                          }
 
-        return length;
+                          if ( m.get(saveStart) == 0){
+                              m.remove(saveStart);
+                          }
+
+                          i--;
+                      }
+                  }
+              }
+
+              return Math.max(ret, i-start);
     }
 }
 
