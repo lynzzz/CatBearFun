@@ -8,55 +8,36 @@
 <pre><code>
 
 
-class Solution {
-    public int lengthOfLongestSubstring(String s) {
-        int[] m = new int[256];
-        Arrays.fill(m, -1);
-        
-        int length = 0;
-        int start =0;
-        int i=0;
-        
-        for( ; i&lt;s.length();){
-            char c = s.charAt(i);
-            
-            if ( m[c] == -1 ){
-                m[c] = i;
-                i++;
-            }else{
-                
-                if ( ( i - start) > length ){
-                    length = i - start;
-                }
-                
-                int index = m[c];
-                
-                for( int j=0; j&lt;256; j++){
-                    if ( m[j] <= index){
-                        m[j] = -1;
-                    }
-                }
-                
-                start = index + 1;
-            }
-        }
-        
-        if ( ( i - start) > length ){
-            length = i - start;
-        }
-        
-        return length;
-    }
-}
+  public int lengthOfLongestSubstring(String s) {
+
+         HashMap&lt;Character, Integer> m = new HashMap&lt;>();
+
+         int start = 0;
+         int ret = 0;
+         int i=0;
+
+         for( ; i&lt;s.length(); i++){
+             if ( !m.containsKey(s.charAt(i)) ){
+                 m.put(s.charAt(i), i);
+             }else{
+                 ret = Math.max(ret, i-start);
+
+                 // 前面指针往前面走，一直走到后面指针可以往map里面加值为止。
+                 while(m.containsKey(s.charAt(i))){
+                     m.remove(s.charAt(start));
+                     start++;
+                 }
+                 i--;
+             }
+         }
+
+         return Math.max(ret, i-start);
+     }
 </code></pre>
 
 Two pointers moving forward
 
 最长无重复子串<br>
- 
-用Array做字典，原因是如果用HashMap做字典，需要在循环HashMap时候去掉里面的key, 这种操作需要用iterator来完成，且时间复杂度高，所以说要用array当字典。 Charactor是类整数 
-
-
 
 
 

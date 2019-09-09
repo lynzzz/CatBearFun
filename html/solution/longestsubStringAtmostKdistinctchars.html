@@ -26,6 +26,7 @@ class Solution {
 
                           char saveStart = s.charAt(start);
 
+                         前面指针一直往前走，走到与当前字母不同停止
                           while( s.charAt(start) == saveStart){
                               m.put(saveStart, m.get(saveStart)-1);
                               start++;

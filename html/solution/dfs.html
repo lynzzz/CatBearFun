@@ -6,19 +6,20 @@ DFS subset 模版<br>
 适用题目 ： 得到一个整形数组或者字符串的所有分割方法， 结果的顺序和输入是一样的。  例子 { 1， 2， 3}  =>    { {1} {2,3} , {1,2} {3}, {1,2,3} } <br>
 
 输入 ： 大容器， 小容器， 输入， 往前控制符pos<br>
+特征： 数组或者字符串的相对位置不会变，下一层始终在上一层的右边。
 
 模版 ：<br>
 
 <pre><code>
 public void dfs( ArrayList&lt;ArrayList&lt;Integer&gt;> results, ArrayList&lt;Integer> result, int[] nums, int pos){
-        
+
         //  if condition
 		if ( pos == nums.length()){
             results.add( new ArrayList&lt;Integer&gt;(result) );       // line c
             return;
 		}
-        
-        
+
+
         for( int i = pos; i&lt;nums.length; i++){                // line a
             result.add(nums[i]);
             dfs(results, result, nums, i+1);                     // line b
@@ -36,11 +37,11 @@ c. Line c, 大容器加入小容器时需要new, 也就是照相，不然小容�
 Coding Questions :<br><br>
 
 Integer array :<br>
-     <li><a href="subset.html">Subset</a> <a href="http://www.lintcode.com/en/problem/subsets/">Q</a>  </li>  
+     <li><a href="subset.html">Subset</a> <a href="http://www.lintcode.com/en/problem/subsets/">Q</a>  </li>
 	 <li><a href="subsets-ii.html">Subset-ii</a> <a href="http://www.lintcode.com/en/problem/subsets-ii/">Q</a></li>
 	 <li><a href="combinations.html">Combinations</a> <a href="http://www.lintcode.com/en/problem/combinations/">Q</a></li>
 	 <li><a href="combinationsum.html">Combination Sum</a> <a href="http://www.lintcode.com/en/problem/combination-sum/">Q</a></li>
-	 
+
 
 String<br>
 <li><a href="palindrom partition.html">Palindrom Partition</a> <a href="http://www.lintcode.com/en/problem/palindrome-partitioning/#">Q</a></li>
@@ -67,18 +68,18 @@ DFS permutation 模版<br>
 
 <pre><code>
     public void dfs( List&lt;List&lt;Integer&gt;&gt; results, ArrayList<Integer> result, HashSet<Integer> set, int[] nums ){
-        
+
         if ( result.size() == nums.length ){
             results.add( new ArrayList<Integer>(result) );
             return;
         }
-        
+
         for( int i=0; i&lt;nums.length; i++){
-            
+
             if ( set.contains(i) ){
                 continue;
             }
-            
+
             set.add(i);
             result.add(nums[i]);
             dfs(results, result, set, nums);
@@ -91,16 +92,15 @@ DFS permutation 模版<br>
 Coding Questions :<br><br>
 
 Integer array :<br>
-     <li><a href="http://www.lintcode.com/en/problem/permutations/#">permutations</a></li> 
-     <li><a href="http://www.lintcode.com/en/problem/permutations-ii/#">permutations</a></li> 
+     <li><a href="http://www.lintcode.com/en/problem/permutations/#">permutations</a></li>
+     <li><a href="http://www.lintcode.com/en/problem/permutations-ii/#">permutations</a></li>
      <br>
      此题目较特殊： permutation模版变种<br>
      下一层可以在上一层左边。 但是每层的元素都不一样，所以不可能出现重复，所以不用hashset去重， 传层次控制符，唯一作用是走到下一层，不去重<br>
-     <li><a href="http://www.lintcode.com/en/problem/letter-combinations-of-a-phone-number/">Letter Combinations of a Phone Number</a></li> 
+     <li><a href="http://www.lintcode.com/en/problem/letter-combinations-of-a-phone-number/">Letter Combinations of a Phone Number</a></li>
 
 </body>
 
 
 
 </html>
-
