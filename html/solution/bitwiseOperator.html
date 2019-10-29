@@ -7,23 +7,47 @@
 
 <body>
 
-Xor operator ^. 0 if the same, 1 if different
+  <pre><code>
+1.
+
+^ logic XOR operator: 0 if the same, 1 if different
 
 a^a = 0
 a^0 = a
 a^b^c = a^c^b  (交换律)
 
-
+2.
 ~ logic not operator:
 a   1011
 ~a  0100
 
-a &amp ~a = 0
+a &amp; ~a = 0
 
+3.
+&amp; logic and operator  1 if both are 1, otherwise 0
+a&amp;1 = a
+a&amp;0 = 0
+a&amp;~a = 0;
 
-&amp logic and operator  1 if both are 1, otherwise 0
-
-
+4.
 | logic or operator: 1 if any of the two is 1. 0 if both are 0
+
+
+5. how to get the negative value of original value using bit operator
+int a=2
+ ~a + 1 => -a => -2
+
+ int b = -3;
+ ~b + 1   => -b = 3
+
+
+6. Java build in function
+ Helper function
+ String Integer.toBinaryString(int n);
+
+7. Skill
+ 2^n = 1<< n
+</code></pre>
+
 
 </body>
