@@ -8,29 +8,24 @@
 <body>
 
   <pre><code>
-1.
-
-^ logic XOR operator: 0 if the same, 1 if different
+1. ^ logic XOR operator: 0 if the same, 1 if different
 
 a^a = 0
 a^0 = a
 a^b^c = a^c^b  (交换律)
 
-2.
-~ logic not operator:
+2.~ logic not operator:
 a   1011
 ~a  0100
 
 a &amp; ~a = 0
 
-3.
-&amp; logic and operator  1 if both are 1, otherwise 0
+3. &amp; logic and operator  1 if both are 1, otherwise 0
 a&amp;1 = a
 a&amp;0 = 0
 a&amp;~a = 0;
 
-4.
-| logic or operator: 1 if any of the two is 1. 0 if both are 0
+4. | logic or operator: 1 if any of the two is 1. 0 if both are 0
 
 
 5. how to get the negative value of original value using bit operator
@@ -47,6 +42,35 @@ int a=2
 
 7. Skill
  2^n = 1<< n
+
+ A &amp; 0 = 0
+
+A &amp; precedence is lower than ==
+
+n &amp; bitmast == 1,    == takes precedence first. need to change to  (n &amp; bitmast) == 1
+
+8 how many 1 are there in a bit
+
+右移数字
+while( n > 0){
+  if (( n &amp; 1) == 1){
+    count++;
+  }
+  n = n>>1;
+}
+return count;
+
+左移Bitmask
+int bitmask =1;
+for( int i=0; i&lt;32; i++){
+  if (( n &amp; bitmask) != 0){
+    count++;
+  }
+  bitmask = bitmask<<1;
+}
+return count;
+
+
 </code></pre>
 
 
