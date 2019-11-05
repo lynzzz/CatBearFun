@@ -20,15 +20,11 @@ a   1011
 
 a &amp; ~a = 0
 
-3. &amp; logic and operator  1 if both are 1, otherwise 0
-a&amp;1 = a
-a&amp;0 = 0
-a&amp;~a = 0;
 
-4. | logic or operator: 1 if any of the two is 1. 0 if both are 0
+3. | logic or operator: 1 if any of the two is 1. 0 if both are 0
 
 
-5. how to get the negative value of original value using bit operator
+4. how to get the negative value of original value using bit operator
 int a=2
  ~a + 1 => -a => -2
 
@@ -36,11 +32,11 @@ int a=2
  ~b + 1   => -b = 3
 
 
-6. Java build in function
+5. Java build in function
  Helper function
  String Integer.toBinaryString(int n);
 
-7. Skill
+6. Skill
  2^n = 1<< n
 
  A &amp; 0 = 0
@@ -70,6 +66,19 @@ for( int i=0; i&lt;32; i++){
 }
 return count;
 
+无重复字母的字符串用bitmask表示方法
+int bits = 0;
+for(char c : s.toCharArray()){
+    int shift = c - 'a';
+    bits = (1<<shift) | bits;
+}
+
+7. 常用技巧
+取最后一位：  int lastDigit = n&1;
+设置位置：
+int count = 0;
+    for int i=0; i<n; i++
+    count = (1<<i) | count
 
 </code></pre>
 
