@@ -95,6 +95,24 @@ for( char c : string){
   bitmask = bitmask^c
 }
 
+注意事项：
+1. 'A'的ASCII码在'a'之前， 'A'是65，'a'是97
+2. 如果用Bitwise Operator表示一个即有大写字母又有小写字母的字符串时候，基准值是ASCII比较小的‘A’。
+3. 位移量最高可达到 ‘z’ - ’A‘ = 122 - 65 = 57  只有32位的int是无法解决这个问题的，必须用64位的long。
+4. 系统默认的整数的数据类型是int, 1&lt;&lt;shift, 当shift=31的时候，会返回-1，后面的值都不对了， 所以必须把1赋成long, 在进行左移.
+
+long bitmask = 0;
+long start = 1;
+
+for(char c : s.toCharArray()){
+    bitmask = (start&lt;&lt;c - 'A') | bitmask;  // 如果此行写成 1&lt;&lt;shift, 当shift=31的时候，会返回-1，后面的值都不对了， 所以必须把1赋成long.
+
+}
+
+return bitmask.
+
+
+
 
 </code></pre>
 
