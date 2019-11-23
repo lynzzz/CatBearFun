@@ -1,0 +1,94 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+<pre><code>
+
+
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        Map&lt;Integer, Integer> indegree = new HashMap<>();
+        Map&lt;Integer, List<Integer>> graph = new HashMap<>();
+        
+        // init
+        for( int i=0; i&lt;numCourses; i++){
+            indegree.put(i, 0);
+            graph.put(i, new ArrayList<Integer>());
+        }
+        
+        // construct graph
+        for( int[] edge : prerequisites){
+            int to = edge[0];
+            int from = edge[1];
+            
+            indegree.put(to, indegree.get(to) + 1);
+            graph.get(from).add(to);
+        }
+        
+        // find the node that has 0 indgree
+        Queue&lt;Integer> q = new LinkedList<>();
+        for( int key : indegree.keySet()){
+             if ( indegree.get(key) == 0){
+                 q.add(key);
+             }            
+        }
+        
+        
+        // BFS
+        List&lt;Integer> ret = new ArrayList<>();
+        int count = 0;
+        
+        while( !q.isEmpty()){
+            int n = q.poll();
+            count++;
+            ret.add(n);
+
+            List&lt;Integer> neighbors = graph.get(n);
+            
+            for( int neighbor : neighbors){
+                indegree.put(neighbor, indegree.get(neighbor)-1);
+                
+                if ( indegree.get(neighbor) == 0){
+                    q.add(neighbor);
+                }
+            }
+        }
+        
+        if ( count != numCourses){
+            return new int[0];
+        }
+        
+        int[] results = new int[numCourses];
+        
+        for( int i=0; i&lt;ret.size(); i++){
+            results[i] = ret.get(i);
+        }
+        
+        return results;
+        
+    }
+}
+
+
+
+</code></pre>
+
+
+
+
+
+<div class="comment">
+时间复杂度 ： O(V+E) <br>
+空间复杂度 : O(V+E) <br> <br>
+
+注意Topological sorting为有向图层次遍历， 不能遍历环。 所以最后要确认下遍历的顶点个数和给定的顶点个数是否一致。不一致的话就不存在这种层次遍历顺序。
+
+
+</div>
+</body>

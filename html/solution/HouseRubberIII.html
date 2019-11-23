@@ -1,0 +1,90 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+<h2 style="color:red">Solution one : DFS </h2>
+
+    public int houseRobber3(TreeNode root) {
+        // write your code here
+        if ( root == null){
+            return 0;
+        }
+        
+        int sum = root.val;
+        if ( root.left != null){
+            sum = sum + houseRobber3(root.left.left) + houseRobber3(root.left.right);
+        }
+        
+        if ( root.right != null){
+            sum = sum + houseRobber3(root.right.left) + houseRobber3(root.right.right);
+        }
+        
+        return Math.max(sum, houseRobber3(root.left) + houseRobber3(root.right));
+        
+    }
+
+	
+Time Complexity : O ( n * 2^n )， where n is the number of node in the tree
+
+
+<h2 style="color:red">Solution two : DFS + DP (避免重复搜索)</h2>
+ public int houseRobber3(TreeNode root) {
+        // write your code here
+        return helper(root, new HashMap<TreeNode, Integer>());
+    }
+    
+    public int helper(TreeNode root, HashMap<TreeNode, Integer> m){
+        
+        if ( root == null){
+            return 0;
+        }
+        
+        if ( m.containsKey(root) ){
+            return m.get(root);
+        }
+        
+        int sum = root.val;
+        if ( root.left != null){
+            sum = sum  + helper(root.left.left, m) + helper(root.left.right, m);
+        }
+        
+        if ( root.right != null){
+            sum = sum + helper(root.right.left, m) + helper(root.right.right, m);
+        }
+        
+        int ret = Math.max(sum, helper(root.left, m) + helper(root.right, m));
+        m.put(root, ret);
+        
+        return ret;
+    }
+
+	时间复杂度降低，可以避免反复搜索
+	time :  这个没有搞清楚时间复杂度到底是多少 似乎是 n^2
+	Space : O(n)
+
+</code></pre>
+
+
+
+
+
+
+
+
+<a href = "http://www.cnblogs.com/grandyang/p/5275096.html">Algorithm</a>
+
+
+
+
+
+</body>

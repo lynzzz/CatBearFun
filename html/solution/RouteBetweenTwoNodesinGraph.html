@@ -11,95 +11,252 @@
 
 
 <pre><code>
-BFS
+
+Question I: 图中两点之间能否联通
+Solution： BFS, DFS
+适用范围：无向图有向图都可以。
+时间复杂： O(E + V)
+
+
+
+
+BFS模板 : Queue + HashSet
+例题
 public class Solution {
-   /**
-     * @param graph: A list of Directed graph node
-     * @param s: the starting Directed graph node
-     * @param t: the terminal Directed graph node
-     * @return: a boolean value
-     */
-    public boolean hasRoute(ArrayList<DirectedGraphNode> graph, 
+
+    public boolean hasRoute(ArrayList&lt;DirectedGraphNode> graph,
                             DirectedGraphNode s, DirectedGraphNode t) {
-        // write your code here
-        if ( s.label == t.label){
-            return true;
-        }
-        
-        Queue&lt;DirectedGraphNode> q = new LinkedList<DirectedGraphNode>();
-        HashSet<DirectedGraphNode> set = new HashSet<DirectedGraphNode>();
-        
+
+
+        Queue&lt;DirectedGraphNode> q = new LinkedList&lt;DirectedGraphNode>();
+        HashSet&lt;DirectedGraphNode> set = new HashSet&lt;DirectedGraphNode>();
+
         q.add(s);
         set.add(s);
-        
+
         while( !q.isEmpty() ){
             DirectedGraphNode node = q.poll();
-            
+
+            if ( node == t){
+                return true;
+            }
+
             for( DirectedGraphNode child : node.neighbors){
-                if ( !set.contains(child) ){
-                    
-                    if ( child.label == t.label){
-                        return true;
-                    }
-                    set.add(child);
-                    q.add(child);
-                }
+
+               if ( set.contains(child) ){
+                   continue;
+               }
+
+               set.add(child);
+               q.add(child);
             }
         }
-        
+
         return false;
     }
 }
 
-DFS
-/**
- * Definition for Directed graph.
- * class DirectedGraphNode {
- *     int label;
- *     ArrayList<DirectedGraphNode> neighbors;
- *     DirectedGraphNode(int x) {
- *         label = x;
- *         neighbors = new ArrayList<DirectedGraphNode>();
- *     }
- * };
- */
+DFS  模板
+1. 递归在干什么，2递归的结束条件，3递归的分解
+数据结构：使用HashSet去重
+
+
 public class Solution {
-   /**
-     * @param graph: A list of Directed graph node
-     * @param s: the starting Directed graph node
-     * @param t: the terminal Directed graph node
-     * @return: a boolean value
-     */
-    public static boolean found = false; 
-     
-    public boolean hasRoute(ArrayList<DirectedGraphNode> graph, 
-                            DirectedGraphNode s, DirectedGraphNode t) {
-        // write your code here
-        if ( s.label == t.label){
-            return true;
-        }
-        
-        dfs(new HashSet<DirectedGraphNode>(), s, t);
-        
-        return found;
+
+    private boolean ret = false;
+
+    public boolean hasRoute(ArrayList&lt;DirectedGraphNode> graph, DirectedGraphNode s, DirectedGraphNode t) {
+
+        HashSet&lt;DirectedGraphNode> set = new HashSet&lt;>();
+
+        set.add(s);
+        dfs(s, t, set);
+		    set.remove(s);
+
+        return ret;
     }
-    
-    private void dfs( HashSet<DirectedGraphNode> set, DirectedGraphNode s, DirectedGraphNode t){
-        
-        if ( s.label == t.label){
-            found = true;
+
+
+    void dfs( DirectedGraphNode s, DirectedGraphNode t, HashSet&lt;DirectedGraphNode> set ){
+        if ( s == t){
+            ret = true;
             return;
         }
-        
-        for( DirectedGraphNode node : s.neighbors){
-            if ( !set.contains(node) ){
-                set.add(node);
-                dfs(set, node, t);
-                set.remove(node);
+
+        for( DirectedGraphNode neighbor : s.neighbors){
+            if ( set.contains(neighbor)){
+                continue;
             }
+
+            set.add(neighbor);
+            dfs( neighbor, t, set);
+            set.remove(neighbor);
         }
     }
 }
+
+图的遍历事件复杂度对于DFS, BFS都是 O(m+n)   where m is the number of edge and n is number of vertex.
+对于有向图来说 O(m+n) = O(n*n + n) = O(n^2)
+
+
+
+
+
+
+
+Question II:
+1. 无向图如何找环： Union Find, DFS(把找环分解成了能不能联通两个点）
+
+<li><a href="RedundentConnection.html">Redundant Connection （无向图找环）</a> <a href="https://leetcode.com/problems/redundant-connection/">Q</a>  </li>
+
+<li ><a href="reconstructitinerray.html">Reconstruct Itinerary(有向图DFS搜索某种路径：断边法)</a> <a href="https://leetcode.com/problems/reconstruct-itinerary/description/">Q</a>  </li>
+
+
+public class Solution {
+
+    private boolean ans = false;
+
+    public boolean hasRoute(ArrayList&lt;DirectedGraphNode> graph, DirectedGraphNode s, DirectedGraphNode t) {
+
+           dfs(s, t);
+           return ans;
+    }
+
+    public void dfs( DirectedGraphNode s, DirectedGraphNode t){
+        if ( s == t){
+            ans = true;
+            return;
+        }
+
+        for( int i=0; i&lt;s.neighbors.size(); i++){
+            DirectedGraphNode n = s.neighbors.get(i);
+            s.neighbors.remove(i);
+            dfs(n, t);
+            s.neighbors.add(i, n);
+        }
+    }
+
+}
+
+
+
+
+棋盘类DFS模板, 用boolean array去重
+
+void dfs( start, matrix){
+
+        1. 递归的结束条件 
+           a. 越界，撞墙，访问过
+           b. 已经找到Target
+
+
+	2. 标记为访问过
+
+	3. 对下一层坐标DFS broadcast
+}
+<a href="numberOfIslands.html">Example: Number Of Islands
+</a>
+
+
+
+
+棋盘类BFS模板 HashSet + Queue
+
+ public boolean hasRoute(int[][] board, int[] start, int[] destination) {
+
+        int code = i * col + j;
+
+        Queue&lt;Integer> q = new LinkedList&lt;Integer>();
+        HashSet&lt;Integer> set = new HashSet&lt;Integer>();
+
+        q.add(s);
+        set.add(s);
+
+        while( !q.isEmpty() ){
+            int n = q.poll();
+
+			int x = n/col;
+			int y = n%col;
+
+            if ( x == a && y == b){                // 判断结束条件
+                return true;
+            }
+
+            // 对下一步的每一种可能性进行三个标准判断，如果可以则加入
+
+            if ( 过界， 撞墙，没有访问过 ）
+               set.add(child);
+               q.add(child);
+            }
+        }
+
+        return false;
+    }
+
+
+
+
+Google 面试题目： 能不能从一点走到另外一点，
+在第一象限内一点（x,y）, 每次可以走一步，下一步可以是(x+x, y), 或者（x, y+y）， 求问能否走到一个点（m,n）。注意，x>0, y>0，刚开始认为是四个象限，如果都是正数，不难。没有找出最优解，小姐姐说没关系，她觉得正常人需要一两天才能找出最优解。做完还剩5分钟，小姐姐要我问问题，我太累了，不想问，小姐姐还是觉得我应该问，我只好问了，然后去上厕所。
+
+BFS解法
+class Node{
+int x;
+int y;
+
+}
+void BFS(int x, int y, int m, int n){
+
+     Queue&lt;Node> q = new LinkedList&lt;>();
+	 HashSet&lt;Node> set = new HashSet&lt;>();
+
+
+	 q.add(new Node(x,y));
+	 set.add(new Node(x,y);
+
+	 while( ！q.isEmpty（））{
+	     Node node = q.poll();
+
+		 if （ node.x == m, && node.y  == n ){
+		      return true;
+		 }
+
+		 if ( 2*node.x <= m && node.y <= n && 判断 (2*n.x, n.y)未访问过 ){
+		     q.add(new Node(2*n.x, y);
+		     set.add(new Node(2*n.x, y));
+		}
+
+		 if ( n.x <= m && 2n.y<= m && 判断 （n.x, 2*n.y)未被访问过 ){
+		     q.add(Node(n.x, 2*n.y(;
+		     set.add(Node(n.x, 2*n.y);
+		 }
+	 }
+
+	 return false;
+}
+
+
+DFS 解法
+boolean ans = false;
+
+void DFS(int x, int y, int m, int n， boolean[][] visited){
+
+	if ( x > m || y > n || visited[x][y] ){
+	    return;
+	}
+
+    if ( x == m && y == n ){
+	    ans = true;
+		return;
+	}
+
+    visited[x][y] = 1;
+
+    DFS(2x, y, m, n);
+	DFS(x, 2y, m, n);
+}
+
+
 
 
 </code></pre>
@@ -109,10 +266,10 @@ public class Solution {
 
 
 
+
+
 <div class="comment">
-1. BFS or DFS 图里面搜索一般用BFS.  <br>
-2. 此题 DFS为permutation末班， （大容器，小容器，boolean array) 因为此题目没有让返回所有解，所以说不需要大容器，小容器，只用一个hashset去重，保证路径不会原路返回。<br>
-   注意此题用了一个全局变量表示结果，因为dfs不返回值，所以当找到了，就在外面记录<br>
+1. BFS or DFS 图里面搜索一般用BFS. 有时候DFS比BFS要好写些。 <br>
 </div>
 
 

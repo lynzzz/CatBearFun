@@ -1,0 +1,101 @@
+Union Find( disjoint set, 并查集）<br><br>
+应用：无向图分类<br>
+应用特征 图一般表达为 int[][] edges, 因为函数接口take两个顶点。 uf.union(A, B)<br>
+
+<li><a href="RedundentConnection.html">Redundant Connection(无向图找环: Union Find, DFS)</a> <a href="https://leetcode.com/problems/redundant-connection/description/">Q</a>  </li>
+<li><a href="ValidGraphTree.html">Valid Graph Tree(无向图找环：Union Find, BFS)</a> <a href=https://www.lintcode.com/problem/graph-valid-tree/description>Q</a>  </li>
+<li><a href="NumberOfConnectedComponentsInUndirectedGraph.html">Number of connected Components in undirected Graph(无向图找子图个数：Union Find, BFS)</a> <a href="https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/">Q</a>  </li>
+<li><a href="MergeEmailAccount.html">Merge email accounts(Union find 应用，比较难想出如何用union find)</a> <a href=https://leetcode.com/problems/accounts-merge/solution/>Q</a></li>
+<br>
+<br>
+
+ 如何应用Union Find，思考两个问题<br>
+ Step 1 : 判断题目里的不可交集是什么（点，email account）<br>
+ step 2 : 判断题目里的合并的依据是什么（两点连边，矩阵元素相邻，同一个用户的email)。<br><br>
+
+
+
+数据结构 :  hashmap <br>
+函数     ：<br>
+            constructor<br>
+            find: 返回这个节点的root,这是模版<br>
+            union: 合并这两个节点的根节点,  每union(A, B)一次，和两个点就归为一类,  时间复杂度近似O(1)
+<pre><code>
+
+
+简单版本：
+class UF
+{
+    int[] parent = new int[10000];
+
+    UF(){
+        for( int i=0; i&lt;10000; i++){
+            parent[i] = i;
+        }
+    }
+
+    int find(int node){
+        if ( parent[node] == node){
+            return node;
+        }
+        return find(parent[node]);
+    }
+
+    void union(int n1, int n2){
+        int root1 = find(n1);  // Union calls find to get root parent
+        int root2 = find(n2);
+
+        if ( root1 == root2){
+          return;
+        }
+
+        parent[root1] = root2;
+    }
+
+
+}
+
+
+
+复杂版本：带rank
+
+class UF{
+
+int[] parent;
+int[] rank;
+
+      UF(){
+        for( int i=0; i&lt;10000; i++){
+            parent[i] = i;
+            rank[i] = 0;
+        }
+	  }
+
+
+	  private int find( int node ){
+	       if ( parent[node] == node ){
+		      return node;
+		   }
+	       return find( parent[node]);
+	  }
+
+	  public void union( int n1, int n2){
+
+	    int root1 = find(n1);
+			int root2 = find(n2);
+
+      if ( root1 == root2 ) return;              // return if p1 and p2 are the same node.
+
+			if ( rank[root1] > rank[root2] ) ){
+			    parent[root2] = root1;
+			}else if ( rank[root1] < rank[root2] ){
+			    parent[root1] =root2;
+			}else{
+			    parent[root1]= root2;
+			    rank[root2]++;
+			}
+	  }
+}
+
+</code>
+</pre>

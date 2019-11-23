@@ -1,0 +1,120 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+  <pre><code>
+1. ^ logic XOR operator: 0 if the same, 1 if different
+
+a^a = 0
+a^0 = a
+a^b^c = a^c^b  (交换律)
+
+2.~ logic not operator:
+32个bit, 每一bit都取反
+
+a &amp; ~a = 0
+
+
+3. | logic or operator: 1 if any of the two is 1. 0 if both are 0
+
+
+4. how to get the negative value of original value using bit operator
+int a=2
+ ~a + 1 => -a => -2
+
+ int b = -3;
+ ~b + 1   => -b = 3
+
+
+5. Java build in function
+ String Integer.toBinaryString(int n);
+ int    Integer.bitCount(int n);
+
+6. Skill
+ 2^n = 1<< n
+
+ A &amp; 0 = 0
+
+&amp; precedence is lower than ==
+
+n &amp; bitmast == 1,    == takes precedence first. need to change to  (n &amp; bitmast) == 1
+
+
+
+7. >> 带符号右移，原来是0，左边加0. 原来是1，左边加1
+int a= 10  （1010）     a>>2 0010
+int a=-2    11111111 11111111  11111111 11111110
+a>>8        11111111 11111111  11111111 11111111
+
+>>>无符号右移
+a=-2, a>>>8 00000000 11111111  11111111 11111111
+
+常用技巧1: 判断最后一位的值, n&amp;1, 右移。 常见题目： （求1的个数，两个integer bitwise comparision）
+Number of 1 Bits
+
+while( n > 0){
+  if (( n &amp; 1) == 1){
+    count++;
+  }
+  n = n>>1;
+}
+return count;
+
+1178. Number of Valid Words for Each Puzzle
+for（int i=31; i>=0; i--){
+  int LastBit1 = (n1>>i)&amp;1;
+  int lastBit2 = (n2>>i)&amp;1;
+  if ( business logic){
+      return true;
+  }
+  return false;
+}
+
+
+1178. Number of Valid Words for Each Puzzle
+常用技巧2: 构造数  count =0  count = (1&lt;&lt;i) | count
+
+无重复字母的字符串用bitmask表示方法
+int bitmask = 0;
+for(char c : s.toCharArray()){
+    int shift = c - 'a';
+    bitmask  = (1&lt;&lt;shift) | bitmask;
+}
+return bitmaskt
+
+
+
+常用技巧3:  int bitmask = 0;,  bitmask = bitmask^c;
+int bitmask =0;
+for( char c : string){
+  bitmask = bitmask^c
+}
+
+注意事项：
+1. 'A'的ASCII码在'a'之前， 'A'是65，'a'是97
+2. 如果用Bitwise Operator表示一个即有大写字母又有小写字母的字符串时候，基准值是ASCII比较小的‘A’。
+3. 位移量最高可达到 ‘z’ - ’A‘ = 122 - 65 = 57  只有32位的int是无法解决这个问题的，必须用64位的long。
+4. 系统默认的整数的数据类型是int, 1&lt;&lt;shift, 当shift=31的时候，会返回-1，后面的值都不对了， 所以必须把1赋成long, 在进行左移.
+
+long bitmask = 0;
+long start = 1;
+
+for(char c : s.toCharArray()){
+    bitmask = (start&lt;&lt;c - 'A') | bitmask;  // 如果此行写成 1&lt;&lt;shift, 当shift=31的时候，会返回-1，后面的值都不对了， 所以必须把1赋成long.
+
+}
+
+return bitmask.
+
+
+
+
+</code></pre>
+
+
+</body>

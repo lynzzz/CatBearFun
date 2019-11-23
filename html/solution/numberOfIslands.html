@@ -8,84 +8,191 @@
 <body>
 
 
-
-
 <pre><code>
-
-public class Solution {
-    /**
-     * @param grid a boolean 2D matrix
-     * @return an integer
-     */
-     
-     
-    public int numIslands(boolean[][] grid) {
-        // Write your code here
-        if ( grid == null || grid.length == 0) return 0;
-        
+DFS
+class Solution {
+    public int numIslands(char[][] grid) {
         int count = 0;
-        
-    
-        for( int i=0; i&lt;grid.length; i++){
-            for( int j = 0; j<grid[0].length; j++){
-                if ( grid[i][j]){
-                    bfsFill(grid, i, j);
+
+        if ( grid == null || grid.length == 0) return count;
+
+        int row = grid.length;
+        int col = grid[0].length;
+
+        for( int i=0; i&lt;row; i++){
+            for( int j=0; j&lt;col; j++){
+                if ( grid[i][j] == '1'){
+                    dfs(grid, i, j);
                     count++;
                 }
             }
         }
-        
         return count;
     }
-    
-    
-    void bfsFill(boolean[][] grid, int i, int j){
-        
+
+    void helper(char[][] grid, int x, int y) {
         int row = grid.length;
         int col = grid[0].length;
-        Queue<Integer> q = new LinkedList<>();
 
-        int code = i * col + j;
-        
-        
+        if (x &lt; 0 || x == row || y &lt; 0 || y == col || grid[x][y] =='0') {
+            return;
+        }
+
+        grid[x][y] = '0';
+
+        helper(grid, x-1, y);
+        helper(grid, x+1, y);
+        helper(grid, x, y+1);
+        helper(grid, x, y-1);
+   }
+    }
+}
+</code></pre>
+
+<pre><code>
+
+BFS
+class Solution {
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+
+        int count = 0;
+        int row = grid.length;
+        int col = grid[0].length;
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (grid[i][j] == '1') {
+                    count++;
+                    bfs(grid, i, j);
+                }
+            }
+        }
+        return count;
+    }
+
+    void bfs(char[][] grid, int x, int y) {
+        int row = grid.length;
+        int col = grid[0].length;
+
+        Queue&lt;Integer> q = new LinkedList&lt;>();
+        int code = getCode(x, y, col);
         q.add(code);
 
-        
-        while ( !q.isEmpty() ){
-            
-            code  = q.poll();
-            i = code/col;
-            j = code%col;
-            grid[i][j] = false;
+        while (!q.isEmpty()) {
+            int n = q.poll();
+            int i = n / col;
+            int j = n % col;
 
+            if ( grid[i][j] == '1') {
+                grid[i][j] = '0';
 
-            // up 
-            if (  (i-1)>=0  && grid[i-1][j]  ){
-                q.add(   (i-1) * col + j);
-            }
-            
-            // down
-            if ( (i + 1) < grid.length && grid[i+1][j]  ){
-                q.add(   (i+1) * col + j );
+                if (isValid(i - 1, j, row, col)) {
+                    q.add(getCode(i - 1, j, col));
+                }
 
-            }
-            
-                        
-            // left
-            if ( (j-1) >= 0 && grid[i][j-1]){
-                q.add(i*col + j-1);
+                if (isValid(i + 1, j, row, col)) {
+                    q.add(getCode(i + 1, j, col));
+                }
 
-            }
-            
-            // right
-            if ( (j + 1) < col && grid[i][j+1] ){
-                q.add( i*col + j+1);
+                if (isValid(i, j - 1, row, col)) {
+                    q.add(getCode(i, j - 1, col));
+                }
+
+                if (isValid(i, j + 1, row, col)) {
+                    q.add(getCode(i, j + 1, col));
+                }
             }
         }
     }
+
+    boolean isValid(int x, int y, int row, int col) {
+        if (x < 0 || x == row || y < 0 || y == col) {
+            return false;
+        }
+        return true;
+    }
+
+    int getCode(int i, int j, int col) {
+        return i * col + j;
+    }
 }
 
+Union Find
+算法： 1. 每一個square是一個獨立的子圖
+      2. 找到1和周圍的1合并
 
+class Solution {
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+
+        int row = grid.length;
+        int col = grid[0].length;
+        UF uf = new UF(row*col);
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (grid[i][j] == '1') {
+                    count++;
+                    int code = getCode(i, j, col);
+                    if (isValid(i - 1, j, row, col) && grid[i - 1][j] == '1') {
+                        uf.union(code, getCode(i - 1, j, col));
+                    }
+                    if (isValid(i + 1, j, row, col) && grid[i + 1][j] == '1') {
+                        uf.union(code, getCode(i + 1, j, col));
+                    }
+                    if (isValid(i, j - 1, row, col) && grid[i][j - 1] == '1') {
+                        uf.union(code, getCode(i, j - 1, col));
+                    }
+                    if (isValid(i, j + 1, row, col) && grid[i][j + 1] == '1') {
+                        uf.union(code, getCode(i, j + 1, col));
+                    }
+                }
+            }
+        }
+        return uf.count;
+    }
+
+    boolean isValid(int i, int j, int row, int col) {
+        if (i < 0 || i == row || j < 0 || j == col) {
+            return false;
+        }
+        return true;
+    }
+
+    int getCode(int i, int j, int col) {
+        return i * col + j;
+    }
+
+    class UF {
+        int[] parent;
+        int count;
+
+        UF(int number) {
+            parent = new int[number];
+            for (int i = 0; i < number; i++) {
+                parent[i] = i;
+            }
+        }
+
+        int find(int n) {
+            if (parent[n] == n) {
+                return n;
+            }
+            return find(parent[n]);
+        }
+
+        void union(int n1, int n2) {
+            int pa1 = find(n1);
+            int pa2 = find(n2);
+
+            if (pa1 != pa2) {
+                parent[pa1] = pa2;
+                count--;
+            }
+        }
+    };
+}
 
 </code></pre>
 
@@ -96,31 +203,18 @@ public class Solution {
 
 <div class="comment">
 Time complexity :  O( 4*m*n) 因为每个点最多判断4次，上下左右    <br>
-Space complexity :     <br>
 
 
-Algorithm<br>
-// 算法 ： 遍历二维矩阵，如果找到1，则BFS把周围的1全部变成0  <br>
 
+最简单的方法是DFS mark  <br><br>
+
+
+// 算法 ： BFS遍历二维矩阵，如果找到1，则BFS把周围的1全部变成0  <br>
 // BFS技巧 ； 用一维坐标做queue里元素, 因为找到一个1，则把它标记成0，所以BFS不会往回走，所以不会重复，这里标记起到了set的作用。<br>
 1.   <br>
 
 
 
-
-<br>
-Note <br>
-
-
-<br>
-Java Skill
-1.          <br>
-2.          <br>
-
-
-
-<br>
-Last Time completed at :
 
 
 </div>

@@ -1,0 +1,112 @@
+﻿<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+BFS
+public class Solution {
+
+
+    public boolean hasRoute(ArrayList&lt;DirectedGraphNode> graph,
+                            DirectedGraphNode s, DirectedGraphNode t) {
+        // write your code here
+
+
+        Queue&lt;DirectedGraphNode> q = new LinkedList&lt;DirectedGraphNode>();
+        HashSet&lt;DirectedGraphNode> set = new HashSet&lt;DirectedGraphNode>();
+
+        q.add(s);
+        set.add(s);
+
+        while( !q.isEmpty() ){
+            DirectedGraphNode node = q.poll();
+
+            for( DirectedGraphNode child : node.neighbors){
+                if ( set.contains(child) ){
+
+                    return true;
+                }else{
+                    set.add(child);
+                    q.add(child);
+
+                    // 往下一层加的时候要断掉链接边，否则后走回来产生错误
+                    graph.get(node).remove(child);
+                    graph.get(child).remove(node);
+                }
+            }
+        }
+
+        return false;
+    }
+}
+
+
+
+// 无向图求最长简单路径， 多点DFS
+
+for( int i=0; i&lt;m.length; i++){
+
+  ArrayList&lt;String> l = new ArrayList&lt;>();
+
+  l.add(String.valueOf(i));
+
+  dfs(m,l, String.valueOf(i));
+}
+
+
+
+
+
+void dfs(String[][] m, ArrayList&lt;String> l, String start){
+
+    List&lt;String> childs = new ArrayList&lt;>();
+
+    for( int i=0; i&lt;m.length; i++){
+        if ( m[Integer.valueOf(start)][i].equals("1") ){
+            childs.add(String.valueOf(i));
+        }
+    }
+
+    if ( childs.size() == 0 ){
+       if ( l.size() > ret.size()){
+           ret = new ArrayList&lt;String>(l);
+       }
+       return;
+    }
+
+    for(String child : childs){
+        l.add(child);
+        m[Integer.valueOf(start)][Integer.valueOf(child)] = "0";
+        m[Integer.valueOf(child)][Integer.valueOf(start)] = "0";
+        dfs(m, l, child);
+        l.remove(l.size()-1);
+        m[Integer.valueOf(start)][Integer.valueOf(child)] = "1";
+        m[Integer.valueOf(child)][Integer.valueOf(start)] = "1";
+    }
+
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+1. BFS or DFS 图里面搜索一般用BFS.  <br>
+2. 无向图找环加下一层的时候需要断边。
+</div>
+
+
+
+
+</body>

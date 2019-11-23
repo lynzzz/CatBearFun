@@ -1,0 +1,142 @@
+<html>
+
+<body>
+
+
+
+<pre><code>
+Version I:
+Message Table
+ID          Primary key
+From_user   Foreign key
+To_user     Foreign key
+Content     text
+time        TimeStamp
+
+How to get conversation between A and B?
+select * from Message_Table where From_user = A and To_User = B or From_user = B and
+to_User = A orderby time desc limit 20.
+
+Pitfall:
+1. Sql is complex and it results in poor performance
+2. Do not support group Chat
+
+
+Version II:
+Message_Table
+ID           Primary key
+From_user    Foreign key
+Thread_ID    Foreign key
+Context      text
+time         TimeStamp
+
+Thread_Table
+Thread ID          Primary Key
+Participant_Users  text
+updated_at         time
+created_at         time
+participant_hash_code  text
+
+把Version I Message table去掉To_User 加上Thread ID 成了新的Message Table, 在加一个Thread Table, 用ThreadID 来Join
+
+Example:
+Action 1: A -> {A B C}  Hi 1:20
+
+在Thread table 加一行
+2908 {ABC}  1:20  1:20
+
+Message table:
+1 A 2908 Hi 1:20
+
+Action 2: B-> {A B C}  Hello 2:05
+
+ThreadTable
+2908 {A B C} 2:05 1:20
+
+Message Table
+1 A 2908 Hi    1:20
+2 B 2908 Hello 2:05
+
+Action 3: C is on line, pull the server
+select Thread ID from Thread_Table where participant_user contains C
+for( thread ID : all ThreadIDs){
+    select * from Message_Table where thraed_ID = ID
+}
+
+Question: How to get thread ID in the server
+在Thread table里面增加一个field，participant_hash_code, web server可以计算出这个
+hash code, 然后去Thread table里查找这个hash code，如果没有就递增产生一个新的thread ID， 如果有就可以直接查thread ID。
+
+participant hash code =   Hash(sort(all participant names)
+
+example:
+Action 1: A -> {A B C}  Hi 1:20, web server calculates the hash code 2908
+
+在Thread table 加一行
+100 {ABC}  1:20  1:20 2908
+
+Message table:
+1 A 100 Hi 1:20
+
+Action 2: B-> {A B C}  Hello 2:05, web server calculates the hash code 2908,
+thread table contains a row that hashcode = 2908, read thread ID, 100
+
+ThreadTable
+100 {A B C} 2:05 1:20 2908
+
+Message Table
+1 A 2908 Hi    1:20
+2 B 2908 Hello 2:05
+
+
+
+
+Follow up question: How to handle private property? Mute, unread message
+
+Option1:
+把Thread这张表拆分成基本信息和私有信息两张表
+Basic Thread table
+ThreadId     primary Key
+Users        text
+Created_At   timestamp
+updated_At   timeStamp
+
+Privite Thread table
+ThreadId     Primary Key
+UserID       Foreign key
+isMuted
+unReadMessage
+JoinedAt     timeStamp
+updatedAt  timeStamp
+
+
+Pro: 如果private thread table不工作，仍然可以运行。
+Con: 要join两张表，很慢
+
+Summary:
+Workflow for getting thread Ids for one person
+step1: Lookup private Thread Table and username->threadID
+step2: lookup message table, threadID -> messages.
+
+Workflow for checkign the exisitance of thread ID
+Webserver calculates the hashcode and then lookup hashcode in thread table,
+If not exist, create new entry at basic thread table and private thread table,
+
+if exist, update basic thread table and private thread table.
+
+</table>
+
+Option II: 这两张表合成一张大表：
+pro: fast
+con: if it fails, system crashes.
+
+</code></pre>
+
+
+
+
+</body>
+
+
+
+</html>

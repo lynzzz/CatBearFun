@@ -1,0 +1,133 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+Solution 1 : Naive DFS
+
+class Solution {
+    
+    boolean foundCycle = false;
+    
+    public List&lt;Integer> eventualSafeNodes(int[][] graph) {
+        
+        List&lt;Integer> ret = new ArrayList<Integer>();
+        
+        for( int i=0; i&lt;graph.length; i++){
+            if ( graph[i].length == 0){
+                     ret.add(i);
+            }else{
+                dfs(i, new HashSet<Integer>(), graph);
+                
+                if ( !foundCycle){
+                    ret.add(i);
+                }
+                
+                foundCycle = false;
+            }
+        }
+        
+        
+        return ret;
+        
+    }
+    
+    void dfs( int start, HashSet<Integer> set, int[][] graph){
+    
+        if ( set.contains(start) ){
+            foundCycle = true;
+            return;
+        }
+        
+        set.add(start);
+        for( int i : graph[start]){
+            dfs(i, set, graph);
+        }
+        set.remove(start);
+    }
+}
+
+Time complexity :   N^(N+1)   <br>
+Space complexity :  O(N)   <br>
+
+
+
+
+Solution II : 有向图找环 DFS染色法
+
+
+class Solution {
+    
+    
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        
+        List&lt;Integer> ret = new ArrayList<Integer>();
+        int[] color = new int[graph.length];
+        
+        for( int i=0; i&lt;graph.length; i++){
+                
+            dfs(i, graph, color);
+            if ( color[i] == 2){
+                ret.add(i);
+            }
+            
+        }
+        
+        
+        return ret;
+        
+    }
+    
+    public void dfs( int start, int[][] graph, int[] color){
+    
+        if ( color[start] != 0){
+            return;
+        }
+        
+        color[start] = 1;
+        for( int i : graph[start]){
+            dfs(i, graph, color);
+            if ( color[i] == 1){
+                return;
+            }
+        }
+        
+        color[start] = 2;
+    }
+}
+
+Time complexity :   O(V+E)   <br>
+Space complexity :  O(N)   <br>
+
+有向图的三色法: 0表示未访问， 1表示访问中间状态，2表示访问终结状态
+递归中，如遇到访问过的点，立马返回。 如遇到没有访问过的点，标记为1，然后DFS广播，如果DFS返回值为1，则说明有环，马上返回，则一串递归链节点都是1，都在环内。如果DFS广播能顺利走完而没有返回，则说明最下层的点无环，把最下面的 
+点标记成2，然后回到上一层，继续递归判断上一层的点。
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+
+
+
+
+</div>
+
+
+
+
+</body>

@@ -1,0 +1,67 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+  class Solution {
+      int ans = Integer.MIN_VALUE; // 过这个点的最大值
+      public int maxPathSum(TreeNode root) {
+          if ( root == null) return 0;
+
+          helper(root);
+          return ans;
+      }
+
+
+      // 分治返回过这个顶点的单枝最大值 （自己，自己+左枝最大值，自己加右枝最大值，不能左支右支都加，会产生重复计算）
+      int helper(TreeNode root){
+          if ( root == null) return 0;
+
+          int left = helper(root.left);
+          int right = helper(root.right);
+
+
+          // take left branch
+          int takeself = root.val;
+          int takeleft = root.val + left;
+          int takeright = root.val + right;
+          int takeboth = root.val + left + right;
+
+          int ret = Math.max(takeself, Math.max(takeleft, Math.max(takeright, takeboth)) );
+
+          if ( ret > ans){
+              ans = ret;
+          }
+
+          return Math.max(takeself, Math.max(takeleft, takeright) );
+      }
+  }
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  O(n)    <br>
+Space complexity : O(1)    <br>
+
+
+
+</div>
+
+
+
+
+</body>

@@ -1,0 +1,109 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+//   Solution 1 : 至上而下， 
+
+public class Solution {
+
+    public int minimumTotal(int[][] triangle) {
+        
+        // check corner case
+        if ( triangle == null || triangle.length == 0) return 0;
+        
+        
+        int row = triangle.length;
+
+        // Def :  dp(i,j)表示从triangle(0,0)到triangle(i,j)的最小值 
+        int[][] dp = new int[row][row];
+        
+        
+        // init
+        dp[0][0] = triangle[0][0];
+        
+        for( int i=1; i&lt;row; i++){
+            dp[i][0] = dp[i-1][0] + triangle[i][0];
+            dp[i][i] = dp[i-1][i-1] + triangle[i][i];
+        }
+        
+        
+        
+        // transform function
+        for( int i=2; i&lt;row; i++){
+            for( int j=1; j&lt;i; j++){
+                dp[i][j] = triangle[i][j] + Math.min(dp[i-1][j-1], dp[i-1][j]);
+            }
+        }
+        
+        // result
+        int ret = Integer.MAX_VALUE;
+        
+        for( int i=0; i&lt;row; i++){
+            if ( dp[row-1][i] &lt; ret){
+                ret = dp[row-1][i];
+            }
+        }
+        
+        return ret;
+        
+    }
+}
+
+
+// 至下而上
+
+    public int minimumTotal(int[][] triangle) {
+
+        // check corner case
+        if ( triangle == null || triangle.length == 0) return 0;
+        
+        
+        int row = triangle.length;
+        
+        //  dp(i,j)表示从任何一点到最底层的最小值
+        int[][] dp = new int[row][row];
+        
+        
+        // init
+        for( int i=0; i&lt;row; i++){
+            dp[row-1][i] = triangle[row-1][i];
+        }
+        
+        // transform
+        for( int i=row -2; i&gt;=0; i--){
+            for( int j=0; j&lt;i+1; j++){
+                dp[i][j] = triangle[i][j] + Math.min( dp[i+1][j], dp[i+1][j+1] );
+            }
+        }
+        
+        // ret
+        return dp[0][0];
+        
+    }
+
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>

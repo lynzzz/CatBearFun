@@ -1,0 +1,71 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+class Solution {
+    public boolean validWordAbbreviation(String word, String abbr) {
+        int i=0, j=0;
+        
+        while( i&lt;word.length() && j&lt;abbr.length()){
+            
+            if ( word.charAt(i) == abbr.charAt(j)){
+                i++;
+                j++;
+            }else{
+                
+                if ( abbr.charAt(j) &lt;= '0' || abbr.charAt(j) > '9'){
+                    return false;
+                }
+                
+                int start = j;
+                
+                while ( j &lt;abbr.length() && Character.isDigit(abbr.charAt(j) )){
+                    j++;
+                }
+
+                int count = Integer.valueOf(abbr.substring(start, j));
+                i = i + count;
+            }
+        }
+        
+        return i==word.length() && j == abbr.length();
+    }
+}
+
+
+算法: 看见数字就往前跳这么多个字符
+
+技巧：
+第二个while不要过界
+数字用substring 抽取
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :    O(n)  <br>
+Space complexity :    不需要多余的空间复杂度 <br>
+
+
+
+</div>
+
+
+
+
+</body>

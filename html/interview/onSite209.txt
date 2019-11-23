@@ -1,0 +1,134 @@
+Amazon onsite interview 2/9/2018
+
+1. Number of ways going from upper left to bottom right in a 2D matrix, 0 means can path, -1 means can't pass. (2D DP)
+2. Given two trees, tell if one tree is a subtree of another
+
+
+// check corner case
+
+// Def : number of ways going from (0,0) to (i,j)
+int[][] dp = new int[m][n];
+
+// init:
+dp[0][0] = m[0][0] == -1 ? 0 : 1;
+
+for( int i=1; i<m; i++ ){
+
+     dp[i][0] = m[i][0] == -1 ? 0 : dp[i-1][0];
+}
+
+for( int i=1; i<n; i++ ){
+     dp[0][i] = m[0][i] == -1? 0 : dp[0][i-1];
+}
+
+
+// function
+for( int i=1; i<m; i++ ){
+   for( int j=1; j<n; j++ ){
+   
+       dp[i][j] = m[i][j] == -1? 0 : dp[i-1][j] + dp[i][j-1];
+	  }
+}
+
+
+// answer!
+return dp[m-1][n-1];
+
+
+
+
+
+
+
+
+
+
+
+
+
+这是我写的，不能handle duplicate number 的case
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        
+        TreeNode r = findRoot(s, t.val);
+        if ( r == null) return false;
+        
+        return areTheSameTree(r, t);
+    }
+    
+    
+    TreeNode findRoot(TreeNode root, int val ){
+        if ( root == null ) return null;
+        
+        if ( root.val == val) return root;
+        
+        TreeNode left = findRoot(root.left, val);
+        
+        if ( left != null){
+            return left;
+        }
+        
+        return findRoot(root.right, val);
+    }
+    
+    
+    boolean areTheSameTree(TreeNode t1, TreeNode t2){
+        
+        if ( t1 == null && t2 == null) return true;
+        if ( t1 == null || t2 == null ) return false;
+        if ( t1.val != t2.val ) return false;
+        
+        return areTheSameTree(t1.left, t2.left) && areTheSameTree(t1.right, t2.right);
+    }  
+}
+
+正确答案：
+
+能够判断dupliate value. 
+
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        
+         if ( s == null) return false;
+         if ( areTheSameTree(s, t)) return true;
+        
+         return isSubtree(s.left, t) || isSubtree(s.right, t);
+    }
+    
+    
+    boolean areTheSameTree(TreeNode t1, TreeNode t2){
+        
+        if ( t1 == null && t2 == null) return true;
+        if ( t1 == null || t2 == null ) return false;
+        if ( t1.val != t2.val ) return false;
+        
+        return areTheSameTree(t1.left, t2.left) && areTheSameTree(t1.right, t2.right);
+    }
+    
+    
+    
+}
+
+3. System design: There is a log file with errors, web server looks for a specific error and then notify user. Start with one user
+
+a      webserver + push service.  Client registers to push service first, websever find the error and notify push service, and then notify user. ( workable solution)
+b.     There are 1m users want to receive the message. Master + slave, master has the user list and then shard the user and distribute the user to slave servers.
+c.     There are 1m errors in log file. How to optimize? Using cache, because websever cannot parse the large log file, since it is routing the traffic.
+
+
+ 
+Leadership:
+1. unclear responsibility
+2. 做一件本不该你做的事情，同一个项目　　: 自己做的东西依赖于其他组的library,　他们没时间改, 我帮他们做好了，让他们code review.
+3。proudest project.
+4. Disagree with someone最后别人改了. ( QA code review)..  QA后来改了吗？
+5。Disagree 最后你改了
+6。答应别人但没做的人
+8。在Elekta做的工作 : 见首页工作总结
+9。一个项目在deadline里面没有做完，如何解决的。 你是如何知道做不完的，谁决定的 
+10。一个项目在deadline里做完了。
+
+
+不是很熟悉的问题不用乱编:
+7。解决的一个复杂的问题， multithreding, 问用了多少个CPU,用了哪些函数，如何实现同步的，是怎么做的 。 （乱编的例子没想到会一直问细节, 问怎么做的，问用了哪些函数, 用了什么语言， 被带到沟里去了）
+

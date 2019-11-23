@@ -2,6 +2,10 @@
 
 
 <body>
+
+经典排列模板（permutation)<br>
+数组和字符串的相对位置会改变（下一层不一定在上一层的右边） <br>
+
 <pre><code>
 class Solution {
      * @param nums: A list of integers.
@@ -9,25 +13,25 @@ class Solution {
 
     public List&lt;List&lt;Integer&gt;&gt; permute(int[] nums) {
         // write your code here
-        
+
         ArrayList&lt;Integer&gt; result = new ArrayList&lt;&gt;();
         ArrayList&lt;List&lt;Integer&gt;&gt; results = new ArrayList&lt;&gt;();
         boolean[] visited = new boolean[nums.length];
         dfs(nums, result, results, visited);
         return results;
     }
-    
-    
+
+
     private void dfs(int[] nums, ArrayList&lt;Integer&gt; result, ArrayList&lt;List&lt;Integer&gt;&gt; results, boolean[] visited){
-        
+
         if ( result.size() == nums.length ){
             results.add(new ArrayList&lt;Integer&gt;(result));
             return;
         }
-        
+
         for( int i=0; i&lt;nums.length; i++){
             if ( !visited[i] ){
-                
+
                 visited[i] = true;
                 result.add(nums[i]);
                 dfs(nums, result, results, visited);
@@ -39,15 +43,29 @@ class Solution {
 }
 </code></pre>
 
-<div style="color:red; font-size:20px">    
-permutaion global search<br>
-!!!!!!!!!!!!!!   经典的排列模板 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！<br>
-输入为 ： 大容器，小容器， 访问控制的boolean array<br>
-例子 ：  [123] [132] [231][213]<br>
+<div style="color:red; font-size:20px">
 
-Note:<br>
-1. 只有没有访问的位置才能访问，用visited[i]控制<br>
-2. 访问的flag, 和加入的值在递归返回时必须重制。<br>
+
+permutation必须回溯，无pos位置控制符
+
+<pre><code>
+    void permutationDFS(){
+
+        for( int i=0; i&lt;nums.length; i++){                     // 从0开始循环
+
+                dfs(.... );
+        }
+    }
+
+subsets不能回溯，有pos位置控制符号
+
+	void subsetDFS(int pos){
+
+        for( int i=pos; i &lt; nums.length; i++){
+            dfs( ... i+1 );
+        }
+    }
+</code></pre>
 </div>
 
 

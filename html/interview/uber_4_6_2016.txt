@@ -1,0 +1,237 @@
+// This is the text editor interface. 
+// Anything you type or change here will be seen by the other person in real time.
+
+
+/**
+ * Time Travelling HashMap
+ * 
+ * foo, 10 = bar
+ * foo, 20 = bar2
+ * foo, 30 = bar3
+ * 
+ * foo, 10? == bar
+ * foo, 20? == bar2
+ * foo, 29? == bar2
+ * foo, 30? == bar3
+ * foo, 10000 == bar3
+ * 
+ *
+ * Map<key, Map<time, value>> m                               // HashMap is unordered, 用这个数据结构不能按自己的想法sorting
+ 
+   Map<key, List<Pair<time, value>>>
+ 
+   foo -> [{10, bar}, {20, bar2}, {30, bar3}, {40, bar3}, {50, bar3}, {60, bar3}, {70, bar3}]
+ */
+ import java.util.*;
+ 
+ class Pair{
+     public int key;
+     public String val;
+     
+     Pair(int key, String val){
+         this.key = key;
+         this.val = val;
+     }
+ }
+ 
+ class TravelHashMap{
+     
+    Comparator<Pair> myComparator = new Comparator<Pair>(){
+        public int compare(Pair l, Pair r){
+            if ( l.key < r.key ){
+                return -1;
+            }
+            
+            return 1;
+        }
+    };
+     
+     
+    private HashMap< String, ArrayList<Pair<Integer, String> > > m = new HashMap<String, ArrayList<Pair<Integer, String> >>();                      // 数据结构的语法定义错了，导致不能编译
+    
+    TravelHashMap(){
+        
+    }
+     
+    void put(String key, String val, int time){
+        
+        if( !m.containsKey(key) ){
+            Pair p = new Pair(time, val);
+            ArrayList<Pair> list = new ArrayList<>();
+            list.add(p);
+            m.put(key,list);
+        }else{
+            Pair p = new Pair(time, val);
+            m.get(key).add(p); 
+            Collections.sort(m.get(key), myComparator);
+        }
+    } 
+    
+    String get(String key, int time){
+        
+        ArrayList<Pair> list  = m.get(key);
+        
+        int start = 0;
+        int end = list.size() - 1;
+        
+        while( ( start + 1) < end ){
+            
+            int mid = start + (end - start)/2;
+            if( list.get(mid).key == time ){
+                end = mid;
+            }else if ( list.get(mid).key < time){
+                start = mid;
+            }else{
+                end = mid;
+            }
+        }
+        
+        if ( list.get(start).key < time ){
+            return list.get(start).val;
+        }
+        
+        return list.get(end).val;
+        
+    }
+    
+    
+    public static void main(String[] args) {
+        TravelHashMap map = new TravelHashMap();
+        map.put("foo", "bar", 10);
+        
+        System.out.println(map.get("foo", 10));
+    }
+     
+     
+ }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ///////////////////////////////////////////////////////////////////////////////// Correct Solution ///////////////////////////////////////////////////////////////////////////////////
+ Lesson learned:
+ 
+ HashMap<Integer, String>      Hashmap不保证顺序
+ 
+ 等同于 
+ List<Node>
+ 
+ where 
+ class Node{
+    int   key;
+	String  value;
+ }
+ 
+HashMap可以被List取代掉，这样写的好处是可以按照自己的方式对节点进行排序
+ 
+ 
+ 
+ 
+ 数据结构定义 
+ HashMap<Integer, String> m
+ m.put("Hello", 100);            // Hashmap put函数帮你做了两件事 Pair p = new Pair(“hello",100), m.add(p);
+ 
+ List<Node> l
+ Node n = new Node("hello",100);
+ l.add(n);
+ 
+ 
+ 
+ import java.util.*;
+
+public class TimeMachine {
+
+	 class Node{
+	     public int key;
+	     public String val;
+	     
+	     Node(int key, String val){
+	         this.key = key;
+	         this.val = val;
+	     }
+	 }
+	 
+	 public class MyComparator implements Comparator<Node>{
+		 public int compare(Node l, Node r){
+			 if ( l.key < r.key ){
+				 return -1;
+			 }
+			 return 1;
+		 }
+	 }
+	 
+	    public static void main(String[] args) {
+	    	TimeMachine map = new TimeMachine();
+	    	
+	        map.put("foo", 10, "Bar");
+	        map.put("foo", 20, "Bar2");
+	        map.put("foo", 30, "Bar3");
+
+	        System.out.println(map.get("foo", 10));
+	        System.out.println(map.get("foo", 20));
+	        System.out.println(map.get("foo", 29));
+	        System.out.println(map.get("foo", 30));
+	        System.out.println(map.get("foo", 10000));
+
+	    }
+	    
+	 
+    private HashMap< String, ArrayList<Node> > m = new HashMap<String, ArrayList<Node>>();
+
+    void put(String key, int time, String val ){
+    	Node p = new Node(time, val);
+        if( !m.containsKey(key) ){
+            ArrayList<Node> list = new ArrayList<>();
+            list.add(p);
+            m.put(key,list);
+        }else{
+            m.get(key).add(p); 
+        }
+        Collections.sort(m.get(key), new MyComparator());
+    } 
+    
+    String get(String key, int time){
+        
+        ArrayList<Node> list  = m.get(key);
+        
+        int start = 0;
+        int end = list.size() - 1;
+        
+        while( ( start + 1) < end ){
+            
+            int mid = start + (end - start)/2;
+            if( list.get(mid).key == time ){
+                return list.get(mid).val ;
+            }else if ( list.get(mid).key < time){
+                start = mid;
+            }else{
+                end = mid;
+            }
+        }
+        
+        if ( list.get(start).key == time ){
+            return list.get(start).val;
+        }
+        
+        if ( list.get(end).key == time ){
+            return list.get(end).val;
+        }
+        
+        if ( list.get(start).key < time &&  list.get(end).key > time){
+            return list.get(start).val;
+        }
+        
+        return list.get(end).val;
+        
+    }
+    
+}

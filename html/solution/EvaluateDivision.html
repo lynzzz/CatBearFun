@@ -1,0 +1,108 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+class Solution {
+    
+    private double ans = -1;
+    
+    public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
+        HashMap&lt;String, List&lt;String>> mNodes = new HashMap<>();
+        HashMap&lt;String, List&lt;Double>> mValues = new HashMap<>();
+        
+        
+        for( int i =0; i&lt;equations.length; i++ ){
+            String[] str = equations[i];
+            
+            if ( !mNodes.containsKey(str[0]) ){
+                mNodes.put(str[0], new ArrayList<String>());
+                mValues.put(str[0], new ArrayList<Double>() );
+            }
+            mNodes.get(str[0]).add(str[1]);
+            mValues.get(str[0]).add(values[i]);
+
+
+            
+            if ( !mNodes.containsKey(str[1])){
+                mNodes.put(str[1], new ArrayList<String>());
+                mValues.put(str[1], new ArrayList<Double>() );
+            }
+            mNodes.get(str[1]).add(str[0]);
+            mValues.get(str[1]).add(1/values[i]);    
+        }
+        
+        double[] rets = new double[queries.length];
+        Arrays.fill(rets, -1);
+                
+        for( int i=0; i&lt;rets.length; i++){
+            
+            String start = queries[i][0];
+            
+            String end =   queries[i][1];
+            
+            HashSet<String> set = new HashSet<>();
+
+            set.add(start);
+            
+            dfs(mNodes, mValues, start, end, 1, set );
+            rets[i] = ans;
+            ans = -1;                 
+        }
+        return rets;
+    }
+    
+    void dfs( HashMap&lt;String, List<String>> Nodes, HashMap&lt;String, List<Double>> values, String start, String end, double result, HashSet&lt;String> set){
+        
+        if ( !Nodes.containsKey(start) || !Nodes.containsKey(end)){
+            return;
+        }
+        
+        
+        if ( start.equals(end)){
+            ans = result;
+            return;
+        }
+        
+        
+        List&lt;String> subNodes = Nodes.get(start);
+        List&lt;Double> subValues = values.get(start);
+        
+        for( int i=0; i&lt;subNodes.size(); i++){                                    CADR   continue, add, dfs, remove
+            
+            String str = subNodes.get(i);
+            if ( set.contains(str)){
+                continue;
+            }
+            
+            set.add(str);
+            dfs(Nodes, values, str, end, result * subValues.get(i), set);
+            set.remove(str);
+        } 
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+</body>

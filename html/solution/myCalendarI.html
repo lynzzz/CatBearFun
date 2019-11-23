@@ -1,0 +1,59 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+  class MyCalendar {
+      TreeMap<Integer, Integer> m = new TreeMap<>();
+
+      public MyCalendar() {
+
+      }
+
+      public boolean book(int start, int end) {
+          Integer preStart = m.floorKey(start);
+          Integer nextStart = m.ceilingKey(start);
+
+          if ( ( preStart == null || m.get(preStart) &lt;= start) &&
+               ( nextStart == null || end &lt;= nextStart )){
+
+              m.put(start, end);
+              return true;
+          }
+
+          return false;
+      }
+  }
+
+
+TreeMap sorted map, based on red-black tree, search is Olg(n)
+TreeMap.floorKey(key)  returns the key that is less than or equal to key, returns null if not found
+TreeMap.ceiling(key)  return the key that is greater than or equal to key, returns null if not found
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+
+</div>
+
+
+
+
+</body>

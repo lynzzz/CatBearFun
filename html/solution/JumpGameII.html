@@ -1,0 +1,56 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+    public int jump(int[] A) {
+
+        // Def: dp[i] means the minimum step to go to A[i]
+        int[] dp = new int[A.length];
+        
+        // init
+        dp[0] = 0;
+        for( int i=1; i&lt;A.length; i++){
+            dp[i] = Integer.MAX_VALUE;
+        }
+        
+        // transform
+        
+        for( int i=1; i&lt;A.length; i++){
+            for( int j=0; j&lt;i; j++){
+                if ( A[j] &gt;= (i-j) ){
+                   dp[i] = Math.min(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        
+        // ret
+        return dp[A.length - 1];
+    }
+
+</code></pre>
+
+
+
+
+
+
+<br>
+注意初始值： 第一个是0，因为最开始就摆在那里了，结合题目分析。   后面为无穷大，因为要求最小值，程序需要进入循环。
+
+
+</div>
+
+
+
+
+</body>

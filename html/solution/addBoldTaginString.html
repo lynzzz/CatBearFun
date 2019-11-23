@@ -1,0 +1,68 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+ public String addBoldTag(String s, String[] dict) {
+        boolean mask[] = new boolean[s.length()];
+        
+        for( int i=0; i&lt;s.length(); i++){
+            for( String word : dict){
+                if ( s.startsWith(word, i)){
+                    for( int k=i; k&lt;i+word.length(); k++){
+                        mask[k] = true;
+                    }
+                }
+            }
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        for( int i=0; i&lt;s.length(); i++){
+            if ( mask[i] && ( i == 0 || !mask[i-1]) ){
+                sb.append("<b>");
+            }
+            
+            sb.append(s.charAt(i));
+
+            if ( mask[i] && ( ( i == s.length() - 1) || !mask[i+1] ) ){
+                sb.append("</b>");
+            }
+        }
+        
+        return sb.toString();
+    }
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(N* 关键字的总长度)   <br>
+Space complexity :  O(N)   <br>
+
+
+
+Java Skill :
+boolean String::startsWith(String keyword, substringStartsAt)
+String s = "aabbc"
+
+s.startsWith("abb", 1) returns true; 
+
+</div>
+
+
+
+
+</body>

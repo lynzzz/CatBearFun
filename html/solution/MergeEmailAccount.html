@@ -1,0 +1,107 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+核心思想：把Email转换成ID进行分类<br><br>
+
+算法： 1. 遍历Accounts,构造一个EmailToID map 和一个EmailToName map<br>
+       2. 同一个name下的email必然是一类的就合并在一起。<br>
+       3. 遍历email把相同的parent ID 的email 合并在一起构造答案<br>
+
+Union Find的思考障碍：<br>
+1. 要把email当成节点合并，而不是name<br>
+2. 要把email转换成integer后在进行分类。<br>
+
+
+<pre><code>
+
+  class Solution {
+      public List&lt;List&lt;String>> accountsMerge(List&lt;List&lt;String>> accounts) {
+
+          Map&lt;String, String> emailToName = new HashMap&lt;>();
+          Map&lt;String, Integer> emailToID = new HashMap&lt;>();
+          int id = 0;
+          UF uf = new UF();
+
+          for( List&lt;String> account : accounts){
+              String name = account.get(0);
+              for( int i=1; i&lt;account.size(); i++){
+                  String email = account.get(i);
+                  emailToName.put(email, name);
+                  if ( !emailToID.containsKey(email)){
+                      emailToID.put(email, id);
+                      id++;
+                  }
+                  uf.union(emailToID.get(account.get(1)), emailToID.get(email));
+              }
+          }
+
+          HashMap&lt;Integer, List&lt;String>> ret = new HashMap&lt;>();
+
+          for( String email : emailToID.keySet()){
+              int parentID = uf.find(emailToID.get(email));
+              if ( !ret.containsKey(parentID) ){
+                  List&lt;String> emails = new ArrayList&lt;>();
+                  emails.add(email);
+                  ret.put(parentID, emails);
+              }else{
+                  ret.get(parentID).add(email);
+              }
+          }
+
+          for(List&lt;String> component : ret.values()){
+              String name = emailToName.get(component.get(0));
+              Collections.sort(component);
+              component.add(0, name);
+          }
+
+          return new ArrayList&lt;List&lt;String>>(ret.values());
+      }
+  }
+
+
+  class UF
+  {
+      int[] parent = new int[10000];
+
+      UF(){
+          for( int i=0; i&lt;10000; i++){
+              parent[i] = i;
+          }
+      }
+
+      int find(int node){
+          if ( parent[node] == node){
+              return node;
+          }
+          return find(parent[node]);
+      }
+
+      void union(int n1, int n2){
+          int p1 = find(n1);
+          int p2 = find(n2);
+          parent[p1] = p2;
+      }
+
+
+  }
+
+
+  时间复杂度  O(Nlg(N)), where N is the total number of email accounts
+  if using rank : O(N)
+
+  space O(N)
+</code></pre>
+
+
+
+
+
+
+</body>

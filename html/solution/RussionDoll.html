@@ -1,0 +1,103 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    public int maxEnvelopes(int[][] envelopes) {
+        
+        if ( envelopes == null || envelopes.length == 0) return 0;
+        
+       
+        Arrays.sort( envelopes, new Comparator<int[]>(){
+            
+            public int compare( int[] l, int[] r){
+                if ( l[0] &lt; r[0]){
+                    return -1;
+                }else if ( l[0] == r[0]){
+                    return l[1] - r[1];
+                }else{
+                    return 1;
+                }
+            }
+        }
+        );
+            
+            
+        // dp[i] means the russian doll at envelopes[i];
+        int n = envelopes.length;
+        int[] dp = new int[n];
+        
+        // init
+        for( int i=0; i&lt;n; i++){
+            dp[i] = 1;
+        }
+        
+        // transform
+        for( int i=1; i&lt;n; i++){
+            
+            for( int j=0; j&lt;i; j++){
+                
+                if ( envelopes[j][0] < envelopes[i][0] && envelopes[j][1] < envelopes[i][1] && ((dp[j] + 1) &gt; dp[i]) ){
+                    dp[i] =  dp[j] + 1;
+                }           
+            }
+        }
+        
+        //return
+        int ret = Integer.MIN_VALUE;
+        
+        for( int i=0; i&lt;n; i++){
+            ret = Math.max(ret, dp[i]);
+        }
+        
+        return ret;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+1. 把二维矩阵当成1维来排序 
+2. 当不确定是返回dp数组最后一个值还是在dp序列最大值的时候，永远返回dp须列最大值，这样保险。
+</div>
+
+
+
+
+</body>
+
+
+</code></pre>
+
+
+
+
+</body>

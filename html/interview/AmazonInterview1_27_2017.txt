@@ -46,30 +46,49 @@ ArrayList<String> getUniqueWords(String str1, String str2 ){
 
 Time : O(m+n)
 
-HashSet<String> helper(String str, HashSet<String> set){
-            
-     int i = str.length() -1 ;
-     while ( i >= 0 ){
-     
-         while( i >=0  && str.charAt(i) == ' ' ){
-             i--;
-         }
-         
-         if ( i < 0 ) return set;
-         
-         StringBuilder sb = new StringBuilder();
-         while( i>=0 && str.charAt(i) != ' ' ){
-            sb.append(str.charAt(i));
-            i--;
-         }
-     
-         sb.reverse();
-         if ( !set.contains(sb.toString()){
-         set.add(sb.toString());
-         }
-     } 
-      
-     return set;
-}
 
+ /////////////////////////////////////////////////////////////// Correct Solution//////////////////////////////////////////////////////
  
+ 算法 ： 把单词提取出来，往Hashset里放就行了，HashSet不应许duplicate值，所以放了也不会有重复值。
+ 
+提取一句话里的单词用以下函数 
+String str = "  I have a dream";
+String[] ret = str.trim().split(" ");
+
+ArrayList<String> getUniqueWords(String str1, String str2 ){
+
+      ArrayList<String> ret = new ArrayList<String>();
+
+      String[] dict1 = str1.trim().split(" ");
+      String[] dict2 = str2.trim().split(" ");
+	  
+	  HashSet<String> set1 = new HashSet<>();
+	  HashSet<String> set2 = new HashSet<>();
+	  
+	  // 第一句话去重                 I  am am a boy.         =>   I am a boy
+	  for(String str : dict1){
+	      set1.add(str);
+	  }
+	  
+	  // 第二句话去重                  She is is not a boy.    =>  she is not a boy
+	  for(string str : dict2){
+	      set2.add(str);
+	  }
+     
+	  // 相互去重                                              =>   I am she is not
+      for( String str : set1 ){
+          if  ( !set2.contains(str) ){
+              ret.add(str);
+          } 
+      }
+     
+      for( String str : set2 ){
+          if  ( !set1.contains(str) ){
+              ret.add(str);
+          } 
+      }
+     
+             
+     return ret;
+
+}

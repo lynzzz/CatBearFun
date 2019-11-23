@@ -1,0 +1,113 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+此题目和一般的二分树的区别是需要表示null<br>
+
+1<br>
+  \<br>
+   2<br>
+
+ 需要表示成  1, null, 2, null, null<br><br>
+
+Serilizaion : 用Queue做BFS, 需要把null压入ArrayList,不然无法知道树的结构。<br><br>
+
+deserilization : 数据结构 Queue, 把第一个值当成头，压进queue,循环数组后面的，依次左右，压栈<br><br>
+
+Java skill : 可以把  null赋值给reference type,包括 Integer. <br>
+             Integer x = null  correct<br>
+			 Integer y = x     Wrong, nullpointer exception<br>
+			 null 不能赋值给primitive tyep<br>
+
+<pre><code>
+
+class Solution {
+
+
+  class Solution {
+    /**
+     * This method will be invoked first, you should design your own algorithm
+     * to serialize a binary tree which denote by a root node to a string which
+     * can be easily deserialized by your own "deserialize" method later.
+     */
+    public String serialize(TreeNode root) {
+        if ( root == null) return "";
+
+		Queue&lt;TreeNode>  q = new LinkedList&lt;>();
+		q.add(root);
+
+		StringBuilder sb = new StringBuilder();
+
+		while( !q.isEmpty()){
+		    TreeNode n = q.poll();
+			sb.append( n != null ? n.val : "$");
+			sb.append( ',');
+
+
+			if ( n == null ){
+			    continue;
+			}
+
+			q.add(n.left);
+			q.add(n.right);
+		}
+
+        return sb.toString();
+    }
+
+
+
+    /**
+     * This method will be invoked second, the argument data is what exactly
+     * you serialized at method "serialize", that means the data is not given by
+     * system, it's given by your own serialize method. So the format of data is
+     * designed by yourself, and deserialize it here as you serialize it in
+     * "serialize" method.
+     */
+    public TreeNode deserialize(String data) {
+           if ( data.equals("") ) return null;
+
+           Queue&lt;TreeNode> q = new LinkedList&lt;>();
+
+           String[] strs = data.split(",");
+           TreeNode root = new TreeNode( Integer.valueOf(strs[0]) );
+           q.add( root );
+
+           for( int i=1; i&lt;strs.length; i++){
+               TreeNode parent = q.poll();
+
+               if ( !strs[i].equals("$") ){
+                   TreeNode left = new TreeNode(Integer.valueOf(strs[i]));
+                   parent.left = left;
+                   q.add(left);
+               }
+
+               i++;
+
+               if ( !strs[i].equals("$") ){
+                   TreeNode right = new TreeNode(Integer.valueOf(strs[i]));
+                   parent.right = right;
+                   q.add(right);
+               }
+           }
+
+           return root;
+    }
+
+}
+
+
+
+
+</code></pre>
+
+
+
+
+
+</body>

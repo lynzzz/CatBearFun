@@ -1,0 +1,108 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+
+
+class Solution {
+    public String alienOrder(String[] words) {
+        HashMap&lt;Character, Integer> degree = new HashMap<>();
+        HashMap&lt;Character, HashSet&lt;Character> > graph = new HashMap<>();
+        
+        // initialize indgree table and graph
+        for( String str : words){
+            for( char c : str.toCharArray() ){
+                degree.put( c, 0);
+				graph.put(c, new HashSet&lt;Character>());
+            }
+        }
+        
+        // construct indegree table and graph
+        int n = words.length;
+        for(int i=0; i&lt;=n-2; i++){
+            String str1 = words[i];
+            String str2 = words[i+1];
+            int size = Math.min(str1.length(), str2.length());
+            for( int j=0;j&lt;size;j++){
+                if  ( str1.charAt(j) == str2.charAt(j) ){
+                    continue;
+                }
+                char c1 = str1.charAt(j);
+                char c2 = str2.charAt(j);
+                if( !graph.containsKey(c1)){
+                    HashSet<Character> set = new HashSet<>();
+                    set.add(c2);
+                    graph.put(c1,set);
+                    degree.put(c2, degree.get(c2) + 1);
+                }else{
+                    if ( !graph.get(c1).contains(c2)){
+                        graph.get(c1).add(c2);
+                        degree.put(c2, degree.get(c2) + 1);
+                    }
+                }
+                break;
+            }
+        }
+        
+        // BFS
+        Queue&lt;Character> q = new LinkedList<>();
+        for( char c : degree.keySet()){
+            if ( degree.get(c) == 0){
+                q.add(c);
+            }
+        }
+        
+        
+        
+        String ret = "";
+
+        while( !q.isEmpty()){
+            char c = q.poll();
+            ret = ret + c;
+            
+            for( char neighbor : graph.get(c)){
+			
+                degree.put(neighbor, degree.get(neighbor)-1);
+                if ( degree.get(neighbor) == 0){
+                    q.add(neighbor);
+                }
+            }
+        }
+        
+        if ( ret.length() != degree.size()){
+            return "";
+        }
+        
+        return ret;
+    }
+}
+
+
+Topological sorting(有重复边)
+
+
+处理方法：
+1.图用 HashMap&lt;char, HashSet&lt;Char>> graph, 这样好检查node是否存在于下一层， 
+2.建图的时候单独处理from, to和进度的递增
+
+
+
+</code></pre>
+
+
+</div>
+
+
+
+
+</body>

@@ -1,0 +1,81 @@
+
+
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+<li><a href="numberOfIslands.html">Number of islands</a> <a href=https://leetcode.com/problems/number-of-islands/description/>Q</a></li>
+<li><a href="maxAreaOfIslands.html">Max area of islands</a> <a href=https://leetcode.com/problems/max-area-of-island/description/>Q</a></li>
+<li><a href="floodFill.html">flood fill</a> <a href=https://leetcode.com/problems/flood-fill/description/>Q</a></li>
+<li><a href="SurroundedRegions.html"></a> <a href=http://www.lintcode.com/en/problem/surrounded-regions/>Q</a></li>
+<li><a href=https://leetcode.com/problems/word-search//>word search in a 2D array</a></li>
+
+
+
+<pre><code>
+
+棋盘类DFS模板
+
+void dfs( start, matrix)
+{
+
+  1. 递归的三个结束条件判断 （ 过界，撞墙，访问过）
+
+	2. 递归达到某种要求（走到某点， 返回 ）
+
+	3. 标记为访问过，如果连续走，可以直接mark图，否则用boolean array不破坏图
+
+	4. 找到下一层的所有坐标，分别做DFS broadcast
+
+  5. 把图的标记还原.
+}
+
+
+
+Google 面试题目： 能不能从一点走到另外一点，
+在第一象限内一点（x,y）, 每次可以走一步，下一步可以是(x+x, y), 或者（x, y+y）， 求问能否走到一个点（m,n）。注意，x>0, y>0，刚开始认为是四个象限，如果都是正数，不难。没有找出最优解，小姐姐说没关系，她觉得正常人需要一两天才能找出最优解。做完还剩5分钟，小姐姐要我问问题，我太累了，不想问，小姐姐还是觉得我应该问，我只好问了，然后去上厕所。
+
+
+
+DFS 解法
+boolean ans = false;
+
+void DFS(int x, int y, int m, int n， boolean[][] visited){
+
+	if ( x > m || y > n || visited[x][y] ){
+	    return;
+	}
+
+    if ( x == m && y == n ){
+	    ans = true;
+		return;
+	}
+
+    visited[x][y] = true;
+
+    DFS(2x, y, m, n);
+	  DFS(x, 2y, m, n);
+
+    visited[x][y] = false;
+}
+
+
+</code></pre>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+</body>

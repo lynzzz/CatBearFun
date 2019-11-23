@@ -12,100 +12,46 @@
 
 <pre><code>
 
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
 public class Solution {
-    /**
-     * @param root the root of binary tree
-     * @return the length of the longest consecutive sequence path
-     */
-     
-    private int ret; 
+
+    private int ans = Integer.MIN_VALUE;
      
     public int longestConsecutive(TreeNode root) {
-        // Write your code here
-    
-        helper(root);
-        return ret;
+        // write your code here
+        if ( root == null) return 0;
+        
+         helper(root);
+         return ans;
     }
     
-    public int helper( TreeNode root ){
-        
+    public int helper(TreeNode root){
         if ( root == null){
             return 0;
         }
         
+        int l = helper(root.left);
+        int r = helper(root.right);
         
-        //Divide
-        int left = helper(root.left);
-        int right = helper(root.right);
+       
         
-        // Conquer
-        int nSubtree = 1;   // at least we have root node
+        int ret = 1;
         
-        if ( root.left != null && root.left.val == root.val + 1){
-            nSubtree = Math.max(left+1, nSubtree );
+        if ( root.left != null && root.val + 1 == root.left.val){
+            ret = l + 1;
         }
         
-        if ( root.right != null && root.right.val == root.val + 1){
-            nSubtree = Math.max(right + 1, nSubtree);
+        if ( root.right != null && root.val + 1 == root.right.val){
+            ret = Math.max(ret, r + 1);
         }
         
-        if ( nSubtree &gt; ret){
-            ret = nSubtree;
-        }
-        
-        return nSubtree;
-        
+
+        ans = Math.max(ret, ans);
+        return ret;
     }
 }
 
-</code></pre>
-
-
-
-
-
-
-<div class="comment">
-Time complexity :      <br>
-Space complexity :     <br>
-
-
-Algorithm<br>
-Divide and Conquer + 维持一个全局变量 
-
-
-1.   <br>
-
-
-
-
-<br>
-Note <br>
-
-
-<br>
-Java Skill
-1.          <br>
-2.          <br>
-
-
-
-<br>
-Last Time completed at :
-
-
-</div>
-
-
-
+二分树的分治，函数要返回值，一般还要维持一个全局变量。
+这里函数返回的值是以当前root为顶的longest consecutive value
+全局变量维持的是全局所root， LCV最大的值。 
 
 </body>

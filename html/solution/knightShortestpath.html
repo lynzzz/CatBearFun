@@ -20,8 +20,8 @@ public class Solution {
     public int shortestPath(boolean[][] grid, Point source, Point destination) {
         // Write your code here
         
-        Queue<Integer> q = new LinkedList<>();
-        HashSet<Integer> set = new HashSet<>();
+        Queue&lt;Integer> q = new LinkedList<>();
+        HashSet&lt;Integer> set = new HashSet<>();
         
         int row = grid.length;
         int col = grid[0].length;
@@ -37,7 +37,7 @@ public class Solution {
             int size = q.size();
             ret++;
             
-            for( int k=0; k<size; k++){
+            for( int k=0; k&lt;size; k++){
                 code = q.poll();
                 int i = code/col;
                 int j = code%col;

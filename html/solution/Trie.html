@@ -1,0 +1,99 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+  <li><a href=https://leetcode.com/problems/word-search-ii/>Stream of Characters(把单词倒序建Trie, 方便从最后一个字母开始查找)</a>  </li>
+  <li><a href=https://leetcode.com/problems/design-search-autocomplete-system//>Auto Complete(Trie node每个节点包含所有过它的单词)</a>  </li>
+  <li><a href=https://leetcode.com/problems/stream-of-characters/>Word search II(DFS + trie)</a>  </li>
+
+
+
+<pre><code>
+
+  class TrieNode{
+      TrieNode[] children = new TrieNode[26];
+      boolean isEnd;
+
+      TrieNode getNode(char c){
+          return children[c - 'a'];
+      }
+
+      void setNode(char c){
+          children[c - 'a'] = new TrieNode();
+      }
+
+      boolean contains(char c){
+          return children[c-'a'] != null;
+      }
+  }
+
+  class Trie {
+
+      TrieNode root = new TrieNode();
+
+      public Trie() {
+
+      }
+
+      public void insert(String word) {
+          TrieNode rootSave = root;
+          for( char c : word.toCharArray()){
+              if ( !rootSave.contains(c)){
+                  rootSave.setNode(c);
+                  rootSave = rootSave.getNode(c);
+              }else{
+                  rootSave = rootSave.getNode(c);
+              }
+          }
+          rootSave.isEnd = true;
+      }
+
+      public boolean search(String word) {
+
+          TrieNode rootSave = root;
+
+          for( char c : word.toCharArray()){
+              if ( !rootSave.contains(c)){
+                  return false;
+              }else{
+                  rootSave = rootSave.getNode(c);
+              }
+          }
+          return rootSave.isEnd;
+      }
+
+      public boolean startsWith(String prefix) {
+
+          TrieNode rootSave = root;
+
+          for( char c : prefix.toCharArray()){
+              if ( !rootSave.contains(c)){
+                  return false;
+              }else{
+                  rootSave = rootSave.getNode(c);
+              }
+          }
+
+          return true;
+      }
+  }
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   Insert O(m), where m is the length of the string, search O(m)   <br>
+</div>
+
+
+
+
+</body>

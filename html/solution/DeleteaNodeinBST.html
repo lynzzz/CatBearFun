@@ -1,0 +1,149 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+Solution I： recursive: 自己写的 
+public TreeNode deleteNode(TreeNode root, int key) {
+
+           TreeNode parent = null;
+           TreeNode curNode = root;
+
+           while( curNode != null){
+               if ( curNode.val == key){
+                   break;
+               }else if ( key < curNode.val){
+                  parent = curNode;
+                  curNode = curNode.left;
+               }else{
+                  parent = curNode;
+                  curNode = curNode.right;
+               }
+           }
+
+           // key not found
+           if ( curNode == null){
+               return root;
+           }
+
+
+           // Delete the root node
+           if ( parent == null){
+
+               if ( curNode.left == null && curNode.right == null) return null;
+               if ( curNode.left == null) return curNode.right;
+               if ( curNode.right == null) return curNode.left;
+
+               insertNodetoRoot(curNode.left, curNode.right);
+               return curNode.right;
+           }
+
+           if ( parent.left == curNode){
+               if ( curNode.left == null && curNode.right == null)
+                   parent.left = null;
+               else if ( curNode.left == null)
+                   parent.left = curNode.right;
+               else if ( curNode.right == null)
+                   parent.left = curNode.left;
+               else{
+                   insertNodetoRoot(curNode.left, curNode.right);
+                   parent.left = curNode.right;
+               }
+           }
+           else{
+               if ( curNode.left == null && curNode.right == null)
+                   parent.right = null;
+               else if ( curNode.left == null)
+                   parent.right = curNode.right;
+               else if ( curNode.right == null)
+                   parent.right = curNode.left;
+               else{
+                   insertNodetoRoot(curNode.left, curNode.right);
+                   parent.right = curNode.right;
+               }
+           }
+
+           return root;
+
+    }
+
+    public void insertNodetoRoot(TreeNode n, TreeNode root){
+            TreeNode parent = null;
+            TreeNode cur = root;
+
+            while( cur != null){
+                if ( n.val < cur.val){
+                    parent = cur;
+                    cur = cur.left;
+                }else if ( n.val > cur.val){
+                    parent = cur;
+                    cur = cur.right;
+                }
+            }
+
+            if ( n.val > parent.val){
+                parent.right = n;
+            }else{
+                parent.left = n;
+            }
+    }
+
+Solution II : recursion, 插入的时候把右子树的最小值顶替要删除的节点。（很难想到）
+
+  public TreeNode deleteNode(TreeNode root, int key) {
+
+       if ( root == null){
+           return null;
+       }
+
+       if ( key < root.val){
+           root.left = deleteNode(root.left, key);
+       }else if ( key > root.val){
+           root.right = deleteNode(root.right, key);
+       }else{
+
+           if ( root.left == null)  return root.right;
+           if ( root.right == null)  return root.left;
+
+           int min = findMin(root.right);
+           root.val = min;
+           root.right = deleteNode(root.right, min );
+       }
+
+       return root;
+   }
+
+   int findMin(TreeNode root){
+       while( root.left != null){
+           root = root.left;
+       }
+
+       return root.val;
+   }
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+
+</div>
+
+
+
+
+</body>

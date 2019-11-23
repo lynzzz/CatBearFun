@@ -1,0 +1,65 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+  public int compress(char[] chars) {
+
+          int j = 0;
+          for( int i=0; i&lt;chars.length;){
+
+              int start = i;
+              char c = chars[start];
+              while( i < chars.length && chars[i] == c){
+                  i++;
+              }
+
+              int count = i - start;
+              String strCount = String.valueOf(count);
+
+              chars[j] = c;
+              j++;
+
+              if ( count == 1){
+                  continue;
+              }
+
+              for( char cNew : strCount.toCharArray()){
+                  chars[j] = cNew;
+                  j++;
+              }
+          }
+
+          return j;
+      }
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :   O(n)   <br>
+Space complexity :  O(1)   <br>
+
+算法 ：
+1读写各一个指针， 同时从左往右
+2. 读 的时候记录anchor字母和位置 
+
+
+</div>
+
+
+
+
+</body>

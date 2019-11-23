@@ -1,0 +1,155 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+棋盘类DFS模板, 数据结构： 用boolean array去重
+
+void dfs( start, matrix){
+
+    1. 递归的三个结束条件判断 （ 一般是越界，或者撞墙， 或者访问过）
+	
+	2. 递归达到某种要求（走到某点， 返回 ）
+	
+	3. 标记为访问过，如果连续走，可以直接mark图，否则用boolean array不破坏图 
+	
+	4. 找到下一层的所有坐标，分别做DFS broadcast
+}
+
+
+
+
+
+棋盘类BFS模板 HashSet + Queue
+
+ public boolean hasRoute(int[][] board, int[] start, int[] destination) {
+
+        int code = i * col + j;
+		
+        Queue&lt;Integer> q = new LinkedList<Integer>();
+        HashSet&lt;Integer> set = new HashSet<Integer>();
+        
+        q.add(s);
+        set.add(s);
+        
+        while( !q.isEmpty() ){
+            int n = q.poll();
+            
+			int x = n/col;
+			int y = n%col;
+			
+            if ( x == a && y == b){                // 判断结束条件 
+                return true;
+            }
+            
+            // 对下一步的每一种可能性进行三个标准判断，如果可以则加入
+		   
+            if ( 过界， 撞墙，没有访问过 ）   
+               set.add(child);
+               q.add(child);
+            }
+			
+			if ( 过界， 撞墙，没有访问过 ）  
+               set.add(child);
+               q.add(child);
+            }
+			
+        }
+        
+        return false;
+    }
+
+
+
+
+Google 面试题目： 能不能从一点走到另外一点， 
+在第一象限内一点（x,y）, 每次可以走一步，下一步可以是(x+x, y), 或者（x, y+y）， 求问能否走到一个点（m,n）。注意，x>0, y>0，刚开始认为是四个象限，如果都是正数，不难。没有找出最优解，小姐姐说没关系，她觉得正常人需要一两天才能找出最优解。做完还剩5分钟，小姐姐要我问问题，我太累了，不想问，小姐姐还是觉得我应该问，我只好问了，然后去上厕所。
+
+BFS解法
+class Node{
+int x;
+int y;
+
+}
+void BFS(int x, int y, int m, int n){
+
+     Queue<Node> q = new LinkedList<>();
+	 HashSet<Node> set = new HashSet<>();
+	 
+	 
+	 q.add(new Node(x,y));
+	 set.add(new Node(x,y);
+	 
+	 while( ！q.isEmpty（））{
+	     Node node = q.poll();
+		 
+		 if （ node.x == m, && node.y  == n ){
+		      return true;
+		 }
+		 
+		 if ( 2*node.x <= m && node.y <= n && 判断 (2*n.x, n.y)未访问过 ){
+		     q.add(new Node(2*n.x, y);
+		     set.add(new Node(2*n.x, y));
+		}
+		 
+		 if ( n.x <= m && 2n.y<= m && 判断 （n.x, 2*n.y)未被访问过 ){
+		     q.add(Node(n.x, 2*n.y(;
+		     set.add(Node(n.x, 2*n.y);
+		 }
+	 }
+     
+	 return false;
+}
+
+
+DFS 解法 
+boolean ans = false;
+
+void DFS(int x, int y, int m, int n， boolean[][] visited){
+
+	if ( x > m || y > n || visited[x][y] ){
+	    return;
+	}
+	
+    if ( x == m && y == n ){
+	    ans = true;
+		return;
+	}
+	
+    visited[x][y] = 1;
+
+    DFS(2x, y, m, n);                                                    
+	DFS(x, 2y, m, n);
+}
+
+
+例子见此章的Maze
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :      <br>
+Space complexity :     <br>
+
+
+
+</div>
+
+
+
+
+</body>

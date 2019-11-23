@@ -1,0 +1,104 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    public int calculate(String s) {
+        if ( s == null || s.length() == 0){
+            return 0;
+        }
+        
+        s = s.replace(" ", "");
+        
+        char sign = '+';
+        Stack&lt;Integer> myStack = new Stack<>();
+        
+        for( int i=0; i&lt;s.length(); i++){
+            
+            char c = s.charAt(i);
+            
+            
+            if ( Character.isDigit(c)){
+                
+                int start = i;
+                while( i&lt;s.length() && Character.isDigit(s.charAt(i))){
+                    i++;
+                }
+                int number = Integer.valueOf(s.substring(start, i));
+                
+                i--;
+                
+                myStack.push( process(number, sign, myStack));
+            }else{
+                sign = c;
+            }
+        }
+        
+        int ret = 0;
+        for( int i: myStack){
+            ret = ret + i;
+        }
+        
+        return ret;
+    }
+    
+    public int process( int number, char sign, Stack<Integer> myStack){
+        if ( sign =='+'){
+            return number;
+        }else if ( sign =='-'){
+            return -number;
+        }else if ( sign == '*'){
+           return myStack.pop() * number;
+        }
+        else{
+           return myStack.pop() /number;
+        }
+    }
+}
+
+
+Java Skill
+遍历Stack
+
+int ret = 0;
+for( int i : stack){
+    ret = ret + i
+}
+
+
+s = s.replace(" ", "")
+用replace给字符串去空格必须把值返回给自己本身。
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+数据结构： 用一个stack存分段值<br>
+
+算法 ：如果遇到数字就提取出来处理【1】，如果遇到符号就变号。
+
+【1】数字处理方法，前面符号是 +-,就直接压，前面符号是*/,把前面的值弹出来和当前值做*/然后在压栈。
+
+
+
+</div>
+
+
+
+
+</body>
+

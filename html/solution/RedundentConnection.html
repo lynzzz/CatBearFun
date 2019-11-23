@@ -1,0 +1,179 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+<pre><code>
+Union find Version easy without rank map
+Time complexity 近似O(e)。 Leetcode: 1ms
+
+  class Solution {
+  int[] findRedundantConnection(int[][] edges) {
+      UF uf = new UF();
+      for (int[] edge : edges) {
+          if (uf.union(edge[0], edge[1])) {
+              return edge;
+          }
+      }
+      return null;
+  }
+
+  class UF {
+      int[] parent;
+      UF() {
+          parent = new int[2000];
+          for (int i = 0; i < 2000; i++) {
+              parent[i] = i;
+          }
+      }
+
+      int find(int n) {
+          if (parent[n] == n) {
+              return n;
+          }
+          return find(parent[n]);
+      }
+
+      boolean union(int n1, int n2) {
+          int p1 = find(n1);
+          int p2 = find(n2);
+          if (p1 == p2) {
+              return true;
+          }
+
+          parent[p1] = p2;
+          return false;
+      }
+  };
+
+  }
+
+
+
+Union find with rank map
+Time complexity : O(e), Leetcode 1ms
+
+class Solution {
+    int[] findRedundantConnection(int[][] edges) {
+        UF uf = new UF();
+        for (int[] edge : edges) {
+            if (uf.union(edge[0], edge[1])) {
+                return edge;
+            }
+        }
+        return null;
+    }
+
+    class UF {
+        int[] parent;
+        int[] rank;
+        UF() {
+            parent = new int[2000];
+            rank = new int[2000];
+            for (int i = 0; i < 1001; i++) {
+                parent[i] = i;
+                rank[i] = 0;
+            }
+        }
+
+        int find(int n) {
+            if (parent[n] == n) {
+                return n;
+            }
+            return find(parent[n]);
+        }
+
+        boolean union(int n1, int n2) {
+            int p1 = find(n1);
+            int p2 = find(n2);
+
+            if ( p1 == p2) return true;
+
+            if ( rank[p1] > rank[p2]){
+                parent[p2] = p1;
+            }
+            else if( rank[p1] < rank[p2]){
+                parent[p1] = p2;
+            }else{
+                parent[p1] = p2;
+                rank[p2]++;
+            }
+
+            return false;
+        }
+    };
+}
+
+}
+
+
+
+Solution II DFS  : 非常巧妙，无向图找环，拆分成了无向图两点能否联通
+Time complexity : O (e) * O(e + v)  = O(e^2);   Leetcode: 20ms
+
+class Solution {
+
+    private boolean isCycle = false;
+
+    public int[] findRedundantConnection(int[][] edges) {
+
+
+        HashMap&lt;Integer, ArrayList&lt;Integer>> m = new HashMap&lt;>();
+        for( int i=0; i<=1000; i++){
+            m.put(edge[0], new ArrayList&lt;Integer>());
+            m.put(edge[1], new ArrayList&lt;Integer>());
+        }
+
+
+        HashSet&lt;Integer> set = new HashSet&lt;>();
+
+        for( int[] e : edges){
+
+            set.add(e[0]);
+            dfs( e[0], e[1], set, m);
+            set.remove(e[0]);
+
+            if ( isCycle) return e;
+
+            m.get(e[0]).add(e[1]);
+            m.get(e[1]).add(e[0]);
+
+        }
+
+        return null;
+    }
+
+    void dfs(int start, int end, HashSet&lt;Integer> set, HashMap&lt;Integer, ArrayList&lt;Integer> > m){
+        if ( start == end){
+            isCycle = true;
+            return;
+        }
+
+        for( int n : m.get(start) ){
+            if ( set.contains(n)){
+                continue;
+            }
+
+            set.add(n);
+            dfs(n, end, set, m);
+            set.remove(n);
+        }
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+</div>
+
+
+
+
+</body>

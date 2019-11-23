@@ -1,0 +1,99 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    
+    class MyComparator implements Comparator&lt;int[]>{
+        public int compare( int[] a, int[] b){
+            return a[1] - b[1];
+        }
+    }
+    
+    HashMap&lt;Integer, List&lt;int[]>> graph = new HashMap<>();
+    HashMap&lt;Integer, Integer> score = new HashMap<>();
+    
+    public int networkDelayTime(int[][] times, int N, int K) {
+        
+
+        
+        for( int i=1; i&lt;=N; i++){
+            List<int[]> l = new ArrayList<>();
+            graph.put(i, l);
+            score.put(i, Integer.MAX_VALUE);
+        }
+        
+        for(int[] e : times){
+            graph.get(e[0]).add(new int[]{e[1], e[2]});
+            Collections.sort(graph.get(e[0]), new MyComparator());    // 从最短边开始遍历，找到结果可能性大些
+        }
+        
+        
+        dfs(K, 0);
+        
+        int ret = Integer.MIN_VALUE;
+        
+        for( int key : score.keySet()){
+            if ( score.get(key) > ret){
+                ret = score.get(key);
+            }
+        }
+        
+        
+        
+        return ret == Integer.MAX_VALUE ? -1 : ret;
+        
+    }
+    
+    
+    public void dfs(int start, int weight){
+        
+        if ( weight >= score.get(start) ){
+            return;
+        }
+        
+        score.put(start, weight);
+        
+        for(  int[] neighbor : graph.get(start) ) {
+            dfs(neighbor[0], weight + neighbor[1]);
+        }
+    }
+}
+
+算法:
+记录每个点的到达时间，如果是最小，则往下做DFS, 否则就返回上一层。
+
+此题是如何防止有向图的边被反复使用？
+用到达时间控制递归的路径， 1->2, 2->1, 第一次到达1时间为0， 第二次到达1的时间可肯定比第一次的时间长，可能就是7， 所以就返回了，不会再继续走2->1, 不会遍历重复边。
+
+
+
+时间复分析：
+有N层，每层有N-1个取法， 总共遍历了 (N-1)^N
+边的排序， eloge
+总的时间复杂度 O( N^N + eloge )
+
+
+空间复杂度为 O(N+E)  ,O(E)是图的复杂度， O(N)是递归的call stack 栈分配的内存
+
+</code></pre>
+
+
+
+
+
+</div>
+
+
+
+
+</body>

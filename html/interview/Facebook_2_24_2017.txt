@@ -1,0 +1,196 @@
+
+Given a binary tree of integers, write code to store the tree into a list of integers and recreate the original tree from a list of integers.
+
+Here's what your method signatures should look like (in Java):
+
+List<Integer> store(Node root)
+Node restore(List<Integer> list)
+  
+  
+class Node {
+
+  int val;
+  Node left;
+  Node right;
+  
+  public Node(int val) {
+    this.val = val;
+  }
+}  
+
+
+     1
+    / \
+    2  3
+       /\
+      4  5
+       
+       
+ArrayList 1 2 3 null, null, 4, 5, (null, null)  
+       
+       
+       1
+        \
+         2
+          \
+           3
+           
+1, Null, 2, NUll, 3, null, null   
+       
+List<Integer> store(Node root){
+       ArrayList<Node> ret = new ArrayList<>();
+       ret.add(root);
+       
+       for( int i=0; i<ret.size(); i++){
+         Node n = ret.get(i);
+         if ( n == null ){
+           continue;
+         }
+         ret.add(n.left);
+         ret.add(n.right);
+       }
+       
+       List<Integer> results = new ArrayList<>();
+       for( int i=0; i<ret.size(); i++ ){
+         if ( ret.get(i) == null ){
+             results.add(null);
+         }else{
+             results.add(ret.get(i).val);
+         }
+       }
+}
+
+Integer x = null;
+int y = x;
+
+1, max, 2, max, 3, max, max
+
+Node restore(List<Integer> list){
+    ArrayList<Node> ret = new ArrayList<>();
+    if ( list == null || list.size() == 0 ){
+        return null;
+    }
+    
+    int index = 0;
+    boolean isLeft = true;
+    Node root = new Node(list.get(0));
+    
+    ret.add( root );
+    for( int i=1; i<list.size(); i++ ){
+        if ( list.get(i) != null ){
+            Node n = new Node(list.get(i).val);
+            if ( isLeft ){
+                ret.get(index).left = n;
+            }else{
+                ret.get(index).right = n;
+        
+            ret.add(n);
+        }
+        
+        if ( !isLeft ){
+            index++;
+        }
+        
+        isLeft = !isLeft;
+    
+    }
+    
+    return root;
+}
+1, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////  正解解法 ： 这题非常难，没做过很难写出来  //////////////////////////////////////////////////////
+
+
+class Solution {
+
+	 
+	 class Node {
+
+  int val;
+  Node left;
+  Node right;
+  
+  public Node(int val) {
+    this.val = val;
+  }
+}  
+
+
+    List<Integer> store(Node root){
+		List<Integer> ret = new ArrayList<>();
+		
+        if ( root == null) return ret;
+	
+		Queue<Node>  q = new LinkedList<>();
+		q.add(root);
+		
+		
+		while( !q.isEmpty()){
+		    Node n = q.poll();
+			ret.add( n != null ? n.val : null);
+		    
+			if ( n == null ){
+			    continue;
+			}
+			
+			q.add(n.left);
+			q.add(n.right);
+		}    
+        
+        return ret;
+    }
+    
+    ///  这个Q+array 不是特别好想出来
+    
+    public TreeNode deserialize( List<Integer> list ){
+    {
+           if ( list == null || list.size() == 0 ) return null;
+           
+           Queue<Node> q = new LinkedList<>();
+           
+           Node root = new TreeNode( list.get(0) );
+           q.add( root );
+           
+           for( int i=1; i<list.size(); i++){                // i从1开始，往后走流程， 能不能做左子树？能不能做右子树？可以就压入queue,做下一次的parent. 不用处理null
+               Node parent = q.poll();
+               
+               if ( list.get(i) != null ){
+                   Node left = new Node(list.get(i));
+                   parent.left = left;
+                   q.add(left);
+               }
+               
+               i++;
+               
+               if (  list.get(i) != null ){
+                   Node right = new Node(list.get(i));
+                   parent.right = right;
+                   q.add(right);
+               }
+           }
+           
+           return root;
+    }
+
+}
+
+Serilization : BFS
+Deserilization : Queue + array
+

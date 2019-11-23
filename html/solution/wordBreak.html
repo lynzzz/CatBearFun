@@ -1,0 +1,58 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+  class Solution {
+
+      boolean ret = false;
+
+      public boolean wordBreak(String s, List&lt;String> wordDict) {
+          dfs(s, wordDict, 0);
+          return ret;
+      }
+
+      void dfs(String s, List&lt;String> wordDict, int pos){
+
+          if ( pos == s.length()){
+              ret = true;
+              return;
+          }
+
+
+          for( int i=pos; i&lt;s.length(); i++){
+              String str = s.substring(pos, i + 1);
+              if ( !wordDict.contains(str)){
+                  continue;
+              }
+
+              dfs(s, wordDict, i+1);
+          }
+
+      }
+  }
+
+
+</code></pre>
+DFS subset 模版
+
+
+<div class="comment">
+Time complexity :      n*(2^n)
+慢过不了AC,但是解法是正确的。
+此题目用DP解答，时间复杂度能减低到 n^2, 解法建后面DP专栏
+
+</div>
+
+
+
+
+</body>

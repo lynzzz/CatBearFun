@@ -7,160 +7,34 @@
 
 <body>
 
-<div class="specialcomment">
-Solution one : naive version : 只能过41%，且很长
-</div>
-
-<pre><code>
-
-public class Solution {
-
-    class Node{
-        int key;
-        int val;
-        Node pre;
-        Node next;
-        Node(int key, int val){
-            this.key = key;
-            this.val = val;
-        }
-    }
-    
-    HashMap<Integer, Node> m = new HashMap<>();
-    Node LRUhead, LRUtail;
-    int m_size;
-    int m_currentSize;
-
-    // @param capacity, an integer
-    public Solution(int capacity) {
-        // write your code here
-        m_size = capacity; 
-    }
-
-    // @return an integer
-    public int get(int key) {
-        // write your code here
-        if ( m.containsKey(key) ){
-            moveExistingNodeToEnd(key);
-            return m.get(key).val;
-        }
-        return -1;
-    }
-
-    // @param key, an integer
-    // @param value, an integer
-    // @return nothing
-    public void set(int key, int value) {
-        // write your code here
-        
-        if ( m.containsKey(key) ){
-            Node temp = m.get(key);
-            temp.val = value;
-            moveExistingNodeToEnd(key);
-        }else{
-            Node newNode = new Node(key, value);
-            m.put(key, newNode);
-        
-            if ( m_currentSize == m_size ){
-                removeHeadNode();
-            }
-        
-            if ( LRUhead == null){
-                LRUhead = newNode;
-                LRUtail = newNode;
-            }
-            else{
-                LRUtail.next = newNode;
-                newNode.pre = LRUtail;
-                LRUtail = newNode;
-            }
-            m_currentSize++;
-        }
-    }
-    
-    
-    public void moveExistingNodeToEnd(int value){
-
-
-        Node curNode = m.get(value);
-        Node preNode = m.get(value).pre;
-        Node nextNode = m.get(value).next;
-        
-        if ( preNode == null && nextNode == null ){
-            return;
-        }
-        else if ( preNode == null )                     // 当你把头移动到最后时候处理
-        {    
-             // handle LRU head
-             LRUhead = LRUhead.next;
-             LRUhead.pre = null;
-             
-             // handle LRU tail;
-             LRUtail.next = curNode;
-             curNode.pre = LRUtail;
-             curNode.next = null;
-             LRUtail = curNode;
-        }else if ( nextNode == null){            // 当把尾巴移动到最后时不用处理
-             return;
-        }else{                                     // 其他所有情况 
-            preNode.next = nextNode;
-            nextNode.pre = preNode;
-            LRUtail.next = curNode;
-            curNode.pre = LRUtail;
-            curNode.next = null;
-            LRUtail =curNode;
-        }
-        
-    }
-    
-    public void removeHeadNode( ){
-        
-        m.remove(LRUhead.val);                 // update map
-        
-        if ( m_currentSize == 1){              // update doubly linked list
-            LRUhead = null;
-            LRUtail = null;
-        }else{
-            LRUhead = LRUhead.next;
-            LRUhead.pre = null;
-        }
-        
-        m_currentSize--;                       // update size
-    }
-    
-    
-}
-
-
-
-</code></pre>
 
 <div class="specialcomment">
-Solution two : using two dummy pointers, 保证了一定有头和尾，代吗简化很多
+Using two dummy nodes, 保证了一定有头和尾，简化代码<br>
+Facebook phone interview 5/16/18  不考虑size做eviction, 20分钟写完<br>
+
 </div>
 
 <code><pre>
 public class Solution {
+
     class Node{
-    
-    int key;
-    int val;
-    Node pre;
-    Node next;
-    Node( int key, int val){
-        this.key = key;
-        this.val = val;
+      int key;
+      int val;
+      Node pre;
+      Node next;
+      Node( int key, int val){
+          this.key = key;
+          this.val = val;
+      }
     }
-    }
 
-    HashMap<Integer, Node> m = new HashMap<>();
-    
-    Node LRUhead =  new Node(-1, -1);;
-    Node LRUtail =  new Node(-1, -1);;
+    private HashMap&lt;Integer, Node> m = new HashMap&lt;>();
 
-    int capacity;
+    private Node LRUhead =  new Node(-1, -1);;
+    private Node LRUtail =  new Node(-1, -1);;
 
-    // @param capacity, an integer
+    private int capacity;
+
     public Solution(int capacity) {
 
         this.capacity = capacity;
@@ -168,19 +42,15 @@ public class Solution {
         LRUtail.pre = LRUhead;
     }
 
-    // @return an integer
     public int get(int key) {
         // write your code here
         if ( !m.containsKey(key) ) return -1;
-        
+
         removeNode(m.get(key) );
         addNodeToTail(m.get(key));
         return m.get(key).val;
     }
 
-    // @param key, an integer
-    // @param value, an integer
-    // @return nothing
     public void set(int key, int value) {
         // write your code here
         if ( m.containsKey(key) ){
@@ -192,24 +62,24 @@ public class Solution {
                 m.remove(LRUhead.next.key);
                 removeNode(LRUhead.next);
             }
-            
+
             Node newNode = new Node(key, value);
             m.put(key, newNode);
             addNodeToTail(newNode);
         }
-        
+
     }
-    
+
     public void addNodeToTail( Node cur ){
-        
+
         LRUtail.pre.next = cur;
         cur.pre = LRUtail.pre;
         cur.next = LRUtail;
         LRUtail.pre = cur;
     }
-    
+
     public void removeNode(Node cur){
-        
+
         cur.pre.next = cur.next;
         cur.next.pre = cur.pre;
     }
@@ -225,19 +95,14 @@ Space complexity :  o(1)   <br>
 
 
 
-// Note <br>
-需要实现的功能  <br>
-1.  get  返回值且把当前结点移动最后    <br>
-2.  set  加入值，且把结点移动到最后， 如果当前空间满了，则把头去掉，因为是LinkedList, remove从头开始<br>
 
-需要的辅助函数<br>
-// 辅助函数  addNodetoTail(Node cur)   removeNode(cur);<br>
 
-// 数据结构  Hashmap + doubly linkedList<br>
+数据结构  Hashmap + doubly linkedList<br>
 
-// 技巧 ： 用两个dummy node,避免了头尾指针不存在的情况， 使代码简化<br>
-// 把结点移动到末尾是两个步骤，一是去掉当前结点，二是加到尾结点后面。 <br>
-// 不要引入currentSize, map.size()可以返回当前size,否则容易混<br>
+辅助函数  addNodetoTail(Node n)   removeNode(Node n);<br>
+
+技巧 ： 用两个dummy node,避免了头尾指针不存在的情况， 使代码简化<br>
+</div>
 
 
 </div>

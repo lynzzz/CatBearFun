@@ -1,0 +1,113 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        HashMap&lt;Integer, List&lt;Integer>> myGraph = new HashMap&lt;>();
+        
+        int n = graph.length;
+        
+        for( int i=0; i&lt;n; i++){
+            myGraph.put(i, new ArrayList<Integer>());
+        }
+        
+        for(int i=0; i&lt;n; i++){
+            for( int j=0; j&lt;graph[i].length; j++){
+                
+                int from = i;
+                int to = graph[i][j];
+                
+                myGraph.get(from).add(to);
+                myGraph.get(to).add(from);
+            }
+        }
+        
+        int[] color = new int[n];  
+        Arrays.fill(color, -1);
+        Queue<Integer> q = new LinkedList<>();
+        
+        
+        for( int i=0; i&lt;n; i++){
+        
+            if ( myGraph.get(i).size() != 0 && color[i] == -1){
+                
+                q.add(i);
+                color[i] = 0;
+                
+                while( !q.isEmpty()){
+
+                        int current = q.poll();
+
+                        for( int neighbor : myGraph.get(current)){
+
+                            if ( color[neighbor] == -1){
+                                 color[neighbor] = color[current] == 0 ? 1 :0;
+                                 q.add(neighbor);
+                            }else{
+                                if ( color[current] == color[neighbor]){
+                                    return false;
+                                }
+                            }
+                        }
+                }
+            }
+            
+        }
+        
+        return true;
+    }
+}
+
+
+
+
+</code></pre>
+
+
+此题的考点是图的BFS遍历（由点自面）<br><br>
+
+算法：对图里的每一个非孤立的未访问的点，做BFS,下一层的点没有染色，就染成和上一层不一样的颜色，如果染过色判断是否和上一层一样。<br><br>
+
+注意的是<br>
+1. 此题有可能有孤立点，因为孤立点没有边，所以对Bipartite没有影响，直接就不处理就行了，<br>
+2. 此题的图可能有多个联通子图，所以做一次BFS是不够的。<br>
+
+
+
+<div class="comment">
+
+
+
+
+Time complexity :  O(V + E)    <br>
+Space complexity : O(V + E)    <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+</body>

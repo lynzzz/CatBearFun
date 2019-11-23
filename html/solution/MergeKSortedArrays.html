@@ -16,58 +16,64 @@ public class Solution {
      * @param arrays k sorted integer arrays
      * @return a sorted array
      */
-    public List<Integer> mergekSortedArrays(int[][] arrays) {
+    public List&lt;Integer&gt; mergekSortedArrays(int[][] arrays) {
         // Write your code here
-        if ( arrays == null || arrays.length == 0 ) return null;
-        
-        return helper( arrays, 0, arrays.length-1);
+            List<Integer> results = new ArrayList<>();
+            int[] ret = helper(arrays, 0, arrays.length - 1);
+            
+            for( int n : ret){
+                results.add(n);
+            }
+            return results;
     }
     
-    List<Integer> helper(int[][] arrays, int start, int end){
+    int[] helper(int[][] arrays, int start, int end){
         
+        // return condition
         if ( start == end){
-            ArrayList<Integer> ret = new ArrayList<Integer>();
-            for( int i : arrays[start]){
-                ret.add(i);
-            }
-            return ret;
+            return arrays[start];
         }
         
-        int mid = start + ( end - start )/2;
         
-        List<Integer> left = helper(arrays, start, mid);
-        List<Integer> right = helper(arrays, mid + 1 , end);
+        //divide 
+        int mid = start + ( end - start)/2;
         
-        return mergeTwoSortedArray(left, right);
-    }
+        int[] l = helper(arrays, start, mid);
+        int[] r = helper(arrays, mid + 1, end);
+        
+        // conquer
+        return mergeSortedArray(l ,r);
+    }   
     
-    List<Integer> mergeTwoSortedArray(List<Integer> l, List<Integer> r){
         
-        int m = l.size();
-        int n = r.size();
-        int i=0;
-        int j=0;
-
-        List<Integer> ret = new ArrayList<Integer>();
+    public int[] mergeSortedArray(int[] A, int[] B) {
+        // Write your code here
+        int[] ret = new int[A.length + B.length];
         
-        while( i&lt;m && j&lt;n){
-            if ( l.get(i) < r.get(j) ){
-                ret.add(l.get(i));
+        int i=0, j=0, k=0;   
+        
+        while( i &lt; A.length && j &lt; B.length){
+            if ( A[i] < B[j]){
+                ret[k] = A[i];
                 i++;
+                k++;
             }else{
-                ret.add(r.get(j));
+                ret[k] = B[j];
                 j++;
+                k++;
             }
         }
         
-        while( i&lt;m){
-            ret.add(l.get(i));
+        while( i &lt; A.length){
+            ret[k] = A[i];
             i++;
+            k++;
         }
         
-        while( j&lt;n){
-            ret.add(r.get(j));
+        while ( j &lt; B.length){
+            ret[k] = B[j];
             j++;
+            k++;
         }
         
         return ret;
@@ -75,7 +81,8 @@ public class Solution {
 }
 </code></pre>
 
-
+Time  O(kn) , where n is the average length of each array. 相当于全部数字过一遍<br>
+Space O(1)  , 不考虑递归的栈空间
 
 
 

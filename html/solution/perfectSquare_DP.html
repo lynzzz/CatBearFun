@@ -1,0 +1,53 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+public int numSquares(int n) {
+
+        // def
+        int[] dp = new int[n+1];
+
+        // init
+        dp[0] = 0;
+        dp[1] = 1;
+
+
+        for( int i=2; i&lt;=n; i++){
+            dp[i] = Integer.MAX_VALUE;
+            for( int j=1; j*j &lt;= i ; j++){
+                dp[i] = Math.min(dp[i], dp[i-j*j] + 1);
+            }
+        }
+
+        return dp[n];
+
+    }
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+Time complexity :  n^(2)    <br>
+1.     i    =   j^2 + (i - j^2)     任何一个值都可以分解成一个完全平方数 + 一个非完全平方数
+2.    开 n+1个数组的原因是 when i-j^2 == 0, dp[0] 需要为0
+
+
+
+
+
+
+</body>
