@@ -39,9 +39,9 @@ class Solution {
     }
 
 
-    void dfs(int N, HashMap&lt;Character, String> m, int pos, char curChar){
+    void dfs(int N, HashMap&lt;Character, String> m, int curStep, char curChar){
 
-        if ( pos == N-1){
+        if ( curStep == N-1){
             total++;
             return;
         }
@@ -50,7 +50,7 @@ class Solution {
 
         for(int i=0; i&lt;next.length(); i++){
             char c = next.charAt(i);
-            dfs(N, m, pos+1, c);
+            dfs(N, m, curStep+1, c);
         }
     }
 }
@@ -83,9 +83,9 @@ class Solution {
     }
 
 
-    int dfs(int N, HashMap&lt;Character, String> m, int pos, char curChar){
+    int dfs(int N, HashMap&lt;Character, String> m, int curStep, char curChar){
 
-        if ( pos == N-1){
+        if ( curStep == N-1){
             return 1;
         }
 
@@ -93,7 +93,7 @@ class Solution {
         int total = 0;
         for(int i=0; i&lt;next.length(); i++){
             char c = next.charAt(i);
-            total = total + dfs(N, m, pos+1, c);
+            total = total + dfs(N, m, curStep+1, c);
         }
 
         return total;
@@ -130,24 +130,24 @@ class Solution {
     }
 
 
-    int dfs(int N, HashMap&lt;Character, String> m, int pos, char curChar, Integer[][] mem){
+    int dfs(int N, HashMap&lt;Character, String> m, int curStep, char curChar, Integer[][] mem){
 
-        if ( pos == N-1){
+        if ( curStep == N-1){
             return 1;
         }
 
-        if ( mem[pos][curChar - '0'] != null){
-            return mem[pos][curChar - '0'];
+        if ( mem[curStep][curChar - '0'] != null){
+            return mem[curStep][curChar - '0'];
         }
 
         String next = m.get(curChar);
         int total = 0;
         for(int i=0; i&lt;next.length(); i++){
             char c = next.charAt(i);
-            total = (total + dfs(N, m, pos+1, c, mem))%module;
+            total = (total + dfs(N, m, curStep+1, c, mem))%module;
         }
 
-        mem[pos][curChar-'0'] = total;
+        mem[curStep][curChar-'0'] = total;
 
         return total;
     }
@@ -169,15 +169,15 @@ class Solution {
         return total;
     }
 
-    int dfs(int N, int[][] dict, int pos, int curDigit  ){
-        if ( pos == N-1){
+    int dfs(int N, int[][] dict, int curStep, int curPos  ){
+        if ( curStep == N-1){
             total++;
             return;
         }
 
         int total = 0;
-        for(int i : dict[curDigit]){
-            dfs(N, dict, pos+1, i));
+        for(int i : dict[curPos]){
+            dfs(N, dict, curStep+1, i));
         }
     }
 }
@@ -195,14 +195,14 @@ class Solution {
         return total;
     }
 
-    int dfs(int N, int[][] dict, int pos, int curDigit  ){
-        if ( pos == N){
+    int dfs(int N, int[][] dict, int curStep, int curPos  ){
+        if ( curStep == N){
             return 1;
         }
 
         int total = 0;
-        for(int i : dict[curDigit]){
-            total = (total + dfs(N, dict, pos+1, i))%module;
+        for(int i : dict[curPos]){
+            total = (total + dfs(N, dict, curStep+1, i))%module;
         }
         return total;
     }
@@ -227,21 +227,21 @@ class Solution {
         return total;
     }
 
-    int dfs(int N, int[][] dict, Integer[][] mem, int pos, int curDigit ){
+    int dfs(int N, int[][] dict, Integer[][] mem, int curStep, int curPos ){
 
-        if ( pos == N-1){
+        if ( curStep == N-1){
             return 1;
         }
 
-        if ( mem[pos][curDigit] != null){
-            return mem[pos][curDigit];
+        if ( mem[curStep][curPos] != null){
+            return mem[curStep][curPos];
         }
 
         int total = 0;
-        for(int i : dict[curDigit]){
-            total = (total + dfs(N, dict, mem, pos+1, i))%module;
+        for(int i : dict[curPos]){
+            total = (total + dfs(N, dict, mem, curStep+1, i))%module;
         }
-        mem[pos][curDigit] = total;
+        mem[curStep][curPos] = total;
         return total;
     }
 }
@@ -255,7 +255,8 @@ class Solution {
 Time complexity :  O(N)    <br>
 Space complexity : O(N*10) = O(n)    <br>
 
-1. DFS Mapping要带两个参数，一个是当前位置(pos)，一个是当前值(curDigit)
+0. 跳棋模型： 给定步数，求多少种跳法
+1. DFS带两参数，一个是当前步数(CurStep)，一个是当前位置(CurPos)
 2. 用DFS + Memorization，DFS一定要返回值。
 
 
