@@ -216,6 +216,7 @@ class Solution {
     public int knightDialer(int N) {
 
         Integer[][] mem = new Integer[N][10];  // row为步数，col为取的值。记录下来不用反复算。如第三步取8有多少种
+        // 表示第几步走到哪个位置有几种走法。
 
         int[][] dict = {{4,6}, {6,8}, {7,9}, {4,8}, {3,9,0}, {}, {1,7,0},{2,6},{1,3},{2,4}};
 
@@ -257,7 +258,7 @@ Space complexity : O(N*10) = O(n)    <br>
 
 0. 跳棋模型： 给定步数，求多少种跳法
 1. DFS带两参数，一个是当前步数(CurStep)，一个是当前位置(CurPos)
-2. 用DFS + Memorization，DFS一定要返回值。
+2. 用DFS + Memorization，DFS一定要返回值。dp[curStep][curPos]表示某步走到某个位置有几种走法，记录下来
 
 
 </div>

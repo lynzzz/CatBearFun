@@ -53,6 +53,7 @@ class Solution {
     public int numWays(int steps, int arrLen) {
 
         Integer[][] dp = new Integer[steps+1][arrLen];
+        // 表示第几步走到哪个位置有几种走法。
 
         return dfs(steps, arrLen, dp, 0, 0);
     }
@@ -88,10 +89,50 @@ class Solution {
 
 step * length
 
+Solution III: DFS + memorization (内存优化，只和steps有关，与矩阵大小无关， 因为当前步数>steps/2就可以返回了，因为ii网友)
+因为在往右就走不回去了）
+
 1. 跳棋模型： 给定步数和走法限制，求多少种走法。
 2. DFS带两参数: curStep, curPos.
-3. 很容易优化成DFS + memorization
+3. 很容易优化成DFS + memorization。  dp[curStep][curPos]表示某步走到某个位置有几种走法，记录下来
 
+class Solution {
+    int modulo = (int)Math.pow(10,9) + 7;
+    public int numWays(int steps, int arrLen) {
+
+        Integer[][] dp = new Integer[steps+1][steps/2+1];
+
+        return dfs(steps, arrLen, dp, 0, 0);
+    }
+
+    int dfs(int steps, int arrLen, Integer[][] dp,  int step, int curPos){
+        if ( curPos < 0 || curPos == arrLen || curPos>steps/2){
+            return 0;
+        }
+
+        if ( dp[step][curPos] != null){
+            return dp[step][curPos];
+        }
+
+        if ( step == steps){
+            if ( curPos == 0){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+
+        int total = 0;
+
+        total = (total + dfs(steps, arrLen, dp, step+1, curPos-1))%modulo;
+        total = (total + dfs(steps, arrLen, dp, step+1, curPos+1))%modulo;
+        total = (total + dfs(steps, arrLen, dp, step+1, curPos))%modulo;
+
+        dp[step][curPos] = total;
+
+        return total;
+    }
+}
 
 
 
