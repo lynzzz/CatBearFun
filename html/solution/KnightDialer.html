@@ -256,9 +256,10 @@ class Solution {
 Time complexity :  O(N)    <br>
 Space complexity : O(N*10) = O(n)    <br>
 
-0. 跳棋模型： 给定步数，求多少种跳法
-1. DFS带两参数，一个是当前步数(CurStep)，一个是当前位置(CurPos)
-2. 用DFS + Memorization，DFS一定要返回值。dp[curStep][curPos]表示某步走到某个位置有几种走法，记录下来
+0. 跳棋模型： 给定步数和走法限制，求多少种跳法
+1. DFS带两参数，一个是当前步数(CurStep)，一个是当前值(CurValue)。 CurStep 是为了找递归结束条件，CurVal是为了找下一层的值
+2. 这种两个参数的DFS很容易优化成DFS + Memorization，DFS一定要返回值。dp[curStep][curVal]表示某步走到某个位置有几种走法，记录下来，不用重复的算，因为DFS
+走到最底层然后开始回溯，往前走一个系数，然后再往下走，所以必然会遇到重复的点。
 
 
 </div>
