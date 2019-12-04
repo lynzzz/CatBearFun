@@ -12,10 +12,13 @@
 
 <pre><code>
 This is similar to kNight Dialer.
+
 DFS brute force => DFS memorization => DP
 
 
 Solution 1: DFS brute force(会写DFS暴力很重要，至少是weak hire)
+DFS top down： 第0步初始化，进入DFS，第一步走到哪里，第二部走到哪里，第N步的时候结束，检查是非满足条件。
+
 
 class Solution {
     public int numWays(int steps, int arrLen) {
