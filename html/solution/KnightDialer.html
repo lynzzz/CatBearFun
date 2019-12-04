@@ -11,151 +11,9 @@
 
 
 <pre><code>
-Solution 1: DFS without return value:
-class Solution {
-    long total = 0;
-    int module = (int)Math.pow(10, 9) + 7;
-
-    public int knightDialer(int N) {
-
-        HashMap&lt;Character, String> m = new HashMap&lt;>();
-        m.put('0', "46");
-        m.put('1', "68");
-        m.put('2', "79");
-        m.put('3', "48");
-        m.put('4', "390");
-        m.put('5', "");
-        m.put('6', "170");
-        m.put('7', "26");
-        m.put('8', "13");
-        m.put('9', "24");
 
 
-        for( char c='0'; c<='9'; c++){
-            dfs(N, m,  0, c);
-        }
-
-        return (int)total%module;
-    }
-
-
-    void dfs(int N, HashMap&lt;Character, String> m, int curStep, char curChar){
-
-        if ( curStep == N-1){
-            total++;
-            return;
-        }
-
-        String next = m.get(curChar);
-
-        for(int i=0; i&lt;next.length(); i++){
-            char c = next.charAt(i);
-            dfs(N, m, curStep+1, c);
-        }
-    }
-}
-
-Solution II:
-DFS With return value:
-class Solution {
-    int module = (int)Math.pow(10, 9) + 7;
-
-    public int knightDialer(int N) {
-
-        HashMap&lt;Character, String> m = new HashMap&lt;>();
-        m.put('0', "46");
-        m.put('1', "68");
-        m.put('2', "79");
-        m.put('3', "48");
-        m.put('4', "390");
-        m.put('5', "");
-        m.put('6', "170");
-        m.put('7', "26");
-        m.put('8', "13");
-        m.put('9', "24");
-
-        int total = 0;
-        for( char c='0'; c<='9'; c++){
-            total = total + dfs(N, m,  0, c);
-        }
-
-        return (int)total%module;
-    }
-
-
-    int dfs(int N, HashMap&lt;Character, String> m, int curStep, char curChar){
-
-        if ( curStep == N-1){
-            return 1;
-        }
-
-        String next = m.get(curChar);
-        int total = 0;
-        for(int i=0; i&lt;next.length(); i++){
-            char c = next.charAt(i);
-            total = total + dfs(N, m, curStep+1, c);
-        }
-
-        return total;
-    }
-}
-
-Solution III:
-DFS +  memorization:
-class Solution {
-    int module = (int)Math.pow(10, 9) + 7;
-
-    public int knightDialer(int N) {
-
-        HashMap&lt;Character, String> m = new HashMap&lt;>();
-        Integer[][] mem = new Integer[N][10];
-
-        m.put('0', "46");
-        m.put('1', "68");
-        m.put('2', "79");
-        m.put('3', "48");
-        m.put('4', "390");
-        m.put('5', "");
-        m.put('6', "170");
-        m.put('7', "26");
-        m.put('8', "13");
-        m.put('9', "24");
-
-        int total = 0;
-        for( char c='0'; c<='9'; c++){
-            total = (total + dfs(N, m,  0, c, mem))%module;
-        }
-
-        return total;
-    }
-
-
-    int dfs(int N, HashMap&lt;Character, String> m, int curStep, char curChar, Integer[][] mem){
-
-        if ( curStep == N-1){
-            return 1;
-        }
-
-        if ( mem[curStep][curChar - '0'] != null){
-            return mem[curStep][curChar - '0'];
-        }
-
-        String next = m.get(curChar);
-        int total = 0;
-        for(int i=0; i&lt;next.length(); i++){
-            char c = next.charAt(i);
-            total = (total + dfs(N, m, curStep+1, c, mem))%module;
-        }
-
-        mem[curStep][curChar-'0'] = total;
-
-        return total;
-    }
-}
-
-Follow up: Next level mapping can be represented by integer to integer array: int[][]
-
-Solution I : DFS brute force 没有返回值
+Solution I : DFS brute force 没有返回值: 这种写法无法纪录值做优化(DFS + memorization)
 class Solution {
     int module = (int)Math.pow(10, 9) + 7;
     int total = 0;
@@ -183,6 +41,11 @@ class Solution {
 }
 
 Solution II : DFS brute force 有返回值
+
+DFS top down:
+第一步在哪里，第二部走到哪里，。。。。。 第n步走到哪里。
+
+
 class Solution {
     int module = (int)Math.pow(10, 9) + 7;
 

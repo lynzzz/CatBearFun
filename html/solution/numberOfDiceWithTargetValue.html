@@ -1,0 +1,117 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+Solution I: Bottom up DFS
+DFS思路为：N step, sum is target， N-1 step, sum is target - i; 0 step, sum should be 0, which is return condition,
+
+
+class Solution {
+
+    public int numRollsToTarget(int d, int f, int target) {
+
+        return dfs(d, f, target);
+    }
+
+    int dfs(int d, int f, int target){
+
+        if (  d == 0 ){
+            if ( target == 0){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+
+        if ( target < 0){
+            return 0;
+        }
+
+
+        int total = 0;
+        for( int i=1; i<=f; i++){
+            total = total + dfs(d-1,f,target-i);
+        }
+
+        return total;
+    }
+}
+
+
+Solution II optimization: DFS + Memorization:
+
+1.注意此时的记忆矩阵是 int[][] mem = new int[Step][target] （ 记录的是某一部走到某一个target有多少种可能）
+调试了一天才想明白, 不是step * faceValue）
+
+2. 记忆矩阵的大小主要是保证不过界，好写理解，没有具体的限制。
+
+class Solution {
+    int mod = (int)(Math.pow(10,9)+7);
+    public int numRollsToTarget(int d, int f, int target) {
+
+        Integer[][] mem = new Integer[d+1][target+1];
+
+        return dfs(d, f, target, mem);
+    }
+
+    int dfs(int d, int f, int target, Integer[][] mem){
+
+        if (  d == 0 ){
+            if ( target == 0){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+
+        if ( target < 0){
+            return 0;
+        }
+
+        if ( mem[d][target] != null){
+            return mem[d][target];
+        }
+
+        long total = 0;
+        for( int i=1; i<=f; i++){
+            total = (total + dfs(d-1,f,target-i, mem))%mod;
+        }
+
+        mem[d][target] = (int)total;
+
+        return (int)total;
+    }
+}
+
+
+                   初始化进入DFS              DFS递归进程     结束条件            题目
+DFS top down :      step = 0                  step+1        step == N        number of ways to stay in the same place
+DFS bottom up:      step = N                  step-1        step == 0        number of Dice with target value
+
+</code></pre>
+
+
+
+
+<div class="comment">
+Time complexity :  O(N)    <br>
+Space complexity : O(N*10) = O(n)    <br>
+
+
+
+
+</div>
+
+
+
+
+</body>
