@@ -1,0 +1,91 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+solution I: DFS是一路走到底然后在回溯， 这道题目因为可以一直往下走过了target以后在往回走，所以无法确定底在哪里。自己越估计的底对数值较大的时候会stacko
+verflow, 所以只能用BFS
+
+class Solution {
+    int ret = Integer.MAX_VALUE;
+    public int racecar(int target) {
+
+        dfs(target, 0, 1, 0);
+        return ret;
+    }
+
+    void dfs(int target, int pos, int speed, int step){
+      // 此处无法写出递归结束的条件，所以不能用DFS
+
+        if ( target == pos){
+            if ( step &lt; ret){
+                ret = step;
+            }
+            return;
+        }
+
+        dfs( target, pos + speed, speed * 2, step + 1);
+        dfs( target, pos, speed > 0? -1 : 1, step + 1);
+    }
+}
+
+
+
+
+Solution II: BFS + pruning
+class Solution {
+    public int racecar(int target) {
+        Queue&lt;int[]> q = new LinkedList<>();
+        HashSet&lt;String> set = new HashSet<>();
+
+        q.add(new int[]{0,1 });
+        set.add(convertToString(0,1));
+        int step = 0;
+
+        while( !q.isEmpty()){
+
+            int size = q.size();
+            for( int i=0; i&lt;size; i++){
+                int[] arr = q.poll();
+                int pos = arr[0];
+                int speed = arr[1];
+
+                if (pos == target){
+                    return step;
+                }
+
+                String str1 = convertToString(pos+speed, speed*2); // pruning
+
+                if ( !set.contains(str1) &&  (pos + speed) &lt; 1.3* target && (pos + speed) > 0 ){   // 1.3 is tentative number for pruning
+                    q.add(new int[]{pos+speed, speed*2});
+                    set.add(str1);
+                }
+
+
+                String str2 = convertToString(pos,  speed>0? -1: 1); // pruning
+                if (!set.contains(str2)){
+                    q.add(new int[]{pos, speed>0? -1: 1});
+                    set.add(str2);
+                }
+            }
+            step++;
+        }
+
+
+        return -1;
+    }
+
+    String convertToString(int pos, int speed){
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.valueOf(pos));
+        sb.append(" ");
+        sb.append(String.valueOf(speed));
+        return sb.toString();
+    }
+}
+</code></pre>
+</body>
