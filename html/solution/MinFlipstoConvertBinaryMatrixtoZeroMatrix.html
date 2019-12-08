@@ -1,0 +1,133 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+Solution I: DFS 2D->1D permutation （TLE）
+
+  class Solution {
+      int ret = Integer.MAX_VALUE;
+
+      public int minFlips(int[][] mat) {
+
+          dfs(0,0,mat.length, mat[0].length, mat, 0);
+          return ret == Integer.MAX_VALUE ? -1 : ret;
+
+      }
+
+      void dfs(int i, int j, int row, int col, int[][] mat, int step){
+          if ( allZero(mat)){
+              ret = Math.min(ret, step);
+          }
+
+          if ( step == row * col){
+              return;
+          }
+
+
+          for( int k=0; k&lt;row*col; k++){
+
+              i = k/col;
+              j = k%col;
+
+              flip(i,j, row, col, mat);
+              dfs(i, j, row, col, mat, step+1);
+              flip(i,j, row, col, mat);
+          }
+      }
+
+      boolean allZero(int[][] mat){
+          for(int i=0; i&lt;mat.length; i++){
+              for( int j=0; j&lt;mat[0].length; j++){
+                  if ( mat[i][j] == 1){
+                      return false;
+                  }
+              }
+          }
+          return true;
+      }
+
+      void flip(int i, int j, int row, int col, int[][] mat){
+          mat[i][j] = mat[i][j] == 0 ? 1 : 0;
+
+          if ((i-1)>=0)      mat[i-1][j] = mat[i-1][j] == 0 ? 1 : 0;
+          if ((i+1)&lt;row)  mat[i+1][j] = mat[i+1][j] == 0 ? 1 : 0;
+          if ((j-1)>=0)      mat[i][j-1] = mat[i][j-1] == 0 ? 1 : 0;
+          if ((j+1)&lt;col)  mat[i][j+1] = mat[i][j+1] == 0 ? 1 : 0;
+      }
+  }
+
+Solution II: DFS permutation + hashset(访问过的点在DFS走到底前不再访问)。 （TLE）
+class Solution {
+    int ret = Integer.MAX_VALUE;
+
+    public int minFlips(int[][] mat) {
+
+        dfs(0,0,mat.length, mat[0].length, mat, 0, new HashSet&lt;String>());
+        return ret == Integer.MAX_VALUE ? -1 : ret;
+    }
+
+    void dfs(int i, int j, int row, int col, int[][] mat, int step, HashSet&lt;String> set){
+        if ( allZero(mat)){
+            ret = Math.min(ret, step);
+        }
+
+        if ( step == row * col){
+            return;
+        }
+
+        for( int k=0; k&lt;row*col; k++){
+
+            i = k/col;
+            j = k%col;
+
+            flip(i,j,row,col,mat);
+            String str = formatToString(mat);
+            if (set.contains(str)){
+                continue;
+            }
+
+            set.add(str);
+            dfs(i, j, row, col, mat, step+1, set);
+            flip(i,j,row,col,mat);
+            set.remove(str);
+        }
+    }
+
+    String formatToString(int[][] mat){
+        StringBuilder sb = new StringBuilder();
+
+        for(int i=0;i&lt;mat.length; i++){
+            for(int j=0; j&lt;mat[0].length; j++){
+                sb.append(mat[i][j]);
+            }
+        }
+        return sb.toString();
+    }
+
+    boolean allZero(int[][] mat){
+        for(int i=0; i&lt;mat.length; i++){
+            for( int j=0; j&lt;mat[0].length; j++){
+                if ( mat[i][j] == 1){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    void flip(int i, int j, int row, int col, int[][] mat){
+         mat[i][j] = mat[i][j] == 0 ? 1 : 0;
+
+        if ((i-1)>=0)   mat[i-1][j] = mat[i-1][j] == 0 ? 1 : 0;
+        if ((i+1)&lt;row)  mat[i+1][j] = mat[i+1][j] == 0 ? 1 : 0;
+        if ((j-1)>=0)   mat[i][j-1] = mat[i][j-1] == 0 ? 1 : 0;
+        if ((j+1)&lt;col)  mat[i][j+1] = mat[i][j+1] == 0 ? 1 : 0;
+    }
+}
+
+</code></pre>
+</body>
