@@ -8,6 +8,11 @@
 <pre><code>
 Solution I: DFS 2D->1D permutation （TLE）
 
+3*3 2D matrix = 1*9 1D matrix
+Doing permutation to a 1*9 matrix, time complexity is n*n! = 3.2*10^6
+[10^6, 10^7]都可能会TLE
+
+
   class Solution {
       int ret = Integer.MAX_VALUE;
 
@@ -126,6 +131,94 @@ class Solution {
         if ((i+1)&lt;row)  mat[i+1][j] = mat[i+1][j] == 0 ? 1 : 0;
         if ((j-1)>=0)   mat[i][j-1] = mat[i][j-1] == 0 ? 1 : 0;
         if ((j+1)&lt;col)  mat[i][j+1] = mat[i][j+1] == 0 ? 1 : 0;
+    }
+}
+
+Solution III: BFS + Hashset去重  pass
+Time complexity for 3*3 matrix
+(8 + 7*8 + 6*7 + 5*6 + 4*5 + 3*4 + 2*3 + 1*2 ) *9 = 1584。 比DFS快1000倍
+
+
+class Solution {
+
+    public int minFlips(int[][] mat) {
+
+        Queue&lt;int[][]> q = new LinkedList&lt;>();
+        HashSet&lt;String> set = new HashSet&lt;>();
+        int step = 0;
+        int row = mat.length;
+        int col = mat[0].length;
+
+        q.add(mat);
+        set.add(convertToString(mat));
+
+        while( !q.isEmpty()){
+            int size = q.size();
+            for(int k=0; k&lt;size; k++){
+                int[][] n = q.poll();
+
+                if (allZero(n)){
+                    return step;
+                }
+
+                for(int i=0; i&lt;row;i++){
+                    for(int j=0; j&lt;col; j++){
+                        int[][] newMat = calc(i,j,row, col, n);
+
+                        if ( set.contains(convertToString(newMat))){
+                            continue;
+                        }
+
+                        set.add(convertToString(newMat));
+                        q.add(newMat);
+                    }
+                }
+
+            }
+            step++;
+        }
+        return -1;
+    }
+
+    boolean allZero(int[][] mat){
+        for(int i=0; i&lt;mat.length; i++){
+            for( int j=0; j&lt;mat[0].length; j++){
+                if ( mat[i][j] == 1){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+     int[][] calc(int i, int j, int row, int col, int[][] mat){
+         int[][] newMat = new int[row][col];
+
+        for(int m=0; m&lt;mat.length; m++){
+            for( int n=0; n&lt;mat[0].length; n++){
+               newMat[m][n] = mat[m][n];
+            }
+        }
+
+        newMat[i][j] = newMat[i][j] == 0 ? 1 : 0;
+
+        if ((i-1)>=0) newMat[i-1][j] = newMat[i-1][j] == 0 ? 1 : 0;
+        if ((i+1)&lt;row)  newMat[i+1][j] = newMat[i+1][j] == 0 ? 1 : 0;
+        if ((j-1)>=0) newMat[i][j-1] = newMat[i][j-1] == 0 ? 1 : 0;
+        if ((j+1)&lt;col) newMat[i][j+1] = newMat[i][j+1] == 0 ? 1 : 0;
+
+        return newMat;
+    }
+
+    String convertToString(int[][] mat){
+
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i&lt;mat.length; i++){
+            for( int j=0; j&lt;mat[0].length; j++){
+                sb.append(mat[i][j]);
+            }
+        }
+        return sb.toString();
     }
 }
 
