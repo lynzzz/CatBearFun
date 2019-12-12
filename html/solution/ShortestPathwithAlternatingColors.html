@@ -1,0 +1,202 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+解题要点：
+1. 建图的时候把颜色带上。  HashMap<Integer, List<int[]>>， 第二个参数存颜色。
+2. HashSet去重的时候也得把颜色带上， 没有想出来这个，有些test case过不去，骚套路！
+3. 图里面的最短路径，优先考虑用BFS求解，DFS有可能爆栈或者超时。
+
+Try I: DFS without hashet, 解法是错误的， 1<->2 永远走不出来，死循环。
+class Solution {
+    int ret = Integer.MAX_VALUE;
+
+    public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edges) {
+        HashMap<Integer, List<int[]>> m = new HashMap<>();
+        for( int i=0; i<n; i++){
+            m.put(i, new ArrayList<int[]>());
+        }
+
+        for(int[] redEdge : red_edges){
+            int from = redEdge[0];
+            int to = redEdge[1];
+            m.get(from).add(new int[]{to, 0});  // 0 is red
+        }
+
+        for(int[] blueEdge : blue_edges){
+            int from = blueEdge[0];
+            int to = blueEdge[1];
+            m.get(from).add(new int[]{to, 1});
+        }
+
+        int[] ans = new int[n];
+        ans[0] = 0;
+
+        for( int i=1; i&lt;n; i++){
+            dfs(0, i, -1, m, 0);
+            ans[i] = ret == Integer.MAX_VALUE ? -1: ret;
+            ret = Integer.MAX_VALUE;
+        }
+        return ans;
+    }
+
+    void dfs(int cur, int target, int curColor, HashMap&lt;Integer, List&lt;int[]>> m, int step){
+        if ( cur == target){
+            ret = Math.min(step, ret);
+            return;
+        }
+
+        if ( m.get(cur).size() == 0){
+            return;
+        }
+
+        for(int[] i : m.get(cur)){
+
+            int nextColor = i[1];
+            if ( nextColor == curColor){
+                continue;
+            }
+
+            dfs(i[0], target, nextColor, m, step+1);
+        }
+    }
+}
+
+try II : DFS + Hashset, hashset里面没有存颜色，有testcase过不了，因为一个点，可以红边指向它，也可以蓝边指向它，如果过了一次就不在访问，
+就会让一个点不同颜色边过两次的解法给滤掉。
+class Solution {
+    int ret = Integer.MAX_VALUE;
+
+    public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edges) {
+        HashMap&lt;Integer, List&lt;int[]>> m = new HashMap&lt;>();
+        for( int i=0; i&lt;n; i++){
+            m.put(i, new ArrayList&lt;int[]>());
+        }
+
+        for(int[] redEdge : red_edges){
+            int from = redEdge[0];
+            int to = redEdge[1];
+            m.get(from).add(new int[]{to, 0});  // 0 is red
+        }
+
+        for(int[] blueEdge : blue_edges){
+            int from = blueEdge[0];
+            int to = blueEdge[1];
+            m.get(from).add(new int[]{to, 1});
+        }
+
+        int[] ans = new int[n];
+        ans[0] = 0;
+
+        for( int i=1; i&lt;n; i++){
+            dfs(0, i, -1, m, new HashSet&lt;Integer>(), 0);
+            ans[i] = ret == Integer.MAX_VALUE ? -1: ret;
+            ret = Integer.MAX_VALUE;
+        }
+        return ans;
+    }
+
+    void dfs(int cur, int target, int curColor, HashMap&lt;Integer, List&lt;int[]>> m, HashSet&lt;Integer> set, int step){
+        if ( cur == target){
+            ret = Math.min(step, ret);
+            return;
+        }
+
+        if ( m.get(cur).size() == 0){
+            return;
+        }
+
+        for(int[] i : m.get(cur)){
+
+            int node = i[0];
+            int color = i[1];
+
+            if ( node == cur){
+                continue;
+            }
+
+            if ( set.contains(node)){
+                continue;
+            }
+
+            if ( color == curColor){
+                continue;
+            }
+
+            set.add(node);
+            dfs(node, target, color, m, set, step+1);
+            set.remove(node);
+        }
+    }
+}
+
+try III : DFS + HashSet 记录点+颜色 ： TLE
+class Solution {
+    int ret = Integer.MAX_VALUE;
+
+    public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edges) {
+        HashMap&lt;Integer, List&lt;int[]>> m = new HashMap&lt;>();
+        for( int i=0; i&lt;n; i++){
+            m.put(i, new ArrayList&lt;int[]>());
+        }
+
+        for(int[] redEdge : red_edges){
+            int from = redEdge[0];
+            int to = redEdge[1];
+            m.get(from).add(new int[]{to, 0});  // 0 is red
+        }
+
+        for(int[] blueEdge : blue_edges){
+            int from = blueEdge[0];
+            int to = blueEdge[1];
+            m.get(from).add(new int[]{to, 1});
+        }
+
+        int[] ans = new int[n];
+        ans[0] = 0;
+
+        for( int i=1; i&lt;n; i++){
+            dfs(0, i, -1, m, new HashSet&lt;String>(), 0);
+            ans[i] = ret == Integer.MAX_VALUE ? -1: ret;
+            ret = Integer.MAX_VALUE;
+        }
+        return ans;
+    }
+
+    void dfs(int cur, int target, int curColor, HashMap&lt;Integer, List&lt;int[]>> m, HashSet&lt;String> set, int step){
+        if ( cur == target){
+            ret = Math.min(step, ret);
+            return;
+        }
+
+        if ( m.get(cur).size() == 0){
+            return;
+        }
+
+        for(int[] i : m.get(cur)){
+
+            int node = i[0];
+            int color = i[1];
+
+            if ( color == curColor){
+                continue;
+            }
+
+            String visited = String.valueOf(node) + String.valueOf(color);
+            if ( set.contains(visited)){
+                continue;
+            }
+
+            set.add(visited);
+            dfs(node, target, color, m, set, step+1);
+            set.remove(visited);
+        }
+    }
+}
+
+</code></pre>
+</body>
