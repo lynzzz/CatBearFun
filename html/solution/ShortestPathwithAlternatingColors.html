@@ -12,13 +12,15 @@
 3. 图里面的最短路径，优先考虑用BFS求解，DFS有可能爆栈或者超时。
 
 Try I: DFS without hashet, 解法是错误的， 1<->2 永远走不出来，死循环。
+n = 3, red_edges = [[0,1],[0,2]], blue_edges = [[1,0]]
+
 class Solution {
     int ret = Integer.MAX_VALUE;
 
     public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edges) {
-        HashMap<Integer, List<int[]>> m = new HashMap<>();
-        for( int i=0; i<n; i++){
-            m.put(i, new ArrayList<int[]>());
+        HashMap&lt;Integer, List&lt;int[]>> m = new HashMap&lt;>();
+        for( int i=0; i&lt;n; i++){
+            m.put(i, new ArrayList&lt;int[]>());
         }
 
         for(int[] redEdge : red_edges){
@@ -194,6 +196,80 @@ class Solution {
             set.add(visited);
             dfs(node, target, color, m, set, step+1);
             set.remove(visited);
+        }
+    }
+}
+
+Solution: BFS 只需要做一次就可以，因为最先找到的点必然是最小路径
+class Solution {
+
+    public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edges) {
+        HashMap&lt;Integer, List&lt;int[]>> m = new HashMap&lt;>();
+        for( int i=0; i&lt;n; i++){
+            m.put(i, new ArrayList&lt;int[]>());
+        }
+
+        for(int[] redEdge : red_edges){
+            int from = redEdge[0];
+            int to = redEdge[1];
+            m.get(from).add(new int[]{to, 0});  // 0 is red
+        }
+
+        for(int[] blueEdge : blue_edges){
+            int from = blueEdge[0];
+            int to = blueEdge[1];
+            m.get(from).add(new int[]{to, 1});
+        }
+
+        int[] ans = new int[n];
+        Arrays.fill(ans, Integer.MAX_VALUE);
+        ans[0] = 0;
+
+        bfs(m, ans);
+
+        for( int i=0; i&lt;n; i++){
+            ans[i] = ans[i] == Integer.MAX_VALUE? -1:ans[i];
+        }
+
+        return ans;
+    }
+
+    void bfs(HashMap&lt;Integer, List&lt;int[]>> m, int[] ret){
+        Queue&lt;int[]> q = new LinkedList&lt;>();
+        HashSet&lt;String> set = new HashSet&lt;>();
+
+        set.add(String.valueOf(0) + String.valueOf(-1));
+        q.add(new int[] {0, -1});
+        int step = 0;
+
+        while( !q.isEmpty()){
+            int size = q.size();
+            step++;
+            for(int i=0; i&lt;size; i++){
+                int[] n = q.poll();
+                int node = n[0];
+                int color = n[1];
+
+                for(int[] neighbor : m.get(node)){
+                    int neighborNode = neighbor[0];
+                    int neighborColor = neighbor[1];
+
+                    if (color==neighborColor){
+                        continue;
+                    }
+
+                    String str = String.valueOf(neighborNode) + String.valueOf(neighborColor);
+
+                    if ( set.contains(str)){
+                        continue;
+                    }
+
+                    ret[neighborNode] = Math.min(step, ret[neighborNode]);
+
+                    set.add(str);
+                    q.add(neighbor);
+                }
+            }
         }
     }
 }
