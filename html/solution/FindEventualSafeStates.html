@@ -52,55 +52,53 @@ class Solution {
 Time complexity O(n^2) Time exceeds limit
 
 
-Solution II : 有向图找环 DFS染色法
-
-
+Solution II : 有向图找环 DFS三色法
 class Solution {
-
-
     public List&lt;Integer> eventualSafeNodes(int[][] graph) {
 
-        List&lt;Integer> ret = new ArrayList&lt;Integer>();
+        List&lt;Integer> ret = new ArrayList&lt;>();
         int[] color = new int[graph.length];
 
-        for( int i=0; i&lt;graph.length; i++){
-
-            dfs(i, graph, color);
-            if ( color[i] == 2){
+        for(int i=0; i&lt;graph.length; i++){
+            if ( dfs(graph, i, color)){
                 ret.add(i);
             }
-
         }
 
-
         return ret;
-
     }
 
-    public void dfs( int start, int[][] graph, int[] color){
+    // 0: unvisited, 1:unsafe, 2 safe
+    // dfs: returns true if start is safe
+    boolean dfs(int[][] graph, int start, int[] color){
+        if ( color[start] == 1){
+            return false;
+        }
 
-        if ( color[start] != 0){
-            return;
+        if ( color[start] == 2){
+            return true;
         }
 
         color[start] = 1;
-        for( int i : graph[start]){
-            dfs(i, graph, color);
-            if ( color[i] == 1){
-                return;
+
+        for(int neighbor: graph[start]){
+            if ( !dfs(graph, neighbor, color)){
+                return false;
             }
         }
 
         color[start] = 2;
+        return true;
     }
 }
 
 Time complexity :   O(V+E)   <br>
 Space complexity :  O(N)   <br>
 
-有向图的三色法: 0表示未访问， 1表示访问中间状态，2表示访问终结状态
-递归中，如遇到访问过的点，立马返回。 如遇到没有访问过的点，标记为1，然后DFS广播，如果DFS返回值为1，则说明有环，马上返回，则一串递归链节点都是1，都在环内。如果DFS广播能顺利走完而没有返回，则说明最下层的点无环，把最下面的
-点标记成2，然后回到上一层，继续递归判断上一层的点。
+1. 有向图的三色法: 0表示未访问， 1表示访问中间状态，2表示访问终结状态
+2. DFS返回true如果这个点是安全的。
+3. 下面层全部安全，上面层才安全。下面层有一个不安全，上面层就不安全。
+4. 应用范围不清楚！！！
 
 
 </code></pre>
