@@ -7,9 +7,7 @@
 <body>
 <pre><code>
 
-solution I: DFS是一路走到底然后在回溯， 这道题目因为可以一直往下走过了target以后在往回走，所以无法确定底在哪里。
-自己越估计的底对数值较大的target会产生stackoverflow, 所以只能用BFS
-
+solution I: DFS是一路走到底然后在回溯， 这道题目因为可以一直往下走过了target以后在往回走，所以无法确定底在哪里。自己越估计的底对数值较大的时候会stackoverflow.
 class Solution {
     int ret = Integer.MAX_VALUE;
     public int racecar(int target) {
@@ -19,10 +17,7 @@ class Solution {
     }
 
     void dfs(int target, int pos, int speed, int step){
-      // target范围是 [1-10000], 用一个经验数据1.3*target， 递归深度13000次会导致stack overflow。
-        if ( pos > 1.3 * target){
-           return;
-        }
+      // 此处无法写出递归结束的条件，所以不能用
 
         if ( target == pos){
             if ( step &lt; ret){
@@ -61,17 +56,15 @@ class Solution {
                     return step;
                 }
 
-                String str1 = convertToString(pos+speed, speed*2); // pruning
+                String str1 = convertToString(pos+speed, speed*2);
 
-                if ( !set.contains(str1) &&  (pos + speed) &lt; 1.3* target && (pos + speed) > 0 ){
-                  // 1.3 is tentative number for pruning， 1.3*10000 = 13000次处理没有问题
-
+                if ( !set.contains(str1) &&  (pos + speed) &lt; 1.3* target && (pos + speed) > 0 ){   // 1.3 is tentative number for pruning
                     q.add(new int[]{pos+speed, speed*2});
                     set.add(str1);
                 }
 
 
-                String str2 = convertToString(pos,  speed>0? -1: 1); // pruning
+                String str2 = convertToString(pos,  speed>0? -1: 1);
                 if (!set.contains(str2)){
                     q.add(new int[]{pos, speed>0? -1: 1});
                     set.add(str2);
