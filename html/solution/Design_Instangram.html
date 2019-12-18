@@ -1,0 +1,54 @@
+html>
+
+<body>
+
+
+
+<pre><code>
+
+  <li><a href="https://www.educative.io/courses/grokking-the-system-design-interview/m2yDVZnQ8lG">Designing Instagram (grokking system design)</a>  </li>
+
+Table schema:
+User table
+id          int PK
+name        varchar(25)
+email       varchar(30)
+updatedAt   timestamp
+createdAt   timestamp
+
+photo table
+id        int  PK
+userId    int  FK
+title     varchar(50)
+createdAt timeStamp
+ImagePath varChar(50)
+
+
+frinedship table
+id    int PK
+from  int
+to    int
+
+Generate News feed for sam whose user id is 100
+
+select photo.title photo.userid from
+(select * from friendship where from = id) as f
+left join photo
+on f.to = photo.userId
+
+
+
+
+
+
+
+</code></pre>
+
+
+
+
+</body>
+
+
+
+</html>
