@@ -1,5 +1,4 @@
-html>
-
+<html>
 <body>
 
 
@@ -29,18 +28,57 @@ id    int PK
 from  int
 to    int
 
-Generate News feed for sam whose user id is 100
+Generate News feed for sam whose user id is 1
 
-select photo.title photo.userid from
-(select * from friendship where from = id) as f
+select photo.title, photo.user_id, photo.createdAt from
+(select * from friendship where from_user = 1) as f
 left join photo
-on f.to = photo.userId
+on f.to_user = photo.user_id
+order by photo.createdAt;
 
 
 
 
+// Sql statment to creat table and insert value
+ create database ins  // create database
+ use ins// use database
+
+ // create user table
+create table user(id int not null auto_increment, name varchar(50) not null, email varchar(50), primary key (id));
+ // insert value;
+ insert into user (name, email) values ("Lyn", "lzengzeng22@gmail.com");
+insert into user (name, email) values ("Mark", "mark@gmail.com");
+insert into user (name, email) values ("Jay", "mark@gmail.com");
+insert into user (name, email) values ("NanXia", "Nan@gmail.com");
+insert into user (name, email) values ("Jing", "Jing@gmail.com");
+
+// create friendship table;
+create table friendship(id int not null auto_increment, from_user int not null, to_user int not null, primary key (id));
+insert into friendship (from_user, to_user) values (1, 2);
+insert into friendship (from_user, to_user) values (1, 3);
+insert into friendship (from_user, to_user) values (1, 3);
+insert into friendship (from_user, to_user) values (2, 5);
+
+// create photo table
+create table photo(id int not null auto_increment primary key, user_id int not null, title varchar(100) not null, image_path varchar(50) not null, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+insert into photo (user_id, title, image_path) values (3, "Japan photo", "Azure/Jay");
+insert into photo (user_id, title, image_path) values (2, "California San Diego photo", "Azure/Mark");
+insert into photo (user_id, title, image_path) values (3, "Cancun trip", "Azure/Jay");
 
 
+
+
+// Query to get news feed of user 1's friends;
+
+select photo.title, photo.user_id, photo.createdAt from
+(select * from friendship where from_user = 1) as f
+left join photo
+on f.to_user = photo.user_id
+order by photo.createdAt;
+
+
+// Optimization to create index on photo id and photo creation time.
+create index idx_on_photo_id_and_creationTime on photo(id, createdAt);
 
 </code></pre>
 
