@@ -6,6 +6,36 @@
 <pre><code>
 
   <li><a href="https://www.educative.io/courses/grokking-the-system-design-interview/m2yDVZnQ8lG">Designing Instagram (grokking system design)</a>  </li>
+Storage for photo:
+say everyday 2m photos created and average photo size 200kb, total storage is 2m * 200kB = 400 * 10^9Byte = 400GB.
+one day we need 400GB disk, and one month, we need 12TB disk, so photos cannot be stored in one machine, what we need is
+distributed file storage such as S3.
+
+storeage for table
+image table:
+id 4byte + user id 4byte + title 50byte + createdAt 50 byte + image path = 256Byte = 364 Byte
+364Byte * 2m = 0.7G per day, 21GB per month. 240GB per year.
+
+user table:
+id 4Byte + name 20byte + email 50byte + created At 4Byte + last login 4Byte = 82byte
+say there is 500M user. total size = 82 Byte * 500M = 40GB
+
+Friendship table:
+id 4byte, from 4 byte, to 4 byte, total 12byte
+500M users, each user follow 100 user, total = 500M * 100 * 12byte = 0.6TB.
+
+QPS:
+say there are 500M user, 1M daily active user, each user does 10 read operation per day.
+say there are 500M daily active user, each user does 1 write operation per day.
+
+Read QPS = 1M * 10/86400 = 100.
+Write QPS = 10
+
+Bandwidth:
+bandwidth = QPS * average size/per request or response
+if average size per response 2M
+
+outgoing bandwidth = 100 * 2M = 200M/s
 
 Table schema:
 User table
