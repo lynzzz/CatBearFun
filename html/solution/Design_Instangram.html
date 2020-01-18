@@ -6,6 +6,8 @@
 <pre><code>
 
   <li><a href="https://www.educative.io/courses/grokking-the-system-design-interview/m2yDVZnQ8lG">Designing Instagram (grokking system design)</a>  </li>
+1. Storage
+
 Storage for photo:
 say everyday 2m photos created and average photo size 200kb, total storage is 2m * 200kB = 400 * 10^9Byte = 400GB.
 one day we need 400GB disk, and one month, we need 12TB disk, so photos cannot be stored in one machine, what we need is
@@ -109,6 +111,70 @@ order by photo.createdAt;
 
 // Optimization to create index on photo id and photo creation time.
 create index idx_on_photo_id_and_creationTime on photo(id, createdAt);
+
+2. reliability and Redundency
+  1. Problem with one single storage server: Single point failure
+  2. Solution: creating replica,
+  3. when one server fails, the trafic will be routed to the remaining ones, which is called fail-over
+
+
+3. Data Partition: (Horizontal partition, 横着分)
+  Partition phto table:
+  Approach 1: partition by user ID. say you have 10 servers, server number can be obtained by user_id%10. that way, all photos of a user
+              are saved in one partition. In partition photo table, primary photo id will be different from original one and is auto-incremented.
+
+          for example, partition the photo table by user ID, userID%2
+          original photo table:
+          photoID     userId     content
+             1           201      dog
+             2           201      cat
+             3           200      tree
+             4           200      people
+             5           201      male
+             6           202      female
+
+          partition table 1                                 partition table 2
+          photoID        userID  content                    photoID        userID    content
+             1            200      tree                       1               201      dog
+             2            200      people                     2               201      cat
+             3            202      female                     3               201      male
+
+
+  Drawback: a. QPS: hot user, lady gaga, a lot of user see her picture, QPS load of that partition is high.
+            b. Storage: if a user has too many pictures, the distribution is not uniform.
+            c. Single point failure: if this partition is down, all photos of some user will be unavailable.
+
+  Data Migration: old data, each entry in photo table has user_id, it maps to a partition, that partition auto increment and add the new entry in.
+                  new generated data: new data also has user_id, that maps to a partition, do auto_increment in that shard.
+                  example: user id 700 content aloha, it maps to shard 1.
+                  photoId    userID  content
+                     4        700     aloha.
+
+
+
+   Approach II: partition by photoID:
+           old photo entry can be mapped to the crosponding shard, but the challenge is new photo doesn't come with an photo ID, you don't know which shard it maps to. We need to have a dedicated database generating global photo id,
+           we can set up a database table to generate auto-incremented photo ID.
+
+           And then you map global photo id to a shard, add the entry into the shard key.
+           The shard table should not use auto-incremented ID as primary ID, it should use global photo id as primary key.
+
+               global ID table
+           Image ID:
+           1
+           2
+           3
+           4
+           5
+           6
+
+           parition 1                                            partition 2
+           photo ID   userID    content              photo ID       user ID       content
+            1          201         dog                  2             201          cat
+            3          200         tree                 4             200          table
+            5          201         male                 6             202          female
+
+  Follow up Question: Single point failure on this key-generation db
 
 </code></pre>
 
