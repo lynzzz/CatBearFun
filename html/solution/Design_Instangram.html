@@ -100,13 +100,19 @@ insert into photo (user_id, title, image_path) values (3, "Cancun trip", "Azure/
 
 
 
-// Query to get news feed of user 1's friends;
+// Query to get user 1 的 News feed
 
 select photo.title, photo.user_id, photo.createdAt from
 (select * from friendship where from_user = 1) as f
 left join photo
 on f.to_user = photo.user_id
 order by photo.createdAt;
+
+此处还可以用NOSQL DB 来存用户和照片的关系, 哪个用户拥有哪些照片, 这样的话就不用像上面那样sql语句做join between Photo table和user table做Join
+key: userID
+value: List of photo ID the user owns。
+2->{100,101}
+3->{102,103}
 
 
 // Optimization to create index on photo id and photo creation time.
@@ -118,7 +124,15 @@ create index idx_on_photo_id_and_creationTime on photo(id, createdAt);
   3. when one server fails, the trafic will be routed to the remaining ones, which is called fail-over
 
 
-3. Data Partition: (Horizontal partition, 横着分)
+
+3.Web server optimization:
+  Knowledge: Web server has connection limit, which I think is QPS limit, typically one webserver can handle 1000 QPS.
+
+  Write goes to disk, it is slow. "read" cannot be serverd if web server is busy with all write requests.
+  solution: Have dedicated servers for read and different servers for write that update doesn't hog the web server.
+
+
+4. Data Partition: (Horizontal partition, 横着分)
   Partition phto table:
   Approach 1: partition by user ID. say you have 10 servers, server number can be obtained by user_id%10. that way, all photos of a user
               are saved in one partition. In partition photo table, primary photo id will be different from original one and is auto-incremented.
@@ -175,6 +189,7 @@ create index idx_on_photo_id_and_creationTime on photo(id, createdAt);
             5          201         male                 6             202          female
 
   Follow up Question: Single point failure on this key-generation db
+
 
 </code></pre>
 
