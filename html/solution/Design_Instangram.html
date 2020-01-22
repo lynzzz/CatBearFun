@@ -5,7 +5,10 @@
 
 <pre><code>
 
-  <li><a href="https://www.educative.io/courses/grokking-the-system-design-interview/m2yDVZnQ8lG">Designing Instagram (grokking system design)</a>  </li>
+  <li><a href="https://www.educative.io/courses/grokking-the-system-design-interview/m2yDVZnQ8lG">grokking system design solution</a>  </li>
+  <li><a href="https://www.acecodeinterview.com/intro/instagram.html#%E8%B5%84%E6%BA%90%E4%BC%B0%E7%AE%97-back-of-the-envelope-calculation-optional">Ace system design interview(Who claims to be Interviewer from FLAG)</a>  </li>
+
+
 1. Storage
 
 Storage for photo:
@@ -189,7 +192,16 @@ create index idx_on_photo_id_and_creationTime on photo(id, createdAt);
             5          201         male                 6             202          female
 
   Follow up Question: Single point failure on this key-generation db
+  1. Replica is not the solution, since there is no guanrantee two dbs are synced at only time. if one db is down, other db may or may not be synced.
+     if one number is wrong, user lose data.
+     Solution I: is to have two DBs one generating even number whereas the other generating odd number. And have one load balancer route the requests
+     to dbs in round-robin manner. If one db is down, the other db keeps generating number and it is possible one db has more entry than other db,
+     but this will not cause any issue.
 
+  2. How do you handle the future growth of the key, it is gonna be very large.
+     Solution: We can have multiple [logical partitions] reside on a single physical database server, since each database server can have
+     multiple database instances on it.  So whenever we feel that a particular database server has a lot of data, we can migrate some logical partitions from it to another server,
+     and we maintain a config file maping from logic partitions to database server and update it when we move partition. This enable us move partition easier.
 
 </code></pre>
 
