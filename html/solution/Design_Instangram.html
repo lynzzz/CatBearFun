@@ -93,6 +93,9 @@ insert into friendship (from_user, to_user) values (1, 2);
 insert into friendship (from_user, to_user) values (1, 3);
 insert into friendship (from_user, to_user) values (1, 3);
 insert into friendship (from_user, to_user) values (2, 5);
+insert into friendship (from_user, to_user) values (2, 3);
+insert into friendship (from_user, to_user) values (4, 3);
+
 
 // create photo table
 create table photo(id int not null auto_increment primary key, user_id int not null, title varchar(100) not null, image_path varchar(50) not null, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
@@ -116,6 +119,42 @@ key: userID
 value: List of photo ID the user owns。
 2->{100,101}
 3->{102,103}
+
+<img src="../../img/push.png" width="800px" height="800px">
+
+Push mode:
+When someone publishes a photo, it is going to fan out
+the message to all its followers. How to do it?
+We create a feed table for user.
+
+Schema;
+feedtable
+id int not null auto_increment
+userId
+photoId
+
+sql statement to create table:
+create table feed(id int not null auto_increment, userId int not null, photoId int not null, primary key (id));
+
+When someone uploads a photo, say Jay uploads a photo
+insert into photo (user_id, title, image_path) values (3, "Japan photo", "Azure/Jay");
+
+It is going to fan out this message to Jay's followers, in this case it is me, mark and Nan.
+insert into feed(userId, photoId) values(1, 1);
+insert into feed(userId, photoId) values(2, 1);
+insert into feed(userId, photoId) values(4, 1);
+
+and then mark uploads the picture
+insert into photo (user_id, title, image_path) values (2, "California San Diego photo", "Azure/Mark");
+It is going to fanout the message to Mark's friend, which is Lyn
+insert into feed(userId, photoId) values(1, 4);
+
+Then, you want to Lyn's news feed, just do a joing between news table and photo Table
+select title, image_path, createdAt from
+(select photoID from feed where userId = 3) as f
+left join photo
+on f.photoId = photo.id
+order by photo.createdAt desc;
 
 
 // Optimization to create index on photo id and photo creation time.
