@@ -129,7 +129,7 @@ We create a feed table for user.
 
 Schema;
 feedtable
-id int not null auto_increment
+id int not null auto_increment primary key
 userId
 photoId
 
@@ -137,21 +137,21 @@ sql statement to create table:
 create table feed(id int not null auto_increment, userId int not null, photoId int not null, primary key (id));
 
 When someone uploads a photo, say Jay uploads a photo
-insert into photo (user_id, title, image_path) values (3, "Japan photo", "Azure/Jay");
+insert into photo (user_id, title, image_path) values (3, "Japan photo", "Azure/Jay"); it generates photo ID 1
 
-It is going to fan out this message to Jay's followers, in this case it is me, mark and Nan.
+It is going to fan out the photo ID to Jay's followers feedtable, in this case it is me, mark and Nan.
 insert into feed(userId, photoId) values(1, 1);
 insert into feed(userId, photoId) values(2, 1);
 insert into feed(userId, photoId) values(4, 1);
 
 and then mark uploads the picture
-insert into photo (user_id, title, image_path) values (2, "California San Diego photo", "Azure/Mark");
-It is going to fanout the message to Mark's friend, which is Lyn
+insert into photo (user_id, title, image_path) values (2, "California San Diego photo", "Azure/Mark"); the crosponding photo id is 4
+It is going to fanout the photoID to Mark's follower's news feedtable, which is Lyn
 insert into feed(userId, photoId) values(1, 4);
 
-Then, you want to Lyn's news feed, just do a joing between news table and photo Table
+Then, you go to Lyn's news feed, just do a join between news table and photo Table
 select title, image_path, createdAt from
-(select photoID from feed where userId = 3) as f
+(select photoID from feed where userId = 1) as f
 left join photo
 on f.photoId = photo.id
 order by photo.createdAt desc;
