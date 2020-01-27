@@ -153,6 +153,28 @@ Question:
 爱思系统设计说，这个表里一定要加creation time用来排序，但我认为这个表里产生的photo id和
 最终要和photo table做join,photo table里面有creation time, 那个时候可以排序，为撒feedtable还要存一次？
 
+回答说：
+Feed table先按照creation timestamp sort, 取前N位，在和photo table做 join 比
+Feed table直接和photo table做Join, 在sort, 在取前N位要快。
+
+更快的方式是de-normalize (小表变大表, 把Photo table的column加进来到feedtable里)， 这样就不用join了。
+pro: 不用Join, latency低
+Con: 需要占用更多的存储空间。
+
+Feedtable
+feed_id
+user_id
+photo_id
+title     varchar(50)
+createdAt timeStamp
+ImagePath varChar(50)
+
+Sql statement:
+select * from feed where user_id = 1
+order by createdAt DESC
+limit 40
+
+
 sql statement to create table:
 create table feed(id int not null auto_increment, userId int not null, photoId int not null, primary key (id));
 
