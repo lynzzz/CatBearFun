@@ -120,12 +120,28 @@ value: List of photo ID the user owns。
 2->{100,101}
 3->{102,103}
 
+Pull mode:
+No need to create feed table.
+1. Get the users that I am following.
+select to_user from friendship where from_user = 1;
+
+2. Left join with photo table, and sort by creation date.
+select photo.title, photo.user_id, photo.createdAt from
+(select * from friendship where from_user = 1) as f
+left join photo
+on f.to_user = photo.user_id
+order by photo.createdAt;
 <img src="../../img/push.png" width="800px" height="800px">
+
 
 Push mode:
 When someone publishes a photo, it is going to fan out
-the message to all its followers. How to do it?
-We create a feed table for user.
+the message to all users that are following me. How to do it?
+
+1. Get user's followers
+select from_user from friendship where to = 1.
+
+2. create a feed table for user. add an entry to feed table for all follower.
 
 Schema;
 feedtable
@@ -136,21 +152,28 @@ photoId
 sql statement to create table:
 create table feed(id int not null auto_increment, userId int not null, photoId int not null, primary key (id));
 
+Example:
 When someone uploads a photo, say Jay uploads a photo
 insert into photo (user_id, title, image_path) values (3, "Japan photo", "Azure/Jay"); it generates photo ID 1
 
-It is going to fan out the photo ID to Jay's followers feedtable, in this case it is me, mark and Nan.
+It is going to fan out the photo ID 1 to Jay's followers feedtable
+select from_user from friendship where to_user = 3;  result is 1,2,4
+in this case, which are me, mark and Nan.
+
 insert into feed(userId, photoId) values(1, 1);
 insert into feed(userId, photoId) values(2, 1);
 insert into feed(userId, photoId) values(4, 1);
 
 and then mark uploads the picture
 insert into photo (user_id, title, image_path) values (2, "California San Diego photo", "Azure/Mark"); the crosponding photo id is 4
-It is going to fanout the photoID to Mark's follower's news feedtable, which is Lyn
+It is going to fanout the photoID to Mark's follower's news feedtable,
+select from_user from friendship where to_user = 2;  result is 1, which is Lyn
+
+need to add this message to lyn's feed table/
 insert into feed(userId, photoId) values(1, 4);
 
 Then, you go to Lyn's news feed, just do a join between news table and photo Table
-select title, image_path, createdAt from
+select title, image_path, createdAt, photo.user_id from
 (select photoID from feed where userId = 1) as f
 left join photo
 on f.photoId = photo.id
