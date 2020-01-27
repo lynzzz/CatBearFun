@@ -149,6 +149,10 @@ id int not null auto_increment primary key
 userId
 photoId
 
+Question:
+爱思系统设计说，这个表里一定要加creation time用来排序，但我认为这个表里产生的photo id和
+最终要和photo table做join,photo table里面有creation time, 那个时候可以排序，为撒feedtable还要存一次？
+
 sql statement to create table:
 create table feed(id int not null auto_increment, userId int not null, photoId int not null, primary key (id));
 
@@ -264,6 +268,19 @@ create index idx_on_photo_id_and_creationTime on photo(id, createdAt);
      Solution: We can have multiple [logical partitions] reside on a single physical database server, since each database server can have
      multiple database instances on it.  So whenever we feel that a particular database server has a lot of data, we can migrate some logical partitions from it to another server,
      and we maintain a config file maping from logic partitions to database server and update it when we move partition. This enable us move partition easier.
+
+API 接口设计
+Write(userID, image, description);
+Read(userID, Last_TimeStamp, page_count); //这些参数和access token都可以在http header里传过去
+不可能一次发完，feed太多了， 一次发部份，pagination的概念。第一次传入当前的timestamp, pagecount到后端要feed,
+后端返回feed的同时，更新最后一个feed的timestamp, 在发给你存在broswer的cookie里。 你往下拉的时候要第二页，
+http GET往后端发请求的时候，带着新发过来的timestamp，后端就从新的timestamp后面开始取，然后更新为最后一个feed的timestamp, 在发给你。
+存在broswer cookie里面。
+
+错误的做法是，传入last_feedIndex, pagecount. Example, 第一次传（0，20），读前20个，
+第二次传（21，20），读后面20个。这样写的问题是，用户的feed一直在增加，同一个feed的系数会不停的变化，
+这样读如果在第一次读和第二次读之间，用户的feed变化了，在feed的最前面会加入新的feed,这样就会产生错位。
+
 
 </code></pre>
 
