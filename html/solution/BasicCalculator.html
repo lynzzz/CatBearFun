@@ -12,48 +12,44 @@
 
 <pre><code>
 
-class Solution {
-    public int calculate(String s) {
-        if ( s == null || s.length() == 0) return 0;
+  class Solution {
+      public int calculate(String s) {
 
-        int sum = 0;
-        int sign = 1;
+          int sum = 0;
+          char sign = '+';
+          int number = 0;
+          Stack&lt;Integer> stack = new Stack&lt;>();
 
-        Stack<Integer> myStack = new Stack<>();
-        for( int i=0; i&lt;s.length(); i++){
-
-            char c = s.charAt(i);
-
-            if ( Character.isDigit(c)){
-                int start = i;
-                while( i&lt;s.length() && Character.isDigit(s.charAt(i))){
-                    i++;
-                }
-
-                int number = Integer.valueOf(s.substring(start, i));
-                sum =  sum + sign * number;
-                i--;
-            }else if ( c == ' '){
-                continue;
-            }else if ( c == '+'){
-                sign = 1;
-            }else if ( c == '-'){
-                sign = -1;
-            }else if ( c == '('){
-                myStack.push(sum);
-                myStack.push(sign);
-                sum = 0;
-                sign = 1;
-            }else if ( c == ')'){
-                int preSign = myStack.pop();
-                int preRet = myStack.pop();
-                sum = preRet + preSign * sum;
-            }
-        }
-
-        return sum;
-    }
-}
+          for( int i=0; i&lt;s.length(); i++){
+              char c = s.charAt(i);
+              if ( c == ' '){
+                  continue;
+              }else if ( c == '+'){
+                  sign = '+';
+              }else if ( c == '-'){
+                  sign = '-';
+              }else if ( Character.isDigit(c)){
+                  int saveStart = i;
+                  while( i&lt;s.length() &amp;&amp;p Character.isDigit(s.charAt(i))){
+                      i++;
+                  }
+                  number = Integer.valueOf(s.substring(saveStart, i));
+                  sum = sign == '+' ? sum + number: sum - number;
+                  i--;
+              }else if ( c == '('){
+                  stack.push(sum);
+                  stack.push(sign == '+'? 1 : 0);
+                  sum =0;
+                  sign = '+';
+              }else{
+                  char preSign = stack.pop() == 1 ? '+' : '-';
+                  int preNum = stack.pop();
+                  sum = preSign == '+' ? preNum + sum : preNum - sum;
+              }
+          }
+          return sum;
+      }
+  }
 
 </code></pre>
 
@@ -62,11 +58,21 @@ class Solution {
 
 
 
-<div class="comment">
-数据结构 ：用 Stack存叠加结果和符号<br>
-算法 ： 维持一个 sum and sign <br>
+算法 ：<br>
+维持一个 sum初始化为0 and sign初始化为‘+’ <br>
+遇到数字就更新sum <br>
+遇到符号就更新sign <br>
+遇到 '(' 就把当前的sum, sign 存入 stack, 然后重新初始化 sum=0 sign='+' <br>
+遇到‘)’就把之前的值弹出来，和当前值相加<br>
 
-遇到数字就更新sum,、遇到符号就更新sign，遇到 (, 就把当前的sum, sign 存入 stack, 然后重新初始化 sum, sign继续往前走， 遇到‘)’就把之前的值弹出来，和当前值相加<br>
+<br>
+code Note: 把数字扣出来的时候要考虑<br
+1.过界<br>
+2 下标一直在变， 不能用固定的c，要用s.charAt(i);<br>
+
+while( i&lt;s.length( &amp;&amp; character.isDigit(s.charAt(i)))){  <br>
+  i++;  <br>
+}  <br>
 
 
 
