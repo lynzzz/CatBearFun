@@ -328,6 +328,8 @@ http GET往后端发请求的时候，带着新发过来的timestamp，后端就
 第二次传（21，20），读后面20个。这样写的问题是，用户的feed一直在增加，同一个feed的系数会不停的变化，
 这样读如果在第一次读和第二次读之间，用户的feed变化了，在feed的最前面会加入新的feed,这样就会产生错位。
 
+Final Design:
+<img src="../../img/final.png" width="800px" height="800px">
 
 </code></pre>
 
