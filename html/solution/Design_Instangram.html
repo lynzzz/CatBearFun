@@ -5,7 +5,10 @@
 
 <pre><code>
 
-  <li><a href="https://www.educative.io/courses/grokking-the-system-design-interview/m2yDVZnQ8lG">Designing Instagram (grokking system design)</a>  </li>
+  <li><a href="https://www.educative.io/courses/grokking-the-system-design-interview/m2yDVZnQ8lG">grokking system design solution</a>  </li>
+  <li><a href="https://www.acecodeinterview.com/intro/instagram.html#%E8%B5%84%E6%BA%90%E4%BC%B0%E7%AE%97-back-of-the-envelope-calculation-optional">Ace system design interview(Who claims to be Interviewer from FLAG)</a>  </li>
+
+
 1. Storage
 
 Storage for photo:
@@ -90,6 +93,9 @@ insert into friendship (from_user, to_user) values (1, 2);
 insert into friendship (from_user, to_user) values (1, 3);
 insert into friendship (from_user, to_user) values (1, 3);
 insert into friendship (from_user, to_user) values (2, 5);
+insert into friendship (from_user, to_user) values (2, 3);
+insert into friendship (from_user, to_user) values (4, 3);
+
 
 // create photo table
 create table photo(id int not null auto_increment primary key, user_id int not null, title varchar(100) not null, image_path varchar(50) not null, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
@@ -113,6 +119,91 @@ key: userID
 value: List of photo ID the user owns。
 2->{100,101}
 3->{102,103}
+
+Pull mode:
+No need to create feed table.
+1. Get the users that I am following.
+select to_user from friendship where from_user = 1;
+
+2. Left join with photo table, and sort by creation date.
+select photo.title, photo.user_id, photo.createdAt from
+(select * from friendship where from_user = 1) as f
+left join photo
+on f.to_user = photo.user_id
+order by photo.createdAt;
+<img src="../../img/push.png" width="800px" height="800px">
+
+
+Push mode:
+When someone publishes a photo, it is going to fan out
+the message to all users that are following me. How to do it?
+
+1. Get user's followers
+select from_user from friendship where to = 1.
+
+2. create a feed table for user. add an entry to feed table for all follower.
+
+Schema;
+feedtable
+id int not null auto_increment primary key
+userId
+photoId
+
+Question:
+爱思系统设计说，这个表里一定要加creation time用来排序，但我认为这个表里产生的photo id和
+最终要和photo table做join,photo table里面有creation time, 那个时候可以排序，为撒feedtable还要存一次？
+
+回答说：
+Feed table先按照creation timestamp sort, 取前N位，在和photo table做 join 比
+Feed table直接和photo table做Join, 在sort, 在取前N位要快。
+
+更快的方式是de-normalize (小表变大表, 把Photo table的column加进来到feedtable里)， 这样就不用join了。
+pro: 不用Join, latency低
+Con: 需要占用更多的存储空间。
+
+Feedtable
+feed_id
+user_id
+photo_id
+title     varchar(50)
+createdAt timeStamp
+ImagePath varChar(50)
+
+Sql statement:
+select * from feed where user_id = 1
+order by createdAt DESC
+limit 40
+
+
+sql statement to create table:
+create table feed(id int not null auto_increment, userId int not null, photoId int not null, primary key (id));
+
+Example:
+When someone uploads a photo, say Jay uploads a photo
+insert into photo (user_id, title, image_path) values (3, "Japan photo", "Azure/Jay"); it generates photo ID 1
+
+It is going to fan out the photo ID 1 to Jay's followers feedtable
+select from_user from friendship where to_user = 3;  result is 1,2,4
+in this case, which are me, mark and Nan.
+
+insert into feed(userId, photoId) values(1, 1);
+insert into feed(userId, photoId) values(2, 1);
+insert into feed(userId, photoId) values(4, 1);
+
+and then mark uploads the picture
+insert into photo (user_id, title, image_path) values (2, "California San Diego photo", "Azure/Mark"); the crosponding photo id is 4
+It is going to fanout the photoID to Mark's follower's news feedtable,
+select from_user from friendship where to_user = 2;  result is 1, which is Lyn
+
+need to add this message to lyn's feed table/
+insert into feed(userId, photoId) values(1, 4);
+
+Then, you go to Lyn's news feed, just do a join between news table and photo Table
+select title, image_path, createdAt, photo.user_id from
+(select photoID from feed where userId = 1) as f
+left join photo
+on f.photoId = photo.id
+order by photo.createdAt desc;
 
 
 // Optimization to create index on photo id and photo creation time.
@@ -189,6 +280,28 @@ create index idx_on_photo_id_and_creationTime on photo(id, createdAt);
             5          201         male                 6             202          female
 
   Follow up Question: Single point failure on this key-generation db
+  1. Replica is not the solution, since there is no guanrantee two dbs are synced at only time. if one db is down, other db may or may not be synced.
+     if one number is wrong, user lose data.
+     Solution I: is to have two DBs one generating even number whereas the other generating odd number. And have one load balancer route the requests
+     to dbs in round-robin manner. If one db is down, the other db keeps generating number and it is possible one db has more entry than other db,
+     but this will not cause any issue.
+
+  2. How do you handle the future growth of the key, it is gonna be very large.
+     Solution: We can have multiple [logical partitions] reside on a single physical database server, since each database server can have
+     multiple database instances on it.  So whenever we feel that a particular database server has a lot of data, we can migrate some logical partitions from it to another server,
+     and we maintain a config file maping from logic partitions to database server and update it when we move partition. This enable us move partition easier.
+
+API 接口设计
+Write(userID, image, description);
+Read(userID, Last_TimeStamp, page_count); //这些参数和access token都可以在http header里传过去
+不可能一次发完，feed太多了， 一次发部份，pagination的概念。第一次传入当前的timestamp, pagecount到后端要feed,
+后端返回feed的同时，更新最后一个feed的timestamp, 在发给你存在broswer的cookie里。 你往下拉的时候要第二页，
+http GET往后端发请求的时候，带着新发过来的timestamp，后端就从新的timestamp后面开始取，然后更新为最后一个feed的timestamp, 在发给你。
+存在broswer cookie里面。
+
+错误的做法是，传入last_feedIndex, pagecount. Example, 第一次传（0，20），读前20个，
+第二次传（21，20），读后面20个。这样写的问题是，用户的feed一直在增加，同一个feed的系数会不停的变化，
+这样读如果在第一次读和第二次读之间，用户的feed变化了，在feed的最前面会加入新的feed,这样就会产生错位。
 
 
 </code></pre>
