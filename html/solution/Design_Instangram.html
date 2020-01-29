@@ -209,6 +209,31 @@ order by photo.createdAt desc;
 // Optimization to create index on photo id and photo creation time.
 create index idx_on_photo_id_and_creationTime on photo(id, createdAt);
 
+Push Mode:
+pro: latency is low, since you have a table store all the feed of a user.
+cons: Fan out for celebrity, it takes time and resources(async workers).
+
+How to solve celebrity problem using push mode.
+Hybrid mode: Push for regular user and pull for Celebrity.
+How ?
+
+<img src="../../img/hybrid.png" width="800px" height="800px">
+
+Create a seperate celebrity photo table for celebrity and do not fanout the photo id to feed table.
+When one user requests feed view, it gets feed from feed table and then get the users that he is following and join with celebrity photo table,
+Those two components merge together.
+
+
+Can we define a boundry for celebrity?
+No, because number of fans are changing and for those that are on the line, Fan out sometimes happen, sometimes doesn't happen, which causes
+problems.
+
+How to handle the user that becomes a celebrity very fast before the system recginized it as a celebrity?
+backfill his photo entry from photo table to celebrity photo table, and delete his fan-out feed in feed table.
+
+
+
+
 2. reliability and Redundency
   1. Problem with one single storage server: Single point failure
   2. Solution: creating replica,
@@ -303,6 +328,8 @@ http GET往后端发请求的时候，带着新发过来的timestamp，后端就
 第二次传（21，20），读后面20个。这样写的问题是，用户的feed一直在增加，同一个feed的系数会不停的变化，
 这样读如果在第一次读和第二次读之间，用户的feed变化了，在feed的最前面会加入新的feed,这样就会产生错位。
 
+Final Design:
+<img src="../../img/final.png" width="800px" height="800px">
 
 </code></pre>
 
