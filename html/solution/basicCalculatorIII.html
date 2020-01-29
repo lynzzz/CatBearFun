@@ -11,67 +11,69 @@
 
 
 <pre><code>
-class Solution {
-    public int calculate(String s) {
-        if ( s == null || s.length() == 0) return 0;
-        s = s.replace(" ", "");
-        
-        Stack&lt;Long> s1 = new Stack<>();
-        Stack&lt;Character> s2 = new Stack<>();
-        char sign = '+';
+  class Solution {
+      public int calculate(String s) {
 
-        for( int i=0; i&lt;s.length(); i++){
-            char c  = s.charAt(i);
-            
-            if ( Character.isDigit(c)){
-                int start = i;
-                
-                while( i&lt;s.length()&& Character.isDigit(s.charAt(i)) ){
-                    i++;
-                }
-                
-                long number =  Long.valueOf(s.substring(start, i));
-                i--;
-                s1.push(process(number, sign, s1));
-            }else if ( c == '('){
-                s1.push(Long.MAX_VALUE);
-                s2.push(sign);
-                sign = '+';
-            }else if ( c == ')'){
-                long sum = 0;
-                while( s1.peek() != Long.MAX_VALUE){
-                    sum = sum + s1.pop();
-                }
-                
-                s1.pop();
-                s1.push(process(sum, s2.pop() , s1));
-                    
-            }else{
-                sign = c;
-            }
-        }
-        
-        long ret = 0;
-        for( long n : s1){
-            ret = ret + n;
-        }
-        
-        return (int)ret;
-    }
-    
-    public long process(long number, char sign, Stack<Long> s1){
-        if ( sign == '+'){
-            return number;
-        }else if ( sign == '-'){
-            return -number;
-        }else if ( sign == '*'){
-            return s1.pop()*number;
-        }else{
-            return s1.pop()/number;
-        }
-    }
-}
+          char sign = '+';
+          Stack&lt;Long> stack = new Stack&lt;>();
+          Stack&lt;Character> stackSign = new Stack&lt;>();
 
+          for( int i=0; i&lt;s.length(); i++){
+              char c = s.charAt(i);
+              if ( s.charAt(i) == ' '){
+                  continue;
+              }else if ( Character.isDigit(s.charAt(i))){
+                  int save = i;
+                  while( i&lt;s.length() && Character.isDigit(s.charAt(i))){
+                      i++;
+                  }
+                  Long num = Long.valueOf(s.substring(save, i));
+                  i--;
+
+                  if ( sign == '+'){
+                      stack.push(num);
+                  }else if ( sign == '-'){
+                      stack.push(-num);
+                  }else if ( sign == '*'){
+                      stack.push( stack.pop()*num);
+                  }else if ( sign == '/'){
+                      stack.push( stack.pop()/ num);
+                  }
+              }else if( c =='+' || c == '-' || c == '*' || c == '/') {
+                  sign = c;
+              }else if ( c== '('){
+                   stack.push(Long.MAX_VALUE);
+                   stackSign.push(sign);
+                   sign = '+';
+              }else if ( c == ')'){
+                  long temp = 0;
+                  while(stack.peek() != Long.MAX_VALUE){
+                      temp = temp + stack.pop();
+                  }
+                  stack.pop();  // remove '('
+
+                  sign = stackSign.pop();
+                  if ( sign == '+'){
+                      stack.push(temp);
+                  }else if ( sign == '-'){
+                      stack.push(-temp);
+                  }else if ( sign == '*'){
+                      stack.push( stack.pop()*temp);
+                  }else if ( sign == '/'){
+                      stack.push( stack.pop()/ temp);
+                  }
+              }
+          }
+
+          long sum = 0;
+          while(!stack.isEmpty()){
+              sum = sum + stack.pop();
+          }
+
+          return (int)sum;
+
+      }
+  }
 
 </code></pre>
 
@@ -81,10 +83,15 @@ class Solution {
 
 
 <div class="comment">
-数据结构： 用一个stack存分段值, 一个stack存符号 <br>
+“+，-， *，／, (, ) 四则运算”
 
-解法与Basic calculator II相似，多一个stack存括号前的符号
 
+算法 ：
+stack1里存带符号的数字
+stack2里存括号前的符号
+
+1. 遇到数字就提取出来按照逻辑放进stack里： 前面符号是 +-,就直接压，前面符号是*/,把前面的值弹出来和当前值做*/然后在压栈。
+2. 遇到符号就变号（不用做任何运算）
 
 
 </div>
@@ -93,4 +100,3 @@ class Solution {
 
 
 </body>
-
