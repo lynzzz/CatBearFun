@@ -1,0 +1,29 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+<pre><code>
+此题目非常难
+1 它有一个root的概念在里面，有且只有一个，这个和无向图有本质的区别，完全不是一道题目了。 （无向图） https://leetcode.com/problems/redundant-connection/
+2. 我想的算法是，创建进度表，然后每次去掉边以后用进度表找出进度为0那个点就是root，判断root能不能到起点和终点，如果可以那就是这条边是多余的
+   但是这条路走不通，用每条边建的进度表只能告诉你哪些点有多少进度，而不能告诉你哪些点没有进度，因为你不知道一共有多少点来做比较。
+
+得出来的结论就是不知道图里点的个数是无法使用进度表
+
+
+</code></pre>
+
+
+
+
+
+</div>
+
+
+
+
+</body>
