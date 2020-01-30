@@ -112,40 +112,11 @@ Question II:
 <li ><a href="reconstructitinerray.html">Reconstruct Itinerary(有向图DFS搜索某种路径：断边法)</a> <a href="https://leetcode.com/problems/reconstruct-itinerary/description/">Q</a>  </li>
 
 
-public class Solution {
-
-    private boolean ans = false;
-
-    public boolean hasRoute(ArrayList&lt;DirectedGraphNode> graph, DirectedGraphNode s, DirectedGraphNode t) {
-
-           dfs(s, t);
-           return ans;
-    }
-
-    public void dfs( DirectedGraphNode s, DirectedGraphNode t){
-        if ( s == t){
-            ans = true;
-            return;
-        }
-
-        for( int i=0; i&lt;s.neighbors.size(); i++){
-            DirectedGraphNode n = s.neighbors.get(i);
-            s.neighbors.remove(i);
-            dfs(n, t);
-            s.neighbors.add(i, n);
-        }
-    }
-
-}
-
-
-
-
 棋盘类DFS模板, 用boolean array去重
 
 void dfs( start, matrix){
 
-        1. 递归的结束条件 
+        1. 递归的结束条件
            a. 越界，撞墙，访问过
            b. 已经找到Target
 

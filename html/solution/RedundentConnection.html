@@ -111,55 +111,71 @@ class Solution {
 
 
 
-Solution II DFS  : 非常巧妙，无向图找环，拆分成了无向图两点能否联通
+Solution II DFS  : 先建图，然后把此条边拆开，如果能联通，说明此条表是多余的
 Time complexity : O (e) * O(e + v)  = O(e^2);   Leetcode: 20ms
 
 class Solution {
-
-    private boolean isCycle = false;
-
+    boolean ret = false;;
     public int[] findRedundantConnection(int[][] edges) {
+        HashMap&lt;Integer, HashSet&lt;Integer>> graph = new HashMap&lt;>();
+        for(int[] edge : edges){
+            int from = edge[0];
+            int to = edge[1];
+            if (!graph.containsKey(from)){
+                HashSet&lt;Integer> l = new HashSet&lt;>();
+                l.add(to);
+                graph.put(from,l);
+            }else{
+                graph.get(from).add(to);
+            }
 
-
-        HashMap&lt;Integer, ArrayList&lt;Integer>> m = new HashMap&lt;>();
-        for( int i=0; i<=1000; i++){
-            m.put(edge[0], new ArrayList&lt;Integer>());
-            m.put(edge[1], new ArrayList&lt;Integer>());
+            if (!graph.containsKey(to)){
+                HashSet&lt;Integer> l = new HashSet&lt;>();
+                l.add(from);
+                graph.put(to,l);
+            }else{
+                graph.get(to).add(from);
+            }
         }
 
-
+        int[] ans = null;
         HashSet&lt;Integer> set = new HashSet&lt;>();
 
-        for( int[] e : edges){
+        for(int[] edge: edges){
+            int from = edge[0];
+            int to = edge[1];
+            graph.get(from).remove(to);
 
-            set.add(e[0]);
-            dfs( e[0], e[1], set, m);
-            set.remove(e[0]);
+            set.add(from);
+            hasPath(from, to, graph, set);
+            set.remove(from);
 
-            if ( isCycle) return e;
+            if (ret)
+            ans = edge;
 
-            m.get(e[0]).add(e[1]);
-            m.get(e[1]).add(e[0]);
-
+            ret =false;
+            graph.get(from).add(to);
         }
 
-        return null;
+        return ans;
+
     }
 
-    void dfs(int start, int end, HashSet&lt;Integer> set, HashMap&lt;Integer, ArrayList&lt;Integer> > m){
+    void hasPath(int start, int end, HashMap&lt;Integer, HashSet&lt;Integer>> graph,
+        HashSet&lt;Integer> set){
         if ( start == end){
-            isCycle = true;
+            ret = true;
             return;
         }
 
-        for( int n : m.get(start) ){
-            if ( set.contains(n)){
+        for(int neighbor : graph.get(start)){
+            if ( set.contains(neighbor)){
                 continue;
             }
 
-            set.add(n);
-            dfs(n, end, set, m);
-            set.remove(n);
+            set.add(neighbor);
+            hasPath(neighbor, end, graph, set);
+            set.remove(neighbor);
         }
     }
 }

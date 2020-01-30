@@ -36,6 +36,7 @@ b. Adjacent list    ( 用顶点来表示图,最常见的一种表达方式）
    4 ->  { 2}
 
    表示方法一般为
+   I：
    class Node{
        public int label;
        List&lt;Node> neighbors;
@@ -43,12 +44,13 @@ b. Adjacent list    ( 用顶点来表示图,最常见的一种表达方式）
 
    List&lt;Node> graph;
 
-   或者
-   HashMap&lt;Integer, ArrayList&lt;Integer>> Graph;     这种方法自己建图最好
+   或者II：
+   HashMap&lt;Integer, HashSet&lt;Integer>> Graph; 这样可以保证图里没有重复的边
+   如果写成    HashMap&lt;Integer, List&lt;Integer>> Graph; 这样图里可能会有重复的边。
 
-   or
-   int[][] graph, row index代表顶点，对应的int[] 代表adjacent list
-
+   这两种图的表示方法有一个就可以了，不用互相转换
+   第一种 n.neighbors 可以得到下一层
+   第二种 graph.get(label) 可以得到下一层
 
 c.   用边来表达图, 可以遍历转化成点图(Union Find特征，每条边的两个顶点依次Union)
 
