@@ -41,6 +41,41 @@ Google 面试题目： 能不能从一点走到另外一点，
 在第一象限内一点（x,y）, 每次可以走一步，下一步可以是(x+x, y), 或者（x, y+y）， 求问能否走到一个点（m,n）。注意，x>0, y>0，刚开始认为是四个象限，如果都是正数，不难。没有找出最优解，小姐姐说没关系，她觉得正常人需要一两天才能找出最优解。做完还剩5分钟，小姐姐要我问问题，我太累了，不想问，小姐姐还是觉得我应该问，我只好问了，然后去上厕所。
 
 
+BFS解法
+class Node{
+int x;
+int y;
+
+}
+void BFS(int x, int y, int m, int n){
+
+     Queue&lt;Node> q = new LinkedList&lt;>();
+	 HashSet&lt;Node> set = new HashSet&lt;>();
+
+
+	 q.add(new Node(x,y));
+	 set.add(new Node(x,y);
+
+	 while( ！q.isEmpty（））{
+	     Node node = q.poll();
+
+		 if （ node.x == m, && node.y  == n ){
+		      return true;
+		 }
+
+		 if ( 2*node.x <= m && node.y <= n && 判断 (2*n.x, n.y)未访问过 ){
+		     q.add(new Node(2*n.x, y);
+		     set.add(new Node(2*n.x, y));
+		}
+
+		 if ( n.x <= m && 2n.y<= m && 判断 （n.x, 2*n.y)未被访问过 ){
+		     q.add(Node(n.x, 2*n.y(;
+		     set.add(Node(n.x, 2*n.y);
+		 }
+	 }
+
+	 return false;
+}
 
 DFS 解法
 boolean ans = false;
