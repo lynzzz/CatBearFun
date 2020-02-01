@@ -10,7 +10,7 @@
 
 
 <pre><code>
-Solution I : Union Find
+Solution I : Union Find: 时间复杂 O(e)
 
 class Solution {
 
@@ -46,7 +46,7 @@ class Solution {
             int p1 = find(n1);
             int p2 = find(n2);
 
-            if( p1 == p2) return false;
+            if( p1 == p2) return false;  //这里的逻辑是如果这两个点已经划分到一类了，说明可以联通了，这时此条边一定是多余的
             parent[p1] = p2;
             count--;
             return true;
@@ -57,64 +57,51 @@ class Solution {
 
 
 <pre><code>
-  Solution II : BFS
+  Solution II : BFS 时间复杂： O(V+E)
  public boolean validTree(int n, int[][] edges) {
         // What is valid tree?
         // 1. no circle
         // 2. no isolated node
-	无环，无孤
 
+        class Solution {
+            public boolean validTree(int n, int[][] edges) {
+                HashMap&lt;Integer, HashSet&lt;Integer>> graph = new HashMap&lt;>();
 
-        // 此题目的结论 n 个点图无环，只能有n-1条路径
-        // 这只是必要条件，剩下的反例是有两个子图，且有一个子图有环，需要在加上BFS
-        if ( edges.length != n - 1){
-            return false;
-        }
-
-
-
-        HashMap&lt;Integer, List&lt;Integer>> graph = new HashMap&lt;>();
-
-        // Create adjacent list
-        // since there are n nodes, labeled from 0 to n-1, 必然有通往这n个点的路径，可以创造adjacent list.
-
-        for( int i=0; i&lt;n; i++){
-            graph.put(i, new ArrayList<Integer>() );
-        }
-
-        for( int i=0; i&lt;edges.length; i++){
-            int from = edges[i][0];
-            int to = edges[i][1];
-            graph.get(from).add(to);
-            graph.get(to).add(from);
-        }
-
-
-        // BFS, 遍历图，保证无isolated点
-        Queue&lt;Integer> q = new LinkedList&lt;>();
-        HashSet&lt;Integer> visited = new HashSet&lt;>();
-
-        q.add(0);
-        visited.add(0);
-
-        while( !q.isEmpty() ){
-
-            int node = q.poll();
-
-            for( int i : graph.get(node)){
-                if ( !visited.contains(i) ){
-		    continue
+                for(int i=0; i&lt;n; i++){
+                    graph.put(i, new HashSet&lt;>());
                 }
 
-                q.add(i);
-                visited.add(i);
+                for(int[] edge : edges){
+                    int from = edge[0];
+                    int to = edge[1];
+                    graph.get(from).add(to);
+                    graph.get(to).add(from);
+                }
+
+                Queue&lt;Integer> q = new LinkedList&lt;>();
+                HashSet&lt;Integer> set = new HashSet&lt;>();
+
+                q.add(0);
+                set.add(0);
+
+                List&lt;Integer> ret = new ArrayList&lt;>();
+
+                while( !q.isEmpty()){
+                    int node = q.poll();
+                    ret.add(node);
+
+                    for( int i : graph.get(node)){
+                        if ( set.contains(i)){
+                            continue;
+                        }
+                        set.add(i);
+                        q.add(i);
+                    }
+                }
+
+                return ret.size() == n &amp;&amp; edges.length == n-1; ／／ 第一个条件是判断无孤立点，第二个判断无欢
             }
         }
-
-        return visited.size() == n;
-
-    }
-}
 </code></pre>
 
 
