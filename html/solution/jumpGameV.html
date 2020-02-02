@@ -1,0 +1,69 @@
+
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+  class Solution {
+      HashMap&lt;Integer, Integer> m = new HashMap&lt;>();
+
+      public int maxJumps(int[] arr, int d) {
+          int max = 0;
+          for( int i=0; i&lt;arr.length; i++){
+              max = Math.max(max, dfs(arr, d, i));
+          }
+          return max;
+      }
+
+      int dfs(int[] arr, int d, int start){
+
+          if ( m.containsKey(start)){
+              return m.get(start);
+          }
+
+          List&lt;Integer> l = new ArrayList&lt;>();
+          for(int i=1; i<=d ; i++){
+              if (( start + i) < arr.length ) {
+                   if (arr[start+i] < arr[start]){
+                       l.add(start+i);
+                   }else{
+                       break;
+                   }
+              }
+          }
+
+          for( int i=1; i<=d; i++){
+              if ( (start - i) >= 0 ){
+                  if ( arr[start-i] &lt;arr[start]){
+                      l.add(start-i);
+                  }else{
+                      break;
+                  }
+              }
+          }
+
+          if (l.size() == 0){
+              return 1;
+          }
+
+          int ret = 0;
+          for( int i : l){
+              ret = Math.max(ret, 1 + dfs(arr, d, i));   // 记住这种DFS写法
+          }
+
+          m.put(start, ret);
+
+          return ret;
+      }
+  }
+
+  DFS+Memorization 经典例子
+  1. 要做memorization必须要返回值
+  2. 记住这种DFS写法，因为有走的单调性限制，所以此题目不用HashMap去重
+
+
+</code></pre>
+</body>
