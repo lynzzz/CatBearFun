@@ -28,11 +28,11 @@ void dfs( start, matrix)
 
 	2. 递归达到某种要求（走到某点， 返回 ）
 
-	3. 标记为访问过，如果连续走，可以直接mark图，否则用boolean array不破坏图
+	3. 附加数据结构标记为访问过，某些情况下可以直接mark图，不需要在还原。如number of islands.
 
 	4. 找到下一层的所有坐标，分别做DFS broadcast
 
-  5. 把图的标记还原.
+  5. （把附加数据结构标记还原）.
 }
 
 
@@ -42,35 +42,31 @@ Google 面试题目： 能不能从一点走到另外一点，
 
 
 BFS解法
-class Node{
-int x;
-int y;
 
-}
 void BFS(int x, int y, int m, int n){
 
-     Queue&lt;Node> q = new LinkedList&lt;>();
-	 HashSet&lt;Node> set = new HashSet&lt;>();
+     Queue&lt;int[]> q = new LinkedList&lt;>();
+	 HashSet&lt;int[]> set = new HashSet&lt;>();
 
 
-	 q.add(new Node(x,y));
-	 set.add(new Node(x,y);
+	 q.add(new int[]{}(x,y));
+	 set.add(new int[][{x,y});
 
 	 while( ！q.isEmpty（））{
-	     Node node = q.poll();
+	     int[] node = q.poll();
 
-		 if （ node.x == m, && node.y  == n ){
+		 if （ node[0] == m, &amp;&amp; node[1]  == n ){
 		      return true;
 		 }
 
-		 if ( 2*node.x <= m && node.y <= n && 判断 (2*n.x, n.y)未访问过 ){
-		     q.add(new Node(2*n.x, y);
-		     set.add(new Node(2*n.x, y));
+		 if ( 2*node[0] <= m &amp;&amp; node[1] <= n &amp;&amp; 判断 (2*n[0], n[1])未访问过 ){
+		     q.add(new Node(2*n[0], y);
+		     set.add(new Node(2*n[0], y));
 		}
 
-		 if ( n.x <= m && 2n.y<= m && 判断 （n.x, 2*n.y)未被访问过 ){
-		     q.add(Node(n.x, 2*n.y(;
-		     set.add(Node(n.x, 2*n.y);
+		 if ( n[0] <= m &amp;&amp; 2n[1]<= m &amp;&amp; 判断 （n[0], 2*n[1])未被访问过 ){
+		     q.add(Node(n[0], 2*n[1](;
+		     set.add(Node(n[0], 2*n[1]);
 		 }
 	 }
 
@@ -86,7 +82,7 @@ void DFS(int x, int y, int m, int n， boolean[][] visited){
 	    return;
 	}
 
-    if ( x == m && y == n ){
+    if ( x == m &amp;&amp; y == n ){
 	    ans = true;
 		return;
 	}
