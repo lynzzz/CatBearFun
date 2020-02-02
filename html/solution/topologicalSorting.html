@@ -58,6 +58,12 @@
   }
 
 
+如果图是给的 List&lt;Node> nodes, 则下一层是靠 node.neighbors得到，则建立进度表必须用node->Integer, HashMap&lt;Node, Integer> graph. <br>
+Queue里面也必须放Node， Queue&lt;Integer> q = new LinkedList&lt;>(), 这样才能做BFS, 否则如果用HashMap&lt;Integer, Integer>, Queue&lt;Integer> q <br>
+栈里出来的是integer,无法靠图得到下一层。<br><br>
+
+如果图是给的 HashMap&lt;Integer, HashSet&lt;Integer>> graph, 进度表可以用HashMap&lt;Integer, Integer> indegree, Queue&lt;Integer> q.<br>
+因为从Queue里出来的值可以从graph里找到下一层<br>
 
 </code></pre>
 
@@ -76,7 +82,7 @@ Note:<br>
 m.put(node, m.get(node)++) won't work, since Integer is immutable, cannot increment<br>
 m.put(node, m.get(node)+1) works, auto boxing and auto unboxing
 
-m.get(node) + 1 won't work, since the old reference stays unchanged. 
+m.get(node) + 1 won't work, since the old reference stays unchanged.
 
 </div>
 
