@@ -15,8 +15,14 @@
 3. Requirement:
    Functional: 1. limit number of requests in a time Windows      2. rate limit across multipe servers.
    Nonfunctrional: 1. highly available, 2. low latency
-4.
+4. Algo
+   Fixed window:       User : {count, timestamp}  maintain 1 for 1 user
+   Sliding window:     User : HashSet<Timestamp>  maintain 1 for 1 user
 
+5. Storage estimation
+   limit 500 requests per hour for 1M user
+   Fixed window:    user : 8byte, count 4byte, time stamp 4 byte, Hashtable overhead 20 byte.  (8 + 4 + 4 +20)* 1M = 36MB
+   sliding window:  user : 8byte, time stamp 4 byte, 20 byte for hashset overhead, 20 byte for hash table overhead  (8 + (4 + 20)*500 + 20)*1M =  12GB
 
 
 </body>
