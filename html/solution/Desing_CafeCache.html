@@ -1,0 +1,41 @@
+Question: When request comes from client, this http request gets handled by Cafe server(it is actually API backend)
+It has to look up a table to decide which mailbox serve it goes to ,it takes 300ms, it is too slow, How to solve it?
+Answer User cache:
+
+Q: think about scale, it is not a Cafe that hits the cache, all Cafes have to do look up. How to solve that?
+Anser: We can have a dedicated server managing cache and all cafes hit the cache. Add a lock to cache server,
+make sure fist in first out. This way, there is no race condition.
+
+QHow to design the cache:
+Answer: user memcache D or radis.
+
+Q: Let's take a step back, how do you design the cache?
+Anser: Hashtable, key value, compute hash, chain, increae capacity.
+
+Q: it can only hold 2m entries and we have 10m keys. How do you handle the situation
+me: No idea:
+hint: evict?
+me: Ok, LRU cache.
+
+ Q: How to implement LRU cache？
+ Answer: HashTable + doubly linked list. Read: O(1), Write O(1), insert O（1）， deletion O(1)
+
+ Q: What if the cache is dirty? because people move database entry for some reason in the backend?
+A: expiration data： set it to a short period, it expires soon, whenever it expires, the request
+comes and gets the latest data, saves it in cache. that way you don't have to handle it manually.
+Follow up:
+TTL is at least 30 days. then how do you do that?
+
+A: Then, whenever you move data from one db to another db, the cache needs to be refreshed.
+Question, how does cafe know that?
+
+Answer, push service, when data is moved, it notifies everysingle cafe to refresh cache.
+Question: Intersting:
+
+Answer: the other way, you have to do pull, the drawback is the cafe has to keep asking the server
+"do you have update, do you have update, do you have update", which is a wast of resources.
+
+Q: That's pretty much what we do here.
+
+me: Do you do pull or push?
+Answer: We do pull, every 2 seconds, there is a delta.
