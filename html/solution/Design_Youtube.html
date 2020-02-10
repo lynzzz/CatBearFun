@@ -1,0 +1,37 @@
+
+
+
+<html>
+<body>
+
+
+
+<pre><code>
+
+Load balancing: ?
+Redrection between cache servers
+
+
+Cache:
+Metadata will be saved in cache database, such as MemcacheD or Redis.
+This is dedicated cache service, all backend machine will hit it.
+
+Database is large, we cannot save all entries in Cache, so we must have
+eviction policy? LRU is popular Eviction policy.
+
+
+
+CDN:
+store popular video, that is saved in different geographic locations.
+request will be routed to CDN that is close to user. Less popular data
+will be read from backend Distributed file system.
+
+
+</code></pre>
+
+
+</body>
+
+
+
+</html>
