@@ -19,6 +19,13 @@ This is dedicated cache service, all backend machine will hit it.
 Database is large, we cannot save all entries in Cache, so we must have
 eviction policy? LRU is popular Eviction policy.
 
+Example in Ads:
+indexA is a aggregator, canbe interpreted as a backend server layer1.
+
+IndexP has 16 partitions, it can be interpreted as combination of backend server
+and DB server that caches data in memory and save in disk. There is no global cache machine
+
+
 
 
 CDN:
