@@ -17,7 +17,7 @@
 </h2>
 
 
-<p>  模板  </p>
+<p>  分治模板  </p>
 
 
 <pre><code>
@@ -36,15 +36,11 @@ int helper(TreeNode root){
 
 }
 
-分治要注意的是，递归函数会返回一个值，要理解这个值的定义是什么
-全局会维护一个值，要理解维护的值是什么
-
-
 </code></pre>
 
 例子题目<br>
 <ol>
-<li><a href="BinaryTreeLongestConsecutiveSequence.html">Binary tree longest consecutive sequence</a></li>
+<li><a href="BinaryTreeLongestConsecutiveSequence.html">Binary tree longest consecutive sequence</a> <a href="http://www.lintcode.com/en/problem/binary-tree-longest-consecutive-sequence/">Q</a>  </li>
 <li><a href="subTreeWithMaxiumAverage.html">sub Tree With Maxium average(</a></li>
 <li><a href="BinaryTreeMaximumPathSum.html">Binary Tree Maximum PathSum(经典)</a> <a href=https://leetcode.com/problems/binary-tree-maximum-path-sum/description/>Q</a>  </li>
 
@@ -56,3 +52,45 @@ int helper(TreeNode root){
 
 
 </body>
+
+4byte * 32000 = 128kb.开始没有理解是什么意思，他的意思是范围是0-32000,没有重复， 最坏的可能性里面有32000个数。
+
+Q:Sort complexity?
+A:O nlgn, merge sort, 要求更快到O(n)
+
+hint: 你知道了整数的范围：
+A: booloean[] arr = new boolean[32000];
+scan once set the boolean. scan another time ,check true and print it out to new file.
+Time complexity O(n),
+
+I: good, ok with time complexity O(n), how much memory do you need？
+1byte * 32000 = 32000byte. can you use less than that?
+
+me: priority queue,
+I: time O(nlgn)
+
+me: B+ tree
+I: time still O(nlgn).
+
+I: can you use less memory other than boolean array.
+me: I got it, using bit vector,
+that way, 1 byte has 8 bits, we can use 4000byte to represent. use byte index + offset to represent a number,
+if there exists a number, set it to 1, otherwise, set it to 0.
+
+I: good can you write code?
+// set array
+int temp = 1;
+   temp = temp<<offSet;
+   arr[i] = temp | arr[i]
+
+// write
+for(int i=0; i<4000; i++){
+  boolean b = arr[i];
+  for（int j=0; j<8; j++){
+       int temp = 1;
+       temp = temp<<j;
+       if ( temp & b != 0){
+         print(i*4000 + j);
+       }
+  }
+}
