@@ -63,7 +63,6 @@ a=-2, a>>>8 00000000 11111111  11111111 11111111
 这个解法要把它背下来。
 
 int count = 0;
-
 int temp = 1;
 for( int i=0; i&lt;32; i++){
   if (( temp&n) != 0 ){
@@ -72,6 +71,7 @@ for( int i=0; i&lt;32; i++){
   temp = temp<&lt;1;
 }
 return count;
+
 
 //右移的解法。
 int count = 0;
@@ -130,6 +130,87 @@ for(char c : s.toCharArray()){
 return bitmask.
 
 
+5. team transfer inteview 2/12
+Round II: 2/12: Rushi
+You have a file that has a lot of numbers ranging from [0, 32000], assuming there is no duplicate, you have an interface to read from file int getNumber(), and another interface to write the number to a file. Can you write the numbers to file in sorted order?
+
+Worst case memory for loading the number:
+4byte * 32000 = 128kb.开始没有理解是什么意思，他的意思是范围是0-32000,没有重复， 最坏的可能性里面有32000个数。
+
+Q:Sort complexity?
+A:O nlgn, merge sort, 要求更快到O(n)
+
+hint: 你知道了整数的范围：
+A: booloean[] arr = new boolean[32000];
+scan once set the boolean. scan another time ,check true and print it out to new file.
+Time complexity O(n),
+
+I: good, ok with time complexity O(n), how much memory do you need？
+1byte * 32000 = 32000byte. can you use less than that?
+
+me: priority queue,
+I: time O(nlgn)
+
+me: B+ tree
+I: time still O(nlgn).
+
+I: can you use less memory other than boolean array.
+me: I got it, using bit vector,
+that way, 1 byte has 8 bits, we can use 4000byte to represent. use byte index + offset to represent a number,
+if there exists a number, set it to 1, otherwise, set it to 0.
+
+I: good can you write code?
+// set array
+int temp = 1;
+   temp = temp<&lt;offSet;
+   arr[i] = temp | arr[i]
+
+// write
+for(int i=0; i&lt;4000; i++){
+  boolean b = arr[i];
+  for（int j=0; j&lt;8; j++){
+       int temp = 1;
+       temp = temp<&lt;j;
+       if ( temp & b != 0){
+         print(i*4000 + j);
+       }
+  }
+}
+
+2/15 回家发现这种做法是错的
+boolean b1 = false;
+  b&1  // 这种写法编译不了，必须左右两边类型相同。左边是boolean, 右边是int
+存储类型应该是char[] arr = new char[4000], char 初始值是0.
+
+Bitwise operator
+ 1. 只能用到primitive type(int, long, char)
+ 2. 左右两边类型必须相同。
+ 3. 算法题中最常见的就是int and char, char 在内存中表示是ASCII [0-255]。
+    你要分一个byte用char, 8 bits, 不能用boolean
+     你要分4个byte用int, 32bits
+
+如何对bit赋值用？ 三步。熟练背诵
+Step1: get a interger 1
+Step 2: shif this integer to offset positions
+Step3:   Do bitwise operator '|' with original value and then assign it to original value.
+
+// Code below
+ int temp =1;
+ temp = temp<&lt;offset;
+   n = temp | n
+
+如何Check bit 1？  用 '&amp;'： 熟练背诵
+Step1: int temp =1
+Step2: for loop    if ( ( temp & n) != 0)
+Step3: temp = temp<&lt;1;
+
+Int temp =1;
+For( int i=0; i&lt;8; i++){
+   if( ( temp & n) != 0){
+       // this bit is 1
+   }
+Temp = temp<&lt;1;
+}
 
 
 </code></pre>
