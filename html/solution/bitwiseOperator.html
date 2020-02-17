@@ -54,11 +54,7 @@ a>>8        11111111 11111111  11111111 11111111
 >>>无符号右移
 a=-2, a>>>8 00000000 11111111  11111111 11111111
 
-常用技巧1: 判断最后一位的值, 左移右移都可以。 常见题目： （求1的个数，两个integer bitwise comparision）
-
-<li><a href="https://leetcode.com/problems/number-of-1-bits">Number of 1 in bit</a>  </li>
-
-
+常用技巧1: 判断bit每一位的值, 左移右移都可以。 常见题目： （求1的个数，两个integer bitwise comparision）
 //左移的解法。 Azure storage 面试的时候算法是想出来的，但是实现是错误的，还是不熟练，当然那个面试官也没看出来，他也不熟练。
 这个解法要把它背下来。
 
@@ -190,6 +186,8 @@ Bitwise operator
      你要分4个byte用int, 32bits
 
 如何对bit赋值用？ 三步。熟练背诵
+
+
 Step1: get a interger 1
 Step 2: shif this integer to offset positions
 Step3:   Do bitwise operator '|' with original value and then assign it to original value.
@@ -199,18 +197,29 @@ Step3:   Do bitwise operator '|' with original value and then assign it to origi
  temp = temp<&lt;offset;
    n = temp | n
 
+对bit赋值的题目：
+<li><a href="https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer/">onvert-binary-number-in-a-linked-list-to-integer</a>  </li>
+
+
+
+
 如何Check bit 1？  用 '&amp;'： 熟练背诵
 Step1: int temp =1
 Step2: for loop    if ( ( temp & n) != 0)
 Step3: temp = temp<&lt;1;
 
-Int temp =1;
-For( int i=0; i&lt;8; i++){
-   if( ( temp & n) != 0){
+int temp =1;
+for( int i=0; i&lt;8; i++){
+   if( ( temp &amp; n) != 0){
        // this bit is 1
    }
-Temp = temp<&lt;1;
+   temp = temp<&lt;1;
 }
+
+Check bit 每一位值的题目：
+<li><a href="https://leetcode.com/problems/hamming-distance/">Hamming distance</a>  </li>
+<li><a href="https://leetcode.com/problems/number-of-1-bits">Number of 1 in bit</a>  </li>
+
 
 
 </code></pre>
