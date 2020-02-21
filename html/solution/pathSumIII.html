@@ -11,27 +11,68 @@
 
 
 <pre><code>
+  Solution I:: 遍历的写法
+
   class Solution {
+      int count = 0;
+      int saveSum = 0;
       public int pathSum(TreeNode root, int sum) {
           if ( root == null) return 0;
 
-          return pathSumOnlyStartFromRoot(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
+          saveSum = sum;
+
+          helper(root);
+          return count;
+      }
+
+      void helper(TreeNode root){     // inorder写法遍历每一个点， 把print换成DFS往里面套。
+          if ( root == null) return;
+
+          dfs(root, saveSum - root.val);
+
+          helper(root.left);
+          helper(root.right);
       }
 
 
-      public int pathSumOnlyStartFromRoot(TreeNode root, int sum){
-          if ( root == null){
-              return 0;
+      // 从顶点往下求和
+
+      void dfs(TreeNode root, int sum){
+          if ( sum == 0){
+              count++;
           }
 
-          if ( root.val == sum){
-              return 1 + pathSumOnlyStartFromRoot(root.left, sum - root.val) + pathSumOnlyStartFromRoot(root.right, sum - root.val);
+          if ( root.left != null){
+              dfs(root.left, sum - root.left.val);
           }
 
-          return pathSumOnlyStartFromRoot(root.left, sum - root.val) + pathSumOnlyStartFromRoot(root.right, sum - root.val);
+          if ( root.right != null){
+              dfs(root.right, sum- root.right.val);
+          }
       }
   }
 
+  // 此模板要记住递归套递归
+
+
+
+  //遍历所有的顶点，每个顶点做一次DFS。 相当于inorder, 把里面的print函数换成dfs
+  helper(root){
+      if (root == null) return;
+
+      dfs(root);
+
+      helper(root.left);
+      helper(root.right);
+  }
+
+
+  // 从每个顶点往下搜索
+  dfs(){
+  }
+
+
+  
 </code></pre>
 
 
@@ -41,8 +82,4 @@
 <div class="comment">
 Time complexity :   O(n^2)   <br>
 Space complexity :     <br>
-
-
-
-
 </body>

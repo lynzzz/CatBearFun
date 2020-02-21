@@ -1,0 +1,48 @@
+
+
+
+<html>
+<body>
+
+
+
+<pre><code>
+1. How do we handle file transfer efficiently?
+   Break down the file into small chunks and only transfer chunks that modified, not the whole file. Each chunk size is 4MB, and chunk size can be
+   changed based on cloud storage and bandwidth.
+
+2. How can clients efficiently listen to changes happening with other clients?
+   long poll.
+   Long poll definition: This is a variation of the traditional polling technique that allows the server to push information to a client whenever the data is available.
+                         With Long-Polling, the client requests information from the server exactly as in normal polling, but with the expectation that the server may not respond immediately.
+
+
+   Client componet:
+   a. internal metadata service.
+   b. chunker
+   c. Viewer
+   d. controller
+
+
+
+3. How should clients handle slow servers?
+   Clients should exponentially back-off if the server is busy/not-responding. Meaning, if a server is too slow to respond, clients should delay their retries and this delay should increase exponentially.
+
+
+4. Should mobile clients sync remote changes immediately?
+   Unlike desktop or web clients, mobile clients usually sync on demand to save user’s bandwidth and space.
+
+
+
+   <li><a href=https://www.educative.io/courses/grokking-the-system-design-interview/gx7wZzWn5Vj>Long poll definition</a>  </li>
+
+
+
+</code></pre>
+
+
+</body>
+
+
+
+</html>
