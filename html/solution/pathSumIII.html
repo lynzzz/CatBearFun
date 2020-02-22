@@ -22,7 +22,7 @@
           return count;
       }
 
-      void helper(TreeNode root){     // inorder写法遍历每一个点， 把print换成DFS往里面套。
+      void helper(TreeNode root){     // preOrder写法遍历每一个点， 把print换成DFS往里面套。这里preOrder, postOrder and inOrder都可以, 三种遍历方法都可以
           if ( root == null) return;
 
           dfs(root, saveSum - root.val);
@@ -58,7 +58,7 @@
     return count;
   }
 
-  //遍历所有的顶点，每个顶点做一次DFS。 相当于inorder, 把里面的print函数换成dfs
+  //遍历所有的顶点，每个顶点做一次DFS。 这里用inorder, preorder, postorder都可以
   helper(root){
       if (root == null) return;
 
@@ -84,7 +84,7 @@
        }
   }
 
-Solution II: divide and conquer(分治)
+Solution II: divide and conquer(分治套分治，加的逻辑)
 class Solution {
     int saveSum = 0;
     public int pathSum(TreeNode root, int sum) {
