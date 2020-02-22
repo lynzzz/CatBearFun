@@ -7,9 +7,6 @@
 
 <body>
 
-
-
-
 <pre><code>
   Solution I:: 遍历的写法
 
@@ -52,27 +49,73 @@
       }
   }
 
-  // 此模板要记住递归套递归
+  // 遍历模板背诵：递归套递归
+  int count = 0;
+  int pathCount(TreeNode root){
+    if ( root == null ) return 0;
 
-
+    helper(root);
+    return count;
+  }
 
   //遍历所有的顶点，每个顶点做一次DFS。 相当于inorder, 把里面的print函数换成dfs
   helper(root){
       if (root == null) return;
 
-      dfs(root);
+      dfs(root, saveSum - root.val);
 
       helper(root.left);
       helper(root.right);
   }
 
 
-  // 从每个顶点往下搜索
-  dfs(){
+  // 从每个顶点往下求和
+  dfs(TreeNode root, int sum){
+       if ( sum == 0){
+         count++;
+       }
+
+       if (root.left != null){
+         dfs(root.left, sum - root.left.val);
+       }
+
+       if ( root.right != null){
+          dfs(root.right, sum-root.right.val);
+       }
   }
 
+Solution II: divide and conquer(分治)
+class Solution {
+    int saveSum = 0;
+    public int pathSum(TreeNode root, int sum) {
+        if ( root == null) return 0;
 
-  
+        saveSum = sum;
+
+        return helper(root);
+    }
+
+    int helper(TreeNode root){
+        if ( root == null) return 0;
+
+        return dfs(root, saveSum - root.val) +
+               helper(root.left)+
+               helper(root.right);
+    }
+
+    int dfs(TreeNode root, int sum){
+        int temp = sum == 0? 1 : 0;
+
+        if ( root.left != null){
+            temp = temp + dfs(root.left, sum - root.left.val);
+        }
+
+        if ( root.right != null){
+            temp = temp + dfs(root.right, sum- root.right.val);
+        }
+        return temp;
+    }
+
 </code></pre>
 
 
