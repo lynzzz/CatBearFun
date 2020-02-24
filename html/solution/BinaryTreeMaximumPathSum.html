@@ -22,7 +22,7 @@
       }
 
 
-      // 分治返回过这个顶点的单枝最大值 （自己，自己+左枝最大值，自己加右枝最大值，不能左支右支都加，会产生重复计算）
+      // 分治返回过这个顶点的单枝最大值 （自己，自己+左枝最大值，自己加右枝最大值，）
       int helper(TreeNode root){
           if ( root == null) return 0;
 
@@ -36,6 +36,7 @@
           int takeright = root.val + right;
           int takeboth = root.val + left + right;
 
+          // 如果即取左支，又取右支，还取本身的话，这样的话顶点就已经有了，就不能往上在叠加。需要单独考虑这种情况，然后不能把这种情况往上返回。
           int ret = Math.max(takeself, Math.max(takeleft, Math.max(takeright, takeboth)) );
 
           if ( ret > ans){

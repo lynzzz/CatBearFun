@@ -15,9 +15,14 @@
 
 
 <p>  分治模板  </p>
+分治三部曲：
+1. 分治结束条件
+2. 分（一口气走到二叉树底层）
+3. 治 （往上走加商业逻辑）
 
 
 <pre><code>
+
 
 int helper(TreeNode root){
 
@@ -29,7 +34,7 @@ int helper(TreeNode root){
    int right = helper(root.right);
 
 
-   //conquer （合，往上走）
+   //conquer （治，往上走）
    return f(left, right);
 }
 
@@ -38,8 +43,8 @@ int helper(TreeNode root){
 例子题目<br>
 <ol>
 <li><a href="subTreeWithMaxiumAverage.html">sub Tree With Maxium average(分治)</a> <a href=https://leetcode.com/problems/maximum-average-subtree/>Q</a>  </li>
+<li><a href="BinaryTreeMaximumPathSum.html">Binary Tree Maximum PathSum(分治)</a> <a href=https://leetcode.com/problems/binary-tree-maximum-path-sum/description/>Q</a>  </li>
 <li><a href="BinaryTreeLongestConsecutiveSequence.html">Binary tree longest consecutive sequence</a> <a href="http://www.lintcode.com/en/problem/binary-tree-longest-consecutive-sequence/">Q</a>  </li>
-<li><a href="BinaryTreeMaximumPathSum.html">Binary Tree Maximum PathSum(经典)</a> <a href=https://leetcode.com/problems/binary-tree-maximum-path-sum/description/>Q</a>  </li>
 
 
 </ol>
