@@ -11,88 +11,43 @@
 
 
 <pre><code>
-public class Solution {
+  class Solution {
+      class MyNode{
+          double sum;
+          int count;
+          double ave;
+          MyNode(double sum, int count, double ave){
+              this.sum = sum;
+              this.count = count;
+              this.ave = ave;
+          }
+      }
 
-    class TreeHelperNode{
-        int sum;
-        int size;
-        TreeHelperNode(int sum, int size){
-            this.sum = sum;
-            this.size = size;
-        }
-    }
+      double ans = 0.0;
 
-    TreeNode result;
+      public double maximumAverageSubtree(TreeNode root) {
+          dfs(root);
+          return ans;
+      }
 
-    public TreeNode findSubtree2(TreeNode root) {
-        // Write your code here
-        dfs(root);
-        return result;
-    }
+      MyNode dfs(TreeNode root){
+          if ( root == null ){
+              return new MyNode(0, 0, 0);
+          }
 
-    // 递归的定义 ： 构造一个和原来的树一模一样的树，但是每个节点是TreeHelperNode
-    TreeHelperNode dfs(TreeNode root){
+          MyNode left =  dfs(root.left);
+          MyNode right = dfs(root.right);
 
-        // return condition ??
-        if( root == null){
-            return new TreeHelperNode(0,0);
-        }
+          MyNode n = new MyNode(left.sum + right.sum + root.val,
+                            left.count+right.count+1,
+                            (left.sum + right.sum + root.val)/(left.count+right.count+1));
 
-        TreeHelperNode leftHelper = dfs(root.left);
-        TreeHelperNode rightHelper = dfs(root.right);
+          ans = Math.max(ans, n.ave);
 
-        TreeHelperNode rootHelper = new TreeHelperNode(root.val + leftHelper.sum + rightHelper.sum,
-                                                          1 + leftHelper.size + rightHelper.size);
-
-        if ( result == null || rootHelper.sum * resultHepler.size > resultHepler.sum * rootHelper.size  ){
-            result = root;
-        }
-
-        return rootHelper;
-    }
-}
-
-Divide and conqure 分治从下往上走
-函数返回的是当前TreeNode对应的新的TreeHelpNode
-全局维护的是TreeNode平均值的最大点
-
-
+          return n;
+      }
+  }
 </code></pre>
-
-
-
-
-
-
-<div class="comment">
-Time complexity :   O(n)   <br>
-Space complexity :  O(1)   <br>
-
-
-Algorithm<br>
-分治从下往上建一个一模一样的树，但是每个节点是helper node。  维持一个全局最大average 节点 。
-
-1.   <br>
-
-
-
-
-<br>
-Note <br>
-
-
-<br>
-Java Skill
-1.          <br>
-2.          <br>
-
-
-
-<br>
-Last Time completed at :
-
-
-</div>
 
 
 
