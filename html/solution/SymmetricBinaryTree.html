@@ -12,77 +12,27 @@
 
 <pre><code>
 public class Solution {
-    /**
-     * @param root, the root of binary tree.
-     * @return true if it is a mirror of itself, or false.
-     */
     public boolean isSymmetric(TreeNode root) {
-        // Write your code here
         if ( root == null) return true;
-        
+
         return helper(root.left, root.right);
     }
-    
+
     public boolean helper(TreeNode left, TreeNode right){
-        
         // Return condition
-        if ( left == null && right == null ) return true;       // 判断树的结构是否相同
-        
+        if ( left == null &amp;&amp; right == null ) return true;       // 判断树的结构是否相同
         if ( left == null || right == null ) return false;
-        
-        
+
         // Divide
         boolean b1 = helper(left.left, right.right);
         boolean b2 = helper(left.right, right.left);
-        
-        
+
         // Conquer
-        
-        return left.val == right.val && b1 && b2;
-        
-        
+
+        return left.val == right.val &amp;&amp; b1 &amp;&amp; b2;
     }
 }
-
-
-
 </code></pre>
-
-
-
-
-
-
-<div class="comment">
-Time complexity :      <br>
-Space complexity :     <br>
-
-
-Algorithm<br>
-binary tree 分治的模板
-
-1.   <br>
-
-
-
-
-<br>
-Note <br>
-
-
-<br>
-Java Skill
-1.          <br>
-2.          <br>
-
-
-
-<br>
-Last Time completed at :
-
-
-</div>
-
 
 
 

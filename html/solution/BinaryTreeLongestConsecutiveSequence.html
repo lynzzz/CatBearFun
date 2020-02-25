@@ -6,52 +6,77 @@
 
 
 <body>
-
-
-
-
 <pre><code>
+Solution I:: 遍历套遍历，对每个顶点，往下面搜索一次，找最大值。 时间复杂O(n*n)
+class Solution {
+    int ret = 0;
+
+    public int longestConsecutive(TreeNode root) {
+        helper(root);
+        return ret;
+    }
+
+    void helper(TreeNode root){
+        if ( root == null){
+            return;
+        }
+
+        recursionIncrease(root, 1);
+        helper(root.left);
+        helper(root.right);
+    }
+
+    void recursionIncrease(TreeNode root, int count){
+
+        if ( root.left != null &amp;&amp; root.left.val == root.val+1){
+            recursionIncrease(root.left, count+1);
+        }
+
+        if ( root.right != null &amp;&amp; root.right.val == root.val+1){
+            recursionIncrease(root.right, count+1);
+        }
+
+        ret =Math.max(ret, count);
+    }
+}
+
+
+Solution II: divide and conquer（分治） 1ms,    O(n)
+
 
 public class Solution {
 
     private int ans = Integer.MIN_VALUE;
-     
+
     public int longestConsecutive(TreeNode root) {
-        // write your code here
         if ( root == null) return 0;
-        
+
          helper(root);
          return ans;
     }
-    
+
     public int helper(TreeNode root){
         if ( root == null){
             return 0;
         }
-        
+
         int l = helper(root.left);
         int r = helper(root.right);
-        
-       
-        
         int ret = 1;
-        
-        if ( root.left != null && root.val + 1 == root.left.val){
+
+        if ( root.left != null &amp;&amp; root.val + 1 == root.left.val){
             ret = l + 1;
         }
-        
-        if ( root.right != null && root.val + 1 == root.right.val){
+
+        if ( root.right != null &amp;&amp; root.val + 1 == root.right.val){
             ret = Math.max(ret, r + 1);
         }
-        
 
         ans = Math.max(ret, ans);
         return ret;
     }
 }
 
-二分树的分治，函数要返回值，一般还要维持一个全局变量。
-这里函数返回的值是以当前root为顶的longest consecutive value
-全局变量维持的是全局所root， LCV最大的值。 
+这里函数返回的值是以当前root为顶的longest consecutive value, 全局变量维持的是全局LCV最大的值。
 
 </body>
