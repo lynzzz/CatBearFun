@@ -1,0 +1,84 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+<pre><code>
+  /*
+  // Definition for a Node.
+  class Node {
+      public int val;
+      public List&lt;Node> children;
+
+      public Node() {}
+
+      public Node(int _val) {
+          val = _val;
+      }
+
+      public Node(int _val, List&lt;Node> _children) {
+          val = _val;
+          children = _children;
+      }
+  };
+  */
+  class Codec {
+
+      // Encodes a tree to a single string.
+      public String serialize(Node root) {
+          if ( root == null) return null;
+          StringBuilder sb = new StringBuilder();
+
+          serializeHelper(root, sb);
+          sb.deleteCharAt(sb.length()-1);
+          return sb.toString();
+      }
+
+      // Preorder（前序遍历）to serialize
+      void serializeHelper(Node root, StringBuilder sb){
+          if ( root == null) return;
+
+          int val = root.val;
+          int childSize = root.children.size();
+          sb.append(val);
+          sb.append(",");
+          sb.append(childSize);
+          sb.append(",");
+
+
+          for(int i=0; i&lt;childSize; i++){
+              serializeHelper(root.children.get(i), sb);
+          }
+      }
+
+
+      // Decodes your encoded data to tree.
+      public Node deserialize(String data) {
+          if ( data == null) return null;
+
+          String[] dataArray = data.split(",");
+          Queue&lt;String> arr = new LinkedList&lt;String>(Arrays.asList(dataArray));
+          return deserializeHelper(arr);
+      }
+
+      ／／此题目的难点就是对字符串里遍历的时候下标的控制，技巧在于用一个queue，就可以避免用下标
+      Node deserializeHelper(Queue&lt;String> data){
+
+          Node root = new Node(Integer.valueOf(data.poll()), new ArrayList&lt;Node>());
+          int size = Integer.valueOf(data.poll());
+          for(int i=0; i&lt;size; i++){
+              root.children.add(deserializeHelper(data));
+          }
+          return root;
+      }
+  }
+</code></pre>
+
+
+
+
+
+</body>
