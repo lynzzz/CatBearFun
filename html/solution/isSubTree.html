@@ -11,15 +11,7 @@
 
 
 <pre><code>
-  /**
-   * Definition for a binary tree node.
-   * public class TreeNode {
-   *     int val;
-   *     TreeNode left;
-   *     TreeNode right;
-   *     TreeNode(int x) { val = x; }
-   * }
-   */
+SolutionI:  分治 + 分治 ： 分治是从下往上走，理解上没有那么直观
   class Solution {
 
       public boolean isSubtree(TreeNode s, TreeNode t) {
@@ -29,6 +21,7 @@
           return helper(s, t);
       }
 
+      分治
       boolean helper(TreeNode t1, TreeNode t2){
           if ( t1 == null) return false;
 
@@ -36,6 +29,43 @@
           boolean right = helper(t1.right, t2);
 
           return compare(t1, t2) || left || right;
+      }
+
+      分治
+      boolean compare(TreeNode t1, TreeNode t2){
+          if ( t1 == null ampamp t2 == null) return true;
+          if ( t1 == null || t2 == null) return false;
+
+          boolean left = compare(t1.left, t2.left);
+          boolean right = compare(t1.right, t2.right);
+
+          return t1.val == t2.val ampamp left ampamp right;
+      }
+  }
+
+Solution II: 遍历 + 分治  遍历是从上往下走，理解上要直观些
+  class Solution {
+      boolean ret = false;
+
+      public boolean isSubtree(TreeNode s, TreeNode t) {
+          if ( s == null ampamp t == null) return true;
+          if ( s == null || t == null) return false;
+
+          helper(s, t);
+          return ret;
+      }
+
+      void helper(TreeNode t1, TreeNode t2){
+          if(t1 == null){
+              return;
+          }
+
+          if (compare(t1, t2)){
+              ret = true;
+          }
+
+          helper(t1.left, t2);
+          helper(t1.right, t2);
       }
 
       boolean compare(TreeNode t1, TreeNode t2){
@@ -48,8 +78,6 @@
           return t1.val == t2.val ampamp left ampamp right;
       }
   }
-
-
 </code></pre>
 
 
