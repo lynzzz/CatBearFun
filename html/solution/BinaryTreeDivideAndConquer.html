@@ -10,7 +10,7 @@
 
 
 1. 可以理解成先一口气走到二叉树最底层，然后往上回溯加商业逻辑。
-
+2. 分治的遍历顺序其实就是二叉树的后序遍历，左右中
 </h2>
 
 
@@ -37,7 +37,7 @@ int helper(TreeNode root){
 
 
    //conquer （治，往上走）
-   return f(left, right);
+   return f(root, left, right);
 }
 
 </code></pre>

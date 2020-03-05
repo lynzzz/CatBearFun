@@ -16,7 +16,7 @@
 
 遍历的三部曲：
 1. 结束条件
-2. 加商业逻辑
+2. 加商业逻辑 f(root)
 3. 往下走
 
 void helper(Node root){
@@ -24,7 +24,7 @@ void helper(Node root){
      return;
    }
 
-   dfs(root);
+   f(root);
    helper(root.left);
    helper(root.right);
 }
