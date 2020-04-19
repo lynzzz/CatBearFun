@@ -9,7 +9,6 @@
 
 
 
-</code></pre>
 1. Definition: In general, a rate limiter caps how many requests a sender can issue in a specific time window. It then blocks requests once the cap is reached.
 2. Usage: control traffic, avoid robot machine abuse, security(password brutal force trial)
 3. Requirement:
@@ -107,6 +106,8 @@ TimeStamp: 4 bytes
 8 + 2 +4 + 20 + 4 = 38 bytes
 say you have 1m user, total memory is = 38MB. where one server can satisfy.
 We need to put it in high performance cache DB such a memcached or casandra
+
+</code></pre>
 
 <img src="../../img/rateLimiter.JPG" height="800px" width="800px">
 
