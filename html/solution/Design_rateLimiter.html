@@ -107,6 +107,36 @@ TimeStamp: 4 bytes
 say you have 1m user, total memory is = 38MB. where one server can satisfy.
 We need to put it in high performance cache DB such a memcached or casandra
 
+
+Solution II: sliding  windows:
+algorithm:
+
+
+Using Redis sorted set
+HashMap&lt;String, HashSet&lt;TimeStamp>>
+
+Kathy:
+03:00:00 18000 ok              Kathy->{18000}
+03:01:05 18075 ok              Kathy->{18075}
+03:01:20 18090 ok                   Kathy->{18075, 18090}
+03:01:45 18115 ok                    Kathy->{18075, 18090, 18115}
+03:01:50 18120 NO                      Kathy->{18075, 18090, 18115}
+03:02:10 18140 ok                      Kathy->{18090, 18115, 18140}
+
+Algortithm:
+1. t-60 秒以前的都去掉
+2. 看剩下的有几个，如果小于三个，就加进去。如果等于3个就拒绝掉。不加进去。
+
+内存计算：
+name (8byte) + ( 4byte(time stamp) + sorted hashset overhead(4*2 = byte))*3 + 20 byte(hashtable overhead)
+
+8 + (4 + 4*2) * 3 + 20 = 64byte
+
+1m user
+64 * 1m = 64MB.
+
+
+
 </code></pre>
 
 <img src="../../img/rateLimiter.JPG" height="800px" width="800px">
