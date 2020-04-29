@@ -1,0 +1,28 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+TrieNode{
+  TrieNode[] children = new TrieNode[26];
+  String[] words;
+  getter(char c){ return children[c - 'a']}
+  setter(char c){children[c-'a'] = new TrieNode()}
+  contains(char c) return children[c-'a'] != null
+}
+
+1. How to store complete terms
+Each node stores 10 top terms.
+
+2. How do we build this trie with 10 frequently serched terms.
+Build it offline, Recursion, divide and conquer, bottom up. parent asks child,
+what is your top sugeestion with count, and child does the same to its child,
+all the way from root to leaf node, and then conquer, parent node combine the result and
+store the top 10 results, all the way up.
+
+</code></pre>
+</body>
