@@ -18,31 +18,79 @@ TrieNode{
 1. How to store complete terms
 Each node stores 10 top terms.
 
-2. How do we build this trie with 10 frequently serched terms.
-Build it offline, Recursion, divide and conquer, bottom up. parent asks child,
-what is your top sugeestion with count, and child does the same to its child,
-all the way from root to leaf node, and then conquer, parent node combine the result and
-store the top 10 results, all the way up.
-
-3. How to update trie?
+2. How to update trie?
 This service is extremly latency sensitive. If we allow read and write at the same time,
 it will hurt performance. The solution is to collect log offline and build new trie and distribute to
-trie service and load in memory, switch the trie and discard old trie.
+trie service and load in memory, switch the trie and discard old trie. Basically disallow write traffic
+on the fly.
 
-4. How to collect log offline?
+3. How to collect log offline?
 The number of search query is trillion level. We don't need to count every term query,
 Use throttling log, say log once every 1000 query.
 
-5. How to build trie offline
-Grokking interview thinks we need to take into consideration both old trie and new trie,
-where old term takes less weight and new term takes more weight. using EMA(exponential move avarage)
-When adding a new term, add frequency at terminal letter node, and update top 10 count from top to leaf accordingly
+4. How to build trie offline
+Since you have word and its frequency, you can add word to trie one by one. And when you
+add word to trie, you can build the top 10 suggestion words for each trie node.
 
-This appraoch is complicated, I will think rebuilding the trie is simplest.
+class WordNode{
+  string word;
+  int count;
+}
+
+class TrieNode{
+   TrieNode[] children = new TrieNode[26];
+   PriorityQueue&lt;WordNode> wordNodes = new PriorityQueue&lt;WordNode>((a,b)->(a.count - b.count)) // min priority queue sorted by count;
+
+   TrieNode getter(char c);
+   void setter(char c);
+   boolean contains(char c);
+
+   void addtoSuggestion(WordNode n){
+       if (wordNodes.size()&lt;10){
+          wordNodes.add(n);
+       }else{
+           if ( wordNodes.peek().count &lt;n.count){
+               wordNodes.pop();
+               wordNodes.add(n);
+           }
+       }
+   }
+}
+
+class Trie{
+
+void insert(string word, int count){
+    TrieNode root = m_root;
+    for( char c: word.toCharArray()){
+      if ( !root.contains(c)){
+        root.set(c);
+      }
+      root = root.get(c);
+      root.addToSuggestion(new wordNode(word, count))
+    }
+}
+
+}
+
 
 6. How to remove a term from the trie from system perspective(hate, porn, drug)
 a. Remove it from trie when build the trie.
 b. Add another filter layer before sending it back to user.
+
+7. What could be the differenct ranking criteria for suggestion?
+Language, location.
+
+8. What to do if machine restarts.
+We need to persist the trie on the machine.
+will be saved in topdown traversal order. Each node has the character and the number
+of nodes underneath it.  For example: cart, cap, cod. will be saved as c2, a2, r1,
+t0, p0, o1, d0.
+
+Note that the top 10 suggestion is not serialized.
+solution:
+1. : I think we can put 10 words in serialization string, though grokking says it is not easy.
+2. : We can store the log file in online server, and rebuild the trie, that would be
+too slow.
 
 </code></pre>
 </body>
