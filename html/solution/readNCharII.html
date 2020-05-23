@@ -1,0 +1,53 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+public class Solution extends Reader4 {
+    /**
+     * @param buf Destination buffer
+     * @param n   Number of characters to read
+     * @return    The number of actual characters read
+     */
+        
+    int preSize = 0;
+    int curIndex = 0;
+    char[] prebuf = new char[4];
+
+    
+    public int read(char[] buf, int n) {
+        
+        int count = 0;
+        
+        while( count < n){
+            if ( curIndex < preSize){
+                while(count < n && curIndex < preSize){
+                    buf[count] = prebuf[curIndex];
+                    count++;
+                    curIndex++;
+                }
+            }else{
+                preSize = read4(prebuf);
+                curIndex = 0;
+                if ( preSize == 0) break;
+            }
+
+        }
+        return count;
+    }
+}
+
+先从buf读, 在从文件读. 这种写法很简单,但是面试的时候很难想起来,太多的corner case. 
+
+Clarification: read() 每次调用后buf指针的位置不用存,since it returns to different buf memory.
+
+保存两个指针: 外面的位置用index保存,里面的位置用curIndex保存
+
+
+
+</code></pre>
+</body>

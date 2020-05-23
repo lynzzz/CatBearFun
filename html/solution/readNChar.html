@@ -1,0 +1,46 @@
+
+
+
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+public class Solution extends Reader4 {
+
+    public int read(char[] buf, int n) {
+        
+        int index  = 0;
+        char[] buf4 = new char[4];
+
+        while(true)
+        {
+            int size = read4(buf4);
+            int actualRead = Math.min(size, n);     //
+            
+            
+            for(int i=0; i<actualRead; i++){
+                buf[index+i] = buf4[i];
+            }
+            
+            
+            index = index + actualRead;
+            n = n - actualRead;
+            
+            if ( n == 0 || size < 4) break;
+        }
+        
+        return index;
+    }
+}
+
+
+用一个指针:　外面的系数用index保存, 里面的系数用min避免.
+
+
+</code></pre>
+</body>
