@@ -1,0 +1,108 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+Difference between Yelp and Uber.
+Yelp places are not changing whereas Uber driver keeps changing.
+
+1. Requirement
+a.Search nearby places with given radius.
+b.Add feedback/pic/text/rating
+
+2. QPS
+
+3. DB schema
+
+location schema
+1. Location id    8bytes
+2. Location name  256bytes
+3. Description    512bytes
+4. latitude       4
+5. longitude      4
+6. Category       1
+
+8 + 256 + 512 + 4 +4 +1 = 780bytes
+
+Review Schema
+1. ReviewID       8bytes
+2. LocationID     8bytes  FK
+3. comment        256bytes
+4. Rating         1byte
+
+8 + 8 + 256 + 1 = 273bytes
+
+4. search interface:
+search(
+API_KEY,          // throttling, rate limiting
+search_term,
+user_location,
+search_category,
+radius limit,
+maximum result,
+sortBy,           // distance, rating
+page_token)       // recognize user
+
+result:
+List of Json that contains place info that matches query. along with thumbnail
+
+5. Basic design and algorithm:
+Store and index places and review datasets.
+Places are not changing, so the design is easy compared to those who are changing,
+such as people or taxi (NearyBy friend, Uber)
+
+6. Algorithm:
+Naive way.
+
+Use SQL to store places, each entry has latitude and longitude.
+Do a join.
+
+select * from place where latitude > x - d aand latitude < x + d and longtitude > y-d and longtitude )
+orderby , limit 10
+
+To improve efficiency, create index on both latitude and longitude, this can
+improve search speed, but join is expensive! Need to find better way
+
+
+Improvement:
+Divide the earth into multiple grids.
+
+a. size of grid?
+search range
+
+b. user sends request, cell phone sends the latitude and longitue,
+we can get the current grid and 8 neighbor grids immediately.
+
+c. Each grid saves a mapping from "grid ID" -> list of Location ID within this grid
+Then we get all the location IDs inside the 9 grids.
+
+d. Do a join with location table, we can get complete location informations
+inside 9 grids.
+
+e. run sql query for the subset location table.
+select * from (subset of location table) where latitude > x-d and latitude < x +data
+and longitude > y-d and longitutud < y+d
+
+This is abselutely fast!
+
+For the gridID -> list of location mapping,
+We need to create a index for fast lookup. cache index in memory.
+
+Memory estimation:
+grid size 10mile
+earth area : 200milling squre miles
+we need : 20m grids
+
+each grid id is 4bytes, say we have 500m locations.
+we need 4 * 20m byte + 8 * 500m byte = 4000mbyte = 4GB
+
+
+
+
+
+</code></pre>
+</body>

@@ -6,6 +6,10 @@
 
 <body>
 <pre><code>
+  <li><a href="https://www.educative.io/courses/grokking-the-system-design-interview/mE2XkgGRnmp
+">Educative solution </a></li>
+
+  <li><a href="https://media-test.jiuzhang.com/media/session/Chapter_5._%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF_Crawler__Typeahead_v6.1.3.pdf">九章算法解法</a></li>
 
 TrieNode{
   TrieNode[] children = new TrieNode[26];
@@ -22,15 +26,22 @@ Each node stores 10 top terms.
 This service is extremly latency sensitive. If we allow read and write at the same time,
 it will hurt performance. The solution is to collect log offline and build new trie and distribute to
 trie service and load in memory, switch the trie and discard old trie. Basically disallow write traffic
-on the fly.
+on the fly. Trie每天重新建一次
 
 3. How to collect log offline?
 The number of search query is trillion level. We don't need to count every term query,
 Use throttling log, say log once every 1000 query.
 
 4. How to build trie offline
-Since you have word and its frequency, you can add word to trie one by one. And when you
+Since you have log that has word and its frequency, you can add word to trie one by one. And when you
 add word to trie, you can build the top 10 suggestion words for each trie node.
+
+When the trie is has been built from the log. We can serialize it and send to trie servers,
+Trie server deserialize it and starts to server traffic. If the server dies, upon recovery,
+it deserizlies the snapshot again. ( Leetcode serilization and deserialization algo)
+
+
+Leetcode: Implement a trie
 
 class WordNode{
   string word;
@@ -72,6 +83,14 @@ void insert(string word, int count){
 
 }
 
+这种遍历每一个query构建trie的方式非常的慢，更高速的优化是使用MapReduce
+apple:1b
+mapper: {a : apple,1b}, {ap: apple, 1b}, {app: apple, 1b},
+        {appl: apple, 1b}, {apple: apple 1b}
+
+Reduce: traverse the same prefix, combine and get top 10
+
+
 
 6. How to remove a term from the trie from system perspective(hate, porn, drug)
 a. Remove it from trie when build the trie.
@@ -86,11 +105,71 @@ will be saved in topdown traversal order. Each node has the character and the nu
 of nodes underneath it.  For example: cart, cap, cod. will be saved as c2, a2, r1,
 t0, p0, o1, d0.
 
+Algorithm: 428. Serialize and Deserialize N-ary Tree
+
 Note that the top 10 suggestion is not serialized.
 solution:
 1. : I think we can put 10 words in serialization string, though grokking says it is not easy.
 2. : We can store the log file in online server, and rebuild the trie, that would be
 too slow.
+
+9. Storage estimation.
+Each query has avaerage 3 words, each word has in average 5chars, each query has
+in average 15chars, each char we give 2 bytes, in total, 30 bytes per query,
+say we are storing top 100m querys.
+100M * 30Byte = 3GB.
+
+10. Data Partition
+a. range based partition based on the first char. Cons: unbalanced load
+
+b. partition based on maximum capacity of each server:
+example:
+Server 1, A-AABC
+Server 2, AABD-BXA
+Server 3, BXB-CDA
+
+cons: 1. Hot spot, some term is frequently searched on one server. ex: starting with
+AA. it always hits server 1, and get the result from A->A node directly.
+
+c. consistent hashing is totally wrong.
+
+11. cache
+We should put cache server in front of trie server. Cache server contains hot serch queries.
+example:
+PreFix -> typeAhead mapping
+cat -> { category, cattline, catshow}
+
+Pros:
+Reduce trie service traffic
+
+Cons: hash string并不快，和到trie里去找的时间复杂度一致O(l)，如果miss了蹭加latency.
+
+1. You need to calculat hash value for the (string) to get value in hash table, which
+takes the same time as trie.If it is missed in cache, it will then hit trie and thus increase latency.
+
+12. When to do when server is down(Single point failure/fault tolerance)
+
+This is called Single point failture. The solution is to have replication servers and load balancer. And When one node is down, fail over to other nodes.
+The dead server recovers and deserialize the snapshot to rebuild the trie, and retake traffic.
+
+Since this is the nature of app is read only, no master/slave, every trie server is equal.
+
+13. Client side optimization
+0 用户打字速度很快怎么办？
+间断超过50ms,在给后端发请求.
+a, ap, app, appl, apple, 没有必要每一个都往后端发请求，只有间隔超过50ms,在往后端发请求。
+
+1. Cache part of data in browser ( Key->value local storage. prefix->top10)
+   曾经输入过的query->top10, 加expiration time自动去掉老的.
+
+2. Establish TCP connection when user opens up browswer before search.
+
+3. Prefetch: 用户输入AP, 把APP的结果提前返回到前端存起来，预测用户要输入什么
+
+
+14 如何获得实时热门 Queries
+建一套一摸一样的系统，每两个小时更新一次。
+结果要结合普通的top10和热门的top10,热门的top10应该占更大的权重。
 
 </code></pre>
 </body>
