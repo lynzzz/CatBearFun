@@ -16,17 +16,17 @@
 
   class TrieNode{
       TrieNode[] children = new TrieNode[26];
-      boolean isEnd;
+      boolean isEnd = false;
 
-      TrieNode getNode(char c){
+      TrieNode getChildNode(char c){
           return children[c - 'a'];
       }
 
-      void setNode(char c){
+      void setChildNode(char c){
           children[c - 'a'] = new TrieNode();
       }
 
-      boolean contains(char c){
+      boolean containsChild(char c){
           return children[c-'a'] != null;
       }
   }
@@ -40,41 +40,40 @@
       }
 
       public void insert(String word) {
-          TrieNode rootSave = root;
+
+          TrieNode cur = root;
           for( char c : word.toCharArray()){
-              if ( !rootSave.contains(c)){
-                  rootSave.setNode(c);
-                  rootSave = rootSave.getNode(c);
-              }else{
-                  rootSave = rootSave.getNode(c);
+              if ( !cur.containsChild(c)){
+                  cur.setChildNode(c);
               }
+              cur = cur.getNode(c);
           }
-          rootSave.isEnd = true;
+          cur.isEnd = true;
       }
 
       public boolean search(String word) {
 
-          TrieNode rootSave = root;
+          TrieNode cur = root;
 
           for( char c : word.toCharArray()){
-              if ( !rootSave.contains(c)){
+              if ( !cur.containsChild(c)){
                   return false;
               }else{
-                  rootSave = rootSave.getNode(c);
+                  cur = cur.getNode(c);
               }
           }
-          return rootSave.isEnd;
+          return cur.isEnd;
       }
 
       public boolean startsWith(String prefix) {
 
-          TrieNode rootSave = root;
+          TrieNode cur = root;
 
           for( char c : prefix.toCharArray()){
-              if ( !rootSave.contains(c)){
+              if ( !cur.contains(c)){
                   return false;
               }else{
-                  rootSave = rootSave.getNode(c);
+                  cur = cur.getNode(c);
               }
           }
 

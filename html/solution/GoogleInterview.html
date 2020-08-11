@@ -1,0 +1,222 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+
+527(ok), 736(string not ok), 
+809:expressive words, 还有一道sticky note记不清楚题号码了 (ok two pointers), 
+1153(string ok), 489(ok), 734(ok), 737(ok)
+844(ok), (215, ok), 1146(ok), 664(hard), 1530(二叉树divide and conquer)
+224(ok), 818(ok), 981(ok), 
+
+
+
+
+
+给你一个List<String> 是一篇文章，每一个String就是一行。然后List<String> traget，对于target里面每一个String，要求知道是不是在文章的某一行里面。
+忽略特殊符号， 空格。 比如 "and then, he went out" ,"nhe"是可以的。输出要求是List of valid strings
+没想到什么好的解法，感觉可以KMP，但是不太会。基本没给提示，告诉你可以preprocess。
+
+Brute force:
+把输入去掉特殊符号后存起来,然后target每个用indexof去比较. 时间复杂度.
+O(m * l1 * n * l2), where m is the size of input, l1 is the average length of string, n is the size of target, l2 is the average size of target.
+
+
+Optimiza
+用target建trie, 然后用每一个input string去搜索 
+
+List<String> ret = new ArrayList&lt;>();
+for( int i=0; i<input.size(); i++){
+
+    String str = input[i];
+	for( int j=0; j&lt;str.length(); j++){
+        char c = str.charAt(j);
+
+        if (!root.contains(c)){
+            continue;
+        }
+
+        int k = j;
+
+        TrieNode cur = root;
+        while( k&lt;str.length() && cur.contains(c)){
+            k++;
+            c = str.charAt(k);
+            cur = cur.get(c);
+        }
+    
+        if ( cur.isEnd){
+            ret.add(cur.word)                  // when you add word into trie, you save the word.
+        }
+
+    }
+}
+
+O(m * l1 * l2)
+
+
+
+
+
+
+
+
+https://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=647380&extra=page%3D1%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3086%5D%5Bvalue%5D%3D10%26searchoption%5B3086%5D%5Btype%5D%3Dradio%26searchoption%5B3087%5D%5Bvalue%5D%3D2%26searchoption%5B3087%5D%5Btype%5D%3Dradio%26searchoption%5B3046%5D%5Bvalue%5D%3D1%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26searchoption%5B3109%5D%5Bvalue%5D%3D2%26searchoption%5B3109%5D%5Btype%5D%3Dradio%26sortid%3D311%26orderby%3Ddateline
+
+
+题目一 : 一个数组 分成两个不重合的部分 每部分的和是一个值K，求两部分数组大小和要最小  我用persum + DP写的
+
+是蠡口 伊思奇奇？ (1477 ok sliding window + dp) ->560(ok prefix sum) 
+
+
+
+第二轮： 组成最大的3的倍数 - 蠡口 要散流散 1363(ok)
+
+第四轮：check(word) 这题：  (925, simplified version)
+https://leetcode.com/discuss/interview-question/679321/Google-or-Onsite-or-Determine-if-word-is-typo-because-of-stuck-ke
+
+
+
+////////////////////////////////////////////////////////
+///
+////////////////////////////////////////////////////////
+
+
+
+GOOGLE题目真难。 但是挺刺激， 所有题目即使有思路，也不一定能写对。 代码太长了。
+
+1. 刷题网 酒肆溜(946)  followup 是要用O(1) space 且不能改变原数组的任何值 －》 follow up很变态。
+对于pushed数组，要定义2个index, left, right, left永远指向last one ready to pop, right永远指向last one ready to push->最后check是否left的point是否为0. 然后当中已经poped过的可以search popoed array指针里面的左边一部分。
+
+2. 两个题
+题目一(1477) : 一个数组 分成两个不重合的部分 每部分的和是一个值K，求两部分数组大小和要最小  我用persum + DP写的
+这题感觉也是原题，但肯定是hard题，你必须记录扫到某个point时的左边最小range, 然后当扫右边时，发现新的，left_min + cur_right比较更新结果，而且要更新此时左边最小的range. update left_min
+
+题目二(1363)： 记不太清了，有一些digits，比如 3，4，5，6， 求用这些digits组成的且%3==0的数的最大值
+这题leetcode有， 但是到hard题， 而且要有数学思维。 一个数能整数3， 那么这个数所有位相加也能整数3.  
+
+
+
+3. Domain Knowledge 以为是test有关，结果最后是设计一个pacman
+不懂啥是pacman。
+
+
+
+4. 类似 刷题网 (809) 但是题目完全不一样， 
+
+第一问 加入一个word是helllllooo 求重复的字母是3及以上的区间这个例子是[2,6], [7,9].
+这题不是挺简单的？ 扫描，记录and count, 一道easy题。
+
+
+
+
+第二问是用一个api check(word) 可以知道一个word是不是在一个dict里面，输入时一个express word 比如helllllooo，
+求这个express word 有没有可能是由dict里面的一个单词express出来的，我用DFS写的
+如果我理解是对的话， 比如hello， 或者helo都可以衍生出来的话。 那么就很简单了， 首先针对dict建立trie, 然后， 对trie进行扫描， 如果正在比较next char==curr.trienode.char那么就两种扫描办法， 一种是把trienode不要更新到下一层， 但可以移动word里面index到下面一个， 或者移动next trienode并且word里面index到下面一个。
+
+第二问思路：
+这个和809, 或者sticky word思路一致的,809是和一个字符串比较, 这个是建好了trie以后和整个trie比较
+"trienode不要更新到下一层， 但word里面index到下面一个"
+
+5. BQ 这个没啥好说的
+
+
+
+
+
+不会发那种带隐藏的，就这样写吧。
+第一轮算法开幕雷击，比特操作，题忘了，反正LC上没有...小哥挺nice，最后我给了个暴力破解，程序是写完了。
+第二轮系统设计，继续开幕雷击，一老头面的，上来就问我知不知道现在的机器都是多少核多少内存多少硬盘数据中心带宽都有些什么选择...还好我管理过dev cluster，给他说了。然后开始问我在10台机器的环境下，如何给10个Billion的Page去重，要根据CPU，硬盘，RAM，带宽的限制算出你所用的算法具体要用多少秒才能完成这个步骤，有时候要求精确到0.1秒这个精度，要求是尽可能的快，这个过程非常强调精确计算，甚至我说用个hash他都要问我用什么算法，我说MD5就行，他就追问我MD5生成的hash占多少字节...。每台机器配置是：六十四核，二百五十六鸡内存，数据中心交换机带宽1鸡，硬盘10特。最后结果应该还行，他比较满意过程。
+第三轮算法，也是个LC上没有的，给个字符串，问有多少个连续的substring，每一个substring都不包括所有的字符。举个例子abca，那么一共有 a,b,c,a,ab,bc,ca七个，返回7. 因为剩下三个abc,bca,abca都包括了所有的字符abc。发挥不错，临场想到最优解并做完了。
+第四轮系统设计，继续开幕雷击，一个做硬盘存储的哥们，让我设计一个可以存50Billion key-value pair的结构，key va
+游客，本帖隐藏的内容需要积分高于 188 才可浏览，您当前积分为 0。
+查看如何攒积分 Click here for more info.
+套，我刚面完亚麻没多久，自然不在话下。
+
+现在还没反馈，感觉送HC不成问题，剩下只能慢慢等结果了。
+总之G的题，四道都没有见过，面G大概率还是看你的运气，光刷题是没用的。
+最后吐槽一下，G安排面试是真的不看你背景，我是做web applicaiton platform的，居然给我安排了两个这么底层的人来面...AFG都面了，相比之下，F的面试感觉是最好的。
+
+
+
+7/28 Googole phone interview.
+
+Anthony:
+
+class order{
+	long cutomerID
+	long orderID
+	long AdRequested
+}
+
+class ProcessedOrder{
+    long  cutomerID,
+    long  AdDisplayed
+}
+
+example:
+
+{2, 4, 5}  inv:8  => 2, 3, 3.  Need to find a threshold hold that works for every customer.
+
+
+
+Interviewer breaks it down to 2 steps:
+1. Assume you have a threashold function, write function. Straightfowrad, if < threadshold, take Adrequested, otherwise, take threshold, orgnize the answer.
+
+2. Implement getThreshold function.
+Sort the array, go from left to right, apply the number as threshold to the array, find the one that results in totalAds requested > inventory, that's your right bound.   O(n^2)
+
+Decrase the threshold, and find the closes threshold that results the totalAds <= ava. O(n^2)
+
+time complexity : O(n^2)
+
+
+
+
+
+List<proceessdOrder> processAds(List<Order> orders, int inventory){
+
+
+
+
+
+}
+
+
+621: task scheduler.
+
+767. Reorganize String
+
+
+BQ Question GG:
+地里面的behaviour question，感觉就是那些照着念的，gg的behaviour很简单因为不需要你说例子。例子的选择范围从上学的时候到工作后都可以，所以限制比较小，也可以不举例子讲的比较抽象
+
+
+
+你组里面有人很难搞怎么办？
+
+
+
+没人帮你怎么办？
+
+
+你怎么去鼓励别人帮助你？
+Justin example, Variant config, registry
+
+1. state this is a high impact work item, and we need you help.
+2. keep his boss and my boss in the lop, and make sure this work is visible to everyone, and he is contributing to the impact helping others.
+
+
+
+你怎么去感谢别人帮助你，
+1. Send a letter with nice words describing his impact and cc his manager on the email.
+
+</code>
+</pre>
+</body>
+

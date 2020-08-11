@@ -69,13 +69,15 @@ improve search speed, but join is expensive! Need to find better way
 
 
 Improvement:
-Divide the earth into multiple grids.
+Divide the earth into multiple grids.      Grid -> List of locations(缩小到一个很小的范围,在开始做query)
 
 a. size of grid?
 search range
 
 b. user sends request, cell phone sends the latitude and longitue,
-we can get the current grid and 8 neighbor grids immediately.
+we can get the current grid and 8 neighbor grids immediately. This is called geo-fence algorithm,
+tell the specifi grid I am in. This is also searching two fields and then do join, but total number is number of grids instead of number of locations, so it should be much faster.
+
 
 c. Each grid saves a mapping from "grid ID" -> list of Location ID within this grid
 Then we get all the location IDs inside the 9 grids.
@@ -99,6 +101,60 @@ we need : 20m grids
 
 each grid id is 4bytes, say we have 500m locations.
 we need 4 * 20m byte + 8 * 500m byte = 4000mbyte = 4GB
+
+
+The downside of this is some arae is thickly populated whereas some area has no people to live. 
+This would be a waste of search resource.
+
+
+
+
+Improvement: Dynamic grid size.
+Quad Tree.
+
+A grid only contains 500 locations, if it has more than 500, divide the grid into 4 equaly size child grid, and keep dividing until the grid has no more than 500 locations, that's leaf grid, only leaf grid 
+contains list of locations.
+
+How to build quad tree?
+
+Start with the root grid that contains the whole world, keep break it down into 4 child nodes until it has no more than 500 locations.
+
+
+How to find given location?
+When user sends request, backend knows latitude and longitude, and apply geo fence algorithm to find the 
+parent grid it is in. if it has child node, check which child node you are in, and keep doing this until
+you are in a grid that has no child node. That's the leaf node that has less than 500 nodes.
+
+
+How to find neibhboring girds?
+Go to your parent and then go down. Parent has pointers of 4 children.
+
+Memory Estimation:
+
+500M locations, each grid has 500, we need at least 1M leaf grids. say 1/3 are internal nodes that doesn't have locations, it has pointers
+
+
+Search flow:
+a. find the leaf node that the user is in.
+b. find the neighbor grids.
+c. GridID -> list of {location IDs}
+d. join and get full entrys in locaton table
+e. query search.
+
+  第一个join找到所有的符合条件的locaions, 在一个很小的set里面搜索. 比在整个地图搜索快多了.
+
+  select * from (select * from location where id = 1 or id = 2 or ....) where 
+     latitude > x -d and latitude < x + d and longitude > y -d and longitude < y + d
+
+
+Say total there 2M nodes.
+Grid ID = 2M * 8 = 16MB
+Internl pointer = 1M * 1/3 * 4 * 8 = 10MB ( that's a peanut)
+500M locations need =  8 (location ID) * 500M = 4000M = 4GB
+
+total = 4GB
+
+
 
 
 
