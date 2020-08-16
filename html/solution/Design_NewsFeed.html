@@ -163,26 +163,19 @@ insert into photo (user_id, title, image_path) values (3, "Cancun trip", "Azure/
 
 
 
-// Query to get user 1 的 News feed
-
-select photo.title, photo.user_id, photo.createdAt from
-(select * from friendship where from_user = 1) as f
-left join photo
-on f.to_user = photo.user_id
-order by photo.createdAt;
-
-此处还可以用NOSQL DB 来存用户和照片的关系, 哪个用户拥有哪些照片, 这样的话就不用像上面那样sql语句做join between Photo table和user table做Join
+此处还可以用NOSQL DB 来存用户和照片的关系, 哪个用户拥有哪些照片, 
 key: userID
-value: List of photo ID the user owns。
+value: List of photoIDs.
 2->{100,101}
 3->{102,103}
 
-Pull mode:
-No need to create feed table.
-1. Get the users that I am following.
-select to_user from friendship where from_user = 1;
 
-2. Left join with photo table, and sort by creation date.
+
+
+
+
+Pull mode:
+
 
 /* 这种join的方法是不对的,因为会把To_User的所有image都取出来. 如果这些人有10年的照片你就得取10年的照片.
 select photo.title, photo.user_id, photo.createdAt from
@@ -192,6 +185,8 @@ on f.to_user = photo.user_id
 order by photo.createdAt;
 take 100
 */
+
+
 
 正确的做法是DB N次Read然后在Sort.
 Http Get API: Time Complexity O(N)
@@ -205,6 +200,7 @@ getNewsFeed(user)
 
   response.sortBy(timeStamp).take(100);
 }
+
 
 HTTP POST API:  O(1)
 postImage(user, image)
@@ -247,39 +243,6 @@ postNewsFeed(user, image)
   }
 }
 
-Push mode的问题是:star user, Lady Gaga发一个twitter后，200K　次的DB写请求，估计news Feed DB非常热．
-
-
-
-Question:
-爱思系统设计说，这个表里一定要加creation time用来排序，但我认为这个表里产生的photo id和
-最终要和photo table做join,photo table里面有creation time, 那个时候可以排序，为撒feedtable还要存一次？
-
-回答说：
-Feed table先按照creation timestamp sort, 取前N位，在和photo table做 join 比
-Feed table直接和photo table做Join, 在sort, 在取前N位要快。
-
-更快的方式是de-normalize (小表变大表, 把Photo table的column加进来到feedtable里)， 这样就不用join了。
-pro: 不用Join, latency低
-Con: 需要占用更多的存储空间。
-
-Feedtable
-feed_id
-user_id
-photo_id
-title     varchar(50)
-createdAt timeStamp
-ImagePath varChar(50)
-
-Sql statement:
-select * from feed where user_id = 1
-order by createdAt DESC
-limit 40
-
-
-sql statement to create table:
-create table feed(id int not null auto_increment, userId int not null, photoId int not null, primary key (id));
-
 Example:
 When someone uploads a photo, say Jay uploads a photo
 insert into photo (user_id, title, image_path) values (3, "Japan photo", "Azure/Jay"); it generates photo ID 1
@@ -306,6 +269,35 @@ select title, image_path, createdAt, photo.user_id from
 left join photo
 on f.photoId = photo.id
 order by photo.createdAt desc;
+
+
+Push mode的问题是:star user, Lady Gaga发一个twitter后，85.7M fans, 85.7M DB write, fanout takes hours to finish.
+
+解决方案就是明星用pull, 不fanout, 普通用户fanout.
+最后timeline是pull和push(news feed)的结合
+
+
+Pull: Facebook, Twitter
+pull + push: Ins
+
+
+
+
+Question:
+爱思系统设计说，这个表里一定要加creation time用来排序，但我认为这个表里产生的photo id和
+最终要和photo table做join,photo table里面有creation time, 那个时候可以排序，为撒feedtable还要存一次？
+
+回答说：
+Feed table先按照creation timestamp sort, 取前N位，在和photo table做 join 比
+Feed table直接和photo table做Join, 在sort, 在取前N位要快。
+
+更快的方式是de-normalize (小表变大表, 把Photo table的column加进来到feedtable里)， 这样就不用join了。
+pro: 不用Join, latency低
+Con: 需要占用更多的存储空间。
+
+
+
+
 
 
 // Optimization to create index on photo id and photo creation time.
