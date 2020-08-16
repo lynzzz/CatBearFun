@@ -1,0 +1,107 @@
+
+
+
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+Online Design resources:
+1. Educative(best courses：入门级别的): https://www.educative.io/courses/grokking-the-system-design-interview/m2yDVZnQ8lG
+2. Design Data Intensive application(理论支持)
+3. Engineering blog/presentation（工业界的具体实现）
+   blog example: <li> <a href=" https://eng.uber.com/cherami/">Uber Engineerig Blog</a></li>
+
+   presentation exapmle: https://www.infoq.com/presentations/pinterest/
+
+
+4. Github Facebook design questions(写的一般): https://github.com/donnemartin/system-design-primer
+5. jiuzhang design tutorial(没有撒用) https://www.jiuzhang.com/accounts/profile/registered_courses/75/
+
+
+
+<br>
+<br>
+<br>
+
+How to prepare System design:
+1. 一亩三分地讲如何准备： https://www.1point3acres.com/bbs/forum-323-1.html
+2. 一亩三分地面经：https://www.1point3acres.com/bbs/forum.php?mod=forumdisplay&fid=145&filter=sortid&sortid=311&orderby=dateline
+3. 如何对着公司准备：
+   “对每家onsite的公司 -> 在地里翻完最近两年所有onsite面筋aggregate所有design题目 -> 对每个题目找工业界实现的blog -> 阅读每个blog，选中最好的一到两个 -> 读到烂熟，整理出我当面试官的话会问的所有问题不停考自己 -> 白板英文自行mock 3遍 -> over”
+
+<br>
+<br>
+<br>
+<br>
+
+
+Facebook Design Questions:
+<li> <a href="Design_NewsFeed.html">Newsfeed : Facebook/Instangram/Twitter/微信朋友圈/Sina Weibo </a></li>
+<li> <a href="Design_Chat.html">Chat System: Facebook Chat/What's App/We chat </a></li>
+<li> <a href="Design_Youtube.html">Streaming System: Netflix, Youtube</a> </li>
+<li> <a href="Design_Uber.html">Location APP: Uber/Lyft/Yelp</a> </li>
+<li> <a href="Design_rateLimiter.html">Rate limiter</a></li>
+<li> <a href="Design_TypeAhead.html">TypeAhead</a></li>
+<li> <a href="Design_dropbox.html">DropBox</a></li>
+
+
+
+What's missing?
+Design fast key/value database cache: Memcached/Redis
+Design Short URL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+knowledge summary
+1. SQL vs NOSQL https://www.educative.io/courses/grokking-the-system-design-interview/m2yDVZnQ8lG need authentication
+  a. storage model
+      SQL is relational DB whereas NOSQL is nonrelational DB.
+      NOSQL has different storage model:
+      1: key value:    Radis, Memcached
+      2: document:     MongoDB
+      3: Wide Column:  Cassandra
+      4: Graph DB:
+
+  b. key difference
+                                 SQL                                          NOSQL
+  schema                         Yes                                           NO
+  scale(sharding, replication)   Manually(challenging time consuming)       Automatica (cheap)
+  ACID compliant                 Better
+
+  In general, NOSQL db sacrifices ACID compliance for scalability and high speed.
+
+  c. When SQL is prefered
+
+     c1. The case you need to use SQL: Need to have ACID compliance. Transaction, for example bank.
+     c2. You data is structurd and unchanged.
+
+  d. When to NOSQL is preferred
+     d1. Store large data that has no structure.
+     d2. you want software scale the data for you.
+     d3. fast development.
+
+  e. Cassandra or key-value stores in general, always maintain a certain number of replicas to offer reliability
+
+</code></pre>
+</body>
