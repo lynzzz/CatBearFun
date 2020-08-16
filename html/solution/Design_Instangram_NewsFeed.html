@@ -9,38 +9,68 @@
   <li><a href="https://www.acecodeinterview.com/intro/instagram.html#%E8%B5%84%E6%BA%90%E4%BC%B0%E7%AE%97-back-of-the-envelope-calculation-optional">Ace system design interview(Who claims to be Interviewer from FLAG)</a>  </li>
 
 
-1. Storage
+News Feed 适用于: 
+US: Facebook/Twitter/Instagram
+China: WeChat朋友圈/新浪微博
 
-Storage for photo:
-say everyday 2m photos created and average photo size 200kb, total storage is 2m * 200kB = 400 * 10^9Byte = 400GB.
-one day we need 400GB disk, and one month, we need 12TB disk, so photos cannot be stored in one machine, what we need is
-distributed file storage such as S3.
+
+Step1 : Scenario = requriement + capacity
+
+Requirement: 
+a.Follow user
+b.news feed/timeline
+
+Capacity:
+DAU: FB 1.5B, Ins ( 500M)
+
+QPS: say one user has 10 operations per day
+     1.5B * 10 / 86400 = 150k for FB, 50k for INs.  分析这是read traffic还是write traffic, read traffic可以用cache优化.
+
+
+Bandwidth:
+bandwidth = QPS * average request size or response size
+Assuming average request size is 20KB, average response size is 2MB( it returns image, the response size should be large.)
+
+ingress  bankdwith = 150K * 20kb = 300MB/s    from all DC
+egresscccdd bandwidth = 150K * 2Mb =      300GB/s
+
+
+
+Storage : say per day adding 2M pictures, each picture has in avarage 200KB, one day
+          we need 2M * 200kB = 400MKB = 400G disk. in one month, we need, 30*400G = 12000G = 12TB disk. so photos cannot be stored in one machine, what we need is distributed file storage such as S3.
+ 
+
+
+
+
+Step2: Service
+Draw architecture:
+Web server + Application server + DB
+
+
+Step3: Storage:
+
+We need 3 metadata tables and 1 storage.
+User table, picture table, Friendship table and storage for picture.
+
+
+
+
+3.1. table schema / 8.12
 
 storeage for table
 image table:
 id 4byte + user id 4byte + title 50byte + createdAt 50 byte + image path = 256Byte = 364 Byte
-364Byte * 2m = 0.7G per day, 21GB per month. 240GB per year.
+364Byte * 2m = 0.7G per day, 21GB per month. 240GB per year.  (1 server can hold)
 
 user table:
 id 4Byte + name 20byte + email 50byte + created At 4Byte + last login 4Byte = 82byte
-say there is 500M user. total size = 82 Byte * 500M = 40GB
+say there is 2B user. total size = 82 Byte * 2B = 160GB  (1server can hold)
 
 Friendship table:
 id 4byte, from 4 byte, to 4 byte, total 12byte
-500M users, each user follow 100 user, total = 500M * 100 * 12byte = 0.6TB.
+2B users, each user follow 100 user, total = 500M * 100 * 12byte = 0.6TB. ( 1 server)
 
-QPS:
-say there are 500M user, 1M daily active user, each user does 10 read operation per day.
-say there are 500M daily active user, each user does 1 write operation per day.
-
-Read QPS = 1M * 10/86400 = 100.
-Write QPS = 10
-
-Bandwidth:
-bandwidth = QPS * average size/per request or response
-if average size per response 2M
-
-outgoing bandwidth = 100 * 2M = 200M/s
 
 Table schema:
 User table
@@ -62,6 +92,33 @@ frinedship table
 id    int PK
 from  int
 to    int
+
+
+3.2 SQL vs NoSQL
+
+SQL: schema:  SQL, MYSQL, Oracle
+NoSQL: schemaless: key/value : Redis, Memcached(1M)
+                   Row key/Column key : Cassandra
+                   Document type: MongoDB
+                   Graph DB:
+
+                        SQL                                                         NOSQL
+No automatica sharding/replication. Need to do manually      Automatical sharding/replication(more server)
+ACID (atomicity, consistency, isolation, durability)     Sacrifice ACID for high performance and schalability
+Automatic ID increment
+Tranaction. You get either all or none.
+
+When to use SQL: 1. ACID(bank) 2. data unchanged
+When to use NOsql : 1. data with no schema and are changing  2. cloud based storage(automatical sharding, replication, save money)
+
+
+
+3.3 Component optimization
+Read and Write go to different webserver.
+Write traffic writes image to disk, it is slow. If write traffic flood the web server, service apppool will be hot, read traffic will be queued in kernel mode and then when queue is full, it starts to reject request and the subsequent request will not be served.
+
+
+
 
 Generate News feed for sam whose user id is 1
 
@@ -126,28 +183,73 @@ No need to create feed table.
 select to_user from friendship where from_user = 1;
 
 2. Left join with photo table, and sort by creation date.
+
+/* 这种join的方法是不对的,因为会把To_User的所有image都取出来. 如果这些人有10年的照片你就得取10年的照片.
 select photo.title, photo.user_id, photo.createdAt from
 (select * from friendship where from_user = 1) as f
 left join photo
 on f.to_user = photo.user_id
 order by photo.createdAt;
+take 100
+*/
+
+正确的做法是DB N次Read然后在Sort.
+Http Get API: Time Complexity O(N)
+getNewsFeed(user)
+{
+  toUsers = FollowerDB.read(user);
+
+  resonse = empty;
+  for( User : toUsers)
+    response.insert = DB.read(user, 100);
+
+  response.sortBy(timeStamp).take(100);
+}
+
+HTTP POST API:  O(1)
+postImage(user, image)
+{
+  ImageDB.insert(user, image);
+}
+
+
 <img src="../../img/push.png" width="800px" height="800px">
 
 
 Push mode:
-When someone publishes a photo, it is going to fan out
-the message to all users that are following me. How to do it?
+When I publishes a photo, it is going to fan out the message to all users that are following me.
 
-1. Get user's followers
-select from_user from friendship where to = 1.
+FeedTable
+id int     PK
+userId     FK
+photoId    FK
+createdAt  TimeStamp
 
-2. create a feed table for user. add an entry to feed table for all follower.
 
-Schema;
-feedtable
-id int not null auto_increment primary key
-userId
-photoId
+
+HTTP GET API: Time Complexity O(1)
+getNewsFeed(user)
+{
+   newsFeedDB.read(user, 100);
+}
+
+
+HTTP POST: Time Complexity O(N) 可以Async后台执行,不用等待
+postNewsFeed(user, image)
+{
+  imageId = ImageDB.insert(user, image);
+
+  Users = followerDB.returnAllPeopleFollowingMe(user);    
+
+  for( User : Users)
+  {
+      newsFeedDB.insert(user, photoid);
+  }
+}
+
+Push mode的问题是:star user, Lady Gaga发一个twitter后，200K　次的DB写请求，估计news Feed DB非常热．
+
+
 
 Question:
 爱思系统设计说，这个表里一定要加creation time用来排序，但我认为这个表里产生的photo id和
