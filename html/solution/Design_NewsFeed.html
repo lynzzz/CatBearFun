@@ -270,15 +270,19 @@ left join photo
 on f.photoId = photo.id
 order by photo.createdAt desc;
 
+Push好处就是Latency低．
 
 Push mode的问题是:star user, Lady Gaga发一个twitter后，85.7M fans, 85.7M DB write, fanout takes hours to finish.
 
-解决方案就是明星用pull, 不fanout, 普通用户fanout.
-最后timeline是pull和push(news feed)的结合
+解决方案就是明星用pull, 不fanout, 普通用户push.
+最后newsfeed是pull和push(news feed)的结合
 
 
 Pull: Facebook, Twitter
 pull + push: Ins
+
+
+
 
 
 
@@ -300,16 +304,11 @@ Con: 需要占用更多的存储空间。
 
 
 
-// Optimization to create index on photo id and photo creation time.
+Optimization to create index on photo id and photo creation time.
 create index idx_on_photo_id_and_creationTime on photo(id, createdAt);
 
-Push Mode:
-pro: latency is low, since you have a table store all the feed of a user.
-cons: Fan out for celebrity, it takes time and resources(async workers).
 
-How to solve celebrity problem using push mode.
-Hybrid mode: Push for regular user and pull for Celebrity.
-How ?
+
 
 <img src="../../img/hybrid.png" width="800px" height="800px">
 
@@ -328,15 +327,14 @@ backfill his photo entry from photo table to celebrity photo table, and delete h
 
 
 
-2. reliability and Redundency
-  1. Problem with one single storage server: Single point failure
+2. Single Point Failure
   2. Solution: creating replica,
   3. when one server fails, the trafic will be routed to the remaining ones, which is called fail-over
 
 
 
 3.Web server optimization:
-  Knowledge: Web server has connection limit, which I think is QPS limit, typically one webserver can handle 1000 QPS.
+  Knowledge: Web server has connection limit, typically one webserver can handle 5k-6k QPS. When it is more than 5k-6k. Request will be queued in http.sys and when queue is full, it will reject request.
 
   Write goes to disk, it is slow. "read" cannot be serverd if web server is busy with all write requests.
   solution: Have dedicated servers for read and different servers for write that update doesn't hog the web server.
