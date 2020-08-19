@@ -233,8 +233,29 @@ Push好处就是Latency低．
 
 Push mode的问题是:star user, Lady Gaga发一个twitter后，85.7M fans, 85.7M DB write, fanout takes hours to finish.
 
-解决方案就是明星用pull, 不fanout, 普通用户push.
-最后newsfeed是pull和push(news feed)的结合
+
+解决方案就是pull + push 明星feed只存在image table, 不fan-out到feed table, 普通人先写到image talbe,在做fan-out到feed table.
+最后feed就是明星从image table取,普通人只从feed table取, 两个合在一起.
+
+
+TBD: ICE系统说为名人建立一个celebrity image table,我觉得没有必要,就用普通的image table就可以了?
+     没有想明白为什么还要单独建立一个表?
+
+
+Question 能不能给celebrity定个界限?
+不能,因为粉丝数量会波动,回导致fanout时有时无.
+
+例子:
+邓超是明星,发帖子1,2 没有fanout, 存在image table.  过了一段时间邓超因为经常发帖子掉粉很严重,一下子变成了
+普通人, 然后邓超发了帖子3,4 这个时候因为是普通人,所以fan-out到feedtable. 然后这个时候一个粉丝开始要求feed,因为邓超是普通人了,所以feed只从feedtable里面去取,所以只有3,4. 1,2帖子看不到了.
+
+
+
+Question  如果有了新人一下子变很火，我们怎么把他们加入这个我们认定的 celebrity 的行列
+手动的把他在feedtable里含有这个人的image id entry删除掉,然后把他认定为名人,feed就只从image table读.
+
+
+
 
 
 Pull: Facebook, Twitter
