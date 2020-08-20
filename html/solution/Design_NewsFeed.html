@@ -242,7 +242,7 @@ TBD: ICE系统说为名人建立一个celebrity image table,我觉得没有必�
      没有想明白为什么还要单独建立一个表?
 
 
-Question 能不能给celebrity定个界限?
+Question 能不能给celebrity定个界限?才
 不能,因为粉丝数量会波动,回导致fanout时有时无.
 
 例子:
@@ -294,7 +294,7 @@ backfill his photo entry from photo table to celebrity photo table, and delete h
   solution: Have dedicated servers for read and different servers for write that update doesn't hog the web server.
 
 
-4. Data Partition: (Horizontal partition, 横着分)
+4. Data Partition:
   Partition phto table:
   Approach 1: partition by user ID. say you have 10 servers, server number can be obtained by user_id%10. that way, all photos of a user
               are saved in one partition. In partition photo table, primary photo id will be different from original one and is auto-incremented.
@@ -329,11 +329,7 @@ backfill his photo entry from photo table to celebrity photo table, and delete h
 
 
    Approach II: partition by photoID:
-           old photo entry can be mapped to the crosponding shard, but the challenge is new photo doesn't come with an photo ID, you don't know which shard it maps to. We need to have a dedicated database generating global photo id,
-           we can set up a database table to generate auto-incremented photo ID.
-
-           And then you map global photo id to a shard, add the entry into the shard key.
-           The shard table should not use auto-incremented ID as primary ID, it should use global photo id as primary key.
+           old photo entry can be mapped to the crosponding shard, but the challenge is new photo doesn't come with an photo ID, you don't know which shard it maps to. We need to have a dedicated database generating global photo id, we can set up a database table to generate auto-incremented photo ID. And then you map global photo id to a shard, add the entry into the shard key.The shard table should not use auto-incremented ID as primary ID, it should use global photo id as primary key.
 
                global ID table
            Image ID:
@@ -362,17 +358,28 @@ backfill his photo entry from photo table to celebrity photo table, and delete h
      multiple database instances on it.  So whenever we feel that a particular database server has a lot of data, we can migrate some logical partitions from it to another server,
      and we maintain a config file maping from logic partitions to database server and update it when we move partition. This enable us move partition easier.
 
+
+
 API 接口设计
 Write(userID, image, description);
-Read(userID, Last_TimeStamp, page_count); //这些参数和access token都可以在http header里传过去
-不可能一次发完，feed太多了， 一次发部份，pagination的概念。第一次传入当前的timestamp, pagecount到后端要feed,
-后端返回feed的同时，更新最后一个feed的timestamp, 在发给你存在broswer的cookie里。 你往下拉的时候要第二页，
-http GET往后端发请求的时候，带着新发过来的timestamp，后端就从新的timestamp后面开始取，然后更新为最后一个feed的timestamp, 在发给你。
-存在broswer cookie里面。
 
-错误的做法是，传入last_feedIndex, pagecount. Example, 第一次传（0，20），读前20个，
-第二次传（21，20），读后面20个。这样写的问题是，用户的feed一直在增加，同一个feed的系数会不停的变化，
-这样读如果在第一次读和第二次读之间，用户的feed变化了，在feed的最前面会加入新的feed,这样就会产生错位。
+Read(userID, Last_TimeStamp, page_count); // 这是考察pagination的概念
+
+参数和access token都在http header里传过去. Feed不可能一次发完，feed太多了， 一次发部份，pagination的概念。
+
+第一次传入当前的timestamp, pagecount到后端要feed,
+后端返回feed的同时，更新最后一个feed的timestamp, 在发给你存在broswer的cookie里。 你往下拉的时候要第二页，
+http GET往后端发请求的时候，带着新发过来的timestamp，后端就从新的timestamp后面开始取，然后更新为最后一个feed的timestamp发给你。存在broswer cache里面。
+
+第一次 Get(1001, Now, 20)  => return feed and timestamp 9:47
+第二次 Get(1001, 9:47, 20) => return feed and timestamp 9:43
+第三次 Get(1001, 9:43, 20) => return feed 8:45
+
+
+Scalability: 流量暴增加怎么办?
+1. LB
+2. add machines
+3. Cache(CDN, memcached)
 
 Final Design:
 <img src="../../img/final.png" width="800px" height="800px">
