@@ -381,6 +381,18 @@ Scalability: 流量暴增加怎么办?
 2. add machines
 3. Cache(CDN, memcached)
 
+
+Fault Tolerence:
+FrontEnd/cafe:
+Post Service 和 Feed Service 需要有多台服务器由 Load Balancer 去分配请求，当某台机器出现有问题的时候，请求会被发送到别的机器上，造成服务的延迟增加而不是无服务的状态。
+
+Cache:
+缓存需要有多台服务器，如果一台出现问题，其他的缓存仍能正常工作，使得这样数据库访问有限地增加。问题缓存重启后，我们失去了该缓存的数据，只能慢慢恢复，然而一段时间后数据库访问会回到原来状态。
+
+
+DB:
+数据库和文件系统需要有备份，我们是无法容忍数据丢失的。常见的方法有Master-slave replication, Master 承担“写”请求，Slave 承担“读”请求，Master 的数据在满足 eventual consistency 的条件下备份到 Slave上。Master如果出现问题，一台 Slave 会被 promote 成 Master。Slave 因为有多台并且承担一样的任务，其中一台重启的时候，Master 只需给它补上丢失的数据即可。这样不仅备份了数据，而且降低了每台机器接受请求的压力。
+
 Final Design:
 <img src="../../img/final.png" width="800px" height="800px">
 
