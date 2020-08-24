@@ -6,8 +6,64 @@
 
 <body>
 <pre><code>
-https://acecodeinterview.com/memcached/
+Ace design https://acecodeinterview.com/memcached/
 
+
+API interface:
+memcached_get(DB, key);
+
+memcached_set(DB, key, value);
+
+
+
+1. High level
+
+HashTable 
+  LRU 
+
+
+
+2. Memory allocation:
+
+Memecached divides the memory into 1MB page by default. And each page is assigned to a slab class, class defines the chunksize. 每一个class包含了他定义size的所有chunk.
+
+For example, 
+
+the chunk size is 80bytes, so 1MB can de dividened into 1024*1024byte/80byte = 13107 chunks. Each chunk stores data which size is less than 80 bytes. 没用完的内存就浪费了。
+
+
+page 1:  chunk1, chunk2 .....    chunk13107 
+page 2:  chunk1, chunk2 .....    chunk13107
+page 3
+.                                                 => class1        
+.
+.
+page n:
+
+
+
+
+the chunk size is 136bytes, so 1MB can de dividened into 1024*1024/136byte = 7710 chunks. Each chunk stores data which size is less than 136 bytes. 没用完的内存就浪费了。
+
+
+page 1:  chunk1, chunk2 .....    chunk7710
+page 2:  chunk1, chunk2 .....    chunk7710
+page 3
+.                                                 => class2       
+.
+.
+page n:
+
+
+
+
+
+Each class comes with a LRU and be treated as an indedent cache.
+
+
+
+
+3. Memory deallocation
 
 </code></pre>
 </body>
