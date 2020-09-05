@@ -1,12 +1,14 @@
-<html>
+&lt;html>
 
-<head>
-   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
-</head>
+&lt;head>
+   &lt;link rel="stylesheet" type="text/css" href="../../css/utility.css">     &lt;!-- external css file -->
+&lt;/head>
 
-<body>
-<pre><code>
+&lt;body>
+&lt;pre>&lt;code>
 
+
+思维方式:  DFS暴力 => DFS + Mem => DP(不一定能写出来)
 
 Solution 0: DFS not return value( cannot be used for DFS + memo)
 
@@ -38,7 +40,7 @@ class Solution {
         }
 
         
-        for( int i=pos; i<nums.length; i++){
+        for( int i=pos; i&lt;nums.length; i++){
             sum = sum + nums[i];
             dfs(sum, target, nums, i+1);
             sum = sum - nums[i];
