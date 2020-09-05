@@ -19,11 +19,6 @@ Google(very few headcount/downlevel/Lowball/Need compete offer)
 
 
 
-Snapchat:
-Coding:
-第一题类似于frog jump，给一个array每个格有可以向前的步数，问最少几步能到终点
-第三题一道跟Trie有关的题，找match regular expression的words，最后要用dfs，因为bfs fanout很大
-第四题是写一个iterator，很简单
 
 
 design:
@@ -33,91 +28,61 @@ design:
 题目大概如此，给的比较模糊，所以整个过程会跟对方确认各种细节。基本思路是确认功能集，估算资源和规模，讨论high level框架，deep dive存储层，分析如何scale和容错，讨论过程中会提到一些开源系统，解释为何选用，以及一些tradeoffs。这轮是拿coderpad做的，写设计文档..
 
 
+现场SD:   设计一个计数器服务，记录所有对外提供的服务的各种活动
 
 
-FB:
+
+
+
+
+
+
+                                          FB:
 coding: 543(ok), 42(ok), 56(ok), 297(ok), 88(ok), 23(ok), 1026(ok), 773(ok), 84(ok)
-109(ok)， 938(ok), 328(ok), 896(ok), 54(0k), 157(ok), 158(ok), 20(ok), 22(ok), 301(ok), 1249(ok), 472(ok), 339(ok), 973(ok), 1197(ok), 215, 785, 1249(ok), 1428, 621
+109(ok)， 938(ok), 328(ok), 896(ok), 54(0k), 157(ok), 158(ok), 20(ok), 22(ok), 301(ok), 1249(ok), 472(ok), 339(ok), 973(ok), 1197(ok), 215, 785, 1249(ok), 1428, 621, 560(ok), 129(ok), 238(ok)
+416
 
 
+Desgin:
 
-G:
+Design 1:
 
+But based on what I saw, I believe it is the web crawler problem with a large number of nodes.
+As I can think, there are two ways.
+1. centralized queue to distribute the workload to each node.  you have to ask the interviewer to clarify if this makes sense.
+2. peer to peer network with something like NOsql/sql, depends on how strictly you allow the crawling the same url. to provide fault tolerance, I believe that you will have to allocate multiple nodes and use consistent hashing for allocating urls. when there is node failure or node addition, zookeeper like service needs to synch the new DHT/configuration to each node, so each node knows where they should send the mined urls that are not supposed to handle locally.
 
-
-
-
-design:
-auto complete/typeahead
-
-
-case 1.
-
-3.26面的VO
-里寇 唔斯散 寺尔
-bq + 里寇 唔流
-里寇 尔酒期
-吸桶舍鸡  自洞补权/typeadhead
-
-1. 543, 42
-2. BQ + 56
-3. 297
-4. System design: auto complete/typeahead
-
-case 2.
-
-1. coding
-巴十巴，贰拾叁 :
-
-2. coding
-longest increa
-
-n
-post with live comments
-
-加面
-意灵二流
-齐齐三
-
-coding: 88, 23, 1026, 773
-
-case 3.
-
-骚扰领英HR，2月初电面，李口爸死。
-
-二月底现场。
-
-case 4:
-蠡口 酒伞 93
-
-case 5:
-
-1. 叁儿吧 (328)
-2. 巴久柳 (896)
-** hello world **
-
-# VO
-
-1. BQ + 五司       54
-2. 要武器 药物靶    157, 158
-3. 变形(系统设计）geohashing相关
-4. 先贰拾热身 然后尔尔  test case考得很细致   20 22
+Design这题从之前的面经来看，大概率用message queue是不行的，也有的被要求继续design message queue。我看到的几个过经都是用的P2P DHT(Distributed hashtable)，讲一下consistent hashing，然后讲一下DHT里面比较popular的方案，Chord，KAD之类的。总之感觉几个坑题都跟P2P有关，然后Grokking没怎么讲到P2P的案例，需要自己上网找材料。
 
 
 
 
-店面刷题网三另一，要求
 
 
-电面的时候大脑一片空白，用stack写了一通，到dry run跑例子的时候才发现bug无数，往返几次还是被面试小哥揪出bug无奈已经到时间了。后悔没有早点准备，万念俱灰。
 
 
-补充内容 (2020-5-19 23:48):
-的确是一耳丝久，还是个medium题，心绞痛
 
 
-1  第一题是散散酒
-2. 利口 久起伞
+
+
+
+                                          Twitter
+Coding: 380 的延伸，就是除了原题的要求，还要求getLast也是O(1)。所以要用map+doubly linked list来找getlast，map+list来找getrandom。写完了还要写unit tests，refactor code，还问有更多时间还可以做什么，比如加更多的api啊，注释啊，之类的
+
+
+
+
+Design:
+rate limiter.
+
+
+
+
+
+
+
+
+
 
 
 
@@ -138,8 +103,24 @@ Google interview question:
 
 LC 736  too hard. lisp expression
 
-4.27 电面 巴斯斯，优化到O(1)空间复杂度
 
+
+
+
+4.27 电面 巴斯斯，优化到O(1)空间复杂度  844 ?
+
+
+
+电面: LC 流要移变形 (顺序不变) (ok 9/5)  611 ?
+
+现场一:   尔伞巴, 咬斯巴 238(ok 9/3)   148(9/3 ok)
+
+现场二:   无流岭, 腰尔救 560(ok 9/2) , (129 ok 9/2)
+
+现场三(training): 腰腰救妻, 尔义伍 ( 1197)(ok 9/2)   215( priority queue ok 9/2)
+
+现场SD:   设计一个计数器服务，记录所有对外提供的服务的各种活动
+BQ:  经典题 proud project, failure experience, obstacles, feedback from previous managers
 
 
 </code></pre>

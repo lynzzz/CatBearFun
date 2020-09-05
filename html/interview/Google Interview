@@ -1,1 +1,65 @@
-dd
+7/28 Googole phone interview.
+
+Anthony:
+
+class order{
+	long cutomerID
+	long orderID
+	long AdRequested
+}
+
+class ProcessedOrder{
+    long  cutomerID,
+    long  AdDisplayed
+}
+
+example:
+
+{2, 4, 5}  inv:8  => 2, 3, 3.  Need to find a threshold hold that works for every customer.
+
+
+
+Interviewer breaks it down to 2 steps:
+1. Assume you have a threashold function, write function. Straightfowrad, if < threadshold, take Adrequested, otherwise, take threshold, orgnize the answer.
+
+2. Implement getThreshold function.
+Sort the array, go from left to right, apply the number as threshold to the array, find the one that results in totalAds requested > inventory, that's your right bound.   O(n^2)
+
+3. Decrase the threshold, and find the closes threshold that results the totalAds <= ava. O(n^2)
+
+time complexity : O(n^2)
+
+就是这一步没有分析清楚, 找到upper bound需要O(n), 然后从那个值 做Binary search, 往回走去试那个Threshold
+O(lgMax)*n 
+
+总的复杂度是 O(n^2 + nlg(max) = O( n (n+lg(max) )
+
+
+
+
+
+
+
+Google Phone Feedback: 8/3
+
+code fast but time complexity is wrong. [1, 100]. 需要从99, 98 .. 50 ... 3. 2 .1 一直往后面数, 而不是从100直接跳到1.   O( lg(max)*n )
+
+
+
+
+简单的解法应该是扫一遍数组, 记录最大的值, threshold只能在最小和最大之间. binary search找到那个值, lg(max) * n
+
+Total time complexity is O(n) + O(lg(max))*n  = O(n lg(max))
+
+
+还是逻辑没想清楚.
+
+
+List<proceessdOrder> processAds(List<Order> orders, int inventory)
+{
+
+
+
+
+
+}
