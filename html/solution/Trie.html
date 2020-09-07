@@ -18,15 +18,15 @@
       TrieNode[] children = new TrieNode[26];
       boolean isEnd = false;
 
-      TrieNode getChildNode(char c){
+      TrieNode getChild(char c){
           return children[c - 'a'];
       }
 
-      void setChildNode(char c){
+      void setChild(char c){
           children[c - 'a'] = new TrieNode();
       }
 
-      boolean containsChild(char c){
+      boolean containChild(char c){
           return children[c-'a'] != null;
       }
   }
@@ -43,8 +43,8 @@
 
           TrieNode cur = root;
           for( char c : word.toCharArray()){
-              if ( !cur.containsChild(c)){
-                  cur.setChildNode(c);
+              if ( !cur.containChild(c)){
+                  cur.setChild(c);
               }
               cur = cur.getNode(c);
           }
@@ -56,7 +56,7 @@
           TrieNode cur = root;
 
           for( char c : word.toCharArray()){
-              if ( !cur.containsChild(c)){
+              if ( !cur.containChild(c)){
                   return false;
               }else{
                   cur = cur.getNode(c);
