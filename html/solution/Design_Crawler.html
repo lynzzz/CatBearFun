@@ -6,7 +6,7 @@
 
 <body>
 <pre><code>
-
+                                                      FB crawler design
 这个题目的几种表达方法.
 
 第一种表达方式:
@@ -72,6 +72,62 @@ and it doesn't finish all the crawling.
 
 
 Chord or KAD algorithm which is built on top of that, to see how to minimize communications and see how nodes collaborate.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     Tradition Crawler design:
+<li> <a href="https://acecodeinterview.com/web_crawler">Ace crawler design (设计偏重于high level)</a></li>
+
+                                                     
+
+I requirement + capacity
+
+500M websites
+Each website has 100 pages
+Each page has average 100kb.
+Need to crawl the entire internet every 2 weeks
+
+Qps = 500M * 100 /(86400 * 14) = 41335
+storage = 500M * 100 * 100kb = 5PB
+
+
+
+II Core component:
+
+1. URL frontier : 
+      step 1: normalization
+      step 2: filter 
+      step 3: has seen ? 
+      step 4: prioritization. Put URL in queues with different priority. Front queue selector selects URL based on priority randomly. Make sure 
+                              Hight priority queue gets severd and low priority queue not get starved.
+                              
+                              Put URL in different queue again and each queue has the same domain. back selector selects url from those queues based 
+                              on a min priority queue that has the allowd visting time. t + deltaT. Each time it selects a url from a queue, it calculates the new 
+                              time and insert it in min priority queue. Such that, it knows who is the next one to crawl and do not overload the website.
+     
+      step 5: Give the URL to fetcher
+
+2. Fetcher (Async worker) 
+      The component that actualy sends request to website. 
+      step 1: Send HEAD request to url and check last modified header and see if it is different from last time
+      Step 2: if yes, send GET request to url and get the html page.
+      step 3: save the html in cache, storage and task queue 
+
+
+
+3. Task Queue (process HTML page)
+      URL extractor and send it to url frontier 
+      create index for searching purpose (Async)
 
 
 
