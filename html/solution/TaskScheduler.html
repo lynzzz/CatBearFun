@@ -1,0 +1,123 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+    class Solution {
+        public int leastInterval(char[] tasks, int n) {
+            int[] freq = new int[26];
+            for( char c : tasks){
+                freq[c -'A']++;
+            }
+            
+            PriorityQueue<Integer> pq = new PriorityQueue<Integer>((a,b)->(b-a));
+            
+            for(int i : freq){
+                if ( i != 0){
+                    pq.add(i);
+                }
+            }
+            
+            int count = 0;
+            
+            while( !pq.isEmpty()){
+                
+                List<Integer> ret = new ArrayList&lt;>();
+                int slot = n + 1;
+    
+                while( !pq.isEmpty() && slot > 0){
+                    int top = pq.poll();
+                    top--;
+                    if ( top > 0){
+                        ret.add(top);
+                    }
+                    
+                    slot--;
+                    count++;
+                }
+                
+    
+                for( int i : ret){
+                    pq.add(i);
+                }
+                
+                if ( pq.isEmpty()){
+                    break;
+                }
+                
+                count = count + slot;
+    
+            }
+            
+            return count;
+        }
+    }
+
+
+
+
+
+    Facebook变种,相对位置不能变.     AABA  2   =>   A  AB A   total number of cpu cycle = 7
+    
+    int count = 0;
+
+    while( i &lt; n){
+        int slot = n+1;
+        HashSet<Integer> set = new HashSet&lt;>();
+
+        while( i<n && slot > 0){
+            
+            if ( slot == n + 1){
+                count++;
+                slot--;
+                set.add(arr[i]);
+                i++;
+            }else{
+                if ( set.contains(arr[i])){
+                    count = count + slot;
+                    break;
+                }else{
+                    count++;
+                    slot--;
+                    set.add(arr[i]);
+                    i++;
+                }
+            }
+        
+        }
+
+        if ( i == n){
+            break;
+        }
+    }
+
+    return count;
+
+
+</code></pre>
+
+
+
+
+
+
+<br>
+DP O(n^2)
+贪心 O(n) :不需要掌握
+
+
+</div>
+
+
+
+
+</body>

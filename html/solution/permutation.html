@@ -8,21 +8,16 @@
 
 <pre><code>
 class Solution {
-     * @param nums: A list of integers.
-     * @return: A list of permutations.
 
     public List&lt;List&lt;Integer&gt;&gt; permute(int[] nums) {
-        // write your code here
 
-        ArrayList&lt;Integer&gt; result = new ArrayList&lt;&gt;();
-        ArrayList&lt;List&lt;Integer&gt;&gt; results = new ArrayList&lt;&gt;();
-        boolean[] visited = new boolean[nums.length];
-        dfs(nums, result, results, visited);
+        List&lt;List&lt;Integer&gt;&gt; results = new ArrayList&lt;&gt;();
+        dfs(nums, new ArrayList&lt;&gt;(), results, new boolean[nums.length]);
         return results;
     }
 
 
-    private void dfs(int[] nums, ArrayList&lt;Integer&gt; result, ArrayList&lt;List&lt;Integer&gt;&gt; results, boolean[] visited){
+    private void dfs(int[] nums, List&lt;Integer&gt; result, List&lt;List&lt;Integer&gt;&gt; results, boolean[] visited){
 
         if ( result.size() == nums.length ){
             results.add(new ArrayList&lt;Integer&gt;(result));
@@ -30,14 +25,15 @@ class Solution {
         }
 
         for( int i=0; i&lt;nums.length; i++){
-            if ( !visited[i] ){
+            if ( visited[i] ) 
+                continue;
 
-                visited[i] = true;
-                result.add(nums[i]);
-                dfs(nums, result, results, visited);
-                visited[i] = false;
-                result.remove(result.get(result.size()-1));
-            }
+            visited[i] = true;
+            result.add(nums[i]);
+            dfs(nums, result, results, visited);
+            visited[i] = false;
+            result.remove(result.get(result.size()-1));
+            
         }
     }
 }

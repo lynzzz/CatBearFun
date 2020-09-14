@@ -13,12 +13,9 @@ Solution 1:
 class Solution {
 
     public List&lt;List&lt;Integer>> subsets(int[] nums) {
-        // write your code here
-        Arrays.sort(nums);
 
         ArrayList&lt;ArrayList&lt;Integer>> results = new ArrayList&lt;>();
-        ArrayList&lt;Integer> result = new ArrayList&lt;>();
-        dfs(results, result, nums, 0);
+        dfs(results, new ArrayList&lt;>(), nums, 0);
         return results;
     }
 
