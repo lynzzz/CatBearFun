@@ -40,9 +40,15 @@ design:
                                           FB:
 coding: 543(ok), 42(ok), 56(ok), 297(ok), 88(ok), 23(ok), 1026(ok), 773(ok), 84(ok)
 109(ok)， 938(ok), 328(ok), 896(ok), 54(0k), 157(ok), 158(ok), 20(ok), 22(ok), 301(ok), 1249(ok), 472(ok), 339(ok), 973(ok), 1197(ok), 215, 785, 1249(ok), 1428, 621(ok), 560(ok), 129(ok), 238(ok)
-416(ok), 435(ok), 236(ok), (858), 1047(ok), 211(ok), 10(ok), 191(ok), 125(ok), 78(ok)， 339
+416(ok), 435(ok), 236(ok), (858), 1047(ok), 211(ok), 10(ok), 191(ok), 125(ok), 78(ok)， 339, 71变体(ok), 239变体
 
-第二題是Task Scheduler變化 輸出順序不能變 ex. input: [1,1,2,1] cooldown
+
+71变体:  模拟CD指令，两个参数。第一个当前路径 第二个最终路径. 问最终的pwd。注意如果最终路径以“/”开始 不需要考虑当前路径。
+            Solution: split the current path, put it in stack and then split the destination path, put it in stack. then print out stack
+
+239 变体:
+3. 刷题网丝九巴 变体 单向右上
+
 
 925
 
@@ -62,6 +68,8 @@ Design这题从之前的面经来看，大概率用message queue是不行的，�
 
 Design 2: Type Ahead
 
+
+Design 3 : System Design. 先玩游戏， 然后返回leaderboard 信息包括global ranking, global top 10，friends ranking，自己的ranking 前面十个 后个十个之类的
 
 
 
@@ -112,7 +120,7 @@ rate limiter.
 
 
 
-Google interview question:
+                                      Google interview 
 
 
 1）优化Web服务器实现从本地文件系统提供静态内容

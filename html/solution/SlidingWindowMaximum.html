@@ -1,0 +1,60 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+    class Solution {
+        public int[] maxSlidingWindow(int[] nums, int k) {
+            
+            int n = nums.length;
+            int[] ret = new int[n-k+1];
+            
+            Deque&lt;Integer> q = new ArrayDeque&lt;>();
+            
+            
+            // Deque从左到右index的值在增加,对应的矩阵的值在减小.
+            // 保证了Deque的头始终是最大的, 尾巴始终是最小的.
+            
+            for( int i=0; i&lt;nums.length; i++){
+                
+                int headIndex = i - k +1;
+                
+                if ( !q.isEmpty() && q.peekFirst() &lt; headIndex){
+                    q.pollFirst();
+                }
+                
+                while( !q.isEmpty() && nums[i] > nums[q.peekLast()]){
+                    q.pollLast();
+                }
+                
+                q.add(i);
+                
+                if ( headIndex >= 0){
+                    ret[headIndex] = nums[q.peekFirst()];
+                }
+            }
+          
+            return ret;
+        }
+    }
+
+
+Time Complexity: avaerage O(n)
+</code></pre>
+
+
+
+
+
+
+
+
+</body>
