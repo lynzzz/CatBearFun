@@ -1,0 +1,193 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+
+Solution I: DFS 标记最下面层, 在LCA
+class Solution {
+    Map&lt;TreeNode, Integer> m = new HashMap&lt;>();
+    List&lt;TreeNode> nodes = new ArrayList&lt;>();
+    
+    public TreeNode lcaDeepestLeaves(TreeNode root) {
+        //TreeNode curRoot = root;
+        dfs( root, 0);
+        
+        int level = -1;
+        
+        for(Map.Entry&lt;TreeNode, Integer> e : m.entrySet()){
+            if (e.getValue() > level){
+                level = e.getValue();
+            }
+        }
+        
+        for(Map.Entry&lt;TreeNode,Integer> e : m.entrySet()){
+            if ( e.getValue() == level){
+                nodes.add(e.getKey());
+            }
+        }
+        
+        return lca(root);
+        
+    }
+    
+    void dfs(TreeNode root, int level){
+        if ( root == null) return;
+        
+        m.put(root,level);
+        
+        dfs(root.left,level+1);
+        dfs(root.right,level+1);
+    }
+    
+    TreeNode lca(TreeNode root){
+        if ( root == null) return null;
+        
+        boolean allLeft = true;
+        boolean allRight = true;
+        
+        for( TreeNode n : nodes){
+            if ( !contains(root.left, n)){
+                allLeft = false;
+                break;
+            }
+        }
+        
+        for(TreeNode n: nodes){
+            if ( !contains(root.right, n)){
+                allRight = false;
+                break;
+            }
+        }
+        
+        if (allLeft) return lca(root.left);
+        if (allRight) return lca(root.right);
+        
+        return root;
+    }
+    
+    Boolean contains(TreeNode root, TreeNode target){
+        if ( root == null) return false;
+        
+        boolean left = contains(root.left, target);
+        boolean right = contains(root.right, target);
+        
+        return left || right || root.val == target.val;
+    }
+    
+}
+
+Solution II: BFS 得到最下面层, 在LCA
+
+class Solution {
+    public TreeNode lcaDeepestLeaves(TreeNode root) {
+         
+        Queue&lt;TreeNode> q = new LinkedList&lt;>();
+        q.add(root);
+        List&lt;TreeNode> lowLevel = new ArrayList&lt;>();
+
+        while( !q.isEmpty()){
+            lowLevel.clear();
+            int size = q.size();
+            for( int i=0; i&lt;size; i++){
+                TreeNode n = q.poll();
+                lowLevel.add(n);
+                
+                if( n.left != null){
+                    q.add(n.left);
+                }
+                
+                if ( n.right != null){
+                    q.add(n.right);
+                }
+            }
+        }
+        return helper(root, lowLevel);
+    }
+    
+    public TreeNode helper(TreeNode root, List&lt;TreeNode> nodes){
+        
+        boolean allOnleft = true;
+        boolean allOnRight = true;
+        for( TreeNode n : nodes){
+            if (!contains(root.left, n)){
+                 allOnleft = false;
+                break;
+            }
+        }
+        
+        for( TreeNode n : nodes){
+            if (!contains(root.right, n)){
+                 allOnRight = false;
+                break;
+            }
+        }
+        
+        if ( allOnleft){
+            return helper(root.left, nodes);
+        }else if ( allOnRight){
+            return helper(root.right, nodes);   
+        }
+        
+        return root;
+    }
+    
+    public boolean contains(TreeNode root, TreeNode target){
+        if ( root == target) return true;
+        if ( root == null) return false;
+        
+        return contains(root.left, target) || contains(root.right, target);
+    }
+}
+
+
+Solution III: Divide conquer + 记录.  需要深刻理解树的递归过程, 面式的时候不可能想出来
+
+class Solution {
+    int deepest = 0;
+    TreeNode lca;
+    
+    public TreeNode lcaDeepestLeaves(TreeNode root) {
+        helper(root, 0);
+        return lca;
+    } 
+    
+    int helper(TreeNode root, int level){
+        deepest = Math.max(deepest, level);
+        
+        if ( root == null){
+            return level;
+        }
+        
+        int left = helper(root.left, level+1);
+        int right = helper(root.right, level+1);
+        
+        if ( left == deepest && right == deepest){
+            lca = root;
+        }
+        
+        return Math.max(left, right);
+    }
+}
+
+
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+</body>
