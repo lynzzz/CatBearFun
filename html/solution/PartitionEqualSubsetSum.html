@@ -29,8 +29,6 @@ class Solution {
     
     
     void dfs(int sum, int target, int[] nums, int pos){
-        if ( pos == nums.length()) return;
-
 
         if ( sum > target) return;
 
@@ -38,6 +36,8 @@ class Solution {
             ret = true;
             return;
         }
+
+        if ( pos == nums.length()) return;
 
         
         for( int i=pos; i&lt;nums.length; i++){
@@ -67,17 +67,16 @@ Solution I:  DFS(return value)
       
       boolean dfs(int sum, int target, int[] nums, int pos){
           
-          if ( pos == nums.length) return false;
-
           if ( sum > target) return false;
           
           if ( sum == target){
-              return true;
+            return true;
           }
           
+          if ( pos == nums.length) return false;  
          
           return dfs(sum + nums[pos], target, nums, pos + 1) ||
-                 dfs(sum, target, nums, pos + 1);
+                 dfs(sum,             target, nums, pos + 1);
       }
   }
 
@@ -86,48 +85,46 @@ Solution II: DFS ( return value) + Mem
 
 class Solution {
     
-   int[][] dp;
+    Integer[][] dp;
 
-   public boolean canPartition(int[] nums) {
+    public boolean canPartition(int[] nums) {
+        
+        int sum = 0;
+        for( int i : nums){
+            sum = sum + i;
+        }
+        
+        if ( sum%2 == 1) return false;
+        
+        dp = new Integer[nums.length][sum/2 + 1];
+        
+        
+        return dfs(0, sum/2, nums, 0);
+    }
+    
+    
+    boolean dfs(int sum, int target, int[] nums, int pos){
+
+        if ( sum > target) return false;
+            
+        if ( sum == target){
+            return true;
+        }        
+        if ( pos == nums.length) return false;
+        
+
+        if ( dp[pos][sum] != null ) return dp[pos][sum] == 1; 
+
+        
+        
        
-       int sum = 0;
-       for( int i : nums){
-           sum = sum + i;
-       }
-       
-       if ( sum%2 == 1) return false;
-       
-       dp = new int[nums.length][sum/2 + 1]; // row is depth, col is target from [0, target + 1];
-                                             // 能否在第几部走到哪个target
-       
-       for(int[] row : dp){
-           Arrays.fill(row, -1);
-       }
-       
-       return dfs(0, sum/2, nums, 0);
-   }
-   
-   
-   boolean dfs(int sum, int target, int[] nums, int pos){
-       
-       if ( pos == nums.length) return false;
-       
-       if ( sum > target) return false;
-           
-       if ( sum == target){
-           return true;
-       }
-       
-       
-       if ( dp[pos][sum] != -1 ) return dp[pos][sum] == 1; 
-       
-      
-       dp[pos][sum] = dfs(sum + nums[pos], target, nums, pos + 1) ||
-              dfs(sum, target, nums, pos + 1) ? 1 : 0;
-       
-       
-       return dp[pos][sum] == 1;
-   }
+        boolean b = dfs(sum + nums[pos], target, nums, pos + 1) ||
+               dfs(sum, target, nums, pos + 1) ? 1 : 0;
+        
+        dp[pos][sum] = b ? 1 : 0 ;
+        
+        return b;
+    }
 }
 
 </code></pre>
