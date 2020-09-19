@@ -72,17 +72,17 @@ Step 2: 进度控制BFS
 
 int count = 0
 while( !q.isEmpty() ){
-     int n = q.poll();
+    int n = q.poll();
+	count++;
 
-	 count++;
-
-		 for( int neighbor : graph.get(n) ){
-			   degree.put(neighbor, degree.get(nbeighbor)-1);
-			   if ( degree.get(neighbor) == 0 ){
-				   q.add(neighbor);
-			   }
-		 }
+    for( int neighbor : graph.get(n) ){
+        degree.put(neighbor, degree.get(nbeighbor)-1);
+        if ( degree.get(neighbor) == 0 ){
+            q.add(neighbor);
+        }
+    }
 }
+
 
 step 3
 
@@ -96,12 +96,7 @@ return count == degree.size();
 
 
 
-无向图遍历的时间复杂度  O( V + E) = O(V)
-有向图遍历的时间复杂度  O( V + E) = O(E) = O(V^2)
 
-
-无向图搜索的时间复杂度：N!
-有向图搜索的时间复杂度：N^N
 
 </code></pre>
 
