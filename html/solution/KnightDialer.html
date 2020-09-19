@@ -17,25 +17,29 @@ Solution I : DFS brute force 没有返回值: 这种写法无法纪录值做优�
 class Solution {
     int module = (int)Math.pow(10, 9) + 7;
     int total = 0;
+    int step;
+    int[][] dict = {{4,6}, {6,8}, {7,9}, {4,8}, {3,9,0}, {}, {1,7,0},{2,6},{1,3},{2,4}};
 
     public int knightDialer(int N) {
-        int[][] dict = {{4,6}, {6,8}, {7,9}, {4,8}, {3,9,0}, {}, {1,7,0},{2,6},{1,3},{2,4}};
+        
         int total = 0;
+        step = N;
+
         for( int i=0; i<=9; i++){
-            dfs(N, dict, 0, i));
+            dfs( 1, i));
         }
         return total;
     }
 
-    int dfs(int N, int[][] dict, int curStep, int curPos  ){
-        if ( curStep == N-1){
+    void dfs(int curStep, int curPos  ){
+        if ( curStep == step){
             total++;
             return;
         }
 
         int total = 0;
         for(int i : dict[curPos]){
-            dfs(N, dict, curStep+1, i));
+            dfs(curStep+1, i));
         }
     }
 }
@@ -48,24 +52,28 @@ DFS top down:
 
 class Solution {
     int module = (int)Math.pow(10, 9) + 7;
+    int step;
+    int[][] dict = {{4,6}, {6,8}, {7,9}, {4,8}, {3,9,0}, {}, {1,7,0},{2,6},{1,3},{2,4}};
+
 
     public int knightDialer(int N) {
-        int[][] dict = {{4,6}, {6,8}, {7,9}, {4,8}, {3,9,0}, {}, {1,7,0},{2,6},{1,3},{2,4}};
         int total = 0;
+        step = N;
+
         for( int i=0; i<=9; i++){
-            total = (total + dfs(N, dict, 1, i))%module;
+            total = (total + dfs(1, i))%module;
         }
         return total;
     }
 
-    int dfs(int N, int[][] dict, int curStep, int curPos  ){
+    int dfs(int curStep, int curPos  ){
         if ( curStep == N){
             return 1;
         }
 
         int total = 0;
         for(int i : dict[curPos]){
-            total = (total + dfs(N, dict, curStep+1, i))%module;
+            total = (total + dfs(curStep+1, i))%module;
         }
         return total;
     }
@@ -75,25 +83,29 @@ Solution III: DFS + memorization
 
 class Solution {
     int module = (int)Math.pow(10, 9) + 7;
+    int step;
+    int[][] dict = {{4,6}, {6,8}, {7,9}, {4,8}, {3,9,0}, {}, {1,7,0},{2,6},{1,3},{2,4}};
+    Integer[][] mem;
+
 
     public int knightDialer(int N) {
 
-        Integer[][] mem = new Integer[N][10];  // row为步数，col为取的值。记录下来不用反复算。如第三步取8有多少种
-        // 表示第几步走到哪个位置有几种走法。
+        Integer[][] mem = new Integer[N][10];  // N步, [0, N-1], 第一步为0, 最后一步为N-1;
 
-        int[][] dict = {{4,6}, {6,8}, {7,9}, {4,8}, {3,9,0}, {}, {1,7,0},{2,6},{1,3},{2,4}};
 
         int total = 0;
+        step = N;
+
         for( int i=0; i<=9; i++){
-            total = (total + dfs(N, dict, mem, 0, i))%module;
+            total = (total + dfs(0, i))%module;           //  第一步为0
         }
 
         return total;
     }
 
-    int dfs(int N, int[][] dict, Integer[][] mem, int curStep, int curPos ){
+    int dfs(int curStep, int curPos ){
 
-        if ( curStep == N-1){
+        if ( curStep == step-1){                          // 最后一步N-1
             return 1;
         }
 
@@ -103,7 +115,7 @@ class Solution {
 
         int total = 0;
         for(int i : dict[curPos]){
-            total = (total + dfs(N, dict, mem, curStep+1, i))%module;
+            total = (total + dfs(curStep+1, i))%module;
         }
         mem[curStep][curPos] = total;
         return total;
