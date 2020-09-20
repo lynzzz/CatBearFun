@@ -6,12 +6,9 @@
 class Solution {
        public List<List<Integer>> permuteUnique(int[] nums) {
         
-        Arrays.sort(nums);
-        List&lt;List<Integer>> results = new ArrayList<>();
-        List&lt;Integer> result = new ArrayList<>();
-        boolean[] visited = new boolean[nums.length];
-        
-        dfs(results, result, nums, visited);
+        Arrays.sort(nums);    // 开始必须要排序, 不然去duplicate逻辑不对.
+        List&lt;List<Integer>> results = new ArrayList<>();        
+        dfs(results, new ArrayList<>(), nums, new boolean[nums.length]);
         return results;
     }
     

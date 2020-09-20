@@ -86,9 +86,10 @@ Chord or KAD algorithm which is built on top of that, to see how to minimize com
 
 
                                                      Tradition Crawler design:
-<li> <a href="https://acecodeinterview.com/web_crawler">Ace crawler design (设计偏重于high level)</a></li>
-
-                                                     
+<li> <a href="https://acecodeinterview.com/web_crawler">Ace crawler design (讲的像科普知识,缺乏design价值)</a></li>
+<li> <a href=https://www.educative.io/courses/grokking-the-system-design-interview/NE5LpPrWrKv
+      >Grokkking crawler design</a></li>
+                                              
 
 I requirement + capacity
 
@@ -125,7 +126,7 @@ II Core component:
 
 
 
-3. Task Queue (process HTML page)
+3. Extractor (process HTML page)
       URL extractor and send it to url frontier 
       create index for searching purpose (Async)
 
@@ -134,7 +135,48 @@ II Core component:
 
 
 
+Bottom neck: How to distribute URL to worker?
+1. Simple Hash.
+2. Optimization: based on location. 中国机器爬中国网站, 美国机器爬美国网站. 
+3. Further optimization: Based on domain
+    1台机器固定的爬多个Domian. 这样使得 Worker 可以借助本地优势 (Locality)，在内存中存储跟管辖域名相关的信息而不需要反复访问其他服务，比如存储域名爬取策略。 
+    缺点是可能work load分配不均匀, 有些机器任务过重,有些机器没任务. 解决方法是consistent hashing.
+
+
+相似度分析?
+1. Hashing. 不可靠
+2. 近似算法. Jaccard index, cosine similarity
+
+
+
+Database Schema:
+
+Domain 
+Domain Id
+Domain name
+last Crawl time
+
+
+URL:
+Url id
+URl
+last Crawl time
+next Crawl time
+gap 
+
+
+Html is stored in big table(S3, Azure storage)
 
 
 </code></pre>
 </body>
+
+
+
+
+
+
+
+Fetcher 
+Extractor 
+URL frontier
