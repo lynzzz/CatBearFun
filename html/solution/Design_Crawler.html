@@ -102,13 +102,17 @@ Qps = 500M * 100 /(86400 * 14) = 41335
 storage = 500M * 100 * 100kb = 5PB
 
 
+<img src="../../img/crawler.png" width="800px" height="800px">
+<img src="../../img/crawlerDetail.png" width="800px" height="800px">
+
+
 
 II Core component:
 
 1. URL frontier : 
       step 1: normalization
-      step 2: filter 
-      step 3: has seen ? 
+      step 2: filter(blacklist)
+      step 3: has seen ?   (there is a URL DB check)
       step 4: prioritization. Put URL in queues with different priority. Front queue selector selects URL based on priority randomly. Make sure 
                               Hight priority queue gets severd and low priority queue not get starved.
                               
@@ -140,7 +144,9 @@ Bottom neck: How to distribute URL to worker?
 2. Optimization: based on location. 中国机器爬中国网站, 美国机器爬美国网站. 
 3. Further optimization: Based on domain
     1台机器固定的爬多个Domian. 这样使得 Worker 可以借助本地优势 (Locality)，在内存中存储跟管辖域名相关的信息而不需要反复访问其他服务，比如存储域名爬取策略。 
-    缺点是可能work load分配不均匀, 有些机器任务过重,有些机器没任务. 解决方法是consistent hashing.
+    缺点是可能work load分配不均匀, 有些机器任务过重,有些机器没任务. 
+    
+    解决方法是consistent hashing, 但就不是hash by domain了
 
 
 相似度分析?
@@ -168,15 +174,91 @@ gap
 Html is stored in big table(S3, Azure storage)
 
 
+Politenss: robot.txt  Web site declariation file. Parse it before downloading anything.
+
+
+
+
+
+                                   Groking website Question
+Breadth-first or depth-first?  
+BFS: 一次爬一个website的一个page, 慢,但是不影响网站正常traffic, But need to do three way handshake everytime establishing connection.
+DFS: 一次性爬完一个website, 快,但是那个时间段可能会overload, 影响网站正常traffic
+
+
+Scalability:
+
+The URL frontier is the data structure that contains all the URLs that remain to be downloaded.
+We start crawling using BFS of the web using seed url set. BFS requires a FIFO queue.
+
+
+Assume there are 50B URls (2.5TB) and those cannot be saved in one server. we need to distribute URL in multiple machines.
+using hash function URL domain -> server. The Downside is url is not uniformally distributed. 
+
+In each server, There are multiple threads crawling the website and each thread is responsible for a FIFO sub queue.
+We use another local hash function from URL domain-> Thread(Queue).   (一个Queue负责多个Domain)
+
+The workflow is like One thread removes url from queue and crawls website,
+gets more urls. Then It will apply hash function to first decide which machine is responsible for crawling the website and forwards
+the url to that server, and then that server applies local hash function to decide which thread(queue) is responsible for crawling that website.
+And then place the url in the sub queue that thread will crawl.
+
+By doing this, at any given time, there is only one thread crawling the specified web site.
+and by using FIFO queue, this website is not overloaded.
+
+
+" Following politeness requirements must be kept in mind while designing a distributed URL frontier:
+
+Our crawler should not overload a server by downloading a lot of pages from it.
+We should not have multiple machines connecting a web server.
+
+"
+
+
+How to dedup html content?
+Hash and generate 64bit checksum. 2^64  = 10^19 > 15B = 10^10 pages assumption. so 64bit check sum can represent all pages.
+
+Size of checksum?
+8byte * 15B = 1.2 *10^11 = 120GB. Those memory is distributed in different servers.
+
+What if one serve do not have that many memory?
+Save smaller data in LRU cache and everything in hard disk. the check flow is check LRU cache first and then
+check hard disk. if not present, save the content and update hash.
+
+
+DNS looks up is a big bottom neck. How to solve this? 
+Cache DNS look up in the server and one server is responsible for crawling fixed website.
+
+
+How to dedup URL content? 
+4bytes checksum.
+15B * 4byte = 60GB. Cache it in memory that can be used by all threads in one host.
+
+
+A crawl of the entire Web takes weeks to complete. To guard against failures, our crawler can write regular snapshots of its state to the disk. 
+An interrupted or aborted crawl can easily be restarted from the latest checkpoint.
+
+
+7. Fault tolerance 
+We should use consistent hashing to uniformally distribute url load to servers. If one server is down,
+other server take over. 但是这样的话就有可能不同的crawl server同时Crawl同一个Website. 可能会overload website.
+
+
+8. Data Partitioning
+Each machine holds 3 set of data.
+1. URL to be visited 
+2. URL checksum 
+3. Html checksum. 
+
+It does checkpoint periodically and dumps the snapshot of the data it is holding to remote machine, such that 
+when it is down, other machine can take over from last snapshot, since crawling takes weeks to finish.
+
+
+9. Crawler Traps: To make crawler to crawl indefinitely.
+purpose: 
+a. Catch search engine crawler to boost their web rating.
+b. Anti-spam traps are designed to catch crawlers used by spammers looking for email addresses,
+
 </code></pre>
 </body>
 
-
-
-
-
-
-
-Fetcher 
-Extractor 
-URL frontier
