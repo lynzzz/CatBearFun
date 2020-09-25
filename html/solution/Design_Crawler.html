@@ -87,10 +87,9 @@ Chord or KAD algorithm which is built on top of that, to see how to minimize com
 
                                                      Tradition Crawler design:
 <li> <a href="https://acecodeinterview.com/web_crawler">Ace crawler design (讲的像科普知识,缺乏design价值)</a></li>
-<li> <a href=https://www.educative.io/courses/grokking-the-system-design-interview/NE5LpPrWrKv
-      >Grokkking crawler design（讲的比较详细</a></li>
-      <li> <a href="https://medium.com/@morefree7/design-a-distributed-web-crawler-f67a8ebb8336"（Distributed Hashtable)</a></li>
-            <li> <a href="https://link.springer.com/chapter/10.1007%2F978-3-540-24610-7_10" (Decentrialized Peer to Peer crawling network)</a></li>
+<li> <a href=https://www.educative.io/courses/grokking-the-system-design-interview/NE5LpPrWrKv >Grokkking crawler design（讲的比较详细)</a></li>
+<li> <a href="https://medium.com/@morefree7/design-a-distributed-web-crawler-f67a8ebb8336">（Distributed Hashtable)</a></li>
+<li> <a href="https://link.springer.com/chapter/10.1007%2F978-3-540-24610-7_10"> (Decentrialized Peer to Peer crawling network)</a></li>
 
       
 
@@ -115,7 +114,8 @@ II Core component:
 1. URL frontier : 
       step 1: normalization
       step 2: filter(blacklist)
-      step 3: has seen ?   (there is a URL DB check)
+      step 3: has seen ?   (dedupe, need to maintain a url visited checksum dataset)
+      step 4: add to URL crawl list.
       step 4: prioritization. Put URL in queues with different priority. Front queue selector selects URL based on priority randomly. Make sure 
                               Hight priority queue gets severd and low priority queue not get starved.
                               
@@ -123,19 +123,19 @@ II Core component:
                               on a min priority queue that has the allowd visting time. t + deltaT. Each time it selects a url from a queue, it calculates the new 
                               time and insert it in min priority queue. Such that, it knows who is the next one to crawl and do not overload the website.
      
-      step 5: Give the URL to fetcher
 
 2. Fetcher (Async worker) 
       The component that actualy sends request to website. 
+      step 0: Get URL from url frontier
       step 1: Send HEAD request to url and check last modified header and see if it is different from last time
       Step 2: if yes, send GET request to url and get the html page.
-      step 3: save the html in cache, storage and task queue 
+      step 3: Give the html page to extractor
 
 
 
 3. Extractor (process HTML page)
       URL extractor and send it to url frontier 
-      create index for searching purpose (Async)
+      Dedupe html content, and save it in big table.
 
 
 
@@ -146,13 +146,13 @@ Bottom neck: How to distribute URL to worker?
 1. Simple Hash.
 2. Optimization: based on location. 中国机器爬中国网站, 美国机器爬美国网站. 
 3. Further optimization: Based on domain
-    1台机器固定的爬多个Domian. 这样使得 Worker 可以借助本地优势 (Locality)，在内存中存储跟管辖域名相关的信息而不需要反复访问其他服务，比如存储域名爬取策略。 
+    1台机器固定的爬多个Domian. 这样使得 Worker 可以借助本地优势 (Locality)，在内存中存储DNS信息,不用反复解析domain name.
     缺点是可能work load分配不均匀, 有些机器任务过重,有些机器没任务. 
     
     解决方法是consistent hashing, 但就不是hash by domain了
 
 
-相似度分析?
+content相似度分析?
 1. Hashing. 不可靠
 2. 近似算法. Jaccard index, cosine similarity
 
@@ -160,18 +160,17 @@ Bottom neck: How to distribute URL to worker?
 
 Database Schema:
 
-Domain 
+Domain table
 Domain Id
 Domain name
 last Crawl time
 
 
-URL:
+URL table
 Url id
 URl
 last Crawl time
 next Crawl time
-gap 
 
 
 Html is stored in big table(S3, Azure storage)
@@ -196,7 +195,7 @@ We start crawling using BFS of the web using seed url set. BFS requires a FIFO q
 
 
 Assume there are 50B URls (2.5TB) and those cannot be saved in one server. we need to distribute URL in multiple machines.
-using hash function URL domain -> server. The Downside is url is not uniformally distributed. 
+using hash function URL -> server. 
 
 In each server, There are multiple threads crawling the website and each thread is responsible for a FIFO sub queue.
 We use another local hash function from URL domain-> Thread(Queue).   (一个Queue负责多个Domain)
@@ -206,16 +205,13 @@ gets more urls. Then It will apply hash function to first decide which machine i
 the url to that server, and then that server applies local hash function to decide which thread(queue) is responsible for crawling that website.
 And then place the url in the sub queue that thread will crawl.
 
-By doing this, at any given time, there is only one thread crawling the specified web site.
-and by using FIFO queue, this website is not overloaded.
+By doing this, at any given time, there is only one thread on one machine crawling the specified web site.
 
 
 " Following politeness requirements must be kept in mind while designing a distributed URL frontier:
 
 Our crawler should not overload a server by downloading a lot of pages from it.
-We should not have multiple machines connecting a web server.
-
-"
+We should not have multiple machines connecting a web server. (这点如果是consistent hashing就无法保证，因为相同的domain 可能会分到不同的worker server)
 
 
 How to dedup html content?
@@ -237,24 +233,26 @@ How to dedup URL content?
 4bytes checksum.
 15B * 4byte = 60GB. Cache it in memory that can be used by all threads in one host.
 
-
+6. Checkpoint
 A crawl of the entire Web takes weeks to complete. To guard against failures, our crawler can write regular snapshots of its state to the disk. 
-An interrupted or aborted crawl can easily be restarted from the latest checkpoint.
+An interrupted or aborted crawl can easily be restarted from the latest checkpoint. It does checkpoint periodically and dumps the snapshot of the data it is holding to remote machine, such that 
+when it is down, other machine can take over from last snapshot, since crawling takes weeks to finish.
+
 
 
 7. Fault tolerance 
 We should use consistent hashing to uniformally distribute url load to servers. If one server is down,
 other server take over. 但是这样的话就有可能不同的crawl server同时Crawl同一个Website. 可能会overload website.
+但是url work load就可以平均分配。
 
 
 8. Data Partitioning
 Each machine holds 3 set of data.
-1. URL to be visited 
+1. URL to be visited （ 一般是放在Queue里面）
 2. URL checksum 
 3. Html checksum. 
 
-It does checkpoint periodically and dumps the snapshot of the data it is holding to remote machine, such that 
-when it is down, other machine can take over from last snapshot, since crawling takes weeks to finish.
+
 
 
 9. Crawler Traps: To make crawler to crawl indefinitely.

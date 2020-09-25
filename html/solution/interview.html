@@ -10,10 +10,6 @@ Goal:
 Senior + compsentation
 online service team using C++
 
-Company:
-Amzn（996, use to beat offer)
-FB
-Snapchat
 
 Google(very few headcount/downlevel/Lowball/Need compete offer)
 
@@ -122,7 +118,9 @@ bq挑刺的地方就是一直在challenge你的答案  一定要一些经验  �
 
 
 
-                                          Twitter Coding
+                                          Twitter Codin
+
+T1
 Coding: 380 的延伸，就是除了原题的要求，还要求getLast也是O(1)。所以要用map+doubly linked list来找getlast，map+list来找getrandom。写完了还要写unit tests，refactor code，还问有更多时间还可以做什么，比如加更多的api啊，注释啊，之类的
 
 虑到多线程的各个corner case。
@@ -130,6 +128,79 @@ Coding: 380 的延伸，就是除了原题的要求，还要求getLast也是O(1)
 
 
 
+T2 
+
+电面题是给一堆record 有的信息是 user, epoc_timestamp, activity
+然后有个叫user active minute的东西 就是如果用户在这分钟干过任何事情就算active了
+按照用户活跃的时间分bracket 比如算一天的 bracket是100分钟 那就返还一个list, 分别是UAM为0-99，100-199 ... 1400-1440 的用户
+函数Input就是records和bracket size, 假设time span一个月
+题目并不难 主要就是一些data structure的选择和细节 比如dedup timestamp  问清use case
+
+Assume the log is sorted by epoc_timestamp:
+
+convert epoch_timestamp to per minute calandar time in minute bucket. => 16304332543 => "09/24/2020 05:47"
+
+HashMap<User, HashSet<String>>
+for( record: records){
+   string perminuteTimeBucket = helper(epoch_timestamp);
+   if ( !m.containsKey(user)){
+      HashSet<String> set = new HashSet<>();
+      set.add(perminuteTimeBucket);
+      m.put(user, set);
+   }else{
+      if ( !m.get(user).containsKey(perminuteTimeBucket)){
+         m.get(user).add(perminuteTimeBucket);
+      }
+   }
+}
+
+List<List<String>> ret;
+
+for(Map.Entry<User,HashSet<STring>) e : m.entrySet()){
+   int count = e.getValue().size();
+
+   if ( count > 0 && count < 99){
+       ret.get(0).add(e.getKey())
+   }
+
+   ///////
+}
+
+
+
+
+
+一上来差点就问了和电面一样的题 看来他们家是有题库的 但实诚如LZ说了做过 于是换成一道类似李口 勿溜  56
+略有不同 Input 一个已有meeting的list 然后给你个新的meeting merge进那个list就行
+一大早脑子有点短路没想到特别好的办法 但三四个if else也搞定了
+
+
+给一个二维board of characters 和一个list of words, 在那个board上可以任意起点8个方向任意走返还所有存在的words
+先说了思路造个trie 然后搞bfs 三哥们表示欧凯
+主逻辑写的时候假设有这么个trie 然鹅LZ准备的时候根本没写过 心里很慌因为到时还是要写的。。
+但其实边写边解释边讨论花掉不少时间 最后implement trie的时候其实也大概猜出trie该怎么
+
+
+
+T3
+题目还挺简单的，实现一个EventCounter，有如下API
+void record(string eventName, long timeStamp);
+vector<long> getEventCountPerMinute(string eventName, long start, long end);
+第二个API要求比较奇怪，她要求返回每分钟的count，假如start是9:00，end是9:02，返回的数组是[2,1,0]，其中0表示那个时刻没有event。
+我选择了用HashMap存储，直接就是计数器。编译之后自己写一些test case测试一下。然后分析了一下复杂度。
+关于timeStamp本来是epoch time的，应该要转化成每个分钟，但是她说这部分在面试过程就先不考虑了，假设提供的timeStamp都是整分钟的时刻。
+
+
+
+
+Solution:
+
+HashMap<Event, HashMap<timestamp, count>>
+Timestamp 在两个API都要换成per minute来存。
+
+
+Follow up 1：如果数据量特别大，内存放不下怎
+use LRU cache and save everything on disk. Search memory first and then hard disk.
 
 
 
@@ -137,9 +208,17 @@ Coding: 380 的延伸，就是除了原题的要求，还要求getLast也是O(1)
 
 
 
+T4
+对一段SMS message，我们的协议每次只能发送不超过60个字节。要求实现一个算法，
+将给定的string break成长度不超过60个字节的片段。要求：1. 每个词(通过whitespace split的词)不能被break，假如有一个词比如说compensation，不可以compens在前一个片段，ation在后一个片段，并且不用担心单个词长度就已经超标的情况；2. 每个片段后面要跟着一个suffix，
 
 
-OA : 24小时做完
+
+
+
+
+
+                                          OA : 24小时做完
 
 1，k-difference distinct number 力扣532 简化版，数组里没有重复数字。
 2  4，get set got 类似力扣40, 简化版。只要求判断是否能找到组合 使之等于 target
