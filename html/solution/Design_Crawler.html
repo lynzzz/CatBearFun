@@ -88,10 +88,11 @@ Chord or KAD algorithm which is built on top of that, to see how to minimize com
                                                      Tradition Crawler design:
 <li> <a href="https://acecodeinterview.com/web_crawler">Ace crawler design (讲的像科普知识,缺乏design价值)</a></li>
 <li> <a href=https://www.educative.io/courses/grokking-the-system-design-interview/NE5LpPrWrKv >Grokkking crawler design（讲的比较详细)</a></li>
-<li> <a href="https://medium.com/@morefree7/design-a-distributed-web-crawler-f67a8ebb8336">（Distributed Hashtable)</a></li>
-<li> <a href="https://link.springer.com/chapter/10.1007%2F978-3-540-24610-7_10"> (Decentrialized Peer to Peer crawling network)</a></li>
+<li> <a href="https://medium.com/@morefree7/design-a-distributed-web-crawler-f67a8ebb8336">Distributed Hashtable(专门consistent hashing, 还是比较浅)</a></li>
 
-      
+<li><a href="../lecture/chord_sigcomm.pdf" >Chord: A Scalable Peer-to-peer Lookup Service for Internet(讲的很深(consistent hashing 原理，key look up, nodes join/leaves))
+      Applications</a> <a href=https://zhuanlan.zhihu.com/p/53711866>Chord论文中文讲解</a>  </li>
+
 
 I requirement + capacity
 
@@ -195,7 +196,7 @@ We start crawling using BFS of the web using seed url set. BFS requires a FIFO q
 
 
 Assume there are 50B URls (2.5TB) and those cannot be saved in one server. we need to distribute URL in multiple machines.
-using hash function URL -> server. 
+using consisting hashing function URL -> server. 
 
 In each server, There are multiple threads crawling the website and each thread is responsible for a FIFO sub queue.
 We use another local hash function from URL domain-> Thread(Queue).   (一个Queue负责多个Domain)
@@ -234,16 +235,20 @@ How to dedup URL content?
 15B * 4byte = 60GB. Cache it in memory that can be used by all threads in one host.
 
 6. Checkpoint
-A crawl of the entire Web takes weeks to complete. To guard against failures, our crawler can write regular snapshots of its state to the disk. 
-An interrupted or aborted crawl can easily be restarted from the latest checkpoint. It does checkpoint periodically and dumps the snapshot of the data it is holding to remote machine, such that 
+It does checkpoint periodically and dumps the snapshot of the data it is holding to remote machine, such that 
 when it is down, other machine can take over from last snapshot, since crawling takes weeks to finish.
 
 
 
-7. Fault tolerance 
-We should use consistent hashing to uniformally distribute url load to servers. If one server is down,
-other server take over. 但是这样的话就有可能不同的crawl server同时Crawl同一个Website. 可能会overload website.
-但是url work load就可以平均分配。
+7. Fault tolerance ( How do we know a node is down and how to continue its work)
+基于第三编文章  必须有两个条件：
+1. 必须有一个Master, 不停的heartbeat worker server, once worker server is down. It konws who to take over, and tell that machine to continue its work
+   这样就不是decentralized. 
+2. Each worker must periodicaly dump a snapshot of the data it is saving to external strorage(likely the master machine). that way when it recovers or other machine takes over,
+   it can continue its work.
+
+3. When worker 4 forwards the url to worker 8 and get time out, it forwards the url to right node, which is worker 7.
+
 
 
 8. Data Partitioning
@@ -259,6 +264,22 @@ Each machine holds 3 set of data.
 purpose: 
 a. Catch search engine crawler to boost their web rating.
 b. Anti-spam traps are designed to catch crawlers used by spammers looking for email addresses,
+
+
+
+Chord: A Scalable Peer-to-peer Lookup Service for Internet 
+consistent hashing:
+Every key on the ring goes clockwise, the first node/server it meets, is the server that stores it. In another word,
+Every server goes counter clockwise, it contains all the data until it hits another server.
+
+chord data structre is a doubly linked list.
+
+Lookup takes O(n). Example. There are server 1, 5, 10 , 20. key is 17. it starts from any server node,
+Going clockwise. say 1, 1->5->10->20. Since 20 is greater than key 17. Say server 20 contains key 17.
+
+Then it uses finger table to improve the time complexity.
+
+
 
 </code></pre>
 </body>
