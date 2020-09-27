@@ -1,0 +1,67 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+try 1: 枚举
+因为前后，长度都不定， 可能性有6种，枚举很不容易写对，调试了1个小时也没有调通。
+
+try 2: 找到newinterval start的相对位置后，在insert, 还是不容易写对。
+
+
+try 3：Greedy. 只有三种情况。
+
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> ret = new ArrayList&lt;>();
+        
+        
+        for(int[] interval : intervals){
+            
+            if ( newInterval == null || interval[1] &lt; newInterval[0]){
+                ret.add(interval);
+            }else if (newInterval[1] &lt; interval[0]){
+                ret.add(new int[]{newInterval[0], newInterval[1]});
+                ret.add(interval);
+                newInterval = null;    这一行是传神之笔
+            }else{
+                newInterval[0] = Math.min(newInterval[0], interval[0]);  这2行是传神之笔， 把所有情况都包括了。
+                newInterval[1] = Math.max(newInterval[1], interval[1]);
+            }
+        }
+        
+        if ( newInterval != null){
+            ret.add(newInterval);
+        }
+        
+        int[][] ans = new int[ret.size()][2];
+        
+        for( int i=0; i<ret.size(); i++){
+            ans[i][0] = ret.get(i)[0];
+            ans[i][1] = ret.get(i)[1];
+        }
+        
+        return ans;
+    }
+}
+
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+</body>
