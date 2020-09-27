@@ -170,7 +170,7 @@ for(Map.Entry<User,HashSet<STring>) e : m.entrySet()){
 
 
 
-
+T3
 
 一上来差点就问了和电面一样的题 看来他们家是有题库的 但实诚如LZ说了做过 于是换成一道类似李口 勿溜  56
 略有不同 Input 一个已有meeting的list 然后给你个新的meeting merge进那个list就行(57)
@@ -178,9 +178,119 @@ for(Map.Entry<User,HashSet<STring>) e : m.entrySet()){
 
 
 给一个二维board of characters 和一个list of words, 在那个board上可以任意起点8个方向任意走返还所有存在的words
+
 先说了思路造个trie 然后搞bfs 三哥们表示欧凯
 主逻辑写的时候假设有这么个trie 然鹅LZ准备的时候根本没写过 心里很慌因为到时还是要写的。。
 但其实边写边解释边讨论花掉不少时间 最后implement trie的时候其实也大概猜出trie该怎么
+
+// solution I : BFS这种写法不对(因为string不好存),且不好写
+
+List<String> helper(char[][] board){
+      List<String> ret =n new ArrayList<>();
+      TrieNode curRoot = root;
+      for( int i=0; i<board.length; i++){
+          for( int j=0; j<board[0].length; i++){
+
+            Queue<Character> q = new Linkedlist<>();
+            HashSet<String> set = new HashSet<>();
+            char c = board[i][j];
+            String str = "";
+            q.add(c);
+            set.add(i + "," + j);
+
+            while( !q.isEmpty()){
+
+                int size = q.size();
+
+                for( int i=0; i<size; i++){
+                    c = q.poll();
+
+                    if ( !curRoot.containsChild(c)) continue;
+                    TreeNode node = curRoot.getChild(c);
+                    str = str + c;                       // 每一层都要展开这里string不好表示用BFS, 这是错的!
+
+                    if ( node.isEnd) ret.add(string);
+
+
+                    for(int[] direction : directions){
+                        int newx = i + direction[0];
+                        int newy = j + direction[1];
+                        if ( !withinRange(newx, newy)) continue;
+
+                        if ( set.contains(newx + "," + newy)) continue;
+
+                        q.add(child[newx][newy]);
+                        set.add(newx + "," + newy);
+                    }
+                }
+
+            }
+            
+            return ret;
+
+          }
+      }
+
+}
+
+
+// Solution II: DFS 才是正解法.
+
+List<String> ret = new ArrayList<>();
+
+List<String> helper(char[][] board){
+    
+    TrieNode saveRoot = root;
+    for( int i=0; i<board.length; i++){
+        for( int j=0; j<board[0].length; j++){
+            dfs(i, j, board, new HashSet<String>(), "");
+            root = saveRoot;
+        }
+    }
+
+    return ret;
+}
+
+
+
+void dfs(int i, int j, char[][] board, HashSet<String> set, String word){
+     if ( out of range || set.contains(i + "," + j)) return;
+    
+     char c = board[i][j];
+     if ( !root.containsChild(c) ) return;
+     root = root.getChild(c);
+     word = word + c;
+     if ( root.isEnd){
+         ret.add(word);
+     } 
+
+     
+     set.add(i + "," + j);
+
+    // 8 ways fanout.
+     dfs(i+1, j, board, set, word);
+     dfs(i-1, j, board, set, word);
+     dfs(i, j+1, board, set, word);
+     dfs(i, j-1, board, set, word);
+     dfs(i+1, j+1, board, set, word);
+     dfs(i-1, j-1, board, set, word);
+     dfs(i+1, j-1, board, set, word);
+     dfs(i-1, j+1, board, set, word);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
