@@ -281,6 +281,62 @@ Then it uses finger table to improve the time complexity.
 
 
 
+Read Chord中文翻译理解的更深刻。
+
+1。 每一个URL hash成一个64bit的值。
+2。 每一个server用Ip address 用同样的hash function hash 成64bit的值。
+3。 画一个圆，代表值从[0 - 2^64 - 1], 每一个URl和Server都对应圆上的一个Node值。
+4。 每一个url 对应的点顺时针开始找下一个server, 就是处理这个URL的server. 
+
+假设这个hash成3个bit的数字。 2^3 = 8   [0, 1, 2, 3, 4, 5, 6, 7]
+
+假设0， 1， 3是server，  
+假设2， 3， 6， 是Url.
+
+url 2 -> server 3
+url 3 -> server 3
+url 6 -> server 0
+
+
+这是直观的看出来的，如何通过一个key找到node？ 时间复杂度是多少？ 
+
+每一个server存顺势针下一个server的位置(successor)，和逆时针上一个server的位置(predecessor)
+Step1:
+Check predecessor, and find the range this server is responsible for. (predessor, itself]
+if the key falls into the range, crawl it. otherwise, check successor and predessor, who is closer
+to this url, send it to the closer one.
+
+Example: 
+              succussor    predecessor
+server 0          1             3
+server 1          3             0
+server 3          0             1
+
+Step1: 
+假设server 3 crawl 到一个新的url, hash值是1， 如何知道往哪个server发？
+只能查表发现我的predecessor是1,我只处理(1, 3], 不在这个范围内。　
+successor is server  0, predecessor is server 1, hash is 1
+所以predesessor离hash 1更近,　所以发给predecessor server 1.
+
+
+
+server 1 gets hash 1 url, then check predecessor, 0. It is responsible for (0, 1]. It is in my range 
+so, I am responsible for it.
+
+So Find a server that stores the key takes O(n/2) = O(n) time.
+
+
+Optimization:
+如果每一个server多存一些meta data可以找的更快。 Maintain a m bit table(finger table). n + 2^(i-1), whiere i [1, m];
+the first bit is n + 1 url position, the second bit is n + 2 url position, n+4 url position. 
+Look up improves to lg(n).
+
+
+Add a node?
+加一个Node, 只需要更新他本身和前后两个node的predecessor and successor, 就可以了.不需要全局rehash. 
+chord 的上层软件负责找到new node的successor去分一部分数据给new node crawl. 
+这个上层软件必然是master node,所以数据还是需要备份到remote machine(master)
+
 </code></pre>
 </body>
 
