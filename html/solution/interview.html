@@ -37,7 +37,7 @@ design:
 coding: 543(ok), 42(ok), 56(ok), 297(ok), 88(ok), 23(ok), 1026(ok), 773(ok), 84(ok)
 109(ok)， 938(ok), 328(ok), 896(ok), 54(0k), 157(ok), 158(ok), 20(ok), 22(ok), 301(ok), 1249(ok), 472(ok), 339(ok), 973(ok), 1197(ok), 215, 785, 1249(ok), 1428, 621(ok), 560(ok), 129(ok), 238(ok)
 416(ok), 435(ok), 236(ok), (858), 1047(ok), 211(ok), 10(ok), 191(ok), 125(ok), 78(ok)， 339, 71变体(ok), 239变体(ok), 498 变体(ok) 单向右上(每一层都翻转 ok)
-1123(ok), 47(ok), 154(ok), 1275(n*n O(1) ok) 
+1123(ok), 47(ok), 154(ok), 1275(n*n O(1) ok) 986（ok)
 
 925
 
@@ -307,12 +307,48 @@ vector<long> getEventCountPerMinute(string eventName, long start, long end);
 
 Solution:
 
-HashMap<Event, HashMap<timestamp, count>>
+HashMap<Event, HashMap<timestamp, count>> m
 Timestamp 在两个API都要换成per minute来存。
+
+void record(string eventName, long timeStamp){
+    String minuteTimeStamp = convertTimeStampToPerMinuteExpression(timeStamp);
+
+     if ( !m.containsKey(eventName)){
+        HashMap<TimeStamp, Integer> innerMap = new HashMap<>();
+        innerMap.put(minuteTimeStamp, 1);
+        m.put(eventName, innerMap);
+     }else{
+        HashMap<TimeStamp, Integer> innerMap = m.get(eventName);
+            if ( innerMap.containsKey(minuteTimeStamp))
+               innerMap.put(timestamp, innerMap.get(timeStamp) + 1);
+            else
+               innerMap.put(timestamp, 1);
+     }
+}
+
+List<long> getEventCountPerMinute(string eventName, long start, long end){
+    List<Long> ret = new ArrayList<>(); 
+    
+    if ( !m.containsKey(eventName)) return ret;
+    HashMap<TimeStamp, Integer> innerMap = m.get(eventName);
+
+    for(int i=start ; i<=end; i++){
+       String minuteTimeStamp = convertTimeStampToPerMinuteExpression(i);
+
+       if( !innerMap.containsKey(minuteTimeStamp)){
+           ret.add(0);
+       }else{
+           ret.add(innerMap.get(minuteTimeStamp));
+       }
+    }
+    return ret;
+}
 
 
 Follow up 1：如果数据量特别大，内存放不下怎
-use LRU cache and save everything on disk. Search memory first and then hard disk.
+save small set of data in LRU cache and save everything on disk. 
+Write goes to memory first and then disk.
+Read goes to memory first and then hard disk
 
 
 
@@ -323,65 +359,46 @@ use LRU cache and save everything on disk. Search memory first and then hard dis
 T4
 对一段SMS message，我们的协议每次只能发送不超过60个字节。要求实现一个算法，
 将给定的string break成长度不超过60个字节的片段。要求：1. 每个词(通过whitespace split的词)不能被break，假如有一个词比如说compensation，不可以compens在前一个片段，ation在后一个片段，并且不用担心单个词长度就已经超标的情况；2. 每个片段后面要跟着一个suffix，
+Solution: use queue to avoid index calculation
 
 
+Hello world it is beautiful.
 
+List<String> orgnizePacket(String message){
+    List<String> words = message.split(" ");
+    long frame = 0;
 
+    Queue<String> q = new LinkedList<>();
+    for(String word: words) q.add(word);
 
+    List<String> ret = new ArrayList<>();
 
+    while( !q.isEmpty()){
 
-                                          OA : 24小时做完
+        String msg = helper(queue, 60 - 8);
+        ret.add(msg + suffix);
+        frame++;
+    }
 
-1，k-difference distinct number 力扣532 简化版，数组里没有重复数字。
-2  4，get set got 类似力扣40, 简化版。只要求判断是否能找到组合 使之等于 target
-找有多少个回文的substring
-palindrome
-3. Restocking the Warehouse
-4. Twitter New Office Design
+    return ret;
+}
 
-othenticating token 
-https://leetcode.com/discuss/interview-question/378237/Twitter-or-OA-2019-or-Authentication-Tokens
+String helper(Queue<String> q, int size){
+    
+      StringBuilder sb = new StringBuilder();
 
-Partitioning array
-https://leetcode.com/discuss/interview-question/375262/Twitter-or-OA-2019-or-Partitioning-array
+      while(!q.isEmpty()){
+          if ( q.peek().size() + sb.size()) + 1< size){
+              sb.append(q.poll());
+              sb.append(" ");
+          }else if  ( q.peek().size() + sb.size())< size){
+            sb.append(q.poll());
+            break;
+          }
+      }
 
-
-第一题 authentication token
-第二题 buying show ticket
-第三题 parking dilemma
-第四题 reaching point
-
-
-
-注意第二题在大佬的总结里是没有答案的，现场自己做的时候用暴力会超时，后来我在网上找到了答案：
-以下内容需要积分高于 95 您已经可以浏览
-
-def waitingTime(tickets, p):
-    total_steps = tickets[p]
-    first_half = tickets[:p]
-    second_half = tickets[p+1:]
-
-    for num in first_half:
-        if num < tickets[p]:
-            total_steps += num
-        else:
-            total_steps += tickets[p]
-
-    for num in second_half:
-        if num < tickets[p]:
-            total_steps += num
-        else:
-            total_steps += tickets[p] - 1
-
-    return total_steps
-
-
-
-桌面有总结pdf
-
-
-
-
+      return sb.toString();
+}
 
 
 
@@ -394,12 +411,12 @@ rate limiter.
 或许可以用list存（当前时间，当前点赞数）
 对于每一个时间，用二分查找找出五分钟前的点赞数，再用当前点赞数减去 (不好写)
 
-或者用treemap也可以吧( where key is time, value is count).  (好写些)
+或者用treemap也可以吧(key, count).  (好写些)
 
 
 
 m.floorEntry(current Time).getValue() will give you 当前点赞数
-m.floorKey(curTime - 5).getValue() will you 5 分钟前的点赞数. 
+m.floorEntry(curTime - 5).getValue() will you 5 分钟前的点赞数. 
 两个想减
 
 
@@ -426,9 +443,6 @@ m.floorKey(curTime - 5).getValue() will you 5 分钟前的点赞数.
 
 
 LC 736  too hard. lisp expression
-
-
-
 
 
 4.27 电面 巴斯斯，优化到O(1)空间复杂度  844 ?

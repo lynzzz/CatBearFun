@@ -42,15 +42,8 @@ class Solution {
             ret.add(newInterval);
         }
         
-        int[][] ans = new int[ret.size()][2];
-        
-        for( int i=0; i&lt;ret.size(); i++){
-            ans[i][0] = ret.get(i)[0];
-            ans[i][1] = ret.get(i)[1];
+        return ret.toArray(new int[ret.size()][2]);   // toArray用法很简单
         }
-        
-        return ans;
-    }
 }
 
 </code></pre>
