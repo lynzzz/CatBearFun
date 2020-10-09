@@ -1,0 +1,70 @@
+
+
+1. Map traversal (遍历keySet而不要遍历entrySet)
+
+for( keyType key : m.keySet()){
+
+   value = m.get(key);
+}
+
+
+instead of
+
+for( Map.Entry&lt;keyType, ValueType> e : m.entrySet(){
+   
+     key = e.getKey()
+     value = e.getValue();
+}
+
+
+
+2. Use putIfAbsent to Construct map :  Map<Integer, List&lt;Integer>> m = new ArrayList&lt;>();
+
+
+for(Node n : Nodes){
+   m.putIfAbsent(n.x, new ArrayList<Integer>());          // 2 lines
+   m.get(n.x).add(n.val);
+}
+
+
+
+instead of 
+
+for(Node n : nodes){
+   if ( !m.containsKey(n.x)){
+      List&lt;Integer> arr = new ArrayList&lt;>();              // 7 lines
+      arr.add(n.val);
+      m.put(n.x, l);
+   }else{
+      m.get(n.x).add(n.val);
+   }
+}
+
+3. use getOrDefault to count the occurrence of the element
+
+for( int i : arr){
+   m.put(i, m.getOrDefault(i, 0) + 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Boolean[][] visited = new Boolean[row][col], 这样开出来的矩阵里面每个元素是null, 因为Boolean是reference type，这种矩阵在任何情况都没有用，还很难Debug
+   boolean[][] visited = new boolean[row][col], 这样里面每个元素是false, 因为是primitive type.
+
+2.  int x, int y,    x/y 化成 double  =》   Double result = new Double （x) /y
+    比较两个double   Double.compare(double, double)  or Double.compareTo(Double)

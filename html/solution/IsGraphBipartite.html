@@ -11,6 +11,44 @@
 
 
 <pre><code>
+Solution 2020:
+class Solution {
+
+    // BFS 三色染色法. 
+        
+    // 1 define color array
+    // 2 对所有点做BFS. (无HashSet)
+        
+        public boolean isBipartite(int[][] graph) {
+            
+            Boolean[] color = new Boolean[graph.length];
+                    
+            for( int i=0; i&lt;graph.length; i++){
+                if ( color[i] != null) continue;
+                
+                Queue&lt;Integer> q = new LinkedList&lt;>();
+                q.add(i);
+                color[i] = true;
+                
+                while( !q.isEmpty()){
+                    int cur = q.poll();
+                    
+                    for(int neighbor : graph[cur]){
+                        if ( color[neighbor] == null){      // 无色
+                            color[neighbor] = !color[cur];  // 染色
+                            q.add(neighbor);
+                        }else if ( color[neighbor] != !color[cur]){ //有色判断
+                            return false;
+                        }
+                    }
+                }
+            }
+            
+            return true;
+        }
+    }
+
+Solution 2018
 class Solution {
     public boolean isBipartite(int[][] graph) {
         HashMap&lt;Integer, List&lt;Integer>> myGraph = new HashMap&lt;>();
