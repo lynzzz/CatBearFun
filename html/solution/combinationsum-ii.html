@@ -9,49 +9,42 @@
 <pre><code>
 
 
-public class Solution {
-
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        // write your code here
-        Arrays.sort(candidates);
-        
-        List<List<Integer>> results = new ArrayList<>();
-        List<Integer> result = new ArrayList<>();
-        dfs(results, result, candidates, target, 0, new boolean[candidates.length]);
-        
-        return results;
-    }
-    
-    
-    private void dfs( List<List<Integer>> results, List<Integer> result, int[] candidates, int target, int level, boolean[] visited){
-        
-        int sum = 0;
-        for( int n : result){
-            sum = sum + n;
-        }
-        
-        if ( sum == target){
-            results.add(new ArrayList<Integer>(result));
-            return;
-        }
-        else if ( sum > target){
-            return;   
-        }
-        
-        for( int i=level; i<candidates.length; i++){
+    class Solution {
+        public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+            Arrays.sort(candidates);   // sort 和下面的visited连用才能保证没有重复.
             
-		   if ( i>=1 && candidates[i] == candidates[i-1] && !visited[i-1]){    
-                continue;
-           }
+            List<List<Integer>> rets = new ArrayList<>();
+            dfs(rets, new ArrayList<Integer>(), new boolean[candidates.length], candidates, target, 0);
             
-            result.add(candidates[i]);
-            visited[i] = true;
-            dfs(results, result, candidates, target, i+1, visited);
-            result.remove(result.size()-1);
-            visited[i] = false;
+            return rets;
+            
+        }
+        
+        void dfs(List<List<Integer>> rets, List<Integer> ret,
+                 boolean[] visited,
+                int[] candidates, int target, int pos){
+            
+            if ( target < 0) return;
+            
+            if ( target == 0){
+                rets.add(new ArrayList<Integer>(ret));
+                return;
+            }
+            
+            for( int i=pos; i<candidates.length; i++){
+                if ( i>=1 && candidates[i] == candidates[i-1] &&
+                   !visited[i-1]) continue;
+                
+                
+                visited[i] = true;
+                ret.add(candidates[i]);
+                dfs(rets, ret, visited, candidates , target - candidates[i], i+1);
+                ret.remove(ret.size()-1);
+                visited[i] = false;
+            }
+            
         }
     }
-}
 
 Time O(n* 2^(n))
 

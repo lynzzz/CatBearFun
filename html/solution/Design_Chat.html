@@ -5,6 +5,37 @@
 
 
 <pre><code>
+
+https://www.educative.io/courses/grokking-the-system-design-interview/B8R22v0wqJo  grokking-the-system-design-interview
+
+
+
+Questions:
+1.
+How many chat servers we need? Let’s plan for 500 million websockets connections(over TCP) at any time. Assuming a modern server can handle 50K concurrent connections at any time, we would need 10K such servers.
+Each machine can keep 50k websockets alive(TCP) at the same time.
+
+500*10^6/50000 = 10k servers.
+
+a server listens only on one port and can have large numbers of open sockets from clients connecting to that one port.
+
+
+
+2. Difference between socket and websocket?
+Even though they achieve similar things, yes, they are really different.
+WebSockets typically run from browsers connecting to Application Server over a protocol similar to HTTP that runs over TCP/IP. 
+So they are primarily for Web Applications that require a permanent connection to its server. 
+
+On the other hand, plain sockets are more powerful and generic. 
+ They run over TCP/IP but they are not restricted to browsers or HTTP protocol. 
+They could be used to implement any kind of communication.
+
+
+
+
+
+
+
 Version I:
 Message Table
 ID          Primary key

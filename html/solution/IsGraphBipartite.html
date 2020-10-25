@@ -17,7 +17,7 @@ class Solution {
     // BFS 三色染色法. 
         
     // 1 define color array
-    // 2 对所有点做BFS. (无HashSet)
+    // 2 对所有点做BFS. (无HashSet， color[i]可以控制访问重复点，直接比较颜色)
         
         public boolean isBipartite(int[][] graph) {
             

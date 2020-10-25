@@ -12,73 +12,57 @@
 
 <pre><code>
 
-class Solution {
-    
-    List&lt;String> ans = null;
-    
-    List&lt;String> result = new ArrayList<String>();
-    HashMap&lt;String, List<String>> m = new HashMap<>();
-
-    public List&lt;String> findItinerary(String[][] tickets) {
+    class Solution {
+        List<String> ret = new ArrayList<>();
+        HashMap<String, List<String>> m = new HashMap<>();
         
-        
-    
-        for(String[] str : tickets){
-            String from = str[0];
-            String to = str[1];
-            
-            if ( !m.containsKey(from)){
-                List<String> toList = new ArrayList<String>();
-                toList.add(to);
-                m.put(from, toList);
-            }else{
+        public List<String> findItinerary(List<List<String>> tickets) {
+                            
+            for(List<String> ticket : tickets){
+                String from = ticket.get(0);
+                String to = ticket.get(1);
+                m.putIfAbsent(from, new ArrayList<String>());
                 m.get(from).add(to);
-                Collections.sort(m.get(from));
             }
+            
+            for(String key : m.keySet()){
+                List<String> Desti = m.get(key);
+                Collections.sort(Desti);
+                m.put(key, Desti);
+            }
+            
+            ret.add("JFK");
+            dfs(tickets, "JFK");
+            
+            return ret;
         }
         
-        result.add("JFK");
         
-        dfs("JFK", tickets);
-        
-        return ans;
-        
-        
-    }
-    
-    
-    public void dfs(String start,  String[][] tickets){
-        
-        if ( !m.containsKey(start) || m.get(start).size() == 0){
-             if ( result.size() -1 == tickets.length){
-                 ans = new ArrayList<String>(result);
-             }
-             return;
-        }
-        
-        List&lt;String> nextLevel = m.get(start);
-        
-        for(int i=0; i&lt;nextLevel.size(); i++){
-            String neighbor = nextLevel.get(i);
+        void dfs(List<List<String>> tickets, String from){
             
-            result.add(neighbor);
-            nextLevel.remove(i);
-            dfs(neighbor,tickets);
-            
-            if ( ans != null){
+            if ( ret.size() == tickets.size() + 1){
                 return;
             }
             
-            nextLevel.add(i, neighbor);
-            result.remove(result.size()-1);
+            if ( !m.containsKey(from)) return;
+            
+            for(int i=0; i<m.get(from).size(); i++){
+                String dest = m.get(from).get(i);
+                
+                ret.add(dest);
+                m.get(from).remove(i);
+                
+                dfs(tickets, dest);
+                
+                if ( ret.size() == tickets.size() + 1){
+                    return;
+                }            
+                
+                ret.remove(ret.size()-1);
+                m.get(from).add(i, dest);
+            }
         }
-        
-        
     }
-    
-    
-}
-
 
 无向图和有向图的区别：
 
