@@ -161,6 +161,32 @@ Option II: 这两张表合成一张大表：
 pro: fast
 con: if it fails, system crashes.
 
+
+
+
+
+Push notification:
+当A发消息给B, B和微信server 的TCP connection 已经断开的情况，如何给B发消息？ 
+
+微信server 发消息给App push notification server 或者Android push notification server, 这些Manufactruer 
+pusher notifiction server 会push 一个notification到你的手机上，虽然你没有和微信连这，但是你的手机是开着的你还是回收到Notification, 你然后点击这个notification
+去Server pull the message.
+
+先决条件是第一次下载这个App的时候
+他问你要不要接受push notification, 你需要选择要接受。
+
+
+http://www.mobileui.org/innovaportal/v/181/1/innova.front/push-notifications:-knowing-the-technology.html#:~:text=Push%20notifications%20is%20a%20technology,not%20actively%20using%20the%20application.&text=When%20the%20user%20touches%20them,or%20automatically%20by%20the%20server.
+
+
+
+
+
+
+
+
+
+
 </code></pre>
 
 

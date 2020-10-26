@@ -13,8 +13,8 @@
 <pre><code>
 
     class Solution {
-        List<String> ret = new ArrayList<>();
-        HashMap<String, List<String>> m = new HashMap<>();
+        List<String> ret = new ArrayList&lt;>();
+        HashMap<String, List&lt;String>> m = new HashMap&lt;>();
         
         public List<String> findItinerary(List<List<String>> tickets) {
                             
@@ -73,63 +73,14 @@
                 
 				
 
-		        		
-无向图          点去重 
-
-有向图          边去重
-				
-				
-				在回溯之前，应该防止这条边被反复使用, 考虑到DFS有回溯的功能，此层DFS结束后，会自动回到上一层到达。
-				
-				
-				此题目防止边被反复使用的办法是，所以通过此条边往下走的时候，要断边， 回溯之后，要加边
-				
-
-此题是要返回一个lexical order, 因为最开始是sorted, 一旦找到后立马返回，因为第一个找到的结果一定是lexical order, 不然返回的是最后一个不一定是lexical order.
-
-
-
-有向图模板总结
-
-   public void dfs(String start,  String[][] tickets){
-        
-        if ( !m.containsKey(start) || m.get(start).size() == 0){              有向图走到底的判断条件： 没有下层边，或者下层边的个数为0（因为往下走的时候不断断边）
-             if ( result.size() -1 == tickets.length){                        if ( !m.containskey(start) || m.get(start).size() = 0 )
-                 ans = new ArrayList<String>(result);
-             }
-             return;
-        }
-        
-        List&lt;String> nextLevel = m.get(start);
-        
-        for(int i=0; i&lt;nextLevel.size(); i++){
-            String neighbor = nextLevel.get(i);
-            
-            result.add(neighbor);
-            nextLevel.remove(i);                                               //递归之前断掉当前边                               
-            dfs(neighbor,tickets);
-            
-            if ( ans != null){
-                return;
-            }
-            
-            nextLevel.add(i, neighbor);                                        //递归之后恢复当前边，记住这种写法
-            result.remove(result.size()-1);
-        }
-        
-        
-    }
-    
-    
-}
-</code></pre>
+		        
 
 时间复杂度：
 递归有N层，每层N-1个选择，遍历次数N^N
-排序eloge
-总的时间复杂度为 O(N^N + eloge)
+总的时间复杂度为 O(N^N)
 
-空间复杂度：O(e+N) ，O(e)为存边的空间， O(N)为递归栈的开销
+空间复杂度：
+O(e+N) ，O(e)为存边的空间， O(N)为递归栈的开销
 
 
 

@@ -1,4 +1,4 @@
-
+                                            Map syntax sugar:
 
 1. Map traversal (遍历keySet而不要遍历entrySet)
 
@@ -40,7 +40,11 @@ for(Node n : nodes){
    }
 }
 
-3. use getOrDefault to count the occurrence of the element
+
+
+
+3. use getOrDefault to count the occurrence of the element applying to 
+Map<Integer, Integer> m = new HashMap<>()
 
 for( int i : arr){
    m.put(i, m.getOrDefault(i, 0) + 1);
@@ -49,21 +53,61 @@ for( int i : arr){
 
 
 
-4. value type comparison for Stack
-
-   Stack<Integer> ret = new Stack<>();
-   Stack<Integer> minStack = new Stack<>();
-  
-   ret.peek() == minStack.peek() 这样比较出来的是reference type比较， 不是值比较
-   ret.peek().equals(miStack.peek()) 这样才是值比较.
 
 
 
+
+4. 如何把HashMap<Integer, Integer> m, 转化成List<Integer> representing keys, 转化成List<Integer> represent values;
+
+   new ArrayList<Integer>(m.keySet())
+   new ArrayList<Integer>(m.values())
 
 
 
 
 
+
+
+
+
+                                     ArraList syntax sugar
+
+
+1.   如何对ArrayList富裕初始值。
+     List<Integer> ret = Arrays.asList(1, 2, 3, 4, 5);
+     List<String> ans = Arrays.asList("Joe", "Michael", "Cathy");
+
+
+
+2.   ArrayList -> array 
+     
+     list.stream().mapToInt(j->j).toArray();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Stack:
+
+
+1. value type comparison for Stack
+
+Stack<Integer> ret = new Stack<>();
+Stack<Integer> minStack = new Stack<>();
+
+ret.peek() == minStack.peek() 这样比较出来的是reference type比较， 不是值比较
+ret.peek().equals(miStack.peek()) 这样才是值比较.
 
 
 
