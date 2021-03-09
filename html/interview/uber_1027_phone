@@ -1,0 +1,21 @@
+10/27
+
+1
+Given an array, find local minimum, the element that is less than its left and also lesss than its right.
+
+in [ 4 5, 1, 7, 3, 19] return 2,4 
+
+          ^     ^
+
+Nailed it.
+
+
+Follow up, you can return any minimum that exists in the array.
+use binary search:   
+
+
+4  3  2  7      
+   mid
+
+
+since 2 is less than 3, then going right. Binary search template. Nailed it.

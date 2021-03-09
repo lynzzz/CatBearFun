@@ -1,0 +1,196 @@
+1. phillip V.
+BQ: 
+1.conflict 
+2.you don't get credit that you deserve
+
+coding: 
+find minimal in rotated array. o(lgn)
+follow up : find kth minimal in rotated array    (index + k)%size
+
+
+Knowledge missing: How to throw exception in java?
+
+void helper() throws Exception{
+
+   throw new Exception("invariant check fails");
+   
+   return;
+
+}
+
+
+
+
+2. Sidd S.
+pround proj
+
+design:
+Autopilot : request permission.
+            remote access
+
+ask for permission from remote machine. Interact with admin machine to get token, and send token to prod machine.
+
+
+
+3. Arun V.
+BQ:
+1. chagne requirement. How to handle?
+2. Switch priority, how to handle?
+
+Coding 
+insert interval n times totol time complexity nlg(n). 
+
+O(n) solution: need to improve
+O(lgn) insert log(n), lookup lgn() use tree:
+use node to create tree data structrue: He saing just use treemap
+
+
+Get familiar with Java TreeMap and API floorEntry(key), ceilingEntry(key)  !!!
+
+
+   [3, 7],   [ 14, 16],   [26, 89]
+
+
+insert [9, 13]
+insert [1, 2]
+insert [100, 108]
+
+remove 
+          start    end
+TreeMap<Integer, Integer> m   //  be familiar with this API. floorEntry and floorKey
+
+boolean insert( int start, int end){
+    
+    if (   )
+
+
+
+    if (   ( m.floorEntry(start) == null   || m.floorEntry(start).getValue() < start  ) &&
+
+             m.ceilingEntry(start) == null || m.ceillingEntry(start).getKey() > end){
+
+             m.put(key, value);
+             return true;
+         }
+
+    return false;
+
+}
+
+boolean remove(int start){
+    if ( m.containsKey(start)){
+        m.remove(start);
+        return true;
+    }
+
+    return false;
+}
+
+
+
+4. Christian C.
+BQ: What's the riskest thing you have done in your career.
+
+palindrom.  ( give a typo in the first run)
+Longest Palindromic Substring  (spend a lot time debugging) LC 5.
+
+
+5. Kirthi.
+Design: Design a distributed cache for facebook.
+
+1. DAU, 10 million, each user sends 10 queries in average 
+   QPS = 10*10^6 * 10 /86400 = 1k QPS 
+
+2. storage: user 200 million:
+
+  metadata: name 100 bytes
+            id   8bytes
+            friend list: average 100 friend, 
+
+            100 + 8 + 100 * 8 = 908bytes, 
+
+            1kb.
+
+   total storage = 200 * 10^6 * 1kb = 200GB, can fit in one machine, no need to partition
+
+3. 200GB in SSD,
+   10GB in memory, look up memory first and then SSD. 1000 times difference in terms of latency.
+
+4. Eviciton policy: LRU 
+
+5. Geographcally. India hits american server?
+   CDN(cache it in different geographcal)
+
+
+6. Single point failure, replication. 3-4, geographically isolated.(earthquake, fire)
+   All server taking read.
+   Master gets write and replicate to follower asynchonously.
+   Eventual consistency case. It is ok for facebook type.
+
+   How to select master (voting algorithm)
+   master goes down, select a new master
+   1. upstream need to send requests to new master, 
+   2. follower need to achnology leadership.
+   3. Data sync needs to happen.
+
+
+5. Monitoring ( cache miss/cache hit/rqs/ http.sys)
+   probe ( heart beat outside, internal query)
+   alert( escalate to oncall)
+
+
+6  traffic increase: add more LB, BE 
+   storage increase: partition data.
+
+
+
+BQ:
+1 Deadline:
+a. figure out dependency( people task)
+b. break it down to small tasks and run by manager.
+3. focus and work overtime if needed.
+
+
+
+2 Conflict/disagree
+C/C++
+
+
+3. Frustrated:
+Deploy API, gap between our team and deployment team.
+They saying working as design.
+My code looks good. 
+I took initiliative and dived deep, package version mismatch. 
+
+How would like you do differently?
+would have engaged deployment team at earlier stage instead of debugging without any hint.
+
+
+4. where do you see yourself in 2 years.
+code/design/big picture/more responsbility
+
+
+5. anything learned outsuide of work.
+Full stack / javascript node JS, nosql database casandra/
+How did you learn? by doing project
+
+6. Your idea work? 
+
+7. Failure 
+
+
+
+
+
+
+
+
+Team:
+Deployment CI/CD 
+sharper
+
+
+
+ddddffff
+7 people: 
+oncall 24 hours

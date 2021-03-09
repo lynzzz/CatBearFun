@@ -1,0 +1,20 @@
+1. Number of islands. 
+   time complexity and space complexity. 写出来了没有bug
+
+   Follow up:
+   not modify the input array grid. 
+
+   solution: using a boolean[][] visited array
+   Bug:  做DFS的标准应该是 (grid[i][j] == 1 && !visited[i][j]) , 我只写了第2个条件，脑子短路忘记加第一个条件
+         没有调出来， 他给你指出来才调试通过的。
+
+
+   follow up: how to get the max area of the island.
+   口诉，没有写代码，维持一个全局变量。
+
+
+   45mins.
+
+
+
+   

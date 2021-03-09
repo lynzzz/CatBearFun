@@ -1,0 +1,38 @@
+题目1：丢盒子家经典NASA Panorama
+Follow up，如何访问stalest image（类似LRU cache）
+
+注意事项：题目会比较模糊，更多的面试官是考察你如何从一个很模糊的requirement，一步一步的和面试官讨论，然后一步步确定需要什么数据结构
+
+
+详细见照片
+img/nasa_1
+img/nasa_2
+img/nasa_3
+
+
+
+1. Image 存在DB里面，因为memory存不下, 算出来是1TB。 自己定义DB API
+2. getStalest. LRU, 只存metadata， 不存image,所以能存下。 
+
+   class Node{
+       String key;
+       Node next;
+       Node pre;
+   }
+
+
+   HashMap<key, Node> 
+   Node head;
+   Node tail;
+
+
+   key is = row + "-" + col;
+
+   
+   
+   DB API defined
+
+   saveToDB(row + "_" + col, image.imageByte);
+   getFromDB(row + "_" + col);
+
+

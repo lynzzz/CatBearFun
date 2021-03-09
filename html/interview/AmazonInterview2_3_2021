@@ -1,0 +1,28 @@
+Design an API that does counter for 5 mins, 10 mins and 15 minutes.
+
+Requirement is not clear. When user call 5 mins API, user only see one data point.
+
+maintain a rolling window.
+
+
+map<timestamp, count> 5minutescount;
+
+
+int receiveRequest(){
+
+
+     5minutescount.put(timenow(), 5minutescount.get(timenow()) + 1);
+
+
+}
+
+
+int getCounter(enum minute){
+
+    switch(5minuts)
+
+    int counter ;
+    for( int t: curTime - curTime - 360){
+        counter = counter + 5minutescount.get(t);
+    }
+}

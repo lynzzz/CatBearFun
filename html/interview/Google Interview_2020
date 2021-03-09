@@ -1,0 +1,156 @@
+7/28 Googole phone interview.
+
+Anthony:
+
+class order{
+	long cutomerID
+	long orderID
+	long AdRequested
+}
+
+class ProcessedOrder{
+    long  cutomerID,
+    long  AdDisplayed
+}
+
+example:
+
+{2, 4, 5}  inv:8  => 2, 3, 3.  Need to find a threshold hold that works for every customer.
+
+
+
+Interviewer breaks it down to 2 steps:
+1. Assume you have a threashold function, write function. Straightfowrad, if < threadshold, take Adrequested, otherwise, take threshold, orgnize the answer.
+
+2. Implement getThreshold function.
+Sort the array, go from left to right, apply the number as threshold to the array, find the one that results in totalAds requested > inventory, that's your right bound.   O(n^2)
+
+3. Decrase the threshold, and find the closes threshold that results the totalAds <= ava. O(n^2)
+
+time complexity : O(n^2)
+
+就是这一步没有分析清楚, 找到upper bound需要O(n), 然后从那个值 做Binary search, 往回走去试那个Threshold
+O(lgMax)*n 
+
+总的复杂度是 O(n^2 + nlg(max) = O( n (n+lg(max) )
+
+
+
+
+
+
+
+Google Phone Feedback: 8/3
+
+code fast but time complexity is wrong. [1, 100]. 需要从99, 98 .. 50 ... 3. 2 .1 一直往后面数, 而不是从100直接跳到1.   O( lg(max)*n )
+
+
+
+
+简单的解法应该是扫一遍数组, 记录最大的值, threshold只能在最小和最大之间. binary search找到那个值, lg(max) * n
+
+Total time complexity is O(n) + O(lg(max))*n  = O(n lg(max))
+
+
+还是逻辑没想清楚.
+
+
+List<proceessdOrder> processAds(List<Order> orders, int inventory)
+{
+
+
+
+
+
+}
+
+
+
+
+10/6
+
+secret [red,        blue,       yellow, white]
+guess  [red,        yellw,      pink,   blue]
+
+result: correct, needmoving,. 
+
+return
+{
+   correct =1;
+   needMoving = 1;
+}
+
+secret [red,        blue,     yellow, white]
+guess  [red,        red,      red,   red]
+result: correct              
+
+return
+{
+   correct =1;
+}
+
+
+secret [red,        red,     yellow, white]
+guess  [red,        red,      red,   red]
+result  correct     correct
+
+return
+{
+   correct =2;
+}
+
+result: correct     correct
+
+
+对Secret建立map<color->count>
+
+Secret game(int[] secret, int[] guess){
+
+     Map<Integer, Integer> m = new HashMap<>();
+
+	 for(color : secret){
+		 m.put(color, m.getOrDefault(color, 0) + 1);
+	 }
+
+     int correct = 0;
+	 int needMoving = 0;
+
+     for( int i =0 ;i<guess.length; i++){
+		 if ( guess[i] = secret[i]){
+			 corret++;
+			 m.put(guess[i], m.get(guess[i]) - 1);
+
+             // missing the map invariant, see test case below. Bug
+			 if ( m.get(guess[i] == 0)) m.remove(guess[i]);
+
+		 }else if ( m.containsKey(guess[i]){
+			 needMoving++;
+			 m.put(guess[i], m.get(guess[i]) - 1);
+
+			/ missing the map invariant. bug
+			 if ( m.get(guess[i] == 0)) m.remove(guess[i]);
+		 }
+	 }
+
+     return new Secret(correct, needMoving);
+
+}
+
+Test case bug:
+secret [red,        red,     yellow, white]
+guess  [red,        red,      red,   red]
+
+
+red -> 1
+red -> 0
+red -> -1
+red -> -2
+
+
+Interview feedback 10/08
+L4->
+L5
+
+able to solve problem. but not reach L5. probably L4. hint needed. impressed overal. 
+Recruiter: There is chance that you do 1 more design at onsite interview to bump level. 
+It depends on hiring committee.

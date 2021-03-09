@@ -1,0 +1,34 @@
+Give a list  { 0 , 1 , 4, 5,3, 5}
+return the maxium time {15: 54: 30}
+
+return helper recursion function with upperbound
+
+
+Requriement: Need to go through the array one time and get the max. Avoid doing brute force DFS.
+
+
+Solution:
+
+Sort the arraylist in decending order. // Then the first one it gets is the maximum.
+
+List<Integer> helper(List<Integer> intput, int level, List<Integer> temp){
+      
+      if ( level == input.size()) return new ArrayList<Integer>(temp);
+
+    
+      int tempDigit = 0;
+      for( int i=0 ;i<input.size(); i++){
+
+            
+          int upperBound = getUpperBound(level, temp);
+
+          int val = input.get(i);
+
+          if ( val <= upperBound){
+               tempDigit = Math.max(tempDigit, val);
+          }
+
+          ?
+          ?
+      }
+}

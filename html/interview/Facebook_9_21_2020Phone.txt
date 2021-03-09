@@ -1,0 +1,157 @@
+
+Description
+Write a function that returns whether a list of strings is sorted given a specific alphabet.
+
+Question Statement
+Question
+Write a function that returns whether a list of strings is sorted given a specific alphabet.
+A list of N words and the K-sized alphabet are given.
+
+input:  words =    ["cat", "bat", "tab"]
+        alphabet = ['c', 'b', 'a', 't'..... ]  26
+output: True
+
+
+"cat" "bat"            
+
+  c1 = c  -> 0 
+  c2 = b  => 1
+  
+  
+"cab" "bac"              
+  
+c   0   a   b  1
+b   1   a   c  0
+
+
+Post interview thinking: 
+1. Sort an array takes O(n^2), but verify if an array is sorted takes only O(n) time. just compare every element with the next element.
+Parse the array once.
+
+2
+面试官说最后两个letter, b and c对比可以帮我找出Error. 我 1 < 0 return false. Error,他说because that's already sorted, my friend. 没想明白撒意思. 我人为他没有把题目理解清楚或者他理解的题目意思和我理解的不一样。
+
+后来想明白了，他的意思是 c < b直接可以出结果了，cab 在 bac前面 是sorted, 后面就不用比较了。 他绝对没有讲清楚这个规则，当时没理解
+题目应该让他给几个Example. 误解了题目的意思。我以为要一个一个比，每一个字母都sorted才可以。
+
+3. 题目表达很含糊, 自己问出来, you can assume alphabet里面有26个字母.
+
+"cab" "bac"              
+  
+c   0   a   b  1
+b   1   a   c  0
+
+boolean isSorted(List<String> words, List<Character> alphabet){
+
+         HashMap<Character, Integer> m = new HashMap<>();
+         for( int i=0; i<alphabet.size(); i++){
+             m.put(c, i);
+         }
+
+         for( int i=0; i<words.length-1; i++){
+            if ( !isValid(words.get(i), words.get(i+1), alphabet, m){
+               return false;
+            }
+         }
+    
+         return true;
+
+}
+
+"dog window"
+
+boolean isValid(String word1, String word2,  List<String> alphabet, HashMap<Character, Integer> m){
+
+      int n1 = word1.size();
+      int n2 = word2.size();
+      itn min = Math.min(n1, n2);
+      
+      for( int i=0; i<min; i++){
+          char c1 = word1.get(i);
+          char c2 = word2.get(i);
+          
+          int index1 = m.get(c1);
+          int index2 = m.get(c2);
+          
+          if ( index1 > index2) return false;
+      }
+           
+      if ( word1.length() > word2.length())
+          return false;
+          
+      return true  
+
+}
+
+LC 138
+Description
+Given a linked list having two pointers in each node. The first one points to the next node of the list, however the other pointer is random and can point to any node of the list. Write a program that clones the given list in O(1) space, i.e., without any extra space.
+
+
+
+class RamdomListNode{
+     int label;
+     RandoemListNode next;
+     RandomListNode random;
+     
+     // contructor
+}
+
+
+RandomListNode deepCopy(RandomListNode head){
+
+       HashMap<RandomListNode, RandomListNode> m = new HashMap<>();
+       
+       RandomListNode save = head;
+       
+       
+       while(head != null){
+       
+           m.put(head, new RandoemListNode(head.label);
+           head = head.next;
+       }
+       
+       
+       
+       head = save;
+       
+       while ( head != null){
+          m.get(head).next = m.get(head.next);
+          
+          
+          if ( head.randeom != null){
+              m.get(head).random = m.get(head.random);
+          }   
+          
+          head = head.next;
+      }
+      
+      
+      return m.get(save);
+ }
+          
+
+Interview Feedback:
+1. 第一道题做出来的时间太久，需要提示，而且有一个Bug。
+2. 第二道题快， 没有bug.
+
+
+他们的bar:
+1. 做两道题目
+2. 快，无提示，无Bug.
+
+
+自己的感受：
+面试官没有说清楚sorting string的规则，我也没有问清楚。下次没理解题意的时候一定让他给Example。
+
+我记得当时让他给Example,结果他让我写Example, 我写的example 恰好没有cover到testing case, 但他还是该告诉我后面的
+不用比较了。总的来说还是觉得他没有讲清楚sotring 规则， 应该一开始就说明白单个字母比较出结果了就不用比较下面的了。
+
+
+
+
+10/12 Phone 2:
+LC 121。 Sell stock once. 
+LC 523 subarray target sum to k. Need to be O(n). 没有想出来。523.
+
+Rej

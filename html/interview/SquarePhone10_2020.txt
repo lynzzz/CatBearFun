@@ -1,0 +1,103 @@
+Algorithm problem disgusied as real world problem
+
+
+1. Give a one dimention line. With range below and a target. Find the minimal strike needed to get the ball in hole
+Implement the API.
+
+[160 190]
+[120, 130]
+[50, 80]
+[10, 30]
+[1, 10]
+
+// Define function signature by yourself
+List<Integer> PlayGolf(int distance, int[][] range){
+
+}
+
+a. He gives you the algorithm, hit the farest range and reduce range and keep reducing range until the target becomes 0
+say target is 392.
+         remain 
+1: 190   202
+2: 190   12
+3: 12
+
+// Required to compile ok and pritn out answer
+Implement this algorithm. Solved it, they give you codepair, a real IDE and expecting you to debug and print out answer.
+
+
+
+
+b. Followup,
+1. you can go beyond the target. for example:
+
+          remain
+1: 190     202
+2: 190     12
+3. 50      -38. 可以往会走。 我写了个Recursion的解法，没有写完。 感觉不满意。
+
+
+
+
+10/12 Phone 2.
+
+square table consiting letters and digits.
+  
+  1 2 3 4 5 6
+1 a b c d e f
+2 g h i j k l
+3 m n o p q r
+4 s t u v w x
+5 y z 0 1 2 3
+6 4 5 6 7 8 9
+
+b->12
+h->22
+
+
+0. Build the table:    
+     void buildtheTable(String alphanumeric){
+         char[][] table = new char[][]
+         for( int i=0; i< alphanumeric.length(); i++){
+             int row = i/6;   //这个问题的关键
+             int col = i%6;   //这个问题的关键
+         }
+
+     }
+
+
+1. Encode  "Hello" -> {22, 15, 26, 26, 33}
+2. decode  {22, 15, 26, 26, 33} => "Hello"
+
+Was able to implement and print out the answer correctly.
+
+
+Follow up: use a secret key to add to original data.  say secret key is "bob", if secret is shorter than source, keep repeating the secret key.
+
+Example:
+data: "hello"  22 15  26   26  33
+Secret: "bob"  12 33  12   12  33
+index :        0   1   2    3  4
+cros Index:    0   1   2    0  1
+
+output         34 48  38   38  66
+
+
+
+leverage the first API encode 
+List<Integer> secret = encode(secretKey);   22 15  26  26 33
+List<Integer> data = encode(word);          12 33  12
+
+if( dataLengt > secretLength){
+    for( int i=0; i<datalength; i++){
+        int crospodingSecretIndex = i%secretLength;   // 这是这道题目的关键
+
+        ret.add(data.get(i) + secret.get(crospodingSecretIndex));  
+    }
+}
+
+
+
+Follow up只把encode写万了调式正确。 没有时间去写Decode了。
+
+
