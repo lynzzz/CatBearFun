@@ -1,4 +1,12 @@
-                                            Map syntax sugar:
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+                                               Map 
 
 1. Map traversal (遍历keySet而不要遍历entrySet)
 
@@ -8,21 +16,12 @@ for( keyType key : m.keySet()){
 }
 
 
-instead of
-
-for( Map.Entry&lt;keyType, ValueType> e : m.entrySet(){
-   
-     key = e.getKey()
-     value = e.getValue();
-}
-
-
 
 2. Use putIfAbsent to Construct map :  Map<Integer, List&lt;Integer>> m = new ArrayList&lt;>();
 
 
 for(Node n : Nodes){
-   m.putIfAbsent(n.x, new ArrayList<Integer>());          // 2 lines
+   m.putIfAbsent(n.x, new ArrayList<Integer>());       
    m.get(n.x).add(n.val);
 }
 
@@ -32,7 +31,7 @@ instead of
 
 for(Node n : nodes){
    if ( !m.containsKey(n.x)){
-      List&lt;Integer> arr = new ArrayList&lt;>();              // 7 lines
+      List&lt;Integer> arr = new ArrayList&lt;>();           
       arr.add(n.val);
       m.put(n.x, l);
    }else{
@@ -51,17 +50,6 @@ for( int i : arr){
 }
 
 
-3.1 use getOrDefault to compare, 适用于对map 的count在做减法，当小于0后就不处理的case. 同时可能m不包含i. 
-    LC 659
-
-     if( m.getOrDefault(i, 0) > 0)
-
-     it returns true if m contains i and the count of i is greater than 0.
-     It returns false if m contains i but the count of i is less than 0 or
-                         m doesn't contain i.
-
-
-
 
 
 4. 如何把HashMap<Integer, Integer> m, 转化成List<Integer> representing keys, 转化成List<Integer> represent values;
@@ -75,23 +63,23 @@ for( int i : arr){
 
 
 
-
+                                                    ArrayList
 
                                      
 
-5.   如何对ArrayList富裕初始值。
+1   如何对ArrayList富裕初始值。
 a     List<Integer> ret = Arrays.asList(1, 2, 3, 4, 5);
      List<String> ans = Arrays.asList("Joe", "Michael", "Cathy");
 
 
 
-b.   ArrayList -> array  （ dynamic->static)
-     
-     return ret.stream().mapToInt(i->i).toArray();  // Course schedule II
 
 
 
-6. Java Big Integer 
+
+                                                   
+      
+                                                    Big Integer 
 
 import java.math.BigInteger;  
 
@@ -126,7 +114,7 @@ public class HelloWorld{
 
 
 
-Stack:
+                                                         Stack
 
 
 1. value type comparison for Stack
@@ -138,7 +126,9 @@ ret.peek() == minStack.peek() 这样比较出来的是reference type比较， �
 ret.peek().equals(miStack.peek()) 这样才是值比较.
 
 
+                                                      
 
+                                                        2D array 
 
 
 1. Boolean[][] visited = new Boolean[row][col], 这样开出来的矩阵里面每个元素是null, 因为Boolean是reference type，这种矩阵在任何情况都没有用，还很难Debug
@@ -146,3 +136,8 @@ ret.peek().equals(miStack.peek()) 这样才是值比较.
 
 2.  int x, int y,    x/y 化成 double  =》   Double result = new Double （x) /y
     比较两个double   Double.compare(double, double)  or Double.compareTo(Double)
+
+</code></pre>
+</body>
+
+</html>
