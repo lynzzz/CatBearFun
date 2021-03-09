@@ -19,8 +19,7 @@ public class Solution {
 
      
      
-    public ListNode mergeKLists(List<ListNode> lists) {  
-
+    public ListNode mergeKLists(ListNode[] lists) {
         if ( lists == null || lists.length == 0) return null;
         
         PriorityQueue<ListNode> pq = new PriorityQueue<>(lists.length, (a,b)->(a.val-b.val));
@@ -35,17 +34,19 @@ public class Solution {
         }
         
         while(!pq.isEmpty()){
+            
             ListNode n = pq.poll();
+            dummy.next = n;
+            dummy = dummy.next;
+            
             
             if ( n.next != null){
                 pq.add(n.next);
             }
-            
-            dummy.next = n;
-            dummy = dummy.next;
         }
         
         return save.next;
+    }
 }
 
 
@@ -59,36 +60,18 @@ public class Solution {
 
 
 <div class="comment">
-Time O( nlg(k))  : 因为priority queue每次add and remove都是log(k)， 每一个元素都要在里面过一次，所以复杂度是nlog(k)
 
+1。 把每个链的头指针加入priority queue, 按min priorityqueue保证头是最小的。 
+2。 Time O( nlg(k))  : 因为priority queue每次add and remove都是log(k)， 每一个元素都要在里面过一次，所以复杂度是nlog(k)
 
-//Note
-// 把每个链的头指针加入priority queue, 在priority queue里反复进出，因为每个元素都链接到下一个
-// dummy node;
-
-// java skill
-//1. PriorityQueue java中默认把最小值放在头上， PriorityQueue<>() or PriorityQueue<>(size, myComparator)
-//2. 熟练掌握如何写Comparator<ListNode> myComparator
 </div>
 
 
 <pre><code>
-/**                           ///////////////////////////  SOLUTION TWO  (Divide and Conquer), a Better solution //////////////////////////////////////////////////
- * Definition for ListNode.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int val) {
- *         this.val = val;
- *         this.next = null;
- *     }
- * }
- */ 
+                          SOLUTION TWO  (Divide and Conquer)
+
 public class Solution {
-    /**
-     * @param lists: a list of ListNode
-     * @return: The head of one sorted list.
-     */
+
     public ListNode mergeKLists(List<ListNode> lists) {  
         // write your code here
         if ( lists == null || lists.size() == 0 )
@@ -142,7 +125,7 @@ public class Solution {
 </code></pre>
 
 <div class="comment">
-Time O( nlg(k) ), where k is the number of recursion level. n is the total number of nodes. 每一层merge,所有node都要merge一次
+Time O( nlg(k) ), where k is the size of lists. n is the total number of nodes. 每个node需要merge lg(k)次
 
 //Note
 //   merge sort模版
