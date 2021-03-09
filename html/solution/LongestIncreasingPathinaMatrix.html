@@ -1,0 +1,187 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+329. Longest Increasing Path in a Matrix  
+https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
+
+DFS brutal force: time out
+
+class Solution {
+   int ret = 0;
+   int temp = 0;
+   
+   public int longestIncreasingPath(int[][] matrix) {
+       
+       for( int i=0; i&lt;matrix.length; i++){
+           for( int j=0; j&lt;matrix[0].length; j++){
+               helper(matrix.length, matrix[0].length, i, j, matrix);
+           }
+       }
+       
+       return ret;
+   }
+   
+   
+   void helper(int row, int col, int i, int j, int[][] matrix){
+       
+       temp++;
+       
+       
+       int[][] dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+       
+       for(int[] dir : dirs){
+           
+           int x = i + dir[0];
+           int y = j + dir[1];
+           
+           if ( x>=0 && x<row && y >=0 && y &lt; col && matrix[x][y] > matrix[i][j]){
+               helper(row, col, x, y, matrix);
+           }
+       }
+               
+       ret = Math.max(ret, temp);
+       
+       temp--;
+       
+   }
+}
+
+
+=> intermediate state: DFS that returns value for the prepareation of DFS + memo
+Time out. 由返回一个向上推答案。
+
+class Solution {
+
+    
+   public int longestIncreasingPath(int[][] matrix) {
+       int ret = 0;
+       
+       for( int i=0; i&lt;matrix.length; i++){
+           for( int j=0; j&lt;matrix[0].length; j++){
+               ret = Math.max( ret, helper(matrix.length, matrix[0].length, i, j, matrix));
+           }
+       }
+       
+       return ret;
+   }
+   
+   
+   int helper(int row, int col, int i, int j, int[][] matrix){
+       
+       int ans = 0;
+       int[][] dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+       
+       for(int[] dir : dirs){
+           
+           int x = i + dir[0];
+           int y = j + dir[1];
+           
+           if ( x>=0 && x<row && y >=0 && y &lt; col && matrix[x][y] > matrix[i][j]){
+               ans = Math.max(ans, helper(row, col, x, y, matrix));
+           }
+       }
+               
+       return 1 + ans;
+       
+   }
+}
+
+
+
+III         DFS + Memo (659ms), Build memory map for m*n times,which is unnesessary, You only need to build it once, and it can be reused.
+class Solution {
+
+    
+   public int longestIncreasingPath(int[][] matrix) {
+       int ret = 0;
+       int m = matrix.length;
+       int n = matrix[0].length;
+       
+       for( int i=0; i<m; i++){
+           for( int j=0; j&lt;n; j++){
+               ret = Math.max( ret, helper(m, n, i, j, matrix, new Integer[m][n]));
+           }
+       }
+       
+       return ret;
+   }
+   
+   
+   int helper(int row, int col, int i, int j, int[][] matrix, Integer[][] memo){
+       
+       if ( memo[i][j] != null) return memo[i][j];
+       
+       int ans = 0;
+       int[][] dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+       
+       for(int[] dir : dirs){
+           
+           int x = i + dir[0];
+           int y = j + dir[1];
+           
+           if ( x>=0 && x<row && y >=0 && y &lt; col && matrix[x][y] > matrix[i][j]){
+               ans = Math.max(ans, helper(row, col, x, y, matrix, memo));
+           }
+       }
+               
+       memo[i][j] = 1 + ans;
+       return 1 + ans;
+       
+   }
+}
+
+
+IV  DFS + Memo  10ms
+
+class Solution {
+
+    
+   public int longestIncreasingPath(int[][] matrix) {
+       int ret = 0;
+       int m = matrix.length;
+       int n = matrix[0].length;
+       Integer[][] memo = new Integer[m][n];
+       
+       for( int i=0; i<m; i++){
+           for( int j=0; j&lt;n; j++){
+               ret = Math.max( ret, helper(m, n, i, j, matrix, memo));
+           }
+       }
+       
+       return ret;
+   }
+   
+   
+   int helper(int row, int col, int i, int j, int[][] matrix, Integer[][] memo){
+       
+       if ( memo[i][j] != null) return memo[i][j];
+       
+       
+       int ans = 0;
+       int[][] dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+       
+       for(int[] dir : dirs){
+           
+           int x = i + dir[0];
+           int y = j + dir[1];
+           
+           if ( x>=0 && x<row && y >=0 && y &lt; col && matrix[x][y] > matrix[i][j]){                
+               ans = Math.max(ans, helper(row, col, x, y, matrix, memo));
+           }
+       }
+       
+       memo[i][j] = 1 + ans;
+               
+       return 1 + ans;
+       
+   }
+}
+
+
+</code></pre>
+</body>
