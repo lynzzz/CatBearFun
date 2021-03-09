@@ -14,63 +14,38 @@
 ///////////////////////////////////// SOLUTION One : PriorityQueue
 
 
-/**
- * Definition for ListNode.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int val) {
- *         this.val = val;
- *         this.next = null;
- *     }
- * }
- */ 
+
 public class Solution {
-    /**
-     * @param lists: a list of ListNode
-     * @return: The head of one sorted list.
-     */
-     
-    public Comparator<ListNode> myComp = new Comparator<ListNode>(){
-        public int compare( ListNode l, ListNode r){
-            if ( l==null) return 1;
-            else if ( r== null) return -1;
-            return l.val - r.val;
-        }
-    };
-     
+
      
      
     public ListNode mergeKLists(List<ListNode> lists) {  
-        // write your code here
-        if ( lists == null || lists.size() == 0 ) return null;
+
+        if ( lists == null || lists.length == 0) return null;
         
+        PriorityQueue<ListNode> pq = new PriorityQueue<>(lists.length, (a,b)->(a.val-b.val));
         
-        ListNode cur = new ListNode(-1);
-        ListNode save = cur;
+        ListNode dummy = new ListNode();
+        ListNode save = dummy;
         
-        
-        PriorityQueue<ListNode> pq = new PriorityQueue<ListNode>(lists.size(),  myComp);
-        
-        
-        
-        for( int i=0; i&lt;lists.size(); i++ ){
-            if ( lists.get(i) != null ){
-                pq.add(lists.get(i));
+        for(int i=0; i<lists.length; i++){
+            if( lists[i] != null){
+                pq.add(lists[i]);
             }
         }
         
-        while( pq.size() != 0 ){
-            ListNode temp = pq.poll();
-            if ( temp.next != null){
-                pq.add(temp.next);
+        while(!pq.isEmpty()){
+            ListNode n = pq.poll();
+            
+            if ( n.next != null){
+                pq.add(n.next);
             }
-            cur.next = temp;
-            cur = cur.next;
+            
+            dummy.next = n;
+            dummy = dummy.next;
         }
         
         return save.next;
-    }
 }
 
 

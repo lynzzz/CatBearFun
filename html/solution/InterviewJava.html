@@ -51,7 +51,14 @@ for( int i : arr){
 }
 
 
+3.1 use getOrDefault to compare, 适用于对map 的count在做减法，当小于0后就不处理的case. 同时可能m不包含i. 
+    LC 659
 
+     if( m.getOrDefault(i, 0) > 0)
+
+     it returns true if m contains i and the count of i is greater than 0.
+     It returns false if m contains i but the count of i is less than 0 or
+                         m doesn't contain i.
 
 
 
@@ -70,21 +77,42 @@ for( int i : arr){
 
 
 
-                                     ArraList syntax sugar
+                                     
 
-
-1.   如何对ArrayList富裕初始值。
-     List<Integer> ret = Arrays.asList(1, 2, 3, 4, 5);
+5.   如何对ArrayList富裕初始值。
+a     List<Integer> ret = Arrays.asList(1, 2, 3, 4, 5);
      List<String> ans = Arrays.asList("Joe", "Michael", "Cathy");
 
 
 
-2.   ArrayList -> array 
+b.   ArrayList -> array  （ dynamic->static)
      
-     list.stream().mapToInt(j->j).toArray();
+     return ret.stream().mapToInt(i->i).toArray();  // Course schedule II
 
 
 
+6. Java Big Integer 
+
+import java.math.BigInteger;  
+
+public class HelloWorld{
+
+     public static void main(String []args){
+        
+        BigInteger[] arr = new BigInteger[100];
+        
+        arr[0] = new BigInteger("0");
+        arr[1] = new BigInteger("1");
+        
+        for( int i=2; i<100; i++){
+            arr[i] = arr[i-1].add(arr[i-2]);
+        }
+        
+        for( int i=0; i&lt;100; i++){
+            System.out.println(arr[i].toString());
+        }
+     }
+}
 
 
 
