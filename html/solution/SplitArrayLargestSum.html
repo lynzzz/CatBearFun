@@ -1,0 +1,53 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+DFS solution: Timeout, n^m
+
+   class Solution {
+    
+      int ans = Integer.MAX_VALUE;
+      
+      public int splitArray(int[] nums, int m) {
+      
+          dfs(nums, 0, m, 0, 0);
+          
+          return ans;
+      }
+      
+      void dfs(int[] nums, int i, int m, int curSum, int curMax){
+          
+         if ( i == nums.length && m == 0){
+             ans = Math.min(ans, curMax);
+         } 
+          
+          if (i == nums.length){
+              return;
+          }
+          
+          if ( m &lt; 0){
+              return;
+          }
+         
+         
+          // be independent
+         if ( m > 0){
+             dfs(nums, i+1, m-1, nums[i], Math.max(curMax, nums[i]));
+         }
+          
+         // append to previous
+         if ( i > 0){
+             dfs(nums, i + 1, m, curSum + nums[i], Math.max(curMax, curSum + nums[i]));
+         }
+      }
+  }
+
+
+
+</code></pre>
+</body>
