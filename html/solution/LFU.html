@@ -1,0 +1,85 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+when frequency counts are the same and you evict, you need evict least recent used (LRU)
+
+you need maintain 4 data structure.
+
+1. vals : key -> val
+2. counts : key -> count 
+3. lists :  count -> list of key    背诵 这里的数据结构是 linkedhashset, which is sorted hashset 
+4. int mincountCount : 当前最小的count
+
+
+
+class LFUCache {
+    
+   HashMap&lt;Integer, Integer> vals = new HashMap&lt;>();      // key -> value
+   HashMap&lt;Integer, Integer> counts = new HashMap&lt;>();    // key -> count
+   
+   HashMap&lt;Integer, LinkedHashSe&lt;Integer>> lists = new HashMap&lt;>();  // count->list<key>
+   
+   int mincount = -1;   // mincount;
+   
+   int cap = 0;
+
+
+   public LFUCache(int capacity) {
+       cap = capacity;
+       
+   }
+   
+   public int get(int key) {                     // get() update counts and lists
+      // key doesn't exist
+      if ( !vals.containsKey(key)) return -1;
+      
+      // update counts
+      int oldCount = counts.get(key);
+      counts.put(key, oldCount + 1);
+      
+      lists.get(oldCount).remove(key);
+      
+      if ( oldCount == mincount && lists.get(oldCount).size() == 0){
+          mincount++;
+      }
+      
+      lists.putIfAbsent(oldCount+1, new LinkedHashSet<Integer>());
+      lists.get(oldCount+1).add(key);
+      
+      return vals.get(key);
+   }
+   
+   public void put(int key, int value) {       
+       if ( cap &lt;= 0) return;
+       
+       // key exists
+       if ( vals.containsKey(key)){
+           vals.put(key, value);
+           get(key);                            // let get update counts and lists, mincount
+           return;
+       }else{
+         // exceed size, eviction
+         if ( vals.size() == cap){
+            int evictKey = lists.get(mincount).iterator().next();
+            lists.get(mincount).remove(evictKey);
+            counts.remove(evictKey);
+            vals.remove(evictKey);
+         }
+         
+         vals.put(key, value);
+         counts.put(key, 1);
+         lists.putIfAbsent(1, new LinkedHashSet&lt;>());
+         lists.get(1).add(key);
+         mincount = 1;
+      }
+   }
+}
+
+
+</code></pre>
+</body>
