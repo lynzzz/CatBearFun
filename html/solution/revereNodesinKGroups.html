@@ -1,0 +1,74 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+
+<body>
+
+
+
+
+<pre><code>
+   class Solution {
+      public ListNode reverseKGroup(ListNode head, int k) {
+          
+          
+          // create dummy node 
+          ListNode dummy = new ListNode(-1);        // 保持dummy, 为翻转前的那个结点
+          dummy.next = head;
+          ListNode savehead = dummy;
+          
+          // count number of nodes
+          int count = 0;
+          while( head != null){
+              count++;
+              head = head.next;
+          }
+          
+          
+          int time = count/k;
+          
+          
+          for( int i=0; i<time; i++){
+              
+              ListNode pre = null;
+              ListNode cur = dummy.next;
+              
+              for( int j=0; j&lt;k; j++){          // 这个模板走完以后，pre是头，cur是新的头
+                  ListNode next = cur.next;
+                  cur.next = pre;
+                  pre = cur;
+                  cur = next;
+              }
+  
+              dummy.next.next = cur;                // dummy.next 是新链的尾巴， cur是剩下链的头 （尾连头）
+              ListNode newDummy = dummy.next;            
+              dummy.next = pre;                     // pre是新链的头  （尾连头）
+              dummy = newDummy;                     // dummy是翻转前的那个结点，要一直保持
+          }
+          
+          
+          return savehead.next;
+      }
+  }
+
+
+</code></pre>
+
+
+
+
+
+
+<div class="comment">
+1. 应用翻转的模板(reverseLinkedlist), 在reverseLinkedlist-ii上套了一层
+2. 关键是要保存维持一个翻转链表前的一个结点dummy,然后用翻转模板，这个点起扭转乾坤的作用，头连头，尾连尾。
+
+</div>
+
+
+
+
+</body>

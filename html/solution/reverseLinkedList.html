@@ -11,54 +11,34 @@
 
 
 <pre><code>
-/**
- * Definition for ListNode.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int val) {
- *         this.val = val;
- *         this.next = null;
- *     }
- * }
- */ 
+
 public class Solution {
-    /**
-     * @param head: The head of linked list.
-     * @return: The new head of reversed linked list.
-     */
+
     public ListNode reverse(ListNode head) {
-        // write your code here
-        if ( head == null) return head;
-        
         ListNode pre = null;
+        ListNode current = head;
+
         
-        while( head != null ){
-            ListNode save = head.next;
-            head.next = pre;
-            pre = head;
-            head = save;
+        while( current != null)
+        {
+            ListNode next = current.next;
+            current.next = pre;
+            pre = current;
+            current = next;
         }
+
+        // 结束以后，pre就是联表的头，cur是pre后面的那一个结点，在这里为null
         
         return pre;
     }
 }
-
-
-
 </code></pre>
 
 
-
-
-
-
 <div class="comment">
-Time O(n)
+While 外部保存pre,cur指针，
+while 内部维持next指针
 
-Note : 反转链表模板
-三步 ：save, reverse, move
-需要两个指针 + 一个存储指针
 </div>
 
 

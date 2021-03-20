@@ -13,34 +13,36 @@
 <pre><code>
 public class Solution {
     public ListNode reverseBetween(ListNode head, int m, int n) {
-        if (m >= n || head == null) {
-            return head;
-        }
-        
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        head = dummy;
-        
-        for (int i = 1; i < m; i++) {
 
-            head = head.next;
+        
+        class Solution {
+            public ListNode reverseBetween(ListNode head, int left, int right) {
+                
+                ListNode dummy = new ListNode(-1);
+                dummy.next = head;
+                        
+                ListNode beforeReverse = dummy;
+                
+                for( int i=0; i<left-1; i++){
+                    beforeReverse = beforeReverse.next;           //保存翻转前的那一个结点
+                }
+                
+                ListNode pre = null;
+                ListNode cur = beforeReverse.next;
+                
+                for( int i=0; i&lt;right - left + 1 ; i++){       // 走完后pre是已经翻转的头，cur是下一个要开始翻转联表的头
+                    ListNode next = cur.next;
+                    cur.next = pre;
+                    pre = cur;
+                    cur = next;
+                }
+                
+                beforeReverse.next.next = cur;  // connect tail   // 尾连头
+                beforeReverse.next = pre;       // connect head   // 尾连头
+                
+                return dummy.next;
+            }
         }
-        
-        ListNode premNode = head;
-        ListNode pre =null, cur = head.next;
-        for (int i = m; i < n+1; i++) {
- 
-            ListNode temp = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = temp;
-        }
-        
-        head.next.next = cur;
-        head.next = pre;
-        
-        return dummy.next;
-    }
 }
 </code></pre>
 
@@ -51,8 +53,16 @@ public class Solution {
 
 <div class="comment">
 Time O(n)                              <br>
+Note 3/19/2021:
+1. 必须要用dummy node在最前面，
+2. 关键是要保存一个翻转链表前的一个结点beforeReverse, 这个点起扭转乾坤的作用，头连头，尾连尾。
+3. 不需要找结束的node, 可以 for( int i=0;i &lt; m-n+1 循环翻转) 
 
-Note : 反转链表模板                   <br>
+
+
+
+
+算法 : 反转链表模板应用     reverseLinkedList.html             <br>
 
 1. 找到返转莲表前面那个点             <br>
 2. 用模板反转链表                      <br>
