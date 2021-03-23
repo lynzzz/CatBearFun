@@ -1,0 +1,44 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+   class Solution {
+      public int reversePairs(int[] nums) {
+          
+          return mergeSort(nums, 0, nums.length - 1);
+      }
+      
+      
+      int mergeSort(int[] nums, int start, int end){
+          
+          if ( start >= end) return 0;
+          
+          int mid = start + (end - start)/2;
+          
+          int countLeft = mergeSort(nums, start, mid);
+          int countRight = mergeSort(nums, mid+1, end);
+          int count = countLeft + countRight;
+          int j = mid + 1;
+          
+          for( int i= start ; i&lt;=mid; i++){
+               for( ; j&lt;=end; j++){
+                   if (nums[i] /2.0  &lt;= nums[j]){
+                       break;
+                   }
+               }
+               count = count + (j-(mid + 1));
+          }
+          
+          Arrays.sort(nums, start, end + 1);
+          return count;
+      }
+  }
+
+
+</code></pre>
+</body>
