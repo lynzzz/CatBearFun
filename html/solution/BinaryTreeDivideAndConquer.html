@@ -10,34 +10,37 @@
 
 
 1. 可以理解成先一口气走到二叉树最底层，然后往上回溯加商业逻辑。
-2. 分治的遍历顺序其实就是二叉树的后序遍历，左右中
 </h2>
 
 
 <p>  分治模板  </p>
 分治的特征： 有返回值，从下往上走。
 
+
+
+分治最难的地方：想清楚这个递归在干什么，返回的是什么。（如果你这个没有想清楚， 题目是做不出来的）
+
 分治三部曲：
 1. 结束条件
-2. 分（一口气走到二叉树底层）
-3. 治 （往上走加商业逻辑）
+2. 往下走
+3. 往上走加逻辑
 
 
 <pre><code>
 
-
+// 搞清楚这个分治返回什么在开始写
 int helper(TreeNode root){
 
    // 结束条件
-   if ( root == null )
+   if ( root == null ) return 0;
 
-   ／／ divide (分，一口气走到二叉树最底层)
-   int left = helper(root.left);
-   int right = helper(root.right);
+  
+   int left = helper(root.left);    // 看左儿子返回什么
+   int right = helper(root.right);  // 看右儿子返回什么
 
 
    //conquer （治，往上走）
-   return f(root, left, right);
+   return f(root.val, left, right);  // 我返回什么给我的父结点
 }
 
 </code></pre>
@@ -48,6 +51,8 @@ int helper(TreeNode root){
 <li><a href="BinaryTreeMaximumPathSum.html">Binary Tree Maximum PathSum(分治)</a> <a href=https://leetcode.com/problems/binary-tree-maximum-path-sum/description/>Q</a>  </li>
 <li><a href="SymmetricBinaryTree.html">symmetric binary tree(分治)</a> <a href=https://leetcode.com/problems/symmetric-tree/>Q</a>  </li>
 <li><a href="BinaryTreeLongestConsecutiveSequence.html">Binary tree longest consecutive sequence(分治或者遍历套遍历)</a> <a href=https://leetcode.com/problems/binary-tree-longest-consecutive-sequence>Q</a>  </li>
+<li><a href=https://leetcode.com/problems/distribute-coins-in-binary-tree/>Distribute coins in binary tree</a>  </li>
+<li><a href=https://leetcode.com/problems/binary-tree-cameras>Binary tree camera</a>  </li>
 
 
 </ol>

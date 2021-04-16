@@ -77,39 +77,14 @@ a     List<Integer> ret = Arrays.asList(1, 2, 3, 4, 5);
 
 
 
-                                                   
-      
-                                                    Big Integer 
 
-import java.math.BigInteger;  
+                                                    ArrayList->array 
+List<int[]> ret = new ArrayList<>();
 
-public class HelloWorld{
-
-     public static void main(String []args){
-        
-        BigInteger[] arr = new BigInteger[100];
-        
-        arr[0] = new BigInteger("0");
-        arr[1] = new BigInteger("1");
-        
-        for( int i=2; i<100; i++){
-            arr[i] = arr[i-1].add(arr[i-2]);
-        }
-        
-        for( int i=0; i&lt;100; i++){
-            System.out.println(arr[i].toString());
-        }
-     }
-}
+   return ret.toArray(new int[ret.size()][]);
 
 
-
-
-
-
-
-
-
+                                                
 
 
 
@@ -141,3 +116,33 @@ ret.peek().equals(miStack.peek()) 这样才是值比较.
 </body>
 
 </html>
+
+
+
+                                     Java sort（Saleforce aloha8)
+1. 
+如果输入是int[][] or int[], 就要用Arrays.sort()
+int[] :  Arrays.sort(arr, (a,b)->(a-b));
+int[][] : Arrays.sort(arr, (a, b) ->(a[0] - b[0]));
+
+
+2.如果是list 就要用 Collections.sort();
+
+
+3. 复杂表达式写法
+Arrays.sort(intervals, (a,b)->(a[0] - b[0]));
+Arrays.sort(intervals, (a,b)->( a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]));
+Arrays.sort(intervals, (a,b)=>{
+     
+   if ( a[0] != b[0]){
+      return a[0] - b[0];
+   }
+   
+   return a[1] - b[1];
+
+});
+
+
+4. 对long 类型的写法
+Collections.sort(arr, (a,b)->(Long.compare(a[0], b[0]))); 
+Collections.sort(arr, (a,b)->(a[0] - b[0]));   // 如果元素是long类型，这样写编译通不过 

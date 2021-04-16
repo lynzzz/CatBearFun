@@ -1,0 +1,54 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+Solution I: 思维上直接，但是慢，时间要求严格就会超时
+
+TreeNode lca(TreeNode root, int p, int q){
+   if ( root == null) return null;
+   if ( root.val == p || root.val == q) return root;
+
+   
+   if ( contains(root.left, p) && contains(root.left, q)){
+       return lca(root.left, p, q);
+   }else if ( contains(root.right, p) &&  contains(root.right, q)){
+       return lca(root.right, p ,q);
+   }
+   
+   return root;
+}
+
+
+boolean contains(TreeNode root, int target){
+   if ( root == null) return false;
+   
+   boolean left = contains(root.left, target);
+   boolean right = contains(root.right, target);
+   
+   return left || right || root.val == target;
+}
+
+
+Solution II ： 思维上没有那么直接，但是代码少，运算量少，运行快。 （理解+背诵）
+TreeNode lca(TreeNode root, int p, int q){
+   if ( root == null) return null;
+   if ( root.val == p || root.val == q) return root;
+
+   
+   TreeNode left = lca(root.left, p, q);
+   TreeNode right = lca(root.right, p, q);
+   
+   if ( left != null && right !=null){
+       return root;
+   }
+   
+   return left != null ? left : right;
+}
+
+
+</code></pre>
+</body>
