@@ -15,76 +15,86 @@ Facebook phone interview 5/16/18  不考虑size做eviction, 20分钟写完<br>
 </div>
 
 <code><pre>
-public class Solution {
-
-    class Node{
-      int key;
-      int val;
-      Node pre;
-      Node next;
-      Node( int key, int val){
-          this.key = key;
-          this.val = val;
-      }
-    }
-
-    private HashMap&lt;Integer, Node> m = new HashMap&lt;>();
-
-    private Node LRUhead =  new Node(-1, -1);;
-    private Node LRUtail =  new Node(-1, -1);;
-
-    private int capacity;
-
-    public Solution(int capacity) {
-
-        this.capacity = capacity;
-        LRUhead.next = LRUtail;
-        LRUtail.pre = LRUhead;
-    }
-
-    public int get(int key) {
-        // write your code here
-        if ( !m.containsKey(key) ) return -1;
-
-        removeNode(m.get(key) );
-        addNodeToTail(m.get(key));
-        return m.get(key).val;
-    }
-
-    public void set(int key, int value) {
-        // write your code here
-        if ( m.containsKey(key) ){
-            m.get(key).val = value;
-            removeNode(m.get(key));
-            addNodeToTail(m.get(key));
-        }else{
-            if ( m.size() == capacity ){
-                m.remove(LRUhead.next.key);
-                removeNode(LRUhead.next);
+    class LRUCache {
+    
+        class Node{
+            Node(int key, int val){
+                this.key = key;
+                this.val = val;
             }
-
-            Node newNode = new Node(key, value);
-            m.put(key, newNode);
-            addNodeToTail(newNode);
+            
+            int key;
+            int val;
+            Node next;
+            Node pre;
         }
-
+        
+        Node head;
+        Node tail;
+        
+        HashMap<Integer, Node> m = new HashMap<>();
+        
+        int size = 0;
+    
+        public LRUCache(int capacity) {
+            size = capacity;
+            head = new Node(-1, -1);
+            tail = new Node(-1, -1);
+            head.next = tail;
+            tail.pre = head;
+        }
+        
+        public int get(int key) {
+            if ( !m.containsKey(key)) return -1;
+            
+            Node n = m.get(key);
+            
+            // update linkedlist
+            removeNode(n);
+            AddNodeToTail(n);
+            
+            return n.val;
+        }
+        
+        public void put(int key, int value) {
+            
+            if ( !m.containsKey(key)){
+                if (m.size() == size){
+                    // evict
+                    m.remove(head.next.key); // evict in map, 必须要先删除map里面的值，如果先调用removeNode(head.next), head.next.key会变成另外的值
+                    removeNode(head.next);   // evict in linkedlist
+                }
+                
+                Node n = new Node(key, value);
+               
+                m.put(key, n);    // update map
+                AddNodeToTail(n); // update linkedlist
+            }else{
+                get(key);
+                m.get(key).val = value;
+            }
+            
+            
+        }
+        
+        void AddNodeToTail(Node n){
+            Node curTail = tail.pre;
+            
+            curTail.next = n;
+            n.pre = curTail;
+            
+            n.next = tail;
+            tail.pre = n;
+        }
+        
+        
+        void removeNode(Node n){
+            Node pre = n.pre;
+            Node next = n.next;
+            pre.next = next;
+            next.pre = pre;
+        }
     }
-
-    public void addNodeToTail( Node cur ){
-
-        LRUtail.pre.next = cur;
-        cur.pre = LRUtail.pre;
-        cur.next = LRUtail;
-        LRUtail.pre = cur;
-    }
-
-    public void removeNode(Node cur){
-
-        cur.pre.next = cur.next;
-        cur.next.pre = cur.pre;
-    }
-}
-
 </pre></code>
 
 
@@ -99,7 +109,6 @@ Space complexity :  o(1)   <br>
 
 数据结构  Hashmap + doubly linkedList<br>
 
-辅助函数  addNodetoTail(Node n)   removeNode(Node n);<br>
 
 技巧 ： 用两个dummy node,避免了头尾指针不存在的情况， 使代码简化<br>
 </div>

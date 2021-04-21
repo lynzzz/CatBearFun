@@ -100,6 +100,12 @@ Stack<Integer> minStack = new Stack<>();
 ret.peek() == minStack.peek() 这样比较出来的是reference type比较， 不是值比较
 ret.peek().equals(miStack.peek()) 这样才是值比较.
 
+2. 
+push//
+peek//
+pop//  Removes the object at the top of this stack and returns that object as the value of this function.
+
+
 
                                                       
 
@@ -146,3 +152,18 @@ Arrays.sort(intervals, (a,b)=>{
 4. 对long 类型的写法
 Collections.sort(arr, (a,b)->(Long.compare(a[0], b[0]))); 
 Collections.sort(arr, (a,b)->(a[0] - b[0]));   // 如果元素是long类型，这样写编译通不过 
+
+
+
+
+
+
+
+                                          Iterator
+
+List<Integer> ret = new ArrayList<>();
+
+Interator<Integer> it = ret.iterator();
+
+// hasNext()
+// next()

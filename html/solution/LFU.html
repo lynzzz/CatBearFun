@@ -6,13 +6,19 @@
 
 <body>
 <pre><code>
-when frequency counts are the same and you evict, you need evict least recent used (LRU)
 
 you need maintain 4 data structure.
 
 1. vals : key -> val
 2. counts : key -> count 
-3. lists :  count -> list of key    背诵 这里的数据结构是 linkedhashset, which is sorted hashset 
+3. lists :  count -> list of key    背诵 这里的数据结构是 linkedhashset, which is sorted hashset. 
+   remove O(1). HashSet 
+   Need to maintain order: ordered HashSet  // 
+
+   when frequency counts are the same, it becomes least recent used cache (LRU), when evict, it starts from the head
+   interator().next() 从头开始访问
+
+
 4. int mincountCount : 当前最小的count
 
 
@@ -34,7 +40,7 @@ class LFUCache {
        
    }
    
-   public int get(int key) {                     // get() update counts and lists
+   public int get(int key) {                     
       // key doesn't exist
       if ( !vals.containsKey(key)) return -1;
       
@@ -42,8 +48,10 @@ class LFUCache {
       int oldCount = counts.get(key);
       counts.put(key, oldCount + 1);
       
-      lists.get(oldCount).remove(key);
+      // update lists
+      lists.get(oldCount).remove(key);              // remove in O(1) time
       
+      // update mincount
       if ( oldCount == mincount && lists.get(oldCount).size() == 0){
           mincount++;
       }
@@ -60,12 +68,12 @@ class LFUCache {
        // key exists
        if ( vals.containsKey(key)){
            vals.put(key, value);
-           get(key);                            // let get update counts and lists, mincount
+           get(key);                           
            return;
        }else{
          // exceed size, eviction
          if ( vals.size() == cap){
-            int evictKey = lists.get(mincount).iterator().next();
+            int evictKey = lists.get(mincount).iterator().next();    // maintain order ordered HashSet
             lists.get(mincount).remove(evictKey);
             counts.remove(evictKey);
             vals.remove(evictKey);

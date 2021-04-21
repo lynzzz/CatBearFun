@@ -5,53 +5,90 @@
 
 
 <pre><code>
-    public int longestIncreasingSubsequence(int[] nums) {
-        
-        // check corner case
-        if ( nums == null || nums.length == 0) return 0;
-        
-        // dp[i] means the LIS at nums[i]
-        int[] dp = new int[nums.length];
-        
-        
-        // init
-        for( int i=0; i&lt;nums.length; i++){
-            dp[i] = 1;
-        }
-        
-        // transform
-        
-        for(int i=1; i &lt;nums.length; i++){
+Solution I: DP n^2 
+
+    class Solution {
+        public int lengthOfLIS(int[] nums) {
             
+            int[] dp = new int[nums.length];
+            
+            Arrays.fill(dp, 1);
+            
+            
+            for(int i=1; i&lt;nums.length; i++){
                 for( int j=0; j&lt;i; j++){
-                     if ( nums[i] &gt; nums[j] && ( ( dp[j] + 1 ) > dp[i] ) ){
-                        dp[i] =  dp[j] + 1;
+                    if ( nums[i] > nums[j]){
+                        dp[i] = Math.max(dp[i], dp[j] + 1);
                     }
                 }
-        }
-        
-        
-        // ret
-        int ret = Integer.MIN_VALUE;
-        
-        for ( int i=0; i&lt;nums.length; i++){
-            if ( dp[i] &gt; ret ){
-                ret = dp[i];
             }
+            
+            int ret = Integer.MIN_VALUE;
+            
+            for( int i : dp){
+                ret = Math.max(ret, i);
+            }
+            
+            return ret;
+            
         }
-        
-
-        return ret;
     }
 
 
+
+
+Solution II :插入法 nlgn 
+
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        
+        int[] table = new int[nums.length];
+        table[0] = nums[0];
+        int len = 1;
+        
+        for( int i=1; i<nums.length; i++){
+            int cur = nums[i];
+            
+            if (cur &lt; table[0]){
+                table[0] = cur;
+            }else if ( cur > table[len-1]){
+                table[len] = cur;
+                len++;
+            }else{
+                int index = getCurTailIndex(table, 0, len-1, cur);
+                table[index] = cur;
+            }
+        }
+        
+        return len;
+    }
+    
+    int getCurTailIndex(int[] table, int start, int end, int target){
+        
+        while(( start + 1) &lt; end){
+            
+            int mid = start + (end -start)/2;
+            
+            if ( table[mid] &lt; target){
+                start = mid;
+            }else if (table[mid] > target){
+                end = mid;
+            }else{
+                return mid;
+            }
+        }
+        
+        if( table[end] == target) return end;
+        
+        if ( table[start] == target) return start;
+        
+        if ( table[start] > target) return start;
+                
+        return end;
+    }
+}
 </code></pre>
 
-
-注意点 <br>
-1. 初始化结果是 dp[i] = 1 <br>
-2.  A[i] < A[i-1] 推导不出  dp[i] = dp[i-1]        [ 4, 10 ,4 6] 会得出错误答案 <br>
-3.  答案不是最后一个值A[n-1]  <br>
 
 
 

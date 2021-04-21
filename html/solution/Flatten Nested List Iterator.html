@@ -1,0 +1,92 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+Solution I: 把nested array变成List<Integer>, what if user doesn't call hasnext at all, it costs a lot of memory to save all integers.
+            不要用这个在面试的时候!
+
+            public class NestedIterator implements Iterator<Integer> {
+    
+               List<Integer> data = new ArrayList&lt;>();
+               Iterator<Integer> it;
+           
+               public NestedIterator(List<NestedInteger> nestedList) {
+                   
+                   parse(nestedList);
+                   it = data.iterator();
+               }
+               
+               void parse(List<NestedInteger> nestedList ){
+                   
+                   for( int i=0; i<nestedList.size(); i++){
+                       NestedInteger ni = nestedList.get(i);
+                           if ( ni.isInteger()){
+                               data.add(ni.getInteger());
+                           }else{
+                               parse(ni.getList());
+                           }
+                   }
+               }
+           
+               @Override
+               public Integer next() {
+                   return it.next();
+               }
+           
+               @Override
+               public boolean hasNext() {
+                   return it.hasNext();
+               }
+           }            
+
+
+Solution II: only store nestedInteger reference in stack and convert as you go. 
+             面试用这个!
+
+
+
+public class NestedIterator implements Iterator&lt;Integer> {
+
+   Stack<NestedInteger> stk = new Stack&lt;>();
+   
+   public NestedIterator(List<NestedInteger> nestedList) {
+       
+       helper(nestedList);
+   }
+
+   @Override
+   public Integer next() {
+       return stk.pop().getInteger();
+   }
+
+   @Override
+   public boolean hasNext() {
+       
+       while(!stk.isEmpty()){
+           NestedInteger ni = stk.peek();
+           if ( ni.isInteger()){
+               return true;
+           }else{
+               helper(stk.pop().getList());
+           }
+       }
+       return false;
+   }
+   
+   void helper(List<NestedInteger> nestedList){
+       
+       for(int i= nestedList.size()-1; i>=0; i--){
+           stk.push(nestedList.get(i));
+       }
+   }
+}
+
+
+
+
+</code></pre>
+</body>
