@@ -25,12 +25,14 @@ Step 2: System API
 
 
 
-Step 3: Service
-    Draw Architecture: Web server(API server) + Application server + distributed File system(Amazon S3, GFS, Azure storage)
-                                                                            
-                                                        |
 
-                                                metadata DB(data service)
+
+Step 3: Service
+                      Web server(API server) -> App server -> distributed File system(Amazon S3, GFS) store large file: log, video, image
+                                                                            
+                                                      |
+
+                                                metadata Database
 
 
 
