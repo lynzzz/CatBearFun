@@ -7,7 +7,79 @@
 <body>
 <pre><code>
 
+Solution I: O(n) 3个for loop,   space O(n)
+这种想法最为直接，面试的时候可以想出来。
 
+public int[] productExceptSelf(int[] nums) {
+        
+   int[] left = new int[nums.length];
+   int[] right = new int[nums.length];
+   
+   int sum = 1;
+   for(int i=0; i<nums.length; i++){
+       sum = sum * nums[i];
+       left[i] = sum;
+   }
+   
+   sum = 1;
+   
+   for( int i=nums.length-1; i>=0; i--){
+       sum = sum * nums[i];
+       right[i] = sum;
+   }
+   
+   int[] ans = new int[nums.length];
+   
+   for( int i=0; i<nums.length; i++){
+       if ( i == 0){
+           ans[i] = right[1];
+       }else if ( i == nums.length - 1){
+           ans[i] = left[nums.length-2];
+       }else{
+           ans[i] = left[i-1] * right[i+1];
+       }
+   }
+   
+   return ans;
+}
+
+
+
+
+Solution II: O(n) 2个for loop.  space O(1)
+这种算法面试的时候很难想出来。
+
+
+Numbers:     2    3    4     5
+Lefts:            2  2*3 2*3*4
+Rights:  3*4*5  4*5    5      
+Let’s fill the empty with 1:
+
+Numbers:     2    3    4     5
+Lefts:       1    2  2*3 2*3*4
+Rights:  3*4*5  4*5    5     1
+
+
+
+   public int[] productExceptSelf(int[] nums) {
+      int n = nums.length;
+      int[] ret = new int[n];            // ret[i]表示的是i左边的所有数的乘积。
+      
+      ret[0] = 1;
+      
+      for( int i=1; i<n; i++){
+          ret[i] = ret[i-1] * nums[i-1];
+      }
+      
+      int sum = 1;
+      
+      for( int i=n-1; i>=0; i--){
+          ret[i] = ret[i] * sum;
+          sum = sum * nums[i];
+      }
+      
+      return ret;
+  }
 
 
 </code></pre>

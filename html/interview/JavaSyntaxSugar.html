@@ -154,6 +154,9 @@ Collections.sort(arr, (a,b)->(Long.compare(a[0], b[0])));
 Collections.sort(arr, (a,b)->(a[0] - b[0]));   // 如果元素是long类型，这样写编译通不过 
 
 
+5. 按照size排序，
+Arrays.sort(ret, (a,b)->(a.length() - b.length()))
+需要注意的是如果a.length == b.length, a.length - b.length = 0, return 0 for no change
 
 
 
@@ -167,3 +170,46 @@ Interator<Integer> it = ret.iterator();
 
 // hasNext()
 // next()
+
+
+
+
+
+
+
+                                         String 
+1. In java string is immutable, you cannot change it. if you want to change it ,you need to create a new String or using stringbuilder
+
+String lowerCaseString = str.toLowerCase();
+
+
+2. String is reference type in Java, the default value is null. When you define a string in Java,
+   remember to initialize it "", otherwise it will be null. (Oracle interview)
+
+   String str = "";
+
+
+
+
+
+
+
+
+
+
+
+
+                                         StringBuilder
+1. StringBuilder deleteCharAt(i); returns this object 
+   sb.deleteCharAt(i); 新的string已经保存在sb里面。
+   sb.insert(index, integer/char/string)   // insert, not insertCharAt
+
+
+
+
+
+
+                                           
+
+                                           Arrasys
+1. 拷贝数组的前n个元素。 Arrays.copyOfRange(arr, start, end), where start is inclusive and end is exclusive.

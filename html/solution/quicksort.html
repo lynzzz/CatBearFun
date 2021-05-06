@@ -1,0 +1,58 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+
+  void QuickSort(int[] arr, int l, int r){
+      
+      if ( l >= r ) return;
+      
+      int index = FindPivot(arr, l, r);
+      QuickSort(arr, l, index-1);
+      QuickSort(arr, index + 1, r);
+
+  }
+  
+  // pivot左边的数一定严格比arr[pivot]小，pivot右边的数字可能大于或者等于pivot
+   
+  static int FindPivot(int[] arr, int l, int r){
+      
+      int key = arr[l];
+      
+      while( l < r){
+          
+         // 因为默认基准是从左边开始，所以从右边开始比较
+         // 当队尾的元素大于等于基准数据 时,就一直向前挪动 j 指针 
+          while( l < r && arr[r]>= key){
+              r--;
+          }
+          
+          // 当找到比 array[i] 小的时，就把后面的值 array[j] 赋给它
+          arr[l] = arr[r];
+          
+          // 当队首元素小于等于基准数据 时,就一直向后挪动 i 指针
+          while(l< r && arr[l] <= key){
+              l++;
+          }
+          
+          // 当找到比 array[j] 大的时，就把前面的值 array[i] 赋给它
+          arr[r] = arr[l];
+      }
+      
+      // 跳出循环时 i 和 j 相等,此时的 i 或 j 就是 key 的正确索引位置
+      // 把基准数据赋给正确位置
+      arr[l] = key;
+      
+      return l;
+      
+  }
+}
+
+
+</code></pre>
+</body>

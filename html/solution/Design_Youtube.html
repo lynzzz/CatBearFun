@@ -46,30 +46,71 @@ Step 3: Service Architecture
 
 
 
-Load balancing: ?
-Redrection between cache servers
 
+
+Step 4: DB Schema/partition
+
+Video metadata table:
+Video Id      PK 
+title         
+description   
+video path    
+thumbnailpath 
+size         
+user          fk
+like 
+dislike
+total view    
+
+
+User table 
+id 
+name
+email
+password 
+
+
+Comment table: 
+comment_id   pk 
+video_id     fk 
+userid       fk 
+content      
+timestamp    
+
+
+
+Sharding video metadata table:
+1. Shard by user ID: drawback: popular user. QPS ( too many query), storage ( too many videos).
+2. Shard by video ID: Zookeeper generates a global unique video id, hash to one random server.
+                      The draw back is 
+                      1.you need to have a aggregator server, if you want to get all videos of a user 
+                      2. popular video. high qps query to that shard, this problem still exists          
+           
+
+
+
+
+
+
+
+Step 5: scale
 
 Cache:
-Metadata will be saved in cache database, such as MemcacheD or Redis.
-This is dedicated cache service, all backend machine will hit it.
 
-Database is large, we cannot save all entries in Cache, so we must have
-eviction policy? LRU is popular Eviction policy.
+Metadata will be cached in either app server or seperate server using memcached or Radis.
+App server hit cache first, if there is a cache miss, it hits DB.
 
-Example in Ads:
-indexA is a aggregator, canbe interpreted as a backend server layer1.
+Eviction policy?
+LRU
 
-IndexP has 16 partitions, it can be interpreted as combination of backend server
-and DB server that caches data in memory and save in disk. There is no global cache machine
+more efficient? 
+80-20 rule 
 
 
 
 
 CDN:
-store popular video, that is saved in different geographic locations.
-request will be routed to CDN that is close to user. Less popular data
-will be read from backend Distributed file system.
+Geographically closer to user, most likely cache the video in memory.
 
 
 </code></pre>

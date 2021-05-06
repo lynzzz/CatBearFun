@@ -28,15 +28,22 @@ Step 2: System API
 
 
 Step 3: Service
-                      Web server(API server) -> App server -> distributed File system(Amazon S3, GFS) store large file: log, video, image
+
+
+     Client                 Web server(API server) -> App Server -> distributed File system(Amazon S3, GFS(big table)) store large file: log, video, image
                                                                             
-                                                      |
+                                                          |
 
-                                                metadata Database
+                                                    Cache(Either in AppServer  or seperate cache server)
+
+
+                                                          |
+                                                          
+     CDN                                            Metadata Database
 
 
 
-Step4: DB(Schema, metadata storage calculation)
+Step4: DB(Schema, partitioning)
 
       Go through a complete workflow
 
@@ -44,7 +51,23 @@ Step4: DB(Schema, metadata storage calculation)
 
 
 Step5: How to Scale
-    Load balancer, replication, partition, single point failure. Master/slave, enventual consistency.
+    Traffic control: DNS load balance, load balancer(HLB, SLB)
+    
+    Master/slave, enventual consistency.
+    
+    Cache: 80-20 Rule, 
+           20 percent of daily read volume generates 80%
+           of traffic, we only need to cache 20% of daily read volume of videos and metadata.
+    
+    
+    Sharding:
+    1. by user. Drawback: popular user(high Qps, high storage)
+    2. consistent hashing. aggregator, global unique id. 
+    
+    replication, single point failure. 
+
+    CDN
+
 
     Go through non valina path.
 

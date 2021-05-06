@@ -1,0 +1,80 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+
+    class TrieNode{
+        TrieNode[] child = new TrieNode[26];   // java 模型，分内存给null pointer. 否则child为null
+        boolean isEnd = false;
+        
+        
+        void addChild(char c ){
+            child[c-'a'] = new TrieNode();
+        }
+        
+        TrieNode getChild(char c){
+            return child[c-'a'];
+        }
+        
+        boolean containsChild(char c){
+            return child[c-'a'] != null;
+        }
+    }
+    
+    
+    class WordDictionary {
+        TrieNode root = new TrieNode();
+    
+        public WordDictionary() {
+            
+        }
+        
+        public void addWord(String word) {
+            TrieNode curRoot = root;
+            
+            for( char c : word.toCharArray()){
+                if ( !curRoot.containsChild(c)){
+                    curRoot.addChild(c);
+                }
+                curRoot = curRoot.getChild(c);
+            }
+            
+            curRoot.isEnd = true;    
+        }
+        
+        public boolean search(String word) {
+           return helper(word, root);
+        }
+        
+        boolean helper(String word, TrieNode curRoot){
+            
+            for(int i=0; i<word.length(); i++){
+                char c = word.charAt(i);
+                if ( c == '.'){               // 直接判断是不是'.', 因为可能有连续的'.'直接判断
+                    for(char letter = 'a'; letter <= 'z'; letter++){
+                        if ( curRoot.containsChild(letter)){
+                            if ( helper(word.substring(i+1), curRoot.getChild(letter))){
+                                return true;            // 只要有一条路走通，就可以返回true.
+                            }
+                        }
+                    }
+                    return false;                       //都走不通，返回false
+                }else{
+                    if ( curRoot.containsChild(c)){
+                        curRoot = curRoot.getChild(c);
+                    }else{
+                        return false;
+                    }
+                }
+            }
+            
+            return curRoot.isEnd;
+        }
+    }
+</code></pre>
+</body>

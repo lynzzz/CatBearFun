@@ -14,87 +14,75 @@
 
 
 
-class Solution {
     public String alienOrder(String[] words) {
-        HashMap&lt;Character, Integer> degree = new HashMap<>();
-        HashMap&lt;Character, HashSet&lt;Character> > graph = new HashMap<>();
         
-        // initialize indgree table and graph
-        for( String str : words){
-            for( char c : str.toCharArray() ){
-                degree.put( c, 0);
-				graph.put(c, new HashSet&lt;Character>());
+        //Topological sorting
+        
+        HashMap<Character, Integer> inDegree = new HashMap<>();  // char->count
+        HashMap<Character, HashSet<Character>> m = new HashMap<>();  // char->List<char>
+            
+            
+        for(String word : words){
+            for( char c : word.toCharArray()){
+                inDegree.put(c, 0);
+                m.putIfAbsent(c, new HashSet<Character>());
             }
         }
         
-        // construct indegree table and graph
-        int n = words.length;
-        for(int i=0; i&lt;=n-2; i++){
+        for(int i=0; i<words.length-1; i++){
             String str1 = words[i];
             String str2 = words[i+1];
-            int size = Math.min(str1.length(), str2.length());
-            for( int j=0;j&lt;size;j++){
-                if  ( str1.charAt(j) == str2.charAt(j) ){
-                    continue;
-                }
+            
+            int min = Math.min(str1.length(), str2.length());
+            for(int j=0; j<min; j++){
                 char c1 = str1.charAt(j);
                 char c2 = str2.charAt(j);
-                if( !graph.containsKey(c1)){
-                    HashSet<Character> set = new HashSet<>();
-                    set.add(c2);
-                    graph.put(c1,set);
-                    degree.put(c2, degree.get(c2) + 1);
-                }else{
-                    if ( !graph.get(c1).contains(c2)){
-                        graph.get(c1).add(c2);
-                        degree.put(c2, degree.get(c2) + 1);
-                    }
+                if ( c1 != c2 && !m.get(c1).contains(c2)){  //不要加重复边进去，进度和图会反复计算）
+                    inDegree.put(c2, inDegree.get(c2) + 1);
+                    m.get(c1).add(c2);
+                    break;
                 }
-                break;
             }
         }
         
-        // BFS
-        Queue&lt;Character> q = new LinkedList<>();
-        for( char c : degree.keySet()){
-            if ( degree.get(c) == 0){
-                q.add(c);
+        Queue<Character> q = new LinkedList<>();
+        
+        for(char key : inDegree.keySet()){
+            if ( inDegree.get(key) == 0){
+                q.add(key);
             }
         }
         
+        StringBuilder sb = new StringBuilder();
         
-        
-        String ret = "";
-
-        while( !q.isEmpty()){
+        while(!q.isEmpty()){
             char c = q.poll();
-            ret = ret + c;
+            sb.append(c);
             
-            for( char neighbor : graph.get(c)){
-			
-                degree.put(neighbor, degree.get(neighbor)-1);
-                if ( degree.get(neighbor) == 0){
+            for(char neighbor : m.get(c)){
+                inDegree.put(neighbor, inDegree.get(neighbor)-1);
+                if ( inDegree.get(neighbor) == 0){
                     q.add(neighbor);
                 }
             }
         }
         
-        if ( ret.length() != degree.size()){
-            return "";
-        }
+        if ( sb.length() != inDegree.size()) return "";
         
-        return ret;
+        return sb.toString();
+        
+        // "abc" "ab" 过不了, 这个不是valid input,和题的描述不符合，因为题目保证了 sorted lexicographically
     }
-}
-
 
 Topological sorting(有重复边)
 
 
 处理方法：
 1.图用 HashMap&lt;char, HashSet&lt;Char>> graph, 这样好检查node是否存在于下一层， 
-2.建图的时候单独处理from, to和进度的递增
 
+一类的题目：
+course schedule,
+course scheduleII
 
 
 </code></pre>

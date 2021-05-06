@@ -1,0 +1,43 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+O(n)
+
+    class Solution {
+    
+        int ans = Integer.MIN_VALUE;
+        
+        public int maxPathSum(TreeNode root) {
+            
+            MaxSumThroughRoot(root);
+            
+            return ans;
+        }
+    
+        // 分治返回的是经过这个root往上的最大的sum, 这个root不能是最终答案的根结点。
+        public int MaxSumThroughRoot(TreeNode root) {  
+            
+            if ( root == null) return 0;
+            
+            
+            
+            int left = MaxSumThroughRoot(root.left);
+            int right = MaxSumThroughRoot(root.right);
+            
+            // 三种情况
+            // 1. 从左儿子上来  2. 从右儿子上来  3 左右儿子都不要。
+            int max = Math.max(root.val, Math.max(left + root.val, right + root.val ));
+            
+            ans = Math.max(ans, Math.max(max, root.val + left + right));
+            
+            return max;
+        }
+    }
+
+</code></pre>
+</body>

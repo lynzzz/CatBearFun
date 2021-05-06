@@ -1,0 +1,104 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+Solution 1: Sort O(nlgn)
+
+public int[][] kClosest(int[][] points, int k) {
+
+   Arrays.sort(points, (a,b)->( a[0]*a[0] + a[1]*a[1] - b[0]*b[0] - b[1]*b[1]));
+   return Arrays.copyOfRange(points, 0, k);
+   
+}
+
+
+Solution 2: priority queue O(nlogk)
+
+public int[][] kClosest(int[][] points, int k) {
+   PriorityQueue<int[]> pq = new PriorityQueue&lt;>((a,b)->(b[0]*b[0] + b[1]*b[1]-a[0]*a[0] -a[1]*a[1]));
+   
+   for(int[] point : points){
+       pq.add(point);
+       
+       if ( pq.size() > k){
+           pq.poll();
+       }
+   }
+
+
+   int[][] ret = new int[k][2];
+
+   for(int i=k-1; i>=0; i--){
+       ret[i] = pq.poll();
+   }
+
+   return ret;
+}
+
+
+Solution 3: Quick sort 变种 O(n). 需要牢牢记住quick sort模板怎么写。
+
+class Solution {
+   public int[][] kClosest(int[][] points, int k) {
+       
+       int i=0;
+       int j= points.length - 1;
+       
+       while(i < j){
+           
+           int index = getPivot(points, i, j);
+           if ( index == k) break;
+           
+           else if ( index <k){
+               i = index + 1;
+           }else{
+               j = index - 1;
+           }
+       }
+       
+       return Arrays.copyOfRange(points,0, k);
+       
+   }
+   
+   
+   
+   
+   
+   int getPivot(int[][] points, int l, int r){
+       
+       int[] key = points[l];
+       
+       while( l < r){
+           
+           while( l < r && helper(points[r], key) >=0){
+               r--;
+           }
+           points[l] = points[r];
+           
+           
+           while( l < r && helper(points[l],key) <=0){
+               l++;
+           }
+           points[r] = points[l];            
+       }
+       
+       points[l] = key;
+       
+       return l;
+   }
+   
+   
+   int helper(int[] a, int[] b){
+       return a[0]*a[0] + a[1]*a[1] - b[0]*b[0] - b[1]*b[1];
+   }
+   
+}
+
+
+</code></pre>
+</body>

@@ -1,0 +1,39 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+
+
+Soluton II: O(n)
+Note
+1. Map m : total sum aross the array -> total number of occurence of that sum 
+
+    public int subarraySum(int[] nums, int k) {
+
+        HashMap<Integer, Integer> m = new HashMap<>();
+        
+        int sum = 0;
+        int count = 0;
+        m.put(0, 1);     // handle the case where sum equals k. 
+        
+        for( int i=0; i<nums.length; i++){
+            sum = sum + nums[i];
+   
+            if ( m.containsKey(sum - k)){
+                count = count + m.get(sum-k);
+            }
+            
+            m.put(sum, m.getOrDefault(sum, 0) + 1);
+        }
+        
+        return count;
+    }
+
+
+</code></pre>
+</body>
