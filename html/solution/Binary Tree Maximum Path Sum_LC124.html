@@ -19,7 +19,8 @@ O(n)
             return ans;
         }
     
-        // 分治返回的是经过这个root往上的最大的sum, 这个root不能是最终答案的根结点。
+        // 分治返回的是经过这个root往上的最大的sum, 这个root不能是最终答案的根结点，不然就不能往上返回
+        // 这是这个题目的难点。
         public int MaxSumThroughRoot(TreeNode root) {  
             
             if ( root == null) return 0;

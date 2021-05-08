@@ -1,0 +1,79 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+    算法：
+    1. 从左到右过一遍，算出来要去掉多少个左，和去掉多少个右
+    2. DFS, 维持一个pending　counter, 表示当前stringbuilder的状态，　遇到'(' +1,   遇到')' -1 
+    3. 在写DFS的时候，每次dfs结束回溯的时候，要重新set stringbuilder length。
+
+    class Solution {
+        public List<String> removeInvalidParentheses(String s) {
+            
+            int rml = 0;
+            int rmr = 0;
+            
+            for( char c : s.toCharArray()){
+                if ( c == '('){
+                    rml++;
+                }else if ( c ==')'){
+                    if ( rml > 0){
+                        rml--;
+                    }else{
+                        rmr++;
+                    }
+                }
+            }
+            
+            HashSet<String> results = new HashSet<>();
+            
+            helper(s, 0, results, new StringBuilder(), rml, rmr, 0);
+            
+            return new ArrayList<String>(results);
+            
+        }
+        
+        
+        void helper(String s, int i, HashSet<String> results, StringBuilder result, int rml, int rmr, int pending){
+            
+            if ( rml < 0 || rmr <0 || pending < 0) return;
+            
+            if ( i == s.length()){
+                if ( rml == 0 && rmr == 0 && pending == 0){
+                    results.add(result.toString());
+                }
+                return;
+            }
+            
+            
+            char c = s.charAt(i);
+            int length = result.length();
+            
+            
+            if ( c == '('){
+                helper(s, i+1, results, result.append(c), rml, rmr, pending + 1 );   // use (;
+                result.setLength(length);
+                
+                helper(s, i+1, results, result, rml -1, rmr, pending);               // remove (;
+            }else if ( c == ')'){
+                helper(s, i+1, results, result, rml, rmr-1, pending);                // remove )
+                result.setLength(length);
+                
+                helper(s, i+1, results, result.append(c), rml, rmr, pending - 1);    // use ')'
+            }else{
+                helper(s, i+1, results, result.append(c), rml, rmr, pending);                // remove )   
+            }
+            
+            result.setLength(length);
+    
+        }
+    }
+
+
+</code></pre>
+</body>

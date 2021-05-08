@@ -7,38 +7,27 @@
 <body>
 <pre><code>
 
-    class Solution {
-        public int[][] merge(int[][] intervals) {
-            if ( intervals == null || intervals.length == 0) return new int[0][];
+    public int[][] merge(int[][] intervals) {
+        
+        Arrays.sort(intervals, (a,b)->(a[0] - b[0]));
+        
+        int[] cur = intervals[0];
+        List<int[]> ret = new ArrayList<>();
+        
+        for( int i=1; i<intervals.length; i++){
+            int[] next = intervals[i];
             
-            
-            Arrays.sort(intervals, (a,b)->(a[0] != b[0] ? a[0] -b[0] : a[1] - b[1]));
-            
-            List<int[]> ret = new ArrayList&lt;>();
-            int[] start = intervals[0];
-            
-            for( int i=1; i<intervals.length;){
-                int[] end = intervals[i];
-                
-                if ( start[1] &lt; end[0]){
-                    ret.add(start);
-                    start = end;
-                    i++;
-                }else{
-                    if ( start[1] &lt; end[1]){
-                        start[1] = end[1];
-                        i++;
-                    }
-                    else{
-                        i++;
-                    }
-                }
+            if ( next[0] > cur[1]){
+                ret.add(cur);
+                cur = next;
+            }else{
+                cur[1] = Math.max(cur[1], next[1]);
             }
-            
-            ret.add(start);
-            
-            return ret.toArray(new int[ret.size()][2]);
         }
+        
+        ret.add(cur);
+        
+        return ret.toArray(new int[ret.size()][]);
     }
 
 </code></pre>
