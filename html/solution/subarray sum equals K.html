@@ -7,9 +7,41 @@
 <body>
 <pre><code>
 
+Solution I: O(n^2) 2018年面试FB可以过， 2020年同样的题目不让过要优化到O(n)
+
+public int subarraySum(int[] nums, int k) {
+        
+    if ( nums == null || nums.length == 0) return 0;
+    
+    int count = 0;
+    int n = nums.length;
+    int[] preFixSum = new int[nums.length];
+    
+    int sum = 0;
+    for( int i =0; i<n; i++){
+        sum = sum + nums[i];
+        preFixSum[i] = sum;
+    }
+    
+    
+    for( int i=0; i<n; i++){
+        for( int j=0; j<i; j++){
+            if ( (preFixSum[i] - preFixSum[j]) == k ){
+                count++;
+            }
+        }
+        
+        if ( preFixSum[i] == k){
+            count++;
+        }
+    }
+    
+    return count;
+}
 
 
-Soluton II: O(n)
+
+Soluton II: O(n)   2020 Fb 面试要O(n)才能过。
 Note
 1. Map m : total sum aross the array -> total number of occurence of that sum 
 

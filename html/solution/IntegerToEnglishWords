@@ -1,0 +1,55 @@
+
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+
+class Solution {
+    
+    //每组10个
+    String[] belowTen = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
+    String[] belowTwenty = {"Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+    String[] belowOnehundred = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    
+    
+    public String numberToWords(int num) {
+
+        
+        if ( num == 0) return "Zero";
+        
+        return helper(num);
+    }
+    
+    
+    String helper(int n){
+       String ans = "";
+        
+       if ( n >= 1000000000){
+           ans = ans + helper(n/1000000000) + " " + "Billion" + " " +helper(n%1000000000);
+       }else if (n >= 1000000){
+           ans = ans + helper(n/1000000) + " " + "Million" + " " + helper(n%1000000);
+       }else if ( n >= 1000){
+           ans = ans + helper(n/1000) + " " + "Thousand" + " " + helper(n%1000);
+       }else if ( n >= 100){
+           ans = ans + belowTen[n/100] + " " +   "Hundred" + " " + helper(n%100);
+       }else if ( n >= 20){
+           ans = ans + belowOnehundred[n/10] + " " + belowTen[n%10];
+       }else if (n >= 10){
+           ans = ans + belowTwenty[n-10];
+       }else{
+           ans = ans + belowTen[n];
+       }
+        
+    return ans.trim();
+    }
+}
+
+
+</code></pre>
+</body>
+</html>

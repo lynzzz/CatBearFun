@@ -1,0 +1,45 @@
+<html>
+
+<head>
+   <link rel="stylesheet" type="text/css" href="../../css/utility.css">     <!-- external css file -->
+</head>
+
+<body>
+<pre><code>
+
+    class BSTIterator {
+    
+        Stack<TreeNode> s = new Stack<>();
+        
+        public BSTIterator(TreeNode root) {
+            
+           AddLeftSideNode(root);
+        }
+        
+        public int next() {                           // average o1
+            
+            TreeNode cur = s.pop();
+            int val = cur.val;
+            
+            if ( cur.right != null){
+                AddLeftSideNode(cur.right);
+            }
+            return val;
+        }
+        
+        public boolean hasNext() {
+            return !s.isEmpty();
+        }
+        
+        void AddLeftSideNode(TreeNode root){
+            
+            while( root != null){
+                s.push(root);
+                root = root.left;
+            }
+        }
+    }
+
+
+</code></pre>
+</body>

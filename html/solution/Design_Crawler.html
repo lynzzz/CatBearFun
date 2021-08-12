@@ -6,6 +6,10 @@
 
 <body>
 <pre><code>
+
+传统的网络爬虫/Crawl Wikipedia/黑客版本的爬虫
+
+
                                                       FB crawler design
 这个题目的几种表达方法.
 
@@ -27,6 +31,97 @@ We have to minimize communication and make sure each node does equal amount of w
 
 
 https://leetcode.com/discuss/interview-question/system-design/124657/Facebook-or-System-Design-or-A-web-crawler-that-will-crawl-Wikipedia
+
+
+Ace system design: 
+1.Requirements:
+功能性需求：爬取全网信息
+非功能性需求： 高扩展性，全网爬取。
+              核心网站，低延迟
+              遵守规则，不过载。（politeness)
+              高可用性，避免死循环
+非需求： 索引，搜索，排序
+
+
+2.Estimation
+网页爬取QPS, storage
+
+Assume we have 500M web sites, each website has 100 URL, each page size 100kb,
+and we need crawl the internet every two weeks. 
+QPS:
+   500*10^6* 100/(86400 * 14) = 35000 qps 
+storage:
+   500*10^6* 100* 100kb = 5PB  every 2weeks 
+   5PB/2 * 52 * 5 = 650PB  in 5 years
+   
+   
+
+
+3. Service: （Lookat diagrames at C:\Users\Lyn\Desktop\Company interview questions\Ice System design class\5 Crawler)
+
+1. URL队列（ Url fontier) 
+2. 网页下载服务
+3. 网页存储
+4。URL提取器
+
+
+High level.
+                           Internet
+                              |
+               url            !
+    URL Queue  ->      fetch & render 
+          url
+           ^                   |
+           |                   !
+
+      HTML processor  <-   webpage storage
+
+
+
+1. URL frontier
+
+如何实现优先级别?
+use multiple Priority queues. 高优先级队列爬的频率高，
+这样也不会starve低优先级别的队列
+
+p0 
+p1
+.
+.
+.
+pn 
+
+如何控制爬取同一个网站的频率？
+
+timestamp + frequency ->single domain queue id 
+
+
+2. Fetcher & render 
+如何判断有无更新？
+HEAD request -> header(last modified)
+
+
+3. html processor 
+URL extractor 
+content signature (判断两个网页是否一致)
+
+一个HTML page download 下来后，要做哪些事情？
+Async job 
+a. extract url
+b. build index 
+c. build signature (同样的web page就不存了)
+
+
+url 该不该爬取应该考虑哪些因素？
+robot.txt 频率 范围
+你上次爬取的时间  （timestamp + robot.txt.frequency)
+经验（苹果发布会，更新速率比robot.txt.frequency要快）
+
+
+
+
+
+
 
 
 

@@ -33,36 +33,34 @@ void dfs( start, matrix){
 
  public boolean hasRoute(int[][] board, int[] start, int[] destination) {
 
-        int code = i * col + j;
 		
-        Queue&lt;Integer> q = new LinkedList<Integer>();
-        HashSet&lt;Integer> set = new HashSet<Integer>();
+        Queue&lt;int[]> q = new LinkedList<>();
+        boolean[][] visited = new boolean[row][col];
         
-        q.add(s);
-        set.add(s);
+        q.add(new int[]{start[0], start[1]});
+        visited[start[0]][start[1]] = true;
         
         while( !q.isEmpty() ){
-            int n = q.poll();
+            int[] cur = q.poll();
             
-			int x = n/col;
-			int y = n%col;
-			
-            if ( x == a && y == b){                // 判断结束条件 
+			对Cur进行判断
+            if ( cur[0] == a && cur[1] == b){                // 判断结束条件 
                 return true;
             }
             
-            // 对下一步的每一种可能性进行三个标准判断，如果可以则加入
-		   
-            if ( 过界， 撞墙，没有访问过 ）   
-               set.add(child);
-               q.add(child);
-            }
+            // 构建下一层 
+			int[][] dirs = {{0,1}, {0, -1}, {1,0}, {-1,0}};
 			
-			if ( 过界， 撞墙，没有访问过 ）  
-               set.add(child);
-               q.add(child);
-            }
-			
+			for(int[] dir : dirs){
+				int x = cur[0] + dir[0];
+				int y = cur[1] + dir[1];
+
+				if ( x < 0 || x == row, || y < 0 || y == col || board[x][y] == block || visited[x][y])
+			        continue;
+
+				q.add(new int[]{x, y});
+				visited[x][y] = true;
+			}
         }
         
         return false;

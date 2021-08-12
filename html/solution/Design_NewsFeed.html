@@ -10,7 +10,7 @@
 
 
 News Feed 适用于: 
-US: Facebook/Twitter/Instagram
+US: Facebook/Twitter/Instagram/Quora
 China: WeChat朋友圈/新浪微博
 
 
@@ -31,14 +31,37 @@ Bandwidth:
 bandwidth = QPS * average request size or response size
 Assuming average request size is 20KB, average response size is 2MB( it returns image, the response size should be large.)
 
-ingress  bankdwith = 150K * 20kb = 300MB/s    from all DC
-egresscccdd bandwidth = 150K * 2Mb =      300GB/s
+ingress  bankdwith = 150K * 20kb =   3GB/s    
+egress bandwidth = 150K * 2Mb =      300GB/s
 
 
 
-Storage : say per day adding 2M pictures, each picture has in avarage 200KB, one day
-          we need 2M * 200kB = 400MKB = 400G disk. in one month, we need, 30*400G = 12000G = 12TB disk. so photos cannot be stored in one machine, what we need is distributed file storage such as S3.
+Ins feed storage :  
+say per day adding 2M pictures, each picture has in avarage 200KB, one day
+we need 2M * 200kB = 400MKB = 400G disk. in one month, we need, 30*400G = 12000G = 12TB disk. so photos cannot be stored in one machine, 
+what we need is distributed file storage such as S3.
  
+
+FB feed storage:
+one active user, keep 500 posts in memory, each post average 1kb, so we need to have 
+300M * 500 * 1kb = 150TB memory. say one server has 100GB memory, so we need 1500 serers to keep 500 posts in memory.
+
+
+
+Step2: System API:
+REST API
+
+GetFeed(API_Dev_Key, user_id, since_ID, max_count, max_ID);
+since_ID : return the result whose feed id is higher than since_Id 
+max_count: the max feed it returns.
+Max_ID : not sure why we need this. 
+
+It retuns a list of feed in Json format.
+
+
+
+
+
 
 
 
@@ -52,6 +75,11 @@ Step3: Storage:
 
 We need 3 metadata tables and 1 storage.
 User table, picture table, Friendship table and storage for picture.
+
+
+
+
+
 
 
 
@@ -255,6 +283,10 @@ Question  如果有了新人一下子变很火，我们怎么把他们加入这�
 手动的把他在feedtable里含有这个人的image id entry删除掉,然后把他认定为名人,feed就只从image table读.
 
 
+Push mode可以和notification service联在一起，一旦有新的feed, notification service notifies the user, 
+given that user needs to maintain the long poll to the web server.
+
+
 
 
 
@@ -346,6 +378,17 @@ backfill his photo entry from photo table to celebrity photo table, and delete h
             3          200         tree                 4             200          table
             5          201         male                 6             202          female
 
+
+  How to partition feed table?
+  by user id.
+  since only this user queries his or her feedtable, and we only store 500 feed per user.
+  QPS or storage is not a problem. And it can be stored in one single server. 
+
+
+
+
+
+
   Follow up Question: Single point failure on this key-generation db
   1. Replica is not the solution, since there is no guanrantee two dbs are synced at only time. if one db is down, other db may or may not be synced.
      if one number is wrong, user lose data.
@@ -363,7 +406,7 @@ backfill his photo entry from photo table to celebrity photo table, and delete h
 API 接口设计
 Write(userID, image, description);
 
-Read(userID, Last_TimeStamp, page_count); // 这是考察pagination的概念
+Read(userID, Last_TimeStamp, image_count); // 这是考察pagination的概念
 
 参数和access token都在http header里传过去. Feed不可能一次发完，feed太多了， 一次发部份，pagination的概念。
 
@@ -483,6 +526,61 @@ select title, image_path, createdAt, photo.user_id from
 left join photo
 on f.photoId = photo.id
 order by photo.createdAt desc;
+
+
+
+
+
+
+
+
+
+
+
+Ice系统第一节课程免费试听
+
+2. 识别马甲能力
+3. Trade off能力
+4. 交流设计的能力
+
+
+Trade off between availiability and consistency.
+High availiability vs enventual consistence.
+if you want high consistency, need to sacrifice availabitly.
+
+
+FB 15道题目范围内
+
+Product design: 产品工程师（纯写逻辑，应届生）
+不考scalability
+
+System  design:
+考scalability
+
+
+
+
+
+
+Examlple:
+
+Message System
+workflow 1: 两个人都在线 
+workflow 2: 收信息人不在线
+
+
+FB crawler:
+5种架构
+
+
+
+
+
+
+
+
+
+
 
 
 

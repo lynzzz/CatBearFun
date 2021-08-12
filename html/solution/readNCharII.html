@@ -7,43 +7,51 @@
 <body>
 <pre><code>
 
-public class Solution extends Reader4 {
 
-
-     //  假设是 0. buf memory is preallocated.
+     // 假设是  0. buf memory is preallocated.
                1. buf每次传进去的都从index 0开始写，不需要maintain bufIndex;(Example 1, example 2 已经讲清楚了)
      //        2. 返回的是每个read() 读的个数，而不是总的读的个数.(Example 1 and Example2 already make this clear)
      //        3. 这个逻辑很不好写
      
+
+ public class Solution extends Reader4 {
+    
+    char data[] = new char[4];
+    int bufferIndex = 0;
+    int bufferEndIndex = 0;  // exclusive
+    
+    
+    
+    public int read(char[] buf, int n) {
         
-     char[] buf4 = new char[4];
-     int buf4Index = 0;
-     int buf4Size = 0; 
-     
- 
-     public int read(char[] buf, int n) {
-         
-         int count = 0;
-         
-         while(count < n ){
-             
-             if ( buf4Index < buf4Size){
-                 while ( count < n && buf4Index < buf4Size ){
-                     buf[count] = buf4[buf4Index];
-                     count++;
-                     buf4Index++;
-                 }
-             }else{
-             
-                 buf4Size = read4(buf4);
-                 buf4Index = 0;
-                 if ( buf4Size == 0) return count;
-             }
-         }
+        int count = 0;
+        int i = 0;
         
-         return count;
-     }
- }
+        while( count < n){
+            
+            
+            // if there is data in buffer, read from buffer
+            while( count < n && bufferIndex < bufferEndIndex ){
+                buf[i] = data[bufferIndex];
+                i++;
+                bufferIndex++;
+                count++;
+            }
+            
+            if ( count == n) return n;
+                       
+            
+            bufferEndIndex = read4(data);
+            
+            if ( bufferEndIndex == 0) return count;
+            
+            bufferIndex = 0;
+            
+        }
+                
+        return count;
+    }
+}
 
 先从buf读, 在从文件读. 这种写法很简单,但是面试的时候很难想起来,太多的corner case. 这个逻辑写的没有Bug很不容易
 

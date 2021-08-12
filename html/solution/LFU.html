@@ -11,9 +11,7 @@ you need maintain 4 data structure.
 
 1. vals : key -> val
 2. counts : key -> count 
-3. lists :  count -> list of key    背诵 这里的数据结构是 linkedhashset, which is sorted hashset. 
-   remove O(1). HashSet 
-   Need to maintain order: ordered HashSet  // 
+3. lists :  count -> list of key    背诵 这里的数据结构是 linkedhashset, Need to maintain order: ordered HashSet
 
    when frequency counts are the same, it becomes least recent used cache (LRU), when evict, it starts from the head
    interator().next() 从头开始访问
@@ -25,22 +23,22 @@ you need maintain 4 data structure.
 
 class LFUCache {
     
-   HashMap&lt;Integer, Integer> vals = new HashMap&lt;>();      // key -> value
-   HashMap&lt;Integer, Integer> counts = new HashMap&lt;>();    // key -> count
+   HashMap<Integer, Integer> vals = new HashMap<>();      // key -> value
+   HashMap<Integer, Integer> counts = new HashMap<>();    // key -> count
    
-   HashMap&lt;Integer, LinkedHashSe&lt;Integer>> lists = new HashMap&lt;>();  // count->list<key>
+   HashMap<Integer, LinkedHashSet<Integer>> lists = new HashMap<>();  // count->list<key>
    
-   int mincount = -1;   // mincount;
+   int mincount = 0;   // mincount;
    
-   int cap = 0;
+   int capacity = 0;
 
 
    public LFUCache(int capacity) {
-       cap = capacity;
+      this.capacity = capacity;
        
    }
    
-   public int get(int key) {                     
+   public int get(int key) {                       // get only updates counts and lists              
       // key doesn't exist
       if ( !vals.containsKey(key)) return -1;
       
@@ -63,7 +61,7 @@ class LFUCache {
    }
    
    public void put(int key, int value) {       
-       if ( cap &lt;= 0) return;
+       if ( capacity == 0) return;
        
        // key exists
        if ( vals.containsKey(key)){
@@ -72,7 +70,7 @@ class LFUCache {
            return;
        }else{
          // exceed size, eviction
-         if ( vals.size() == cap){
+         if ( vals.size() == capacity){
             int evictKey = lists.get(mincount).iterator().next();    // maintain order ordered HashSet
             lists.get(mincount).remove(evictKey);
             counts.remove(evictKey);
@@ -81,7 +79,7 @@ class LFUCache {
          
          vals.put(key, value);
          counts.put(key, 1);
-         lists.putIfAbsent(1, new LinkedHashSet&lt;>());
+         lists.putIfAbsent(1, new LinkedHashSet<>());
          lists.get(1).add(key);
          mincount = 1;
       }

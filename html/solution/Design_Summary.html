@@ -1,0 +1,131 @@
+<pre><code>
+
+九章算法总结的系统设计面试的经验：
+1. 给出一个方案的时候主动提出Trade-off, 这样权衡比较会非常加分。
+2. 切勿罗列关键词汇，会降低面试官好感度。
+3. 主动提出失败检测。failure情况，Non-vilina case.
+
+
+Ice:
+
+Summary:
+Category 1:   NewsFeed: Instagram/Twitter/Facebook     Push/pull
+CAtegory 2:   即时通讯: What's app                      4 data flow
+Category 3:   地理位置: Uber/Yelp/Uber Eat              GeoHash/Google S2 API, Uber we save driver location in Cache.
+Category 4:   视频 : Netflix                            CDN
+Category 5:   搜索 Search/Crawl/Auto Complete
+Category 6:   高一致系统
+              a. Robinhood/Fandango                    automicity all or nothing
+              b. GoogleDoc                             operational transaction(result confilict)
+              c. Dropbox                               去重
+Category 7:   数据系统： Monitoring/Spotify top 10      提前处理数据， tradeoff between  real time/streaming/ or mapreduce.
+                        Twitter treding
+Category 8:   底层系统： Distributed cache/rate limiter        
+
+
+DB 
+SQL : Robinhood/Fandango/GoogleDox/Dropbox
+Document: Yelp/Mornitoring system（数据比较难model)
+Key/Value: Uber/Uber eat/Auto complete (Cache)
+Wide Column: Instangram, Crawler, Search.  (三围表)
+
+
+重点：
+1 取舍：3-5种方案，Senior标准，tradeoff不讲肯定过不了
+2 时间非常紧张，要提前联系好每部分用多少时间
+
+
+准备：
+1.背熟悉系统设计图， 遇到没有见过的题目往见过的题目上套。
+2.核心取舍要知道
+3.找人模拟或者对着镜子讲
+
+
+FB 高频率题目:
+Instangram
+TypeAhead
+botNet crawler 
+Fb Messager
+
+
+
+
+Step1: Requirement 核心需求 + Capacity estimation　（3m-5m)
+
+    Requirements: Upload/View/Search/metadata/comment
+
+    DAU: 一般为500M 这个数量级别
+    QPS:  DAU * average operation/86400 = QPS
+
+        注意这个service是读请求多还是写请求多, 这会影响数据库的选用. 读请求多可以用cache优化
+
+    Storage: 计算每天,每个月要用多少硬盘
+    Bandwidth: 这个一般不是很好估计，ingress traffic vs egress traffic
+
+    !讲清楚Bottole neck 再哪里（uber is number of connection session).
+
+    
+    !需要讲清楚重要的non-function requirement. (Uber 是high availability， 打不到车很着急)
+
+
+
+Step 2: Service
+
+
+     Client                 Web server(API server) -> App Server -> distributed File system(Amazon S3) store large file: log, video, image
+                                                                            
+                                                          |
+
+                                                    Cache(Either in AppServer  or seperate cache server)
+
+
+                                                          |
+                                                          
+     CDN                                            Metadata Database
+
+
+
+Step3: DB(Schema, partitioning)
+
+      Go through a simple complete workflow
+
+
+Step4: API.
+
+
+
+Step5: Scale
+    Traffic control: DNS load balance, load balancer(HLB, SLB)
+    
+    Master/slave, enventual consistency.
+    
+    Cache: 80-20 Rule, 
+           20 percent of daily read volume generates 80%
+           of traffic, we only need to cache 20% of daily read volume of videos and metadata.
+    
+    
+    Sharding:
+    1. by user. Drawback: popular user(high Qps, high storage)
+    2. consistent hashing. aggregator, global unique id. 
+    
+    replication, single point failure. 
+
+    CDN
+
+
+    Go through non valina path. （failover)
+
+
+
+Step 6: Alert/Fault tolerence 警报/容灾难 (30s 带一下)
+
+
+
+Note:
+a. 注意时间控制。最开始的估算3-5分钟。 我在mock的时候花了10分钟, 自己一点感觉都没有 结果他说QPS不用算，因为不是bottomneck
+b. 面试的时候思考的时候停顿5秒钟以上很尴尬的，要把基本框架熟练以后在去面试。
+c. 要对画图的工具很熟悉，Google draw/Zoom 都不好用。
+d. DB casandra, wide column 存像list那样的东西。 Uber trip table, route. List<pair(lat, long)
+
+</code>
+</pre>

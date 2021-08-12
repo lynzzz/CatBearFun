@@ -22,33 +22,34 @@ Graph : Node :                  // 对于reference type, HashSet::Contains 首�
 
 
 
-2D matrix : integer             // 对于primitive type HashSet::Contains 直接判断值<br>
-记住转换公式 ： given i, j  => int code = i * col + j;   given code => i = code/col; j=code%col;<br>
-
-
-
-
 <pre><code>
 
 原始模板1
 
 Queue&lt;D> q = new LinkedList<>();
 HashSet&lt;D> set = new HashSet<>();
+q.add(start);
+set.add(start);
 
 while( !q.isEmpty() ){
     D d = q.poll();
-	
-	for( D d : 周围符合条件的d ){
-	     if ( !set.contains() ){
-		     q.add(d);
-			 set.add(d)
-		 }
+	//判断
+
+	for(  neighbor : 周围所有邻居 ){
+	     if ( set.contains(neighbor) )
+		     continue;
+		 
+		q.add(neighbor);
+		set.add(neighbor)
+		 
 	
 	}
 }
 
 
 原始模板2 ： 分层扫，用来找最短距离
+int level = 0;
+
 while( !q.isEmpty() ){
 
     int size = q.size();
@@ -56,14 +57,17 @@ while( !q.isEmpty() ){
 	// 这个位置可以进行对层的统计
 	for( int i=0; i&lt;size; i++ ){
         D d = q.poll();
+		对D进行和有关level的逻辑判断
 	
-	    for( D d : 周围符合条件的d ){
-	        if ( !set.contains() ){
-		        q.add(d);
-			    set.add(d)
-		    }
+		for(  neighbor : 周围所有邻居 ){
+	        if ( set.contains(neighbor)
+			    continue;
+		    
+			q.add(d);
+			set.add(d)
 	    }
 	}
+	level++;
 }
 
 
